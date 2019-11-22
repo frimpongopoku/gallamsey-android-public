@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+  <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      tools:context=".Register">
+
+
+  <View
+      android:id="@+id/titlebar"
+      android:layout_width="match_parent"
+      android:layout_height="80dp"
+      android:background="@drawable/register_title_bar"></View>
+
+  <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="15dp"
+      android:padding="10dp"
+      android:text="Create An Identity With Us"
+      android:textAlignment="center"
+      android:textColor="@android:color/white"
+      android:textSize="25sp" />
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/titlebar"
+      android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="30dp"
+        android:padding="10dp"
+        android:text="Fields marked with * must be provided"
+        android:textSize="15sp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="6dp"
+        android:background="@drawable/stroke_textbox"
+        android:hint="Username"
+        android:padding="20dp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="6dp"
+        android:background="@drawable/stroke_textbox"
+        android:hint="email"
+        android:inputType="textEmailAddress"
+        android:padding="20dp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="6dp"
+        android:background="@drawable/stroke_textbox"
+        android:hint="Telephone"
+        android:inputType="phone"
+        android:padding="20dp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="6dp"
+        android:background="@drawable/stroke_textbox"
+        android:hint="Whatsapp Number"
+        android:inputType="phone"
+        android:padding="20dp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="6dp"
+        android:background="@drawable/stroke_textbox"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:padding="20dp" />
+
+    <EditText
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="6dp"
+        android:background="@drawable/stroke_textbox"
+        android:hint="Confirm Password"
+        android:inputType="textPassword"
+        android:padding="20dp" />
+  </LinearLayout>
+
+  <Button
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignParentBottom="true"
+      android:layout_marginStart="20dp"
+      android:layout_marginLeft="20dp"
+      android:layout_marginTop="20dp"
+      android:layout_marginEnd="20dp"
+      android:layout_marginRight="20dp"
+      android:layout_marginBottom="47dp"
+      android:background="@drawable/login_button_shape"
+      android:padding="25dp"
+      android:text="Finish"
+      android:textAllCaps="false"
+      android:textColor="@android:color/white"
+      android:textSize="20sp" />
+
+</RelativeLayout>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="56dp"
+  android:background="@color/appColor"
+  android:elevation="5dp"
+  android:padding="10dp"
+  app:title="">
+
+  <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+      android:paddingTop="9dp"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal">
+
+      <Button
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/go_left" />
+
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="3dp"
+        android:paddingLeft="10dp"
+        android:text="Favorite Shops"
+        android:textColor="@android:color/white"
+        android:textStyle="bold" />
+
+
+    </LinearLayout>
+
+    <ImageView
+      android:layout_alignParentRight="true"
+      android:src="@drawable/w_p"
+      android:layout_width="45dp"
+      android:layout_height="45dp" />
+
+  </RelativeLayout>
+
+</androidx.appcompat.widget.Toolbar>

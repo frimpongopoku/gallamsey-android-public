@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical"
+
+  tools:context=".CreateNewErrand">
+
+  <include
+    android:id="@+id/my_toolbar"
+    layout="@layout/app_default_toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />
+
+  <ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="660dp"
+      android:orientation="vertical"
+      android:padding="20dp">
+
+
+      <EditText
+        android:id="@+id/errand_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:height="150dp"
+        android:background="@drawable/stroke_textbox"
+        android:ems="10"
+        android:gravity="start|top"
+        android:hint="Errand Description"
+        android:inputType="textMultiLine"
+        android:padding="20dp" />
+
+      <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/stroke_textbox"
+        android:hint="Estimated Cost"
+        android:inputType="number"
+        android:padding="15dp" />
+
+      <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/stroke_textbox"
+        android:hint="Allowance"
+        android:inputType="number"
+        android:padding="15dp" />
+
+      <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/stroke_textbox"
+        android:hint="Title of post"
+        android:padding="15dp" />
+
+      <Switch
+        android:id="@+id/switch1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="Add Images" />
+
+      <ImageView
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="190dp"
+        android:src="@drawable/waakye_plate_2" />
+
+      <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/stroke_textbox"
+        android:hint="Expiry Date"
+        android:inputType="date"
+        android:padding="15dp" />
+
+      <LinearLayout
+        android:layout_marginTop="40dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="6dp"
+          android:layout_marginBottom="6dp"
+          android:background="@drawable/box_button"
+          android:padding="10dp"
+          android:text="Set Pick Up Location"
+          android:textColor="@android:color/white" />
+
+        <Button
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="6dp"
+          android:background="@drawable/box_button_bluish"
+          android:padding="10dp"
+          android:text="Finish"
+          android:textColor="@android:color/white" />
+      </LinearLayout>
+
+
+    </LinearLayout>
+  </ScrollView>
+
+</LinearLayout>
