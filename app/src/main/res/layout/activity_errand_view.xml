@@ -12,6 +12,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content" />
 
+
   <ScrollView
     android:paddingTop="70dp"
     android:layout_width="match_parent"
@@ -23,12 +24,17 @@
       android:layout_below="@+id/my_toolbar"
       android:orientation="vertical"
       android:padding="20dp">
-
       <include
-        layout="@layout/errand_image_card"
+        android:id="@+id/my_toolbar"
+        layout="@layout/text_errand_card"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp" />
+        android:layout_height="wrap_content" />
+
+      <!--<include-->
+        <!--layout="@layout/errand_image_card"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_margin="10dp" />-->
 
       <TextView
         android:layout_width="match_parent"

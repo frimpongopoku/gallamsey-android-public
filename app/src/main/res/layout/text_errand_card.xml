@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  app:cardCornerRadius="10dp"
+  android:layout_height="wrap_content">
+
+  <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="250dp"
+    android:padding="35dp">
+
+    <TextView
+      android:textSize="19sp"
+      android:gravity="center"
+      android:id="@+id/text_errand_card_desc"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="I need someone to buy me waakye 3 cedis, Mcroni 10 cedis Fish 2 cedis, and Chicken 5 cedis" />
+
+    <TextView
+      android:id="@+id/text_errand_card_cost"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/text_errand_card_desc"
+      android:layout_marginTop="15dp"
+      android:text="20"
+      android:textColor="@color/cost_color"
+      android:textSize="40sp" />
+
+    <TextView
+      android:id="@+id/text_errand_card_allowance"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/text_errand_card_desc"
+      android:layout_alignParentRight="true"
+      android:layout_marginTop="15dp"
+      android:layout_marginRight="30dp"
+      android:text="5"
+      android:textColor="@color/allowance_color"
+      android:textSize="40sp" />
+
+    <TextView
+      android:id="@+id/cost_currency"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/text_errand_card_allowance"
+      android:layout_marginTop="2dp"
+      android:text="GHC" />
+
+    <TextView
+      android:textSize="12sp"
+      android:paddingLeft="6dp"
+      android:paddingRight="6dp"
+      android:layout_marginLeft="6dp"
+      android:layout_toRightOf="@+id/cost_currency"
+      android:background="@color/xd_default"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/text_errand_card_allowance"
+      android:layout_marginTop="5dp"
+      android:text="Has Specifics" />
+
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/text_errand_card_allowance"
+      android:layout_alignParentRight="true"
+      android:layout_marginTop="2dp"
+      android:layout_marginRight="29dp"
+      android:text="GHC" />
+
+    <TextView
+      android:layout_marginTop="5dp"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentRight="true"
+      android:layout_alignParentBottom="true"
+      android:padding="20dp"
+      android:text="22nd March 2019" />
+
+  </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
