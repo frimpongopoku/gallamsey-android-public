@@ -3,35 +3,66 @@ package com.pongo.zembe;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class Home extends AppCompatActivity {
+import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
+public class Home extends AppCompatActivity {
+  ArrayList<String> desc = new ArrayList<>();
+  ArrayList<String> profits = new ArrayList<>();
+  ArrayList<String> costs = new ArrayList<>();
+  ArrayList<String> dates = new ArrayList<>();
+  HomeNewsAdapter homeNewsAdapter;
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_home);
 
+    fillInTheBlankSpaces();
+
 //    Set default home fragment: HomePage
-    Fragment default_fragment = new HomeFragment();
+    Fragment default_fragment = new HomeFragment(changeToHash());
     getSupportFragmentManager().beginTransaction().replace(R.id.app_frame_layout,default_fragment).commit();
+
 //    Set Fragment Listener to switch pages
     BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
     bottomNav.setOnNavigationItemSelectedListener(navListener);
+
+//    fill up the adapter
+//    fillInTheBlankSpaces();
+//    RecyclerView recyclerView = findViewById(R.id.home_news_recycler);
+//    homeNewsAdapter = new HomeNewsAdapter(this,desc,profits,costs,dates);
+//    recyclerView.setAdapter(homeNewsAdapter);
+//    recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
   }
 
+
+  private HashMap<String, ArrayList<String>> changeToHash(){
+    HashMap<String, ArrayList<String>> map = new HashMap<>();
+    map.put("descs",desc);
+    map.put("profits",profits);
+    map.put("costs",costs);
+    map.put("dates",dates);
+    return map;
+  }
   private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
       Fragment destinationPage = null;
-
       switch (menuItem.getItemId()) {
         case R.id.nav_home:
-          destinationPage = new HomeFragment();
+          destinationPage = new HomeFragment(changeToHash());
           break;
         case R.id.nav_settings:
           destinationPage = new SettingsFragment();
@@ -51,4 +82,19 @@ public class Home extends AppCompatActivity {
       return true;
     }
   };
+
+  private void fillInTheBlankSpaces(){
+    desc.add("I am the first");
+    desc.add("I am the second");
+    desc.add("I am the third");
+    profits.add("40");
+    profits.add("20");
+    profits.add("10");
+    costs.add("4");
+    costs.add("2");
+    costs.add("1");
+    dates.add(" 22nd march 1998");
+    dates.add(" 2nd march 2998");
+    dates.add(" 22nd April 2098");
+  }
 }
