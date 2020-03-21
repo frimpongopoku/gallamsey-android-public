@@ -38,13 +38,6 @@ public class Home extends AppCompatActivity {
     BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
     bottomNav.setOnNavigationItemSelectedListener(navListener);
 
-//    fill up the adapter
-//    fillInTheBlankSpaces();
-//    RecyclerView recyclerView = findViewById(R.id.home_news_recycler);
-//    homeNewsAdapter = new HomeNewsAdapter(this,desc,profits,costs,dates);
-//    recyclerView.setAdapter(homeNewsAdapter);
-//    recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
   }
 
 

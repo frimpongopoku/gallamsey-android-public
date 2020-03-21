@@ -4,4 +4,9 @@
   android:background="@android:color/holo_purple"
   android:layout_height="match_parent">
 
+  <include layout="@layout/errand_image_card"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:layout_width="match_parent" />
+
 </LinearLayout>
