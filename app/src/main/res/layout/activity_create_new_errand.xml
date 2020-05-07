@@ -26,6 +26,7 @@
 
 
       <EditText
+        android:textSize="14sp"
         android:id="@+id/errand_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -35,9 +36,10 @@
         android:gravity="start|top"
         android:hint="Errand Description"
         android:inputType="textMultiLine"
-        android:padding="20dp" />
+        android:padding="15dp" />
 
       <EditText
+        android:textSize="14sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -47,6 +49,7 @@
         android:padding="15dp" />
 
       <EditText
+        android:textSize="14sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -56,6 +59,7 @@
         android:padding="15dp" />
 
       <EditText
+        android:textSize="14sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -74,10 +78,11 @@
         android:layout_marginTop="15dp"
         android:layout_marginBottom="15dp"
         android:layout_width="match_parent"
-        android:layout_height="190dp"
+        android:layout_height="150dp"
         android:src="@drawable/waakye_plate_2" />
 
       <EditText
+        android:textSize="14sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -93,6 +98,7 @@
         android:layout_height="wrap_content">
 
         <Button
+          android:textSize="14sp"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_marginTop="6dp"
@@ -103,6 +109,7 @@
           android:textColor="@android:color/white" />
 
         <Button
+          android:textSize="14sp"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_marginBottom="6dp"

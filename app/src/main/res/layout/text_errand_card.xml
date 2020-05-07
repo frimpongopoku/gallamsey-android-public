@@ -13,15 +13,15 @@
   <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="250dp"
-    android:padding="35dp">
+    android:padding="25dp">
 
     <TextView
-      android:textSize="12sp"
-      android:gravity="center"
       android:id="@+id/text_errand_card_desc"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="I need someone to buy me waakye 3 cedis, Mcroni 10 cedis Fish 2 cedis, and Chicken 5 cedis" />
+      android:gravity="center"
+      android:text="I need someone to buy me waakye 3 cedis, Mcroni 10 cedis Fish 2 cedis, and Chicken 5 cedis"
+      android:textSize="23sp" />
 
     <TextView
       android:id="@+id/text_errand_card_cost"
