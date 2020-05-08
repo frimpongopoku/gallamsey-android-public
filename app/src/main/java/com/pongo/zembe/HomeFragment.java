@@ -34,7 +34,7 @@ public class HomeFragment extends Fragment {
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.home_nav_fragment, container, false);
-    HomeNewsAdapter adapter = new HomeNewsAdapter(getContext(),items.get("descs"),items.get("profits"), items.get("costs"), items.get("dates"));
+    HomeNewsMultiAdapter adapter = new HomeNewsMultiAdapter(getContext(),items.get("descs"),items.get("profits"), items.get("costs"), items.get("dates"));
     RecyclerView recyclerView = view.findViewById(R.id.home_news_recycler);
     recyclerView.setAdapter(adapter);
     RecyclerView.LayoutManager manager = new LinearLayoutManager(getContext());

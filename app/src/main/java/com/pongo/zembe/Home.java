@@ -22,7 +22,6 @@ public class Home extends AppCompatActivity {
   ArrayList<String> profits = new ArrayList<>();
   ArrayList<String> costs = new ArrayList<>();
   ArrayList<String> dates = new ArrayList<>();
-  HomeNewsAdapter homeNewsAdapter;
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -77,17 +76,25 @@ public class Home extends AppCompatActivity {
   };
 
   private void fillInTheBlankSpaces(){
-    desc.add("I am the first,I am the first,I am the first,I am the first,I am the first,I am the first");
-    desc.add("I am the second, I am the first, I am the first, I am the first,I am the first ,I am the first");
+    desc.add("I am the first");
+    desc.add("I am the second");
     desc.add("I am the third");
+    desc.add("I am the fourth");
+    desc.add("I am the fifth");
     profits.add("40");
     profits.add("20");
     profits.add("10");
+    profits.add("50");
+    profits.add("25");
     costs.add("4");
     costs.add("2");
     costs.add("1");
+    costs.add("7");
+    costs.add("9");
     dates.add(" 22nd march 1998");
-    dates.add(" 2nd march 2998");
+    dates.add(" 2nd January 2998");
     dates.add(" 22nd April 2098");
+    dates.add(" 22nd June 2098");
+    dates.add(" 22nd December 2098");
   }
 }
