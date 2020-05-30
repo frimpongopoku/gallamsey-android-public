@@ -1,26 +1,35 @@
 package com.pongo.zembe;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class Register extends AppCompatActivity {
 
   String username, email, password, passwordConfirmation, whatsappNumber, phone;
   EditText usernameBox, emailBox, passBox, confirmPassBox, whatsappBox, phoneBox;
-  FirebaseApp mAuth;
+  private FirebaseAuth mAuth;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    mAuth = FirebaseApp.getInstance();
+    mAuth = FirebaseAuth.getInstance();
     setContentView(R.layout.activity_register);
     usernameBox = findViewById(R.id.reg_username);
     emailBox = findViewById(R.id.reg_email);
@@ -39,6 +48,11 @@ public class Register extends AppCompatActivity {
 
   }
 
+  public void goToUserHomepage(){
+    Intent homepage = new Intent(this, Home.class);
+    finish();
+    startActivity(homepage);
+  }
 
   private void doRegistration(EditText usernameBox, EditText emailBox, EditText passBox, EditText confirmPassBox, EditText whatsappBox, EditText phoneBox) {
     Boolean emailGood = false, passGood = false, phoneGood = false;
@@ -87,7 +101,25 @@ public class Register extends AppCompatActivity {
     }
 
     if (emailGood && passGood && phoneGood) {
-      Toast.makeText(this, "YOu are all good, register now! lool!", Toast.LENGTH_SHORT).show();
+      mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        @Override
+        public void onComplete(@NonNull Task<AuthResult> task) {
+          if (task.isSuccessful()) {
+            Toast.makeText(Register.this, "Successfully Created Your Account", Toast.LENGTH_SHORT).show();
+            FirebaseUser user = mAuth.getCurrentUser();
+            Log.d("--->Here::: ", user.toString());
+            goToUserHomepage();
+          } else {
+            Toast.makeText(Register.this, "Oops, something happened! We are working on it!", Toast.LENGTH_SHORT).show();
+          }
+        }
+      }).addOnFailureListener(new OnFailureListener() {
+        @Override
+        public void onFailure(@NonNull Exception e) {
+          Toast.makeText(Register.this, "Oops! "+e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+      });
+
 
     }
 
