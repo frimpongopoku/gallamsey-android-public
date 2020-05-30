@@ -40,6 +40,7 @@
       android:textSize="15sp" />
 
     <EditText
+      android:id="@+id/reg_username"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginLeft="30dp"
@@ -51,6 +52,7 @@
       android:textSize="13dp" />
 
     <EditText
+      android:id="@+id/reg_email"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginLeft="30dp"
@@ -63,6 +65,7 @@
       android:textSize="13dp" />
 
     <EditText
+      android:id="@+id/reg_phone"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginLeft="30dp"
@@ -75,6 +78,7 @@
       android:textSize="13dp" />
 
     <EditText
+      android:id="@+id/reg_whatsapp_number"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginLeft="30dp"
@@ -87,6 +91,8 @@
       android:textSize="13dp" />
 
     <EditText
+
+      android:id="@+id/reg_password"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginLeft="30dp"
@@ -99,6 +105,7 @@
       android:textSize="13dp" />
 
     <EditText
+      android:id="@+id/reg_confirm_password"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginLeft="30dp"
@@ -112,6 +119,7 @@
   </LinearLayout>
 
   <Button
+    android:id="@+id/reg_finish"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_alignParentBottom="true"

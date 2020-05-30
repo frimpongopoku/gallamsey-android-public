@@ -26,7 +26,6 @@ public class Home extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_home);
-
     fillInTheBlankSpaces();
 
 //    Set default home fragment: HomePage
@@ -38,8 +37,6 @@ public class Home extends AppCompatActivity {
     bottomNav.setOnNavigationItemSelectedListener(navListener);
 
   }
-
-
   private HashMap<String, ArrayList<String>> changeToHash(){
     HashMap<String, ArrayList<String>> map = new HashMap<>();
     map.put("descs",desc);
