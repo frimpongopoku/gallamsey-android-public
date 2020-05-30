@@ -1,4 +1,4 @@
-# Zembe-Android
-Android Studio Repo For Zembe
-# Created And Managed By 
-## Frimpong Opoku Agyemang
+# Gallamsey App
+Android Studio Repo For Gallamsey
+### Created And Managed By 
+# Frimpong Opoku Agyemang
