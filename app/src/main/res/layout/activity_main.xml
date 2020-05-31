@@ -1,27 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical"
+  tools:context=".MainActivity">
+
+
+  <Button
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:layout_height="wrap_content"
+    android:onClick="goToLogin"
+    android:text="Login" />
 
+  <Button
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:onClick="goToRegister"
+    android:text="Register" />
 
- <Button
-     android:onClick="goToLogin"
-     android:text="Login"
-     android:layout_width="match_parent"
-     android:layout_height="wrap_content" />
- <Button
-     android:onClick="goToRegister"
-     android:text="Register"
-     android:layout_width="match_parent"
-     android:layout_height="wrap_content" />
+  <Button
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:onClick="goToLocationSetup"
+    android:text="Location" />
 
- <Button
-     android:layout_width="match_parent"
-     android:layout_height="wrap_content"
-     android:onClick="goToLocationSetup"
-     android:text="Location" />
+  <Button
+    android:id="@+id/logout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:onClick="logout"
+    android:text="Logout" />
 </LinearLayout>

@@ -12,7 +12,6 @@
     android:layout_width="match_parent"
     android:layout_height="50dp"
     android:background="@drawable/register_title_bar"></View>
-
   <TextView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -23,117 +22,158 @@
     android:textColor="@android:color/white"
     android:textSize="14sp" />
 
-  <LinearLayout
+
+  <ScrollView
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_below="@+id/titlebar"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <TextView
+    <RelativeLayout
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginLeft="20dp"
-      android:layout_marginTop="10dp"
-      android:layout_marginBottom="10dp"
-      android:padding="10dp"
-      android:text="Fields marked with * must be provided"
-      android:textSize="15sp" />
+      android:layout_height="match_parent">
 
-    <EditText
-      android:id="@+id/reg_username"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginLeft="30dp"
-      android:layout_marginRight="30dp"
-      android:layout_marginBottom="10dp"
-      android:background="@drawable/stroke_textbox"
-      android:hint="Username"
-      android:padding="15dp"
-      android:textSize="13dp" />
 
-    <EditText
-      android:id="@+id/reg_email"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginLeft="30dp"
-      android:layout_marginRight="30dp"
-      android:layout_marginBottom="10dp"
-      android:background="@drawable/stroke_textbox"
-      android:hint="email"
-      android:inputType="textEmailAddress"
-      android:padding="15dp"
-      android:textSize="13dp" />
+      <LinearLayout
+        android:layout_marginTop="60dp"
+        android:id="@+id/textboxes_div"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
 
-    <EditText
-      android:id="@+id/reg_phone"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginLeft="30dp"
-      android:layout_marginRight="30dp"
-      android:layout_marginBottom="10dp"
-      android:background="@drawable/stroke_textbox"
-      android:hint="Telephone"
-      android:inputType="phone"
-      android:padding="15dp"
-      android:textSize="13dp" />
+        android:orientation="vertical">
 
-    <EditText
-      android:id="@+id/reg_whatsapp_number"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginLeft="30dp"
-      android:layout_marginRight="30dp"
-      android:layout_marginBottom="10dp"
-      android:background="@drawable/stroke_textbox"
-      android:hint="Whatsapp Number"
-      android:inputType="phone"
-      android:padding="15dp"
-      android:textSize="13dp" />
+        <TextView
+          android:textColor="@android:color/black"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="20dp"
+          android:layout_marginTop="10dp"
+          android:layout_marginBottom="10dp"
+          android:padding="10dp"
+          android:text="Fields marked with * must be provided"
+          android:textSize="15sp" />
 
-    <EditText
+        <EditText
+          android:id="@+id/reg_username"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="30dp"
+          android:layout_marginRight="30dp"
+          android:layout_marginBottom="10dp"
+          android:background="@drawable/stroke_textbox"
+          android:hint="Username"
+          android:padding="15dp"
+          android:textSize="13dp" />
 
-      android:id="@+id/reg_password"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginLeft="30dp"
-      android:layout_marginRight="30dp"
-      android:layout_marginBottom="10dp"
-      android:background="@drawable/stroke_textbox"
-      android:hint="Password"
-      android:inputType="textPassword"
-      android:padding="15dp"
-      android:textSize="13dp" />
+        <EditText
+          android:id="@+id/reg_email"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="30dp"
+          android:layout_marginRight="30dp"
+          android:layout_marginBottom="10dp"
+          android:background="@drawable/stroke_textbox"
+          android:hint="email"
+          android:inputType="textEmailAddress"
+          android:padding="15dp"
+          android:textSize="13dp" />
 
-    <EditText
-      android:id="@+id/reg_confirm_password"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginLeft="30dp"
-      android:layout_marginRight="30dp"
-      android:layout_marginBottom="10dp"
-      android:background="@drawable/stroke_textbox"
-      android:hint="Confirm Password"
-      android:inputType="textPassword"
-      android:padding="15dp"
-      android:textSize="13dp" />
-  </LinearLayout>
+        <EditText
+          android:id="@+id/reg_phone"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="30dp"
+          android:layout_marginRight="30dp"
+          android:layout_marginBottom="10dp"
+          android:background="@drawable/stroke_textbox"
+          android:hint="Telephone"
+          android:inputType="phone"
+          android:padding="15dp"
+          android:textSize="13dp" />
 
-  <Button
-    android:id="@+id/reg_finish"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_alignParentBottom="true"
-    android:layout_marginStart="20dp"
-    android:layout_marginLeft="20dp"
-    android:layout_marginTop="20dp"
-    android:layout_marginEnd="20dp"
-    android:layout_marginRight="20dp"
-    android:layout_marginBottom="27dp"
-    android:background="@drawable/login_button_shape"
-    android:padding="15dp"
-    android:text="Finish"
-    android:textAllCaps="false"
-    android:textColor="@android:color/white"
-    android:textSize="15sp" />
+        <EditText
+          android:id="@+id/reg_whatsapp_number"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="30dp"
+          android:layout_marginRight="30dp"
+          android:layout_marginBottom="10dp"
+          android:background="@drawable/stroke_textbox"
+          android:hint="Whatsapp Number"
+          android:inputType="phone"
+          android:padding="15dp"
+          android:textSize="13dp" />
+
+        <EditText
+
+          android:id="@+id/reg_password"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="30dp"
+          android:layout_marginRight="30dp"
+          android:layout_marginBottom="10dp"
+          android:background="@drawable/stroke_textbox"
+          android:hint="Password"
+          android:inputType="textPassword"
+          android:padding="15dp"
+          android:textSize="13dp" />
+
+        <EditText
+          android:id="@+id/reg_confirm_password"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="30dp"
+          android:layout_marginRight="30dp"
+          android:layout_marginBottom="10dp"
+          android:background="@drawable/stroke_textbox"
+          android:hint="Confirm Password"
+          android:inputType="textPassword"
+          android:padding="15dp"
+          android:textSize="13dp" />
+      </LinearLayout>
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textboxes_div"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <Button
+          android:id="@+id/reg_finish"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/textboxes_div"
+          android:layout_marginBottom="10dp"
+          android:background="@drawable/login_button_shape"
+          android:padding="15dp"
+          android:text="FINISH"
+          android:textAllCaps="false"
+          android:textColor="@android:color/white"
+           />
+        <!--<TextView-->
+          <!--android:textAlignment="center"-->
+          <!--android:textColor="@android:color/black"-->
+          <!--android:layout_width="match_parent"-->
+          <!--android:layout_height="wrap_content"-->
+          <!--android:padding="6dp"-->
+          <!--android:text="Or Easily Use Your Gmail Instead"-->
+          <!--android:textSize="15sp" />-->
+
+
+        <!--<Button-->
+          <!--android:id="@+id/reg_google"-->
+          <!--android:layout_width="match_parent"-->
+          <!--android:layout_height="wrap_content"-->
+          <!--android:layout_marginBottom="27dp"-->
+          <!--android:background="@drawable/google_button"-->
+          <!--android:padding="15dp"-->
+          <!--android:text="Use Google"-->
+          <!--android:textAllCaps="false"-->
+          <!--android:textColor="@android:color/white"-->
+          <!--android:textSize="15sp" />-->
+
+      </LinearLayout>
+    </RelativeLayout>
+
+  </ScrollView>
 
 </RelativeLayout>

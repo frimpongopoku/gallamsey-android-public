@@ -3,6 +3,7 @@ package com.pongo.zembe;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,8 +30,8 @@ public class Register extends AppCompatActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    mAuth = FirebaseAuth.getInstance();
     setContentView(R.layout.activity_register);
+    mAuth = FirebaseAuth.getInstance();
     usernameBox = findViewById(R.id.reg_username);
     emailBox = findViewById(R.id.reg_email);
     passBox = findViewById(R.id.reg_password);
@@ -46,6 +47,14 @@ public class Register extends AppCompatActivity {
       }
     });
 
+  }
+
+  @Override
+  protected void onStart() {
+    super.onStart();
+    if(mAuth.getCurrentUser() != null){
+      goToUserHomepage();
+    }
   }
 
   public void goToUserHomepage(){
