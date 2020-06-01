@@ -31,7 +31,12 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent">
 
-
+      <ProgressBar
+        android:visibility="invisible"
+        android:id="@+id/reg_spinner"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
       <LinearLayout
         android:layout_marginTop="60dp"
         android:id="@+id/textboxes_div"
@@ -159,17 +164,18 @@
           <!--android:textSize="15sp" />-->
 
 
-        <!--<Button-->
-          <!--android:id="@+id/reg_google"-->
-          <!--android:layout_width="match_parent"-->
-          <!--android:layout_height="wrap_content"-->
-          <!--android:layout_marginBottom="27dp"-->
-          <!--android:background="@drawable/google_button"-->
-          <!--android:padding="15dp"-->
-          <!--android:text="Use Google"-->
-          <!--android:textAllCaps="false"-->
-          <!--android:textColor="@android:color/white"-->
-          <!--android:textSize="15sp" />-->
+        <Button
+          android:onClick="registerWithGoogle"
+          android:id="@+id/reg_google"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="27dp"
+          android:background="@drawable/google_button"
+          android:padding="15dp"
+          android:text="Use Google"
+          android:textAllCaps="false"
+          android:textColor="@android:color/white"
+          android:textSize="15sp" />
 
       </LinearLayout>
     </RelativeLayout>

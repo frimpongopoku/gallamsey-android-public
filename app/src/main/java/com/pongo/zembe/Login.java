@@ -98,8 +98,9 @@ public class Login extends AppCompatActivity {
         firebaseAuthWithGoogle(account.getIdToken());
 
       } catch (Exception e) {
+        spinner.setVisibility(View.INVISIBLE);
         e.printStackTrace();
-        Toast.makeText(this, "Oops! Failed to signin with google!" + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Oops! Failed to sign in with google!" + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
       }
 
     }
@@ -124,7 +125,7 @@ public class Login extends AppCompatActivity {
           } else {
             // If sign in fails, display a message to the user.
             Log.w(TAG, "signInWithCredential:failure", task.getException());
-            Toast.makeText(Login.this, "Oops, couldnt sign in you in! " + task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(Login.this, "Oops, couldn't sign in you in! " + task.getException().getLocalizedMessage(), Toast.LENGTH_LONG).show();
 
           }
         }
