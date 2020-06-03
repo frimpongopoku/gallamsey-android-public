@@ -7,19 +7,32 @@ import java.sql.Timestamp;
  */
 public abstract class User {
 
-  private String preferredName,uniqueUserName,email, DOB, phoneNumber, whatsappNumber, uniqueID;
+  private String preferredName, uniqueUserName, email, DOB, phoneNumber, whatsappNumber, uniqueID, geoLocation;
   private Timestamp ts = new Timestamp(System.currentTimeMillis());
 
-  public User() {} //no-arg constructor because of Firebase
+  public User() {
+  } //no-arg constructor because of Firebase
 
-  public User(String preferredName, String DOB,String email, String phoneNumber, String whatsappNumber, String uniqueID) {
+  public User(String preferredName, String DOB, String email, String phoneNumber, String whatsappNumber, String uniqueID, String geoLocation) {
     this.preferredName = preferredName;
     this.phoneNumber = phoneNumber;
     this.whatsappNumber = whatsappNumber;
     this.uniqueID = uniqueID;
     this.DOB = DOB;
-    this.email   = email;
-    this.uniqueUserName =ts.getTime() +"-"+ email.split("@")[0];
+    this.email = email;
+    this.uniqueUserName = ts.getTime() + "-" + email.split("@")[0];
+    this.geoLocation = geoLocation;
+  }
+
+  public User(String preferredName, String DOB, String email, String phoneNumber, String whatsappNumber, String uniqueID) {
+    this.preferredName = preferredName;
+    this.phoneNumber = phoneNumber;
+    this.whatsappNumber = whatsappNumber;
+    this.uniqueID = uniqueID;
+    this.DOB = DOB;
+    this.email = email;
+    this.uniqueUserName = ts.getTime() + "-" + email.split("@")[0];
+    this.geoLocation = geoLocation;
   }
 
   public String getPreferredName() {
@@ -60,6 +73,14 @@ public abstract class User {
 
   public String getUniqueID() {
     return uniqueID;
+  }
+
+  public String getGeoLocation() {
+    return geoLocation;
+  }
+
+  public void setGeoLocation(String geoLocation) {
+    this.geoLocation = geoLocation;
   }
 
   public void setUniqueID(String uniqueID) {

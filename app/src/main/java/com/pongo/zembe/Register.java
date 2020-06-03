@@ -135,7 +135,6 @@ public class Register extends AppCompatActivity {
             // If sign in fails, display a message to the user.
             Log.w(TAG, "signUpWithCredential:failure", task.getException());
             Toast.makeText(Register.this, "Oops, couldn't sign you up with google! " + task.getException().getLocalizedMessage(), Toast.LENGTH_LONG).show();
-
           }
         }
       });
@@ -152,19 +151,18 @@ public class Register extends AppCompatActivity {
       infoProvided = true;
     }
     //whether all these info have been provided or not, still create the user class and
-    //register them, dont force anyone, they will continue later
+    //register them, don't force anyone, they will continue later
     //--------------------------------------------------------------------------------
-    //Every user starts as a ground user: upgrade later
+    //Every user starts as a ground user -- upgrade later
     //-------------------------------------------------
     GroundUser newUser = new GroundUser(preferredName, DOB, email, phone, whatsappPhone, user.getUid(), Konstants.GROUND_USER);
-
-    Toast.makeText(this, newUser.getUniqueUserName(), Toast.LENGTH_SHORT).show();
     db.collection(Konstants.USER_COLLECTION)
       .document()
       .set(newUser)
       .addOnSuccessListener(new OnSuccessListener<Void>() {
         @Override
         public void onSuccess(Void aVoid) {
+          cleanUp();
           if (!infoProvided) {
             goToProfileCompletion();
           } else {
@@ -181,10 +179,18 @@ public class Register extends AppCompatActivity {
     if (!infoProvided) {
       Toast.makeText(this, "You are good to go. You can provide all missing data later on.", Toast.LENGTH_LONG).show();
     }
-
-
   }
 
+
+  public void cleanUp(){
+    emailBox.setText("");
+    usernameBox.setText("");
+    phoneBox.setText("");
+    passBox.setText("");
+    confirmPassBox.setText("");
+    whatsappBox.setText("");
+    dobBox.setText("");
+  }
   private void doRegistration() {
     Boolean emailGood = false, passGood = false, phoneGood = false;
     email = emailBox.getText().toString().trim();
@@ -192,11 +198,13 @@ public class Register extends AppCompatActivity {
     passwordConfirmation = confirmPassBox.getText().toString().trim();
     phone = phoneBox.getText().toString().trim();
     dob = dobBox.getText().toString().trim();
+
     //validate date of birth (DOB)
     //-----------------------------
-    if(!dob.isEmpty() && dob.split("-").length !=3){
+    if (!dob.isEmpty() && dob.split("-").length != 3) {
       dobBox.setError("Invalid date. Dates should be in this format (dd-mm-yy) Eg. 22-03-98 ");
       dobBox.requestFocus();
+      return;
     }
     //validate email 
     //--------------
@@ -239,6 +247,7 @@ public class Register extends AppCompatActivity {
     }
 
     if (emailGood && passGood && phoneGood) {
+      spinner.setVisibility(View.VISIBLE);
       mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
         @Override
         public void onComplete(@NonNull Task<AuthResult> task) {
@@ -247,12 +256,16 @@ public class Register extends AppCompatActivity {
             FirebaseUser user = mAuth.getCurrentUser();
             saveOtherProfileInfo(user);
           } else {
-            Toast.makeText(Register.this, "Oops, something happened! We are working on it!", Toast.LENGTH_SHORT).show();
+            spinner.setVisibility(View.INVISIBLE);
+            Log.w(TAG, task.getException().getStackTrace().toString());
+            Toast.makeText(Register.this, "Oops, something happened! " + task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
           }
         }
       }).addOnFailureListener(new OnFailureListener() {
         @Override
         public void onFailure(@NonNull Exception e) {
+          spinner.setVisibility(View.INVISIBLE);
+          Log.w(TAG, "withEmailAndPasswordException:" + e.getStackTrace().toString());
           Toast.makeText(Register.this, "Oops! " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
       });

@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     try {
       mAuth.signOut();
     } catch (Exception e) {
-      Toast.makeText(this, "You are out of this shithole. Congrats! " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+      Toast.makeText(this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
     }
   }
   public void goToLogin(View v){
