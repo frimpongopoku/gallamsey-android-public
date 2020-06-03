@@ -34,7 +34,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class Register extends AppCompatActivity {
 
-  String username, email, password, passwordConfirmation, whatsappNumber, phone;
+  String username, email, password, passwordConfirmation, whatsappNumber, phone, dob;
   EditText usernameBox, emailBox, passBox, confirmPassBox, whatsappBox, phoneBox, dobBox;
   private GoogleSignInClient mGoogleSignInClient;
   private FirebaseAuth mAuth;
@@ -170,7 +170,6 @@ public class Register extends AppCompatActivity {
           } else {
             goToUserHomepage();
           }
-
         }
       }).addOnFailureListener(new OnFailureListener() {
       @Override
@@ -192,6 +191,13 @@ public class Register extends AppCompatActivity {
     password = passBox.getText().toString().trim();
     passwordConfirmation = confirmPassBox.getText().toString().trim();
     phone = phoneBox.getText().toString().trim();
+    dob = dobBox.getText().toString().trim();
+    //validate date of birth (DOB)
+    //-----------------------------
+    if(!dob.isEmpty() && dob.split("-").length !=3){
+      dobBox.setError("Invalid date. Dates should be in this format (dd-mm-yy) Eg. 22-03-98 ");
+      dobBox.requestFocus();
+    }
     //validate email 
     //--------------
     if (email.isEmpty()) {

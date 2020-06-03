@@ -53,7 +53,7 @@
           android:layout_marginTop="10dp"
           android:layout_marginBottom="10dp"
           android:padding="10dp"
-          android:text="Fields marked with * must be provided"
+          android:text="Only fields marked with * are compulsory"
           android:textSize="15sp" />
 
         <EditText
@@ -76,7 +76,7 @@
           android:layout_marginRight="30dp"
           android:layout_marginBottom="10dp"
           android:background="@drawable/stroke_textbox"
-          android:hint="email"
+          android:hint="email *"
           android:inputType="textEmailAddress"
           android:padding="15dp"
           android:textSize="13dp" />
@@ -88,7 +88,7 @@
           android:layout_marginRight="30dp"
           android:layout_marginBottom="10dp"
           android:background="@drawable/stroke_textbox"
-          android:hint="Date Of Birth"
+          android:hint="Date Of Birth Eg. 22-03-98"
           android:inputType="date"
           android:padding="15dp"
           android:textSize="13dp" />
@@ -101,7 +101,7 @@
           android:layout_marginRight="30dp"
           android:layout_marginBottom="10dp"
           android:background="@drawable/stroke_textbox"
-          android:hint="Telephone"
+          android:hint="Telephone *"
           android:inputType="phone"
           android:padding="15dp"
           android:textSize="13dp" />
@@ -128,7 +128,7 @@
           android:layout_marginRight="30dp"
           android:layout_marginBottom="10dp"
           android:background="@drawable/stroke_textbox"
-          android:hint="Password"
+          android:hint="Password *"
           android:inputType="textPassword"
           android:padding="15dp"
           android:textSize="13dp" />
@@ -141,7 +141,7 @@
           android:layout_marginRight="30dp"
           android:layout_marginBottom="10dp"
           android:background="@drawable/stroke_textbox"
-          android:hint="Confirm Password"
+          android:hint="Confirm Password *"
           android:inputType="textPassword"
           android:padding="15dp"
           android:textSize="13dp" />
