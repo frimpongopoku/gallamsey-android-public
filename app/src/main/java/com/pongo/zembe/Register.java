@@ -22,6 +22,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthCredential;
@@ -29,15 +30,18 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class Register extends AppCompatActivity {
 
   String username, email, password, passwordConfirmation, whatsappNumber, phone;
-  EditText usernameBox, emailBox, passBox, confirmPassBox, whatsappBox, phoneBox;
+  EditText usernameBox, emailBox, passBox, confirmPassBox, whatsappBox, phoneBox, dobBox;
   private GoogleSignInClient mGoogleSignInClient;
   private FirebaseAuth mAuth;
   ProgressBar spinner;
   private static String TAG = "REGISTRATION-AREA::->";
+  FirebaseFirestore db = FirebaseFirestore.getInstance();
+  Boolean infoProvided;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -51,11 +55,12 @@ public class Register extends AppCompatActivity {
     whatsappBox = findViewById(R.id.reg_whatsapp_number);
     phoneBox = findViewById(R.id.reg_phone);
     spinner = findViewById(R.id.reg_spinner);
+    dobBox = findViewById(R.id.reg_dob);
     Button registerBtn = findViewById(R.id.reg_finish);
     registerBtn.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        doRegistration(usernameBox, emailBox, passBox, confirmPassBox, whatsappBox, phoneBox);
+        doRegistration();
       }
     });
     setGoogleDialogUp();
@@ -64,10 +69,11 @@ public class Register extends AppCompatActivity {
   @Override
   protected void onStart() {
     super.onStart();
-    if(mAuth.getCurrentUser() != null){
+    if (mAuth.getCurrentUser() != null) {
       goToUserHomepage();
     }
   }
+
   private void setGoogleDialogUp() {
     GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
       .requestIdToken(getString(R.string.default_web_client_id))
@@ -76,22 +82,25 @@ public class Register extends AppCompatActivity {
     //attach google sign in options to Google Dialog
     mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
   }
+
   public void registerWithGoogle(View v) {
     spinner.setVisibility(View.VISIBLE);
     Intent withGoogle = mGoogleSignInClient.getSignInIntent();
     startActivityForResult(withGoogle, Konstants.GOOGLE_SIGN_UP_CODE);
   }
 
-  public void goToProfileCompletion(){
+  public void goToProfileCompletion() {
     Intent completeProfilePage = new Intent(this, ProfileCompletionPage.class);
     finish();
     startActivity(completeProfilePage);
   }
-  public void goToUserHomepage(){
+
+  public void goToUserHomepage() {
     Intent homepage = new Intent(this, Home.class);
     finish();
     startActivity(homepage);
   }
+
   @Override
   protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
@@ -105,11 +114,12 @@ public class Register extends AppCompatActivity {
       } catch (Exception e) {
         spinner.setVisibility(View.INVISIBLE);
         e.printStackTrace();
-        Toast.makeText(this, "Oops! Failed to sign up with google!" + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Oops! Failed to sign up with google! " + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
       }
 
     }
   }
+
   private void firebaseAuthWithGoogle(String token) {
     AuthCredential credential = GoogleAuthProvider.getCredential(token, null);
     mAuth.signInWithCredential(credential)
@@ -120,9 +130,7 @@ public class Register extends AppCompatActivity {
           if (task.isSuccessful()) {
             // Sign in success, update UI with the signed-in user's information
             FirebaseUser user = mAuth.getCurrentUser();
-            Toast.makeText(Register.this, "Registration was successful", Toast.LENGTH_SHORT).show();
-            goToProfileCompletion();
-
+            saveOtherProfileInfo(user);
           } else {
             // If sign in fails, display a message to the user.
             Log.w(TAG, "signUpWithCredential:failure", task.getException());
@@ -133,7 +141,52 @@ public class Register extends AppCompatActivity {
       });
   }
 
-  private void doRegistration(EditText usernameBox, EditText emailBox, EditText passBox, EditText confirmPassBox, EditText whatsappBox, EditText phoneBox) {
+  private void saveOtherProfileInfo(FirebaseUser user) {
+    String preferredName = usernameBox.getText().toString();
+    String phone = phoneBox.getText().toString();
+    String whatsappPhone = whatsappBox.getText().toString();
+    String email = emailBox.getText().toString();
+    String DOB = dobBox.getText().toString();
+    infoProvided = false;
+    if (!preferredName.isEmpty() && !phone.isEmpty() && !DOB.isEmpty() && !whatsappPhone.isEmpty() && !email.isEmpty()) {
+      infoProvided = true;
+    }
+    //whether all these info have been provided or not, still create the user class and
+    //register them, dont force anyone, they will continue later
+    //--------------------------------------------------------------------------------
+    //Every user starts as a ground user: upgrade later
+    //-------------------------------------------------
+    GroundUser newUser = new GroundUser(preferredName, DOB, email, phone, whatsappPhone, user.getUid(), Konstants.GROUND_USER);
+
+    Toast.makeText(this, newUser.getUniqueUserName(), Toast.LENGTH_SHORT).show();
+    db.collection(Konstants.USER_COLLECTION)
+      .document()
+      .set(newUser)
+      .addOnSuccessListener(new OnSuccessListener<Void>() {
+        @Override
+        public void onSuccess(Void aVoid) {
+          if (!infoProvided) {
+            goToProfileCompletion();
+          } else {
+            goToUserHomepage();
+          }
+
+        }
+      }).addOnFailureListener(new OnFailureListener() {
+      @Override
+      public void onFailure(@NonNull Exception e) {
+        Log.d(TAG, "DatabaseError: " + e.getStackTrace());
+        Toast.makeText(Register.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+      }
+    });
+    if (!infoProvided) {
+      Toast.makeText(this, "You are good to go. You can provide all missing data later on.", Toast.LENGTH_LONG).show();
+    }
+
+
+  }
+
+  private void doRegistration() {
     Boolean emailGood = false, passGood = false, phoneGood = false;
     email = emailBox.getText().toString().trim();
     password = passBox.getText().toString().trim();
@@ -186,8 +239,7 @@ public class Register extends AppCompatActivity {
           if (task.isSuccessful()) {
             Toast.makeText(Register.this, "Successfully Created Your Account", Toast.LENGTH_SHORT).show();
             FirebaseUser user = mAuth.getCurrentUser();
-            Log.d("--->Here::: ", user.toString());
-            goToUserHomepage();
+            saveOtherProfileInfo(user);
           } else {
             Toast.makeText(Register.this, "Oops, something happened! We are working on it!", Toast.LENGTH_SHORT).show();
           }
@@ -195,7 +247,7 @@ public class Register extends AppCompatActivity {
       }).addOnFailureListener(new OnFailureListener() {
         @Override
         public void onFailure(@NonNull Exception e) {
-          Toast.makeText(Register.this, "Oops! "+e.getMessage(), Toast.LENGTH_SHORT).show();
+          Toast.makeText(Register.this, "Oops! " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
       });
 
