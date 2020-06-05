@@ -1,16 +1,170 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/coordinator_layout"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   tools:context=".ProfileCompletionPage">
 
-  <Button
-    android:layout_centerInParent="true"
-    android:onClick="goToMain"
-    android:text="Go to main"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content" />
+  <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-</RelativeLayout>
+    <ProgressBar
+      android:visibility="invisible"
+      android:id="@+id/prof_spinner"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerInParent="true" />
+
+    <View
+      android:id="@+id/titlebar"
+      android:layout_width="match_parent"
+      android:layout_height="50dp"
+      android:layout_alignParentTop="true"
+      android:alpha="1"
+      android:background="@drawable/register_title_bar"></View>
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="5dp"
+      android:padding="10dp"
+      android:text="Complete Your Profile"
+      android:textAlignment="center"
+      android:textColor="@android:color/white"
+      android:textSize="14sp" />
+    <!--<Button-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_centerInParent="true"-->
+    <!--android:onClick="goToMain"-->
+    <!--android:text="Go to main" />-->
+
+    <LinearLayout
+
+    android:orientation="vertical"
+    android:id="@+id/prof_mother_div"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+    android:id="@+id/comp_profile_div1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="80dp"
+    android:orientation="vertical">
+
+    <TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="25dp"
+    android:padding="10dp"
+    android:text="Please fill all boxes with appropriate information"
+    android:textColor="@android:color/black"
+    android:textSize="13sp" />
+
+    <EditText
+    android:id="@+id/prof_username"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="30dp"
+    android:layout_marginRight="30dp"
+    android:layout_marginBottom="10dp"
+    android:background="@drawable/stroke_textbox"
+    android:hint="What is your preferred name?"
+    android:padding="15dp"
+    android:textSize="13dp" />
+
+    <TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="25dp"
+    android:padding="6dp"
+    android:text="Date format Eg. 22-03-1998\nFun fact, you must be 13 or older"
+    android:textColor="@color/star_color"
+    android:textSize="13sp" />
+
+    <EditText
+    android:id="@+id/prof_dob"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="30dp"
+    android:layout_marginRight="30dp"
+    android:layout_marginBottom="10dp"
+    android:background="@drawable/stroke_textbox"
+    android:hint="Date of birth Eg. 22-03-1998"
+    android:inputType="date"
+    android:padding="15dp"
+    android:textSize="13dp" />
+
+
+    <EditText
+    android:id="@+id/prof_whatsapp_number"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="30dp"
+    android:layout_marginRight="30dp"
+    android:layout_marginBottom="10dp"
+    android:background="@drawable/stroke_textbox"
+    android:hint="Whatsapp Number"
+    android:inputType="phone"
+    android:padding="15dp"
+    android:textSize="13dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+    android:id="@+id/btns_div"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/comp_profile_div1"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <Button
+    android:id="@+id/reg_finish"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/textboxes_div"
+    android:layout_marginBottom="10dp"
+    android:background="@drawable/login_button_shape"
+    android:onClick="saveUserInformation"
+    android:padding="15dp"
+    android:text="Save"
+    android:textAllCaps="false"
+    android:textColor="@android:color/white" />
+
+    <Button
+    android:id="@+id/reg_google"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="27dp"
+    android:background="@drawable/google_button"
+
+    android:padding="15dp"
+    android:text="Skip For Now"
+    android:textAllCaps="false"
+    android:textColor="@android:color/white"
+    android:textSize="15sp" />
+
+
+    <!--<TextView-->
+    <!--android:id="@+id/message"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginLeft="25dp"-->
+    <!--android:padding="10dp"-->
+    <!--android:text="Please fill all boxes with appropriate information"-->
+    <!--android:textColor="@android:color/black"-->
+    <!--android:textSize="13sp" />-->
+
+
+    </LinearLayout>
+    </LinearLayout>
+
+
+  </RelativeLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

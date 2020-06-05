@@ -15,5 +15,6 @@
   <color name="stroke_button_color">#2699FB</color>
   <color name="allowance_color">#4497A2</color>
   <color name="cost_color">#A24477</color>
+  <color name="btn_success">#549A51</color>
 
 </resources>

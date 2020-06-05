@@ -9,6 +9,9 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+
 public class MainActivity extends AppCompatActivity {
   private FirebaseAuth mAuth;
   @Override
@@ -18,6 +21,10 @@ public class MainActivity extends AppCompatActivity {
     mAuth = FirebaseAuth.getInstance();
   }
 
+  public void testDate(View v){
+    String errs = RandomHelpersClass.mergeTextsFromArray((ArrayList<String>) RandomHelpersClass.validateDOB("22-03-02").get("errors"));
+    Toast.makeText(this, errs, Toast.LENGTH_SHORT).show();
+  }
   public void logout(View v){
     try {
       mAuth.signOut();
@@ -28,6 +35,10 @@ public class MainActivity extends AppCompatActivity {
   public void goToLogin(View v){
     Intent login = new Intent (this,Login.class);
     startActivity(login);
+  }
+ public void compProfile(View v){
+    Intent prof = new Intent (this,ProfileCompletionPage.class);
+    startActivity(prof);
   }
 
   public void goToRegister(View v) {

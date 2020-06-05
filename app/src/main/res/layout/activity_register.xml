@@ -8,10 +8,12 @@
 
 
   <View
+    android:alpha="1"
     android:id="@+id/titlebar"
     android:layout_width="match_parent"
     android:layout_height="50dp"
     android:background="@drawable/register_title_bar"></View>
+
   <TextView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -24,6 +26,7 @@
 
 
   <ScrollView
+    android:layout_marginTop="60dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -32,21 +35,19 @@
       android:layout_height="match_parent">
 
       <ProgressBar
-        android:visibility="invisible"
         android:id="@+id/reg_spinner"
-        android:layout_centerInParent="true"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="invisible" />
+
       <LinearLayout
-        android:layout_marginTop="60dp"
         android:id="@+id/textboxes_div"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:orientation="vertical">
 
         <TextView
-          android:textColor="@android:color/black"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_marginLeft="20dp"
@@ -54,19 +55,9 @@
           android:layout_marginBottom="10dp"
           android:padding="10dp"
           android:text="Only fields marked with * are compulsory"
+          android:textColor="@android:color/black"
           android:textSize="15sp" />
 
-        <EditText
-          android:id="@+id/reg_username"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginLeft="30dp"
-          android:layout_marginRight="30dp"
-          android:layout_marginBottom="10dp"
-          android:background="@drawable/stroke_textbox"
-          android:hint="Username"
-          android:padding="15dp"
-          android:textSize="13dp" />
 
         <EditText
           android:id="@+id/reg_email"
@@ -80,18 +71,6 @@
           android:inputType="textEmailAddress"
           android:padding="15dp"
           android:textSize="13dp" />
- <EditText
-          android:id="@+id/reg_dob"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginLeft="30dp"
-          android:layout_marginRight="30dp"
-          android:layout_marginBottom="10dp"
-          android:background="@drawable/stroke_textbox"
-          android:hint="Date Of Birth Eg. 22-03-98"
-          android:inputType="date"
-          android:padding="15dp"
-          android:textSize="13dp" />
 
         <EditText
           android:id="@+id/reg_phone"
@@ -102,19 +81,6 @@
           android:layout_marginBottom="10dp"
           android:background="@drawable/stroke_textbox"
           android:hint="Telephone *"
-          android:inputType="phone"
-          android:padding="15dp"
-          android:textSize="13dp" />
-
-        <EditText
-          android:id="@+id/reg_whatsapp_number"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginLeft="30dp"
-          android:layout_marginRight="30dp"
-          android:layout_marginBottom="10dp"
-          android:background="@drawable/stroke_textbox"
-          android:hint="Whatsapp Number"
           android:inputType="phone"
           android:padding="15dp"
           android:textSize="13dp" />
@@ -145,6 +111,73 @@
           android:inputType="textPassword"
           android:padding="15dp"
           android:textSize="13dp" />
+
+        <!--<View-->
+          <!--android:layout_width="match_parent"-->
+          <!--android:layout_height="1dp"-->
+          <!--android:layout_marginLeft="40dp"-->
+          <!--android:layout_marginTop="10dp"-->
+          <!--android:layout_marginRight="40dp"-->
+          <!--android:background="@color/text_default" />-->
+
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="25dp"
+          android:padding="10dp"
+          android:text="You can always fill these in now, or later"
+          android:textColor="@android:color/black"
+          android:textSize="13sp" />
+
+        <EditText
+          android:id="@+id/reg_username"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="30dp"
+          android:layout_marginRight="30dp"
+          android:layout_marginBottom="10dp"
+          android:background="@drawable/stroke_textbox"
+          android:hint="What is your name?"
+          android:padding="15dp"
+          android:textSize="13dp" />
+
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="25dp"
+          android:padding="6dp"
+          android:text="Date format Eg. 22-03-1998\nFun fact, you must be 13 or older"
+          android:textColor="@color/star_color"
+          android:textSize="13sp" />
+
+        <EditText
+          android:id="@+id/reg_dob"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="30dp"
+          android:layout_marginRight="30dp"
+          android:layout_marginBottom="10dp"
+          android:background="@drawable/stroke_textbox"
+          android:hint="Date of birth Eg. 22-03-1998"
+          android:inputType="date"
+          android:padding="15dp"
+          android:textSize="13dp" />
+
+
+        <EditText
+          android:id="@+id/reg_whatsapp_number"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="30dp"
+          android:layout_marginRight="30dp"
+          android:layout_marginBottom="10dp"
+          android:background="@drawable/stroke_textbox"
+          android:hint="Whatsapp Number"
+          android:inputType="phone"
+          android:padding="15dp"
+          android:textSize="13dp" />
+
+
       </LinearLayout>
 
       <LinearLayout
@@ -164,25 +197,24 @@
           android:padding="15dp"
           android:text="FINISH"
           android:textAllCaps="false"
-          android:textColor="@android:color/white"
-           />
+          android:textColor="@android:color/white" />
         <!--<TextView-->
-          <!--android:textAlignment="center"-->
-          <!--android:textColor="@android:color/black"-->
-          <!--android:layout_width="match_parent"-->
-          <!--android:layout_height="wrap_content"-->
-          <!--android:padding="6dp"-->
-          <!--android:text="Or Easily Use Your Gmail Instead"-->
-          <!--android:textSize="15sp" />-->
+        <!--android:textAlignment="center"-->
+        <!--android:textColor="@android:color/black"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:padding="6dp"-->
+        <!--android:text="Or Easily Use Your Gmail Instead"-->
+        <!--android:textSize="15sp" />-->
 
 
         <Button
-          android:onClick="registerWithGoogle"
           android:id="@+id/reg_google"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_marginBottom="27dp"
           android:background="@drawable/google_button"
+          android:onClick="registerWithGoogle"
           android:padding="15dp"
           android:text="Use Google"
           android:textAllCaps="false"

@@ -32,4 +32,17 @@
     android:layout_height="wrap_content"
     android:onClick="logout"
     android:text="Logout" />
+  <Button
+    android:id="@+id/prof"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:onClick="compProfile"
+    android:text="Complete Profile" />
+
+  <Button
+    android:id="@+id/test_button"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:onClick="testDate"
+    android:text="Test Button" />
 </LinearLayout>

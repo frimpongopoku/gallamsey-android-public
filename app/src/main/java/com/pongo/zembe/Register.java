@@ -32,6 +32,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
+
 public class Register extends AppCompatActivity {
 
   String username, email, password, passwordConfirmation, whatsappNumber, phone, dob;
@@ -73,6 +75,7 @@ public class Register extends AppCompatActivity {
       goToUserHomepage();
     }
   }
+
 
   private void setGoogleDialogUp() {
     GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -130,7 +133,7 @@ public class Register extends AppCompatActivity {
           if (task.isSuccessful()) {
             // Sign in success, update UI with the signed-in user's information
             FirebaseUser user = mAuth.getCurrentUser();
-            saveOtherProfileInfo(user);
+            saveOtherProfileInfo(user, Konstants.GOOGLE_AUTH_TYPE);
           } else {
             // If sign in fails, display a message to the user.
             Log.w(TAG, "signUpWithCredential:failure", task.getException());
@@ -140,11 +143,12 @@ public class Register extends AppCompatActivity {
       });
   }
 
-  private void saveOtherProfileInfo(FirebaseUser user) {
+  private void saveOtherProfileInfo(FirebaseUser user, int authType) {
     String preferredName = usernameBox.getText().toString();
-    String phone = phoneBox.getText().toString();
     String whatsappPhone = whatsappBox.getText().toString();
-    String email = emailBox.getText().toString();
+    //if the authentication type is by google, dont get email phone from textbox, get it from googleUserReturned
+    String phone = authType == Konstants.GOOGLE_AUTH_TYPE ? String.valueOf(user.getPhoneNumber()) : phoneBox.getText().toString();
+    String email = authType == Konstants.GOOGLE_AUTH_TYPE ? user.getEmail() : emailBox.getText().toString();
     String DOB = dobBox.getText().toString();
     infoProvided = false;
     if (!preferredName.isEmpty() && !phone.isEmpty() && !DOB.isEmpty() && !whatsappPhone.isEmpty() && !email.isEmpty()) {
@@ -182,7 +186,7 @@ public class Register extends AppCompatActivity {
   }
 
 
-  public void cleanUp(){
+  public void cleanUp() {
     emailBox.setText("");
     usernameBox.setText("");
     phoneBox.setText("");
@@ -191,6 +195,7 @@ public class Register extends AppCompatActivity {
     whatsappBox.setText("");
     dobBox.setText("");
   }
+
   private void doRegistration() {
     Boolean emailGood = false, passGood = false, phoneGood = false;
     email = emailBox.getText().toString().trim();
@@ -199,10 +204,15 @@ public class Register extends AppCompatActivity {
     phone = phoneBox.getText().toString().trim();
     dob = dobBox.getText().toString().trim();
 
-    //validate date of birth (DOB)
+    //validate date of birth (DOB) only if the user typed something
     //-----------------------------
-    if (!dob.isEmpty() && dob.split("-").length != 3) {
-      dobBox.setError("Invalid date. Dates should be in this format (dd-mm-yy) Eg. 22-03-98 ");
+    if (!dob.isEmpty() && RandomHelpersClass.validateDOB(dob).get("status").equals(false)) {
+      ArrayList<String> dobErrors = new ArrayList<>();
+      Object obj = RandomHelpersClass.validateDOB(dob).get("errors");
+      if (obj instanceof ArrayList) {
+        dobErrors = (ArrayList<String>) obj;
+      }
+      dobBox.setError(RandomHelpersClass.mergeTextsFromArray(dobErrors));
       dobBox.requestFocus();
       return;
     }
@@ -254,7 +264,7 @@ public class Register extends AppCompatActivity {
           if (task.isSuccessful()) {
             Toast.makeText(Register.this, "Successfully Created Your Account", Toast.LENGTH_SHORT).show();
             FirebaseUser user = mAuth.getCurrentUser();
-            saveOtherProfileInfo(user);
+            saveOtherProfileInfo(user, Konstants.EMAIL_AND_PASSWORD_AUTH_TYPE);
           } else {
             spinner.setVisibility(View.INVISIBLE);
             Log.w(TAG, task.getException().getStackTrace().toString());

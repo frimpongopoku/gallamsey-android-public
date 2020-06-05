@@ -4,6 +4,9 @@ import android.content.Intent;
 
 public class Konstants {
 
+  public static final int GOOGLE_AUTH_TYPE = 555;
+  public static final int EMAIL_AND_PASSWORD_AUTH_TYPE  =554;
+
   // NORMAL REQUEST CODES ALL OVER THE IN ALL CORNERS OF THE APPLICATION
   //--------------------------------------------------------------------
   public static final int GOOGLE_SIGN_IN_CODE = 8822;
