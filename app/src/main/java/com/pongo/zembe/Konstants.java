@@ -4,6 +4,9 @@ import android.content.Intent;
 
 public class Konstants {
 
+  public static final double sLat = 5.636029;
+  public static final double sLong = -0.2915028;
+
   public static final int PERMISSION_REQUEST_CODE = 003;
   public static final int LOCATIONS_REQUEST_CODE = 003;
   public static final int GOOGLE_AUTH_TYPE = 555;
