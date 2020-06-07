@@ -1,19 +1,20 @@
 package com.pongo.zembe;
 
 import java.sql.Timestamp;
+import java.util.Arrays;
 
 /**
  * Abstract user class that all kinds of users in the application will extend from
  */
 public abstract class User {
 
-  private String preferredName, uniqueUserName, email, DOB, phoneNumber, whatsappNumber, uniqueID, geoLocation;
+  private String preferredName, uniqueUserName, email, DOB, phoneNumber, whatsappNumber, uniqueID, geoLocation[];
   private Timestamp ts = new Timestamp(System.currentTimeMillis());
 
   public User() {
   } //no-arg constructor because of Firebase
 
-  public User(String preferredName, String DOB, String email, String phoneNumber, String whatsappNumber, String uniqueID, String geoLocation) {
+  public User(String preferredName, String DOB, String email, String phoneNumber, String whatsappNumber, String uniqueID, String geoLocation[]) {
     this.preferredName = preferredName;
     this.phoneNumber = phoneNumber;
     this.whatsappNumber = whatsappNumber;
@@ -75,15 +76,30 @@ public abstract class User {
     return uniqueID;
   }
 
-  public String getGeoLocation() {
+  public String[] getGeoLocation() {
     return geoLocation;
   }
 
-  public void setGeoLocation(String geoLocation) {
+  public void setGeoLocation(String geoLocation[]) {
     this.geoLocation = geoLocation;
   }
 
   public void setUniqueID(String uniqueID) {
     this.uniqueID = uniqueID;
+  }
+
+  @Override
+  public String toString() {
+    return "User{" +
+      "preferredName='" + preferredName + '\'' +
+      ", uniqueUserName='" + uniqueUserName + '\'' +
+      ", email='" + email + '\'' +
+      ", DOB='" + DOB + '\'' +
+      ", phoneNumber='" + phoneNumber + '\'' +
+      ", whatsappNumber='" + whatsappNumber + '\'' +
+      ", uniqueID='" + uniqueID + '\'' +
+      ", geoLocation=" + Arrays.toString(geoLocation) +
+      ", ts=" + ts +
+      '}';
   }
 }

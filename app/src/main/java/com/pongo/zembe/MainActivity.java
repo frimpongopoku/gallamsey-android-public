@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
   }
 
   public void goToLocationSetup(View v) {
-    Intent login = new Intent(this, Location.class);
+    Intent login = new Intent(this, SetLocationsPage.class);
     startActivity(login);
   }
 }

@@ -7,7 +7,7 @@ public class GroundUser extends User {
   public GroundUser() {
   } //no-arg constructor because of Firebase
 
-  public GroundUser(String preferredName, String DOB, String email, String phoneNumber, String whatsappNumber, String uniqueID, String userType, String geoLocation) {
+  public GroundUser(String preferredName, String DOB, String email, String phoneNumber, String whatsappNumber, String uniqueID, String userType, String geoLocation[]) {
     super(preferredName, DOB, email, phoneNumber, whatsappNumber, uniqueID, geoLocation);
     this.userType = userType;
   }

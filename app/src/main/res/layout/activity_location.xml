@@ -4,7 +4,7 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  tools:context=".Location">
+  tools:context=".SetLocationsPage">
 
   <View
     android:id="@+id/titlebar"
@@ -62,6 +62,7 @@
       android:background="@drawable/round_start_button"
       android:elevation="15dp"
       android:stateListAnimator="@null"
+      android:onClick="getUserLocation"
       android:text="Start"
       android:textColor="@android:color/darker_gray"
       android:textSize="30sp" />

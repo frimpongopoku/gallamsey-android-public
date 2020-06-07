@@ -4,6 +4,8 @@ import android.content.Intent;
 
 public class Konstants {
 
+  public static final int PERMISSION_REQUEST_CODE = 003;
+  public static final int LOCATIONS_REQUEST_CODE = 003;
   public static final int GOOGLE_AUTH_TYPE = 555;
   public static final int EMAIL_AND_PASSWORD_AUTH_TYPE  =554;
 
