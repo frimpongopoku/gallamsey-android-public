@@ -1,19 +1,26 @@
 package com.pongo.zembe;
 
+import com.google.firebase.firestore.Exclude;
+
+import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Arrays;
 
 /**
  * Abstract user class that all kinds of users in the application will extend from
+ * Implements serializable because we want to be able to move this user obj in between activities
+ * for that to happen, the obj is going to be serialized before sending and unserialized when its being retrieved
+ * hence, cant do without "Serializable"
  */
-public abstract class User {
+public abstract class User implements Serializable {
 
-  private String preferredName, uniqueUserName, email, DOB, phoneNumber, whatsappNumber, uniqueID, geoLocation;
+  private String preferredName, uniqueUserName, email, DOB, phoneNumber, whatsappNumber, uniqueID, geoLocation[],userDocumentID;
   private Timestamp ts = new Timestamp(System.currentTimeMillis());
 
   public User() {
   } //no-arg constructor because of Firebase
 
-  public User(String preferredName, String DOB, String email, String phoneNumber, String whatsappNumber, String uniqueID, String geoLocation) {
+  public User(String preferredName, String DOB, String email, String phoneNumber, String whatsappNumber, String uniqueID, String geoLocation[]) {
     this.preferredName = preferredName;
     this.phoneNumber = phoneNumber;
     this.whatsappNumber = whatsappNumber;
@@ -22,6 +29,17 @@ public abstract class User {
     this.email = email;
     this.uniqueUserName = ts.getTime() + "-" + email.split("@")[0];
     this.geoLocation = geoLocation;
+  }
+
+  @Exclude
+  public String getUserDocumentID() {
+    return userDocumentID;
+  }
+
+
+  @Exclude
+  public void setUserDocumentID(String userDocumentID) {
+    this.userDocumentID = userDocumentID;
   }
 
   public User(String preferredName, String DOB, String email, String phoneNumber, String whatsappNumber, String uniqueID) {
@@ -75,15 +93,30 @@ public abstract class User {
     return uniqueID;
   }
 
-  public String getGeoLocation() {
+  public String[] getGeoLocation() {
     return geoLocation;
   }
 
-  public void setGeoLocation(String geoLocation) {
+  public void setGeoLocation(String geoLocation[]) {
     this.geoLocation = geoLocation;
   }
 
   public void setUniqueID(String uniqueID) {
     this.uniqueID = uniqueID;
+  }
+
+  @Override
+  public String toString() {
+    return "User{" +
+      "preferredName='" + preferredName + '\'' +
+      ", uniqueUserName='" + uniqueUserName + '\'' +
+      ", email='" + email + '\'' +
+      ", DOB='" + DOB + '\'' +
+      ", phoneNumber='" + phoneNumber + '\'' +
+      ", whatsappNumber='" + whatsappNumber + '\'' +
+      ", uniqueID='" + uniqueID + '\'' +
+      ", geoLocation=" + Arrays.toString(geoLocation) +
+      ", ts=" + ts +
+      '}';
   }
 }

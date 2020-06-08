@@ -27,7 +27,7 @@ public class ProfileCompletionDialog extends AppCompatDialogFragment {
       }).setPositiveButton("YES, I Want To", new DialogInterface.OnClickListener() {
       @Override
       public void onClick(DialogInterface dialogInterface, int i) {
-        Intent locationPage = new Intent(getContext(),Location.class);
+        Intent locationPage = new Intent(getContext(),SetLocationsPage.class);
         startActivity(locationPage);
       }
     });

@@ -41,6 +41,7 @@ public class ProfileCompletionPage extends AppCompatActivity {
   QuerySnapshot foundUserDocs;
   LinearLayout elementsDiv;
 
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);

@@ -3,22 +3,22 @@ package com.pongo.zembe;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.ServerTimestamp;
 
-public class GroundUser extends User {
+public class PremiumUser extends User {
 
   private String userType;
   //tells the server to give you a timestamp, so you dont have to be setting it yourself
   private @ServerTimestamp
-  com.google.firebase.Timestamp timestamp;
+  Timestamp timestamp;
 
-  public GroundUser() {
+  public PremiumUser() {
   } //no-arg constructor because of Firebase
 
-  public GroundUser(String preferredName, String DOB, String email, String phoneNumber, String whatsappNumber, String uniqueID, String userType, String geoLocation[]) {
+  public PremiumUser(String preferredName, String DOB, String email, String phoneNumber, String whatsappNumber, String uniqueID, String userType, String geoLocation[]) {
     super(preferredName, DOB, email, phoneNumber, whatsappNumber, uniqueID, geoLocation);
     this.userType = userType;
   }
 
-  public com.google.firebase.Timestamp getTimestamp() {
+  public Timestamp getTimestamp() {
     return timestamp;
   }
 
@@ -26,7 +26,7 @@ public class GroundUser extends User {
     this.timestamp = timestamp;
   }
 
-  public GroundUser(String preferredName, String DOB, String email, String phoneNumber, String whatsappNumber, String uniqueID, String userType) {
+  public PremiumUser(String preferredName, String DOB, String email, String phoneNumber, String whatsappNumber, String uniqueID, String userType) {
     super(preferredName, DOB, email, phoneNumber, whatsappNumber, uniqueID);
     this.userType = userType;
   }

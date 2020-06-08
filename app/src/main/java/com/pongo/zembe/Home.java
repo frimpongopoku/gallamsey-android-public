@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -22,13 +23,25 @@ public class Home extends AppCompatActivity {
   ArrayList<String> profits = new ArrayList<>();
   ArrayList<String> costs = new ArrayList<>();
   ArrayList<String> dates = new ArrayList<>();
+
+  User authenticatedUser;
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_home);
     fillInTheBlankSpaces();
+    //getAuthenticated User
+     if( getIntent().getSerializableExtra("authUser") instanceof GroundUser ){
+       authenticatedUser = (GroundUser) getIntent().getSerializableExtra("authUser");
+       Log.w("I am the user: > "+ ((GroundUser) authenticatedUser).getUserType()+":", authenticatedUser.toString());
+     }
+     else if(getIntent().getSerializableExtra("authUser") instanceof PremiumUser){
+       authenticatedUser = (PremiumUser) getIntent().getSerializableExtra("authUser");
+       Log.w("I am the user: > "+ ((PremiumUser) authenticatedUser).getUserType()+":", authenticatedUser.toString());
+     }
 
-//    Set default home fragment: HomePage
+
+//   ----Set default home fragment: HomePage
     Fragment default_fragment = new HomeFragment(changeToHash());
     getSupportFragmentManager().beginTransaction().replace(R.id.app_frame_layout,default_fragment).commit();
 
@@ -73,8 +86,8 @@ public class Home extends AppCompatActivity {
   };
 
   private void fillInTheBlankSpaces(){
-    desc.add("I am the first");
-    desc.add("I am the second");
+    desc.add("I am the first I am the first I am the first I am the first I am the first I am the first I am the first I am the first");
+    desc.add("I am the second I am the first I am the first I am the first I am the first I am the first ");
     desc.add("I am the third");
     desc.add("I am the fourth");
     desc.add("I am the fifth");
