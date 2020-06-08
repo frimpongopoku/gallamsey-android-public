@@ -86,8 +86,8 @@ public class Home extends AppCompatActivity {
   };
 
   private void fillInTheBlankSpaces(){
-    desc.add("I am the first");
-    desc.add("I am the second");
+    desc.add("I am the first I am the first I am the first I am the first I am the first I am the first I am the first I am the first");
+    desc.add("I am the second I am the first I am the first I am the first I am the first I am the first ");
     desc.add("I am the third");
     desc.add("I am the fourth");
     desc.add("I am the fifth");

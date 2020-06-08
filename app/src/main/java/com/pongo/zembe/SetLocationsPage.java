@@ -132,6 +132,10 @@ public class SetLocationsPage extends AppCompatActivity{
             if(location != null) {
               String[] coords = {String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude())};
               Log.w("hereAreYourCoords::->", location.getLatitude() + " ," + location.getLongitude());
+              spinner.setVisibility(View.GONE);
+              textNotification.setText("Thanks for waiting, we have your location now.");
+              startButton.setVisibility(View.GONE);
+              saveButton.setVisibility(View.VISIBLE);
             }else{
               Log.w("onLocationNull::->", "Your location is null bro!");
             }
