@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -11,6 +12,9 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -25,12 +29,20 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 
-public class SetLocationsPage extends AppCompatActivity implements OnMapReadyCallback {
+public class SetLocationsPage extends AppCompatActivity{
 
   LocationProtocol locationsProtocol;
-  Boolean servicesOK, gpsOK, permissionsOK;
   FusedLocationProviderClient locationProviderClient;
   Location deviceLocation;
+  LocationListener locationListener;
+  LocationManager locationManager;
+  //--Widgets---------------
+  Button saveButton, startButton;
+  ProgressBar spinner;
+  TextView textNotification;
+  //------------------------
+  Boolean servicesOK, gpsOK, permissionsOK;
+  int btnCheck =0;
 
 
   @Override
@@ -38,16 +50,38 @@ public class SetLocationsPage extends AppCompatActivity implements OnMapReadyCal
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_location);
     locationsProtocol = new LocationProtocol(this);
+    spinner = findViewById(R.id.spinner);
+    textNotification = findViewById(R.id.text_notification);
+    saveButton  = findViewById(R.id.save_my_location);
+    startButton = findViewById(R.id.start_button);
+    startLocationListener();
+  }
+
+
+  
+  public void saveUserLocation(View v){
+    //----disable location listener 
+    locationManager.removeUpdates(locationListener);
+    locationManager = null;
+    Toast.makeText(this, "Dude, you are tryna save some shit here!", Toast.LENGTH_SHORT).show();
+  }
+  public void startLocationListener(){
+     locationManager = (LocationManager) getSystemService(this.LOCATION_SERVICE);
+    if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+    }
     locationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-//    SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-//      .findFragmentById(R.id.hidden_map);
-//    mapFragment.getMapAsync(this);
-    LocationListener locationListener = new LocationListener() {
+      locationListener = new LocationListener() {
       @Override
       public void onLocationChanged(Location location) {
         deviceLocation = location;
+        spinner.setVisibility(View.INVISIBLE);
+        if(btnCheck  == 1) {
+          textNotification.setText("Thanks for waiting, we have your location now.");
+          startButton.setVisibility(View.GONE);
+          saveButton.setVisibility(View.VISIBLE);
+        }
       }
-
       @Override
       public void onStatusChanged(String s, int i, Bundle bundle) {
 
@@ -57,23 +91,15 @@ public class SetLocationsPage extends AppCompatActivity implements OnMapReadyCal
       public void onProviderEnabled(String s) {
 
       }
-
       @Override
       public void onProviderDisabled(String s) {
 
       }
     };
-
-    LocationManager locationManager = (LocationManager) getSystemService(this.LOCATION_SERVICE);
-
-    if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-    }
     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, locationListener);
 
-
   }
-
+  
   /**
    * 1. First check for google play services
    * -- if its not fine, show a dialog that tells the user how to get google play services
@@ -82,11 +108,15 @@ public class SetLocationsPage extends AppCompatActivity implements OnMapReadyCal
    * 3. Check if user has location services turned on
    * -- if its not turned on, show the user to their settings, so they can turn it on
    */
+
   public void getUserLocation(View v) {
     getDeviceLocation("Sorry, for some reason we could not calculate your current location");
   }
 
   private void getDeviceLocation(final String errorMsg){
+    spinner.setVisibility(View.VISIBLE);
+    textNotification.setVisibility(View.VISIBLE);
+    btnCheck = 1;
     if (checkSelfPermission(locationsProtocol.FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(locationsProtocol.COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
       //This is never going to happen in real life, because our check is always in "onResume"
       // so it will be solved before the user even gets here
@@ -134,7 +164,7 @@ public class SetLocationsPage extends AppCompatActivity implements OnMapReadyCal
         gpsOK = true;
         if (locationsProtocol.isPermissionGranted()) {
           permissionsOK = true;
-          Toast.makeText(this, "Nice, you have all the requirements to calculate your current location!", Toast.LENGTH_SHORT).show();
+//          Toast.makeText(this, "Nice, you have all the requirements to calculate your current location!", Toast.LENGTH_SHORT).show();
           return true;
         } else {
           locationsProtocol.askForPermissions(this, Konstants.PERMISSION_REQUEST_CODE);
@@ -164,11 +194,11 @@ public class SetLocationsPage extends AppCompatActivity implements OnMapReadyCal
     }
   }
 
-  @Override
-  public void onMapReady(GoogleMap googleMap) {
-    LatLng sydney = new LatLng(Konstants.sLat,Konstants.sLong);
-    googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-    getDeviceLocation(null);
-    Toast.makeText(this, "Google Maps, is all ready and shit!", Toast.LENGTH_SHORT).show();
+
+  public void goHome(View v){
+    Intent home = new Intent(this, Home.class);
+    startActivity(home);
+    finish();
   }
+
 }
