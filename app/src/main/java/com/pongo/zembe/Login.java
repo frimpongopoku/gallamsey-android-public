@@ -22,13 +22,21 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class Login extends AppCompatActivity {
 
@@ -38,6 +46,9 @@ public class Login extends AppCompatActivity {
   private GoogleSignInClient mGoogleSignInClient;
   private static String TAG = "LOGIN-AREA::->";
   ProgressBar spinner;
+  GroundUser authenticatedUser;
+  FirebaseFirestore db = FirebaseFirestore.getInstance();
+  CollectionReference usersCollection;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +60,13 @@ public class Login extends AppCompatActivity {
     emailBox = findViewById(R.id.log_email);
     passwordBox = findViewById(R.id.log_password);
     Button loginButton = findViewById(R.id.login_btn);
+    //------------------------
+    FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+      .setTimestampsInSnapshotsEnabled(true)
+      .build();
+    db.setFirestoreSettings(settings);
+    //------------------------
+    usersCollection = db.collection(Konstants.USER_COLLECTION);
     loginButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -57,6 +75,9 @@ public class Login extends AppCompatActivity {
     });
     //Google sign in step 1
     setGoogleDialogUp();
+
+
+
   }
 
 
@@ -64,7 +85,12 @@ public class Login extends AppCompatActivity {
   protected void onStart() {
     super.onStart();
     if (mAuth.getCurrentUser() != null) {
-      goToUserHomepage();
+      getFullAuthenticatedUserObj(mAuth.getCurrentUser(), new FirebaseUserDocumentCallback() {
+        @Override
+        public void onCallback(User user) {
+          goToUserHomepage(user);
+        }
+      });
     }
   }
 
@@ -120,7 +146,12 @@ public class Login extends AppCompatActivity {
             // Sign in success, update UI with the signed-in user's information
             FirebaseUser user = mAuth.getCurrentUser();
             Toast.makeText(Login.this, "Signed in successfully", Toast.LENGTH_SHORT).show();
-            goToUserHomepage();
+            getFullAuthenticatedUserObj(mAuth.getCurrentUser(), new FirebaseUserDocumentCallback() {
+              @Override
+              public void onCallback(User user) {
+                goToUserHomepage(user);
+              }
+            });
 
           } else {
             // If sign in fails, display a message to the user.
@@ -132,10 +163,51 @@ public class Login extends AppCompatActivity {
       });
   }
 
-  public void goToUserHomepage() {
+
+  private GroundUser getFullAuthenticatedUserObj(FirebaseUser user, final FirebaseUserDocumentCallback firebaseUserDocumentCallback) {
+    usersCollection.whereEqualTo("uniqueID", user.getUid())
+      .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+      @Override
+      public void onSuccess(QuerySnapshot documents) {
+        for (QueryDocumentSnapshot document : documents) {
+          if (document.exists()) {
+            User recoveredUser = null;
+            if(document.get("userType").equals(Konstants.GROUND_USER)){
+              recoveredUser = document.toObject(GroundUser.class);
+              recoveredUser.setUserDocumentID(document.getReference().toString());
+            }
+            else if(document.get("userType").equals(Konstants.PREMIUM_USER)){
+              //put premium user stuff here
+              recoveredUser = document.toObject(PremiumUser.class);
+              recoveredUser.setUserDocumentID(document.getReference().toString());
+            }
+            // A custom call back function that collects whats happening in this async action
+            //when its ready to be used
+            firebaseUserDocumentCallback.onCallback(recoveredUser);
+          } else {
+            Log.w("getAuthUserDocument", "Could not retrieve the current user's doc");
+          }
+        }
+      }
+    }).addOnFailureListener(new OnFailureListener() {
+      @Override
+      public void onFailure(@NonNull Exception e) {
+        Toast.makeText(Login.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+      }
+    });
+    return authenticatedUser;
+  }
+
+  public void goToUserHomepage(User user) {
+    if(user instanceof  GroundUser){
+      user = (GroundUser) user;
+    }else if (user instanceof  PremiumUser){
+      user = (PremiumUser) user;
+    }
     Intent homepage = new Intent(this, Home.class);
-    finish();
+    homepage.putExtra("authUser",user);
     startActivity(homepage);
+    finish();
   }
 
   public void doLogin(EditText emailBox, EditText passwordBox) {
@@ -172,7 +244,14 @@ public class Login extends AppCompatActivity {
         public void onComplete(@NonNull Task<AuthResult> task) {
           if (task.isSuccessful()) {
             Toast.makeText(Login.this, "Nice, good to go!", Toast.LENGTH_SHORT).show();
-            goToUserHomepage();
+            //pass the fully authenticated user in it's class form to the next activity
+            getFullAuthenticatedUserObj(mAuth.getCurrentUser(), new FirebaseUserDocumentCallback() {
+              @Override
+              public void onCallback(User user) {
+                goToUserHomepage(user);
+              }
+            });
+
           } else {
             Toast.makeText(Login.this, "Oops!" + task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
           }
@@ -187,4 +266,11 @@ public class Login extends AppCompatActivity {
     }
 
   }
+
+
+  private interface FirebaseUserDocumentCallback{
+    void onCallback(User user);
+  }
+
+
 }
