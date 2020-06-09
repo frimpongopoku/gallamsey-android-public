@@ -85,8 +85,8 @@ public class Home extends AppCompatActivity {
         case R.id.nav_message:
           destinationPage = new MessagesFragment();
           break;
-        case R.id.nav_profile:
-          destinationPage = new MessagesFragment();
+        case R.id.earnings:
+          destinationPage = new UserEarningsFragment();
           break;
       }
 

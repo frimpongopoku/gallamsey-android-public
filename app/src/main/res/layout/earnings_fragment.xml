@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
 
@@ -7,15 +7,23 @@
 
 
   <ScrollView
-    android:scrollbars="none"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-   >
+    android:layout_below="@id/default_toolbar"
+    android:scrollbars="none">
 
     <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:orientation="vertical">
+
+      <include
+        layout="@layout/ground_zembe_card"
+        android:layout_width="wrap_content"
+        android:layout_height="220dp"
+        android:layout_below="@+id/default_toolbar"
+        android:layout_margin="10dp" />
+
 
       <!-- Notifications Div -->
 
@@ -61,4 +69,6 @@
 
     </LinearLayout>
   </ScrollView>
-</RelativeLayout>
+
+
+</LinearLayout>

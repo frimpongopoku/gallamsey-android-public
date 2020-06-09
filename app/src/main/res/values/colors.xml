@@ -13,12 +13,12 @@
   <color name="appColor">#502DAF</color>
   <color name="appColorLight">#E3E1EE</color>
   <color name="lightgreen">#EDFFEB</color>
-  <color name="stroke_button_color">#D1EAFF</color>
+  <color name="stroke_button_color">#CDE8FF</color>
   <color name="stroke_button_color_deep">#53ACF1</color>
   <color name="allowance_color">#4497A2</color>
   <color name="cost_color">#A24477</color>
   <color name="btn_success">#549A51</color>
-  <color name="lightest_grey">#FAF2F2</color>
+  <color name="lightest_grey">#F5F0F0</color>
   <color name="light_orange">#F8E5D5</color>
 
 </resources>

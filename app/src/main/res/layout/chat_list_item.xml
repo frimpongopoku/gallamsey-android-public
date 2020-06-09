@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="wrap_content"
+  android:padding="15dp"
+  android:background="@drawable/light_green_card_cover"
+  android:layout_height="wrap_content">
+
+  <ImageView
+    android:id="@+id/receipient_img"
+    android:layout_width="90dp"
+    android:layout_height="95dp"
+    android:src="@drawable/waakye_plate_2" />
+
+  <LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="20dp"
+    android:layout_toRightOf="@+id/receipient_img"
+    android:orientation="vertical">
+
+    <TextView
+      android:textColor="@android:color/black"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:fontFamily="@font/google_sans_bold"
+      android:text="Akwesi Poison" />
+
+    <TextView
+
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Its hard to remember and after all the ups and downs bluh.." />
+    <TextView
+      android:textSize="11sp"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:fontFamily="@font/quick_sand_bold"
+      android:text="22nd March 1998" />
+  </LinearLayout>
+
+</RelativeLayout>
