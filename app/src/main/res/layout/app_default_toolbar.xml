@@ -34,6 +34,8 @@
     </LinearLayout>
 
     <ImageView
+      android:clickable="true"
+      android:background="@drawable/orange_ripple_boderless"
       android:id="@+id/toolbar_img"
       android:layout_alignParentRight="true"
       android:src="@drawable/w_p"
