@@ -69,6 +69,7 @@ public class SetLocationsPage extends AppCompatActivity{
      locationManager = (LocationManager) getSystemService(this.LOCATION_SERVICE);
     if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
+      return;
     }
     locationProviderClient = LocationServices.getFusedLocationProviderClient(this);
       locationListener = new LocationListener() {
@@ -186,6 +187,7 @@ public class SetLocationsPage extends AppCompatActivity{
   protected void onResume() {
     super.onResume();
     checkAllLocationRequirements();
+    startLocationListener();
   }
 
 

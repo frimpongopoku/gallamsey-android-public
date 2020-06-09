@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-
+        android:layout_marginTop="2dp"
         android:paddingLeft="10dp"
         android:text="Favorite Shops"
         android:textColor="@android:color/white"
@@ -33,6 +33,7 @@
     </LinearLayout>
 
     <ImageView
+      android:id="@+id/toolbar_img"
       android:layout_alignParentRight="true"
       android:src="@drawable/w_p"
       android:layout_width="35dp"

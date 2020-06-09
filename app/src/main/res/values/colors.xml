@@ -11,10 +11,13 @@
   <color name="text_default">#8D958D</color>
   <color name="xd_default">#F2F9FF</color>
   <color name="appColor">#502DAF</color>
+  <color name="appColorLight">#E3E1EE</color>
   <color name="lightgreen">#EDFFEB</color>
   <color name="stroke_button_color">#2699FB</color>
   <color name="allowance_color">#4497A2</color>
   <color name="cost_color">#A24477</color>
   <color name="btn_success">#549A51</color>
+  <color name="lightest_grey">#FAF2F2</color>
+  <color name="light_orange">#F8E5D5</color>
 
 </resources>

@@ -6,9 +6,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -23,6 +26,7 @@ public class Home extends AppCompatActivity {
   ArrayList<String> profits = new ArrayList<>();
   ArrayList<String> costs = new ArrayList<>();
   ArrayList<String> dates = new ArrayList<>();
+  ImageView userProfileImageOnToolbar;
 
   User authenticatedUser;
   @Override
@@ -39,7 +43,13 @@ public class Home extends AppCompatActivity {
        authenticatedUser = (PremiumUser) getIntent().getSerializableExtra("authUser");
        Log.w("I am the user: > "+ ((PremiumUser) authenticatedUser).getUserType()+":", authenticatedUser.toString());
      }
-
+      userProfileImageOnToolbar = findViewById(R.id.toolbar_img);
+      userProfileImageOnToolbar.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+          goToEarningsPage(view);
+        }
+      });
 
 //   ----Set default home fragment: HomePage
     Fragment default_fragment = new HomeFragment(changeToHash());
@@ -86,11 +96,11 @@ public class Home extends AppCompatActivity {
   };
 
   private void fillInTheBlankSpaces(){
-    desc.add("I am the first I am the first I am the first I am the first I am the first I am the first I am the first I am the first");
-    desc.add("I am the second I am the first I am the first I am the first I am the first I am the first ");
-    desc.add("I am the third");
-    desc.add("I am the fourth");
-    desc.add("I am the fifth");
+    desc.add("I need someone to buy me waakye 3 cedis, Mcroni 10 cedis Fish 2 cedis, and Chicken 5 cedis");
+    desc.add("I need someone to buy me waakye 3 cedis, Mcroni 10 cedis Fish 2 cedis, and Chicken 5 cedis ");
+    desc.add("I need someone to buy me waakye 3 cedis, Mcroni 10 cedis Fish 2 cedis, and Chicken 5 cedis");
+    desc.add("I need someone to buy me waakye 3 cedis, Mcroni 10 cedis Fish 2 cedis, and Chicken 5 cedis");
+    desc.add("I need someone to buy me waakye 3 cedis, Mcroni 10 cedis Fish 2 cedis, and Chicken 5 cedis");
     profits.add("40");
     profits.add("20");
     profits.add("10");
@@ -106,5 +116,10 @@ public class Home extends AppCompatActivity {
     dates.add(" 22nd April 2098");
     dates.add(" 22nd June 2098");
     dates.add(" 22nd December 2098");
+  }
+
+  public void goToEarningsPage(View v){
+    Intent earningsPage = new Intent(this, UserEarningsPage.class);
+    startActivity(earningsPage);
   }
 }
