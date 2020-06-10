@@ -37,62 +37,74 @@
         android:background="@color/lightest_grey" />
 
       <TextView
-        android:clickable="true"
-        android:background="@drawable/purple_ripple"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:background="@drawable/orange_ripple"
+        android:clickable="true"
         android:fontFamily="@font/google_sans_light"
         android:padding="15dp"
         android:text="Upgrade Membership"
         android:textSize="14sp" />
 
       <TextView
-        android:clickable="true"
-        android:background="@drawable/purple_ripple"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:background="@drawable/purple_ripple"
+        android:clickable="true"
+        android:fontFamily="@font/google_sans_light"
+        android:padding="15dp"
+        android:text="Set Home Location"
+        android:textSize="14sp" />
+
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/orange_ripple"
+        android:clickable="true"
         android:fontFamily="@font/google_sans_light"
         android:padding="15dp"
         android:text="Edit Profile"
         android:textSize="14sp" />
 
       <TextView
-        android:clickable="true"
-        android:background="@drawable/purple_ripple"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:background="@drawable/orange_ripple"
+        android:clickable="true"
         android:fontFamily="@font/google_sans_light"
         android:padding="15dp"
         android:text="Get Verified"
         android:textSize="14sp" />
 
       <TextView
-        android:clickable="true"
-        android:background="@drawable/orange_ripple"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:background="@drawable/orange_ripple"
+        android:clickable="true"
         android:fontFamily="@font/google_sans_light"
         android:padding="15dp"
         android:text="Suggest A New Feature"
         android:textSize="14sp" />
+
       <View
-        android:clickable="true"
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_marginTop="15dp"
         android:layout_marginBottom="15dp"
-        android:background="@color/lightest_grey" />
+        android:background="@color/lightest_grey"
+        android:clickable="true" />
 
       <TextView
-        android:clickable="true"
-        android:background="@drawable/orange_ripple"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:background="@drawable/orange_ripple"
+        android:clickable="true"
         android:fontFamily="@font/google_sans"
         android:padding="15dp"
         android:text="SIGN OUT"

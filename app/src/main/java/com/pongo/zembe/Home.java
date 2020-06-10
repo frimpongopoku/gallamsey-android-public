@@ -47,7 +47,7 @@ public class Home extends AppCompatActivity {
       userProfileImageOnToolbar.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-          goToEarningsPage(view);
+          goToProfileViewPage(view);
         }
       });
 
@@ -118,8 +118,8 @@ public class Home extends AppCompatActivity {
     dates.add(" 22nd December 2098");
   }
 
-  public void goToEarningsPage(View v){
-    Intent earningsPage = new Intent(this, UserEarningsPage.class);
-    startActivity(earningsPage);
+  public void goToProfileViewPage(View v){
+    Intent profile = new Intent(this, ViewProfilePage.class);
+    startActivity(profile);
   }
 }
