@@ -14,13 +14,13 @@ import java.util.Arrays;
  */
 public abstract class User implements Serializable {
 
-  private String preferredName, uniqueUserName, email, DOB, phoneNumber, whatsappNumber, uniqueID, geoLocation[],userDocumentID;
+  private String  gender, preferredName, uniqueUserName, email, DOB, phoneNumber, whatsappNumber, uniqueID, geoLocation[],userDocumentID;
   private Timestamp ts = new Timestamp(System.currentTimeMillis());
 
   public User() {
   } //no-arg constructor because of Firebase
 
-  public User(String preferredName, String DOB, String email, String phoneNumber, String whatsappNumber, String uniqueID, String geoLocation[]) {
+  public User(String preferredName, String DOB, String email, String phoneNumber, String whatsappNumber, String uniqueID, String geoLocation[],String gender) {
     this.preferredName = preferredName;
     this.phoneNumber = phoneNumber;
     this.whatsappNumber = whatsappNumber;
@@ -29,6 +29,7 @@ public abstract class User implements Serializable {
     this.email = email;
     this.uniqueUserName = ts.getTime() + "-" + email.split("@")[0];
     this.geoLocation = geoLocation;
+    this.gender = gender;
   }
 
   @Exclude
@@ -42,7 +43,7 @@ public abstract class User implements Serializable {
     this.userDocumentID = userDocumentID;
   }
 
-  public User(String preferredName, String DOB, String email, String phoneNumber, String whatsappNumber, String uniqueID) {
+  public User(String preferredName, String DOB, String email, String phoneNumber, String whatsappNumber, String uniqueID,String gender) {
     this.preferredName = preferredName;
     this.phoneNumber = phoneNumber;
     this.whatsappNumber = whatsappNumber;
@@ -51,6 +52,7 @@ public abstract class User implements Serializable {
     this.email = email;
     this.uniqueUserName = ts.getTime() + "-" + email.split("@")[0];
     this.geoLocation = geoLocation;
+    this.gender = gender;
   }
 
   public String getPreferredName() {
@@ -103,6 +105,14 @@ public abstract class User implements Serializable {
 
   public void setUniqueID(String uniqueID) {
     this.uniqueID = uniqueID;
+  }
+
+  public String getGender() {
+    return gender;
+  }
+
+  public void setGender(String gender) {
+    this.gender = gender;
   }
 
   @Override

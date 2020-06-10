@@ -3,6 +3,7 @@ package com.pongo.zembe;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ActionBar;
 import android.content.Intent;
@@ -10,9 +11,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -32,12 +36,14 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 public class Register extends AppCompatActivity {
 
-  String username, email, password, passwordConfirmation, whatsappNumber, phone, dob;
+  String username, email, password, passwordConfirmation, whatsappNumber, phone, dob, gender = Konstants.OTHER;
   EditText usernameBox, emailBox, passBox, confirmPassBox, whatsappBox, phoneBox, dobBox;
+  Spinner genderDropDown;
   private GoogleSignInClient mGoogleSignInClient;
   private FirebaseAuth mAuth;
   ProgressBar spinner;
@@ -58,6 +64,25 @@ public class Register extends AppCompatActivity {
     phoneBox = findViewById(R.id.reg_phone);
     spinner = findViewById(R.id.reg_spinner);
     dobBox = findViewById(R.id.reg_dob);
+
+//    -------- DROP DOWN ----------------
+    genderDropDown = findViewById(R.id.gender_dropdown);
+    ArrayAdapter<CharSequence> genderDropdownAdapter = ArrayAdapter.createFromResource(this, R.array.gender, android.R.layout.simple_spinner_item);
+    genderDropdownAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    genderDropDown.setAdapter(genderDropdownAdapter);
+
+    genderDropDown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+      @Override
+      public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        gender = adapterView.getItemAtPosition(i).toString();
+      }
+
+      @Override
+      public void onNothingSelected(AdapterView<?> adapterView) {
+      }
+    });
+
+//    -----------------------------------
     Button registerBtn = findViewById(R.id.reg_finish);
     registerBtn.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -159,7 +184,7 @@ public class Register extends AppCompatActivity {
     //--------------------------------------------------------------------------------
     //Every user starts as a ground user -- upgrade later
     //-------------------------------------------------
-    GroundUser newUser = new GroundUser(preferredName, DOB, email, phone, whatsappPhone, user.getUid(), Konstants.GROUND_USER);
+    GroundUser newUser = new GroundUser(preferredName, DOB, email, phone, whatsappPhone, user.getUid(), Konstants.GROUND_USER, gender);
     db.collection(Konstants.USER_COLLECTION)
       .document()
       .set(newUser)

@@ -1,3 +1,8 @@
 <resources>
-  <string name="app_name">Zembe</string>
+  <string name="app_name">Gallamsey</string>
+  <string-array name="gender">
+    <item>OTHER</item>
+    <item>MALE</item>
+    <item>FEMALE</item>
+  </string-array>
 </resources>

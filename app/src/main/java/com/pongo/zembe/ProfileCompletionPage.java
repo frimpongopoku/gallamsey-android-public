@@ -34,7 +34,7 @@ public class ProfileCompletionPage extends AppCompatActivity {
   CoordinatorLayout rootLayout;
   EditText dobBox, usernameBox, whatsappNumberBox;
   FirebaseFirestore db = FirebaseFirestore.getInstance();
-  CollectionReference userDB = db.collection(Konstants.USER_COLLECTION);
+  CollectionReference userDB ;
   FirebaseAuth mAuth = FirebaseAuth.getInstance();
   FirebaseUser user;
   ProgressBar spinner;
@@ -57,6 +57,7 @@ public class ProfileCompletionPage extends AppCompatActivity {
     if (user == null) {
       goToLogin();
     } else {
+      userDB = db.collection(Konstants.USER_COLLECTION);
       spinner.setVisibility(View.VISIBLE);
       retrieveUserOldInfo(user);
 

@@ -6,15 +6,15 @@ import com.google.firebase.firestore.ServerTimestamp;
 public class PremiumUser extends User {
 
   private String userType;
-  //tells the server to give you a timestamp, so you dont have to be setting it yourself
+  //tells the server to give you a timestamp, so you don't have to be setting it yourself
   private @ServerTimestamp
   Timestamp timestamp;
 
   public PremiumUser() {
   } //no-arg constructor because of Firebase
 
-  public PremiumUser(String preferredName, String DOB, String email, String phoneNumber, String whatsappNumber, String uniqueID, String userType, String geoLocation[]) {
-    super(preferredName, DOB, email, phoneNumber, whatsappNumber, uniqueID, geoLocation);
+  public PremiumUser(String preferredName, String DOB, String email, String phoneNumber, String whatsappNumber, String uniqueID, String userType, String geoLocation[], String gender) {
+    super(preferredName, DOB, email, phoneNumber, whatsappNumber, uniqueID, geoLocation, gender);
     this.userType = userType;
   }
 
@@ -26,8 +26,8 @@ public class PremiumUser extends User {
     this.timestamp = timestamp;
   }
 
-  public PremiumUser(String preferredName, String DOB, String email, String phoneNumber, String whatsappNumber, String uniqueID, String userType) {
-    super(preferredName, DOB, email, phoneNumber, whatsappNumber, uniqueID);
+  public PremiumUser(String preferredName, String DOB, String email, String phoneNumber, String whatsappNumber, String uniqueID, String userType, String gender) {
+    super(preferredName, DOB, email, phoneNumber, whatsappNumber, uniqueID, gender);
     this.userType = userType;
   }
 

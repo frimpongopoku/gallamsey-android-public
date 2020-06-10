@@ -1,9 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   tools:context=".ViewProfilePage">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+  <include
+    android:id="@+id/titlebar"
+    layout="@layout/app_default_toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:layout_marginBottom="0dp" />
+
+  <ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@+id/titlebar">
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical">
+
+      <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="320dp"
+        android:layout_margin="1dp"
+        android:adjustViewBounds="true"
+        android:background="@drawable/orange_rectangle"
+        android:scaleType="fitXY"
+        android:src="@drawable/mama_africa" />
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <LinearLayout
+          android:clickable="true"
+          android:background="@drawable/orange_ripple"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:weightSum="2">
+
+          <TextView
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="15dp"
+            android:text="Complete Errands" />
+
+          <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/google_sans_bold"
+            android:padding="15dp"
+            android:text="500"
+            android:textColor="@color/card_name_green"
+            android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <!-- ==================================  -->
+        <LinearLayout
+          android:clickable="true"
+          android:background="@drawable/orange_ripple"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:weightSum="2">
+
+          <TextView
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="15dp"
+            android:text="Total Earnings" />
+
+          <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/google_sans_bold"
+            android:padding="15dp"
+            android:text="GHS 444987"
+            android:textColor="@color/card_name_green"
+            android:textSize="16sp" />
+
+        </LinearLayout>
+        <!-- =================== -->
+
+        <LinearLayout
+          android:clickable="true"
+          android:background="@drawable/orange_ripple"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:weightSum="2">
+
+          <TextView
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="15dp"
+            android:text="G - Stars" />
+
+          <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/google_sans_bold"
+            android:padding="15dp"
+            android:text="1280"
+            android:textColor="@color/card_name_green"
+            android:textSize="16sp" />
+
+        </LinearLayout>
+
+
+      </LinearLayout>
+
+    </LinearLayout>
+  </ScrollView>
+</RelativeLayout>

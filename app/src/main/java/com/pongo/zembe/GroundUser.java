@@ -13,8 +13,8 @@ public class GroundUser extends User {
   public GroundUser() {
   } //no-arg constructor because of Firebase
 
-  public GroundUser(String preferredName, String DOB, String email, String phoneNumber, String whatsappNumber, String uniqueID, String userType, String geoLocation[]) {
-    super(preferredName, DOB, email, phoneNumber, whatsappNumber, uniqueID, geoLocation);
+  public GroundUser(String preferredName, String DOB, String email, String phoneNumber, String whatsappNumber, String uniqueID, String userType, String geoLocation[], String gender) {
+    super(preferredName, DOB, email, phoneNumber, whatsappNumber, uniqueID, geoLocation,gender);
     this.userType = userType;
   }
 
@@ -26,8 +26,8 @@ public class GroundUser extends User {
     this.timestamp = timestamp;
   }
 
-  public GroundUser(String preferredName, String DOB, String email, String phoneNumber, String whatsappNumber, String uniqueID, String userType) {
-    super(preferredName, DOB, email, phoneNumber, whatsappNumber, uniqueID);
+  public GroundUser(String preferredName, String DOB, String email, String phoneNumber, String whatsappNumber, String uniqueID, String userType, String gender) {
+    super(preferredName, DOB, email, phoneNumber, whatsappNumber, uniqueID, gender);
     this.userType = userType;
   }
 
