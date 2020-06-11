@@ -32,7 +32,7 @@
       android:layout_height="wrap_content"
       android:layout_marginTop="5dp"
       android:padding="10dp"
-      android:text="Complete Your Profile"
+      android:text="Edit Your Profile"
       android:textAlignment="center"
       android:textColor="@android:color/white"
       android:textSize="14sp" />
@@ -53,7 +53,7 @@
             android:id="@+id/comp_profile_div1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="70dp"
             android:orientation="vertical">
             <TextView
               android:padding="8dp"
