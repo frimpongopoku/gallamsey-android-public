@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
+import android.os.Parcelable;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -35,12 +36,13 @@ public class Home extends AppCompatActivity {
     setContentView(R.layout.activity_home);
     fillInTheBlankSpaces();
     //getAuthenticated User
-     if( getIntent().getSerializableExtra("authUser") instanceof GroundUser ){
-       authenticatedUser = (GroundUser) getIntent().getSerializableExtra("authUser");
+
+     if( getIntent().getParcelableExtra("authUser") instanceof GroundUser ){
+       authenticatedUser = (GroundUser) getIntent().getParcelableExtra("authUser");
        Log.w("I am the user: > "+ ((GroundUser) authenticatedUser).getUserType()+":", authenticatedUser.toString());
      }
-     else if(getIntent().getSerializableExtra("authUser") instanceof PremiumUser){
-       authenticatedUser = (PremiumUser) getIntent().getSerializableExtra("authUser");
+     else if(getIntent().getParcelableExtra("authUser") instanceof PremiumUser){
+       authenticatedUser = (PremiumUser) getIntent().getParcelableExtra("authUser");
        Log.w("I am the user: > "+ ((PremiumUser) authenticatedUser).getUserType()+":", authenticatedUser.toString());
      }
       userProfileImageOnToolbar = findViewById(R.id.toolbar_img);

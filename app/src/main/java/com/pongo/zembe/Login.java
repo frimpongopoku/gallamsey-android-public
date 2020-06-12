@@ -208,6 +208,7 @@ public class Login extends AppCompatActivity {
     homepage.putExtra("authUser",user);
     startActivity(homepage);
     finish();
+
   }
 
   public void doLogin(EditText emailBox, EditText passwordBox) {

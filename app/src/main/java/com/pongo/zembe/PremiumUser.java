@@ -1,7 +1,13 @@
 package com.pongo.zembe;
 
+import android.annotation.SuppressLint;
+import android.os.Parcel;
+
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.ServerTimestamp;
+
+import java.io.Serializable;
+
 
 public class PremiumUser extends User {
 
@@ -12,6 +18,7 @@ public class PremiumUser extends User {
 
   public PremiumUser() {
   } //no-arg constructor because of Firebase
+
 
   public PremiumUser(String preferredName, String DOB, String email, String phoneNumber, String whatsappNumber, String uniqueID, String userType, String geoLocation[], String gender) {
     super(preferredName, DOB, email, phoneNumber, whatsappNumber, uniqueID, geoLocation, gender);
@@ -38,4 +45,56 @@ public class PremiumUser extends User {
   public void setUserType(String userType) {
     this.userType = userType;
   }
+
+  @Override
+  public int describeContents() {
+    return 0;
+  }
+
+  @Override
+  public void writeToParcel(Parcel dest, int flags) {
+    dest.writeString(this.userType);
+    dest.writeParcelable(this.timestamp, flags);
+    dest.writeString(this.profilePictureURL);
+    dest.writeString(this.gender);
+    dest.writeString(this.preferredName);
+    dest.writeString(this.uniqueUserName);
+    dest.writeString(this.email);
+    dest.writeString(this.dob);
+    dest.writeString(this.phoneNumber);
+    dest.writeString(this.whatsappNumber);
+    dest.writeString(this.uniqueID);
+    dest.writeStringArray(this.geoLocation);
+    dest.writeString(this.userDocumentID);
+    dest.writeSerializable(this.ts);
+  }
+
+  protected PremiumUser(Parcel in) {
+    this.userType = in.readString();
+    this.timestamp = in.readParcelable(Timestamp.class.getClassLoader());
+    this.profilePictureURL = in.readString();
+    this.gender = in.readString();
+    this.preferredName = in.readString();
+    this.uniqueUserName = in.readString();
+    this.email = in.readString();
+    this.dob = in.readString();
+    this.phoneNumber = in.readString();
+    this.whatsappNumber = in.readString();
+    this.uniqueID = in.readString();
+    this.geoLocation = in.createStringArray();
+    this.userDocumentID = in.readString();
+    this.ts = (java.sql.Timestamp) in.readSerializable();
+  }
+
+  public static final Creator<PremiumUser> CREATOR = new Creator<PremiumUser>() {
+    @Override
+    public PremiumUser createFromParcel(Parcel source) {
+      return new PremiumUser(source);
+    }
+
+    @Override
+    public PremiumUser[] newArray(int size) {
+      return new PremiumUser[size];
+    }
+  };
 }

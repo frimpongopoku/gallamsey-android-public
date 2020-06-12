@@ -1,5 +1,7 @@
 package com.pongo.zembe;
 
+import android.os.Parcelable;
+
 import com.google.firebase.firestore.Exclude;
 
 import java.io.Serializable;
@@ -12,10 +14,10 @@ import java.util.Arrays;
  * for that to happen, the obj is going to be serialized before sending and unserialized when its being retrieved
  * hence, cant do without "Serializable"
  */
-public abstract class User implements Serializable {
+public abstract class User implements  Parcelable {
 
-  private String  gender, preferredName, uniqueUserName, email, DOB, phoneNumber, whatsappNumber, uniqueID, geoLocation[],userDocumentID;
-  private Timestamp ts = new Timestamp(System.currentTimeMillis());
+  public String profilePictureURL, gender, preferredName, uniqueUserName, email, dob, phoneNumber, whatsappNumber, uniqueID, geoLocation[],userDocumentID;
+  public Timestamp ts = new Timestamp(System.currentTimeMillis());
 
   public User() {
   } //no-arg constructor because of Firebase
@@ -25,7 +27,7 @@ public abstract class User implements Serializable {
     this.phoneNumber = phoneNumber;
     this.whatsappNumber = whatsappNumber;
     this.uniqueID = uniqueID;
-    this.DOB = DOB;
+    this.dob = DOB;
     this.email = email;
     this.uniqueUserName = ts.getTime() + "-" + email.split("@")[0];
     this.geoLocation = geoLocation;
@@ -43,16 +45,24 @@ public abstract class User implements Serializable {
     this.userDocumentID = userDocumentID;
   }
 
-  public User(String preferredName, String DOB, String email, String phoneNumber, String whatsappNumber, String uniqueID,String gender) {
+  public User(String preferredName, String dob, String email, String phoneNumber, String whatsappNumber, String uniqueID,String gender) {
     this.preferredName = preferredName;
     this.phoneNumber = phoneNumber;
     this.whatsappNumber = whatsappNumber;
     this.uniqueID = uniqueID;
-    this.DOB = DOB;
+    this.dob = dob;
     this.email = email;
     this.uniqueUserName = ts.getTime() + "-" + email.split("@")[0];
     this.geoLocation = geoLocation;
     this.gender = gender;
+  }
+
+  public String getProfilePictureURL() {
+    return profilePictureURL;
+  }
+
+  public void setProfilePictureURL(String profilePictureURL) {
+    this.profilePictureURL = profilePictureURL;
   }
 
   public String getPreferredName() {
@@ -63,12 +73,12 @@ public abstract class User implements Serializable {
     this.preferredName = preferredName;
   }
 
-  public String getDOB() {
-    return DOB;
+  public String getDob() {
+    return dob;
   }
 
-  public void setDOB(String DOB) {
-    this.DOB = DOB;
+  public void setDob(String dob) {
+    this.dob = dob;
   }
 
   public String getPhoneNumber() {
@@ -121,7 +131,7 @@ public abstract class User implements Serializable {
       "preferredName='" + preferredName + '\'' +
       ", uniqueUserName='" + uniqueUserName + '\'' +
       ", email='" + email + '\'' +
-      ", DOB='" + DOB + '\'' +
+      ", DOB='" + dob + '\'' +
       ", phoneNumber='" + phoneNumber + '\'' +
       ", whatsappNumber='" + whatsappNumber + '\'' +
       ", uniqueID='" + uniqueID + '\'' +

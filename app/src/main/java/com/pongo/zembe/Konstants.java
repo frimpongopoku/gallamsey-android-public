@@ -17,6 +17,7 @@ public class Konstants {
   // NORMAL REQUEST CODES ALL OVER THE IN ALL CORNERS OF THE APPLICATION
   //--------------------------------------------------------------------
 
+  public static final int CHOOSE_IMAGE_REQUEST_CODE = 034;
   public static final int PERMISSION_REQUEST_CODE = 003;
   public static final int LOCATIONS_REQUEST_CODE = 003;
   public static final int GOOGLE_AUTH_TYPE = 555;
@@ -35,4 +36,5 @@ public class Konstants {
   //FIREBASE COLLECTION SET CONSTANTS
   //--------------------------------
   public static String USER_COLLECTION = "USERS";
+  public static String PROFILE_PICTURES_COLLECTION = "PROFILE PICTURES";
 }
