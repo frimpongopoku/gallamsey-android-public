@@ -131,7 +131,6 @@ public class ProfileCompletionPage extends AppCompatActivity {
               whatsappNumberBox.setText(recoveredUser.getWhatsappNumber());
               spinner.setVisibility(View.INVISIBLE);
               elementsDiv.setVisibility(View.VISIBLE);
-              Toast.makeText(ProfileCompletionPage.this, "I am the date of birth"+recoveredUser.getDob(), Toast.LENGTH_SHORT).show();
               getProfilePictureOnLoad(recoveredUser);
             }
           }

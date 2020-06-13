@@ -25,9 +25,9 @@
       android:orientation="vertical">
 
       <RelativeLayout
-        android:layout_marginTop="15dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp">
 
         <LinearLayout
           android:layout_width="wrap_content"
@@ -41,9 +41,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingRight="25dp"
         android:paddingLeft="25dp"
-        android:paddingTop="15dp">
+        android:paddingTop="15dp"
+        android:paddingRight="25dp">
+
+        <Button
+          android:background="@drawable/transparent_btn_orange"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:fontFamily="@font/google_sans_medium"
+          android:padding="18dp"
+          android:text="Edit Profile" />
+
         <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
@@ -51,22 +60,24 @@
           android:clickable="true"
           android:orientation="horizontal"
           android:weightSum="2">
+
           <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:padding="15dp"
             android:text="Email" />
+
           <TextView
-            android:layout_weight="1"
-            android:breakStrategy="simple"
-            android:scrollHorizontally="false"
-            android:textAlignment="textStart"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:breakStrategy="simple"
             android:fontFamily="@font/google_sans_thin"
             android:padding="15dp"
+            android:scrollHorizontally="false"
             android:text="pongofrimi@gmail.com"
+            android:textAlignment="textStart"
             android:textColor="@color/card_name_green"
             android:textSize="14sp" />
         </LinearLayout>
@@ -79,21 +90,23 @@
           android:clickable="true"
           android:orientation="horizontal"
           android:weightSum="2">
+
           <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:padding="15dp"
             android:text="Unique Username" />
+
           <TextView
-            android:layout_weight="1"
-            android:scrollHorizontally="false"
-            android:textAlignment="textStart"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:fontFamily="@font/google_sans_thin"
             android:padding="15dp"
+            android:scrollHorizontally="false"
             android:text="\@47764757746-pongofrimi"
+            android:textAlignment="textStart"
             android:textColor="@color/card_name_green"
             android:textSize="14sp" />
         </LinearLayout>
@@ -106,12 +119,14 @@
           android:clickable="true"
           android:orientation="horizontal"
           android:weightSum="2">
+
           <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:padding="15dp"
             android:text="Preferred Name" />
+
           <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -130,12 +145,14 @@
           android:clickable="true"
           android:orientation="horizontal"
           android:weightSum="2">
+
           <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:padding="15dp"
             android:text="Complete Errands" />
+
           <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

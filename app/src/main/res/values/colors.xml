@@ -10,7 +10,9 @@
   <color name="card_name_green">#527C50</color>
   <color name="text_default">#8D958D</color>
   <color name="xd_default">#F2F9FF</color>
-  <color name="appColor">#502DAF</color>
+  <!--<color name="appColor">#502DAF</color>-->
+  <color name="appColor">#004aad</color>
+  <color name="appColorMediumRare">#BCA4F1</color>
   <color name="appColorLight">#E3E1EE</color>
   <color name="lightgreen">#EDFFEB</color>
   <color name="stroke_button_color">#CDE8FF</color>
@@ -20,5 +22,7 @@
   <color name="btn_success">#549A51</color>
   <color name="lightest_grey">#F5F0F0</color>
   <color name="light_orange">#F8E5D5</color>
+
+  <!-- App color is goign to be changed to this = #004aad-->
 
 </resources>
