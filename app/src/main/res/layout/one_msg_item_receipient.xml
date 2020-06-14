@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:paddingLeft="25dp"
+  android:paddingRight="25dp"
+  android:paddingTop="10dp"
+  android:paddingBottom="10dp"
+  android:elevation="2dp"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:background="@drawable/msg_rectangle_orange"
+  android:orientation="vertical">
+
+  <TextView
+    android:layout_marginBottom="1dp"
+    android:textSize="9sp"
+    android:text="22nd March 2019"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" />
+
+  <TextView
+    android:textSize="13sp"
+    android:text="I am the good shepherd, the good shepherd giveth his life for the sheep. Another one, honour they father and mother, for this is the first commandment with promise"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" />
+</LinearLayout>

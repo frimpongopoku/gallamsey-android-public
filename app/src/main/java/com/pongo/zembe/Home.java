@@ -16,6 +16,7 @@ import android.widget.Toast;
 import android.os.Parcelable;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.json.JSONObject;
 
@@ -28,48 +29,47 @@ public class Home extends AppCompatActivity {
   ArrayList<String> costs = new ArrayList<>();
   ArrayList<String> dates = new ArrayList<>();
   ImageView userProfileImageOnToolbar;
-
+  FirebaseAuth mAuth = FirebaseAuth.getInstance();
   User authenticatedUser;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    if (mAuth.getCurrentUser() != null) {
+    } else {
+      goToLogin();
+    }
     setContentView(R.layout.activity_home);
     fillInTheBlankSpaces();
-    //getAuthenticated User
-
-     if( getIntent().getParcelableExtra("authUser") instanceof GroundUser ){
-       authenticatedUser = (GroundUser) getIntent().getParcelableExtra("authUser");
-       Log.w("I am the user: > "+ ((GroundUser) authenticatedUser).getUserType()+":", authenticatedUser.toString());
-     }
-     else if(getIntent().getParcelableExtra("authUser") instanceof PremiumUser){
-       authenticatedUser = (PremiumUser) getIntent().getParcelableExtra("authUser");
-       Log.w("I am the user: > "+ ((PremiumUser) authenticatedUser).getUserType()+":", authenticatedUser.toString());
-     }
-      userProfileImageOnToolbar = findViewById(R.id.toolbar_img);
-      userProfileImageOnToolbar.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-          goToProfileViewPage(view);
-        }
-      });
+    //getAuthenticated User if they are coming from login | register
+    authenticatedUser = (GroundUser) getIntent().getParcelableExtra("authUser");
+    userProfileImageOnToolbar = findViewById(R.id.toolbar_img);
+    userProfileImageOnToolbar.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        goToProfileViewPage(view);
+      }
+    });
 
 //   ----Set default home fragment: HomePage
     Fragment default_fragment = new HomeFragment(changeToHash());
-    getSupportFragmentManager().beginTransaction().replace(R.id.app_frame_layout,default_fragment).commit();
+    getSupportFragmentManager().beginTransaction().replace(R.id.app_frame_layout, default_fragment).commit();
 
 //    Set Fragment Listener to switch pages
     BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
     bottomNav.setOnNavigationItemSelectedListener(navListener);
 
   }
-  private HashMap<String, ArrayList<String>> changeToHash(){
+
+  private HashMap<String, ArrayList<String>> changeToHash() {
     HashMap<String, ArrayList<String>> map = new HashMap<>();
-    map.put("descs",desc);
-    map.put("profits",profits);
-    map.put("costs",costs);
-    map.put("dates",dates);
+    map.put("descs", desc);
+    map.put("profits", profits);
+    map.put("costs", costs);
+    map.put("dates", dates);
     return map;
   }
+
   private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -92,12 +92,12 @@ public class Home extends AppCompatActivity {
           break;
       }
 
-      getSupportFragmentManager().beginTransaction().replace(R.id.app_frame_layout,destinationPage).commit();
+      getSupportFragmentManager().beginTransaction().replace(R.id.app_frame_layout, destinationPage).commit();
       return true;
     }
   };
 
-  private void fillInTheBlankSpaces(){
+  private void fillInTheBlankSpaces() {
     desc.add("I need someone to buy me waakye 3 cedis, Mcroni 10 cedis Fish 2 cedis, and Chicken 5 cedis");
     desc.add("I need someone to buy me waakye 3 cedis, Mcroni 10 cedis Fish 2 cedis, and Chicken 5 cedis ");
     desc.add("I need someone to buy me waakye 3 cedis, Mcroni 10 cedis Fish 2 cedis, and Chicken 5 cedis");
@@ -120,7 +120,12 @@ public class Home extends AppCompatActivity {
     dates.add(" 22nd December 2098");
   }
 
-  public void goToProfileViewPage(View v){
+  private void goToLogin() {
+    Intent login = new Intent(this, Login.class);
+    startActivity(login);
+  }
+
+  public void goToProfileViewPage(View v) {
     Intent profile = new Intent(this, ViewProfilePage.class);
     startActivity(profile);
   }

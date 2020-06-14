@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@drawable/chat_wallpaper"
+  tools:context=".ChattingPage">
+
+  <include
+    layout="@layout/app_back_with_pic_toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true" />
+
+  <ScrollView
+    android:scrollbars="none"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+      android:orientation="vertical"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+
+      <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="80dp">
+
+
+        <include
+          android:id="@+id/a1"
+          layout="@layout/one_msg_item_receipient"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignParentRight="true"
+          android:layout_marginLeft="10dp"
+          android:layout_marginRight="10dp"
+          android:layout_marginBottom="7dp" />
+
+        <include
+          android:id="@+id/a2"
+          layout="@layout/one_msg_item_sender"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@+id/a1"
+          android:layout_alignParentLeft="true"
+          android:layout_marginLeft="10dp"
+          android:layout_marginRight="10dp"
+          android:layout_marginBottom="7dp" />
+
+        <include
+          android:id="@+id/a3"
+          layout="@layout/one_msg_item_receipient"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@+id/a2"
+          android:layout_alignParentRight="true"
+          android:layout_marginLeft="10dp"
+          android:layout_marginRight="10dp"
+          android:layout_marginBottom="7dp" />
+
+        <include
+          android:id="@+id/a4"
+          layout="@layout/one_msg_item_sender"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@+id/a3"
+          android:layout_alignParentLeft="true"
+          android:layout_marginLeft="10dp"
+          android:layout_marginRight="10dp"
+          android:layout_marginBottom="7dp" />
+
+        <include
+          android:id="@+id/a5"
+          layout="@layout/one_msg_item_receipient"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@+id/a4"
+          android:layout_alignParentRight="true"
+          android:layout_marginLeft="10dp"
+          android:layout_marginRight="10dp"
+          android:layout_marginBottom="7dp" />
+
+        <include
+          android:id="@+id/a6"
+          layout="@layout/one_msg_item_sender"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@+id/a5"
+          android:layout_alignParentLeft="true"
+          android:layout_marginLeft="10dp"
+          android:layout_marginRight="10dp"
+          android:layout_marginBottom="7dp" />
+
+        <include
+          android:id="@+id/a7"
+          layout="@layout/one_msg_item_sender"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@+id/a6"
+          android:layout_alignParentLeft="true"
+          android:layout_marginLeft="10dp"
+          android:layout_marginRight="10dp"
+          android:layout_marginBottom="7dp" />
+
+      </RelativeLayout>
+    </LinearLayout>
+
+  </ScrollView>
+</RelativeLayout>
