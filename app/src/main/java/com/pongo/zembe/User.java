@@ -7,6 +7,7 @@ import com.google.firebase.firestore.Exclude;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Arrays;
+import java.util.Date;
 
 /**
  * Abstract user class that all kinds of users in the application will extend from
@@ -17,7 +18,7 @@ import java.util.Arrays;
 public abstract class User implements  Parcelable {
 
   public String profilePictureURL, gender, preferredName, uniqueUserName, email, dob, phoneNumber, whatsappNumber, uniqueID, geoLocation[],userDocumentID;
-  public Timestamp ts = new Timestamp(System.currentTimeMillis());
+  public Date ts = new Timestamp(System.currentTimeMillis());
 
   public User() {
   } //no-arg constructor because of Firebase

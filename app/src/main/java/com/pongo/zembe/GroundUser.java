@@ -83,7 +83,7 @@ public class GroundUser extends User  {
     this.uniqueID = in.readString();
     this.geoLocation = in.createStringArray();
     this.userDocumentID = in.readString();
-    this.ts = (java.sql.Timestamp) in.readSerializable();
+    this.ts = (java.util.Date) in.readSerializable();
   }
 
   public static final Creator<GroundUser> CREATOR = new Creator<GroundUser>() {

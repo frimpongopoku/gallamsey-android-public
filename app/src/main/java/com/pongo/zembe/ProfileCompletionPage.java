@@ -5,11 +5,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,6 +29,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -54,6 +57,7 @@ public class ProfileCompletionPage extends AppCompatActivity {
   StorageReference storageReference;
   String selectedImageExt;
   User recoveredUser; //Gallamsey User class
+  ImageView roundCloseBtn;
 
 
   @Override
@@ -62,6 +66,11 @@ public class ProfileCompletionPage extends AppCompatActivity {
     setContentView(R.layout.activity_profile_completion_page);
     user = mAuth.getCurrentUser();
     spinner = findViewById(R.id.prof_spinner);
+    //-----------------
+    FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+      .setTimestampsInSnapshotsEnabled(true)
+      .build();
+    db.setFirestoreSettings(settings);
     if (user == null) {
       goToLogin();
     } else {
@@ -70,6 +79,7 @@ public class ProfileCompletionPage extends AppCompatActivity {
       retrieveUserOldInfo(user);
     }
     //--------------------------------------------------
+    roundCloseBtn = findViewById(R.id.x_button);
     storageReference = FirebaseStorage.getInstance().getReference(Konstants.PROFILE_PICTURES_COLLECTION);
     dobBox = findViewById(R.id.prof_dob);
     usernameBox = findViewById(R.id.prof_username);
@@ -80,6 +90,7 @@ public class ProfileCompletionPage extends AppCompatActivity {
     profilePicture = findViewById(R.id.profile_picture);
     imageHolder = findViewById(R.id.image_holder);
     imageUploadHelper = new ImageUploadHelper(this);
+    final MagicBoxes dialogBoxCreator = new MagicBoxes(this);
 
     //--------------------------------------------------
     profilePicture.setOnClickListener(new View.OnClickListener() {
@@ -88,16 +99,58 @@ public class ProfileCompletionPage extends AppCompatActivity {
         startImageChooser();
       }
     });
-
     imageHolder.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
         startImageChooser();
       }
     });
+    roundCloseBtn.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        Dialog dialog = dialogBoxCreator.constructASimpleDialog("Confirm Delete", "Your picture will be removed and reset to the default picture, until you upload another one", new MagicBoxCallables() {
+          @Override
+          public void negativeBtnCallable() {
 
+          }
+
+          @Override
+          public void positiveBtnCallable() {
+           deleteCurrentProfilePicture();
+          }
+        });
+        dialog.show();
+      }
+    });
   }
 
+
+  public void deleteCurrentProfilePicture() {
+    final String URL = recoveredUser.getProfilePictureURL();
+    recoveredUser.setProfilePictureURL(null);
+    userDB.document(recoveredUser.getUserDocumentID()).set(recoveredUser)
+      .addOnSuccessListener(new OnSuccessListener<Void>() {
+        @Override
+        public void onSuccess(Void aVoid) {
+          roundCloseBtn.setVisibility(View.GONE);
+          imageHolder.setVisibility(View.GONE);
+          getProfilePictureOnLoad(recoveredUser);
+          // now really delete from firebase storage
+          StorageReference photoRef = FirebaseStorage.getInstance().getReferenceFromUrl(URL);
+          photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+              Toast.makeText(ProfileCompletionPage.this, "Your picture has been removed", Toast.LENGTH_SHORT).show();
+            }
+          }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+              Toast.makeText(ProfileCompletionPage.this, "We could not remove your picture:: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+          });
+        }
+      });
+  }
 
   private void startImageChooser() {
     imageUploadHelper.openFileChooser(new ImageUploadHelper.FileChooserCallback() {
@@ -125,13 +178,16 @@ public class ProfileCompletionPage extends AppCompatActivity {
           foundUserDocs = documents;
           for (QueryDocumentSnapshot document : documents) {
             if (document.exists()) {
-              GroundUser recoveredUser = document.toObject(GroundUser.class);
-              dobBox.setText(recoveredUser.getDob());
-              usernameBox.setText(recoveredUser.getPreferredName());
-              whatsappNumberBox.setText(recoveredUser.getWhatsappNumber());
+              GroundUser gUser = document.toObject(GroundUser.class);
+              gUser.setUserDocumentID(document.getReference().getId());
+              //set global user variable
+              recoveredUser = gUser;
+              dobBox.setText(gUser.getDob());
+              usernameBox.setText(gUser.getPreferredName());
+              whatsappNumberBox.setText(gUser.getWhatsappNumber());
               spinner.setVisibility(View.INVISIBLE);
               elementsDiv.setVisibility(View.VISIBLE);
-              getProfilePictureOnLoad(recoveredUser);
+              getProfilePictureOnLoad(gUser);
             }
           }
         }
@@ -147,18 +203,21 @@ public class ProfileCompletionPage extends AppCompatActivity {
 
     if (gallamseyUser.getProfilePictureURL() != null) {
       //------if the user has profile picture, show that one instead of the default profile photos
+      Picasso.get().load(gallamseyUser.getProfilePictureURL()).into(imageHolder);
       profilePicture.setVisibility(View.GONE);
       imageHolder.setVisibility(View.VISIBLE);
-      Picasso.get().load(gallamseyUser.getProfilePictureURL()).into(imageHolder);
+      roundCloseBtn.setVisibility(View.VISIBLE);
     } else {
-
+      profilePicture.setVisibility(View.VISIBLE);
       // ---- it means the user still hasn't uploaded a profile picture yet
       // ----- display a default picture depending on their gender
       // ----- by default, a female avatar is shown
       if (gallamseyUser.getGender().equals(Konstants.MALE)) {
         profilePicture.setBackgroundResource(R.drawable.profile_dummy_box_male);
-      }else if(gallamseyUser.getGender().equals(Konstants.OTHER)){
+      } else if (gallamseyUser.getGender().equals(Konstants.OTHER)) {
         profilePicture.setBackgroundResource(R.drawable.profile_dummy_box_other);
+      }else{
+        profilePicture.setBackgroundResource(R.drawable.profile_dummy_box_female);
       }
     }
   }
@@ -252,6 +311,7 @@ public class ProfileCompletionPage extends AppCompatActivity {
             public void getDownloadableURL(String URL) {
               recoveredUser.setProfilePictureURL(URL);
               actuallyUpdateUserInfo(recoveredUser, documentID);
+              roundCloseBtn.setVisibility(View.VISIBLE);
             }
           });
         } else {

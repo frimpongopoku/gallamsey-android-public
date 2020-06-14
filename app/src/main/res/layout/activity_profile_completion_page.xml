@@ -19,18 +19,19 @@
       android:visibility="invisible" />
 
     <View
-      android:elevation="4dp"
       android:id="@+id/titlebar"
       android:layout_width="match_parent"
       android:layout_height="50dp"
       android:layout_alignParentTop="true"
       android:alpha="1"
-      android:background="@drawable/register_title_bar"></View>
+      android:background="@drawable/register_title_bar"
+      android:elevation="4dp"></View>
+
     <TextView
-      android:elevation="5dp"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginTop="5dp"
+      android:elevation="5dp"
       android:padding="10dp"
       android:text="Edit Your Profile"
       android:textAlignment="center"
@@ -38,57 +39,79 @@
       android:textSize="14sp" />
 
     <ScrollView
-      android:scrollbars="none"
       android:layout_width="match_parent"
-      android:layout_height="match_parent">
+      android:layout_height="match_parent"
+      android:scrollbars="none">
+
       <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
           android:id="@+id/prof_mother_div"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:orientation="vertical">
+
           <LinearLayout
             android:id="@+id/comp_profile_div1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="70dp"
             android:orientation="vertical">
+
             <TextView
-              android:padding="8dp"
-              android:layout_gravity="center_horizontal"
-              android:textColor="@android:color/black"
-              android:text="Upload A Picture"
               android:layout_width="wrap_content"
-              android:layout_height="wrap_content" />
+              android:layout_height="wrap_content"
+              android:layout_gravity="center_horizontal"
+              android:padding="8dp"
+              android:text="Upload A Picture"
+              android:textColor="@android:color/black" />
+
             <RelativeLayout
+
               android:layout_width="match_parent"
               android:layout_height="wrap_content">
+
               <ImageView
-                android:clickable="true"
-                android:background="?selectableItemBackground"
-                android:visibility="gone"
-                android:layout_centerInParent="true"
                 android:id="@+id/image_holder"
                 android:layout_width="300dp"
-                android:layout_height="250dp" />
-              <LinearLayout
-                android:orientation="horizontal"
-                android:id="@+id/profile_picture"
+                android:layout_height="250dp"
+                android:layout_centerInParent="true"
+                android:background="?selectableItemBackground"
                 android:clickable="true"
+                android:visibility="gone" />
+
+              <ImageView
+                android:visibility="gone"
+                android:background="@drawable/app_color_ripple_borderless"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="0dp"
+                android:layout_below="@+id/image_holder"
+                android:layout_marginRight="80dp"
+                android:id="@+id/x_button"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:elevation="116dp"
+                android:src="@drawable/close_circle" />
+
+              <LinearLayout
+                android:id="@+id/profile_picture"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:background="@drawable/profile_dummy_box_female" />
+                android:background="@drawable/profile_dummy_box_female"
+                android:clickable="true"
+                android:orientation="horizontal" />
             </RelativeLayout>
+
             <TextView
-              android:textAlignment="center"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:layout_marginLeft="25dp"
               android:padding="10dp"
               android:text="Please fill all boxes with appropriate information"
+              android:textAlignment="center"
               android:textColor="@android:color/black"
               android:textSize="13sp" />
 
