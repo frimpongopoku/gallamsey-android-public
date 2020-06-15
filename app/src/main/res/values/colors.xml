@@ -12,8 +12,9 @@
   <color name="xd_default">#F2F9FF</color>
   <!--<color name="appColor">#502DAF</color>-->
   <color name="appColor">#004aad</color>
+  <color name="appColorDark">#003788</color>
   <color name="appColorMediumRare">#BCA4F1</color>
-  <color name="appColorLight">#E3E1EE</color>
+  <color name="appColorLight">#7FB5FF</color>
   <color name="lightgreen">#EDFFEB</color>
   <color name="stroke_button_color">#CDE8FF</color>
 
@@ -26,6 +27,7 @@
   <color name="msg_back_color_2">#FDECEB</color>
   <color name="msg_back_color_1">#DCEAFF</color>
   <color name="deep_orange">#FF9800</color>
+  <color name="fav_black">#282828</color>
 
   <!-- App color is goign to be changed to this = #004aad-->
 
