@@ -133,7 +133,7 @@
 
     <ImageView
       android:clickable="true"
-      android:background="?attr/selectableItemBackground"
+      android:background="@drawable/app_color_ripple_borderless"
       android:layout_weight="1"
       android:src="@drawable/send_icon"
       android:layout_width="0dp"
