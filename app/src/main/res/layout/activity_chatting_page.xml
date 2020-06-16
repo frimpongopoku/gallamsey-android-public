@@ -13,131 +13,45 @@
     android:layout_height="wrap_content"
     android:layout_alignParentTop="true" />
 
-  <ScrollView
-    android:scrollbars="none"
+  <androidx.recyclerview.widget.RecyclerView
+    android:layout_above="@+id/textbox_for_chatting"
+    android:layout_marginTop="55dp"
+    android:id="@+id/chatting_recycler"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <LinearLayout
-      android:orientation="vertical"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent">
-
-      <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="80dp">
-
-
-        <include
-          android:id="@+id/a1"
-          layout="@layout/one_msg_item_receipient"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_alignParentRight="true"
-          android:layout_marginLeft="10dp"
-          android:layout_marginRight="10dp"
-          android:layout_marginBottom="7dp" />
-
-        <include
-          android:id="@+id/a2"
-          layout="@layout/one_msg_item_sender"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_below="@+id/a1"
-          android:layout_alignParentLeft="true"
-          android:layout_marginLeft="10dp"
-          android:layout_marginRight="10dp"
-          android:layout_marginBottom="7dp" />
-
-        <include
-          android:id="@+id/a3"
-          layout="@layout/one_msg_item_receipient"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_below="@+id/a2"
-          android:layout_alignParentRight="true"
-          android:layout_marginLeft="10dp"
-          android:layout_marginRight="10dp"
-          android:layout_marginBottom="7dp" />
-
-        <include
-          android:id="@+id/a4"
-          layout="@layout/one_msg_item_sender"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_below="@+id/a3"
-          android:layout_alignParentLeft="true"
-          android:layout_marginLeft="10dp"
-          android:layout_marginRight="10dp"
-          android:layout_marginBottom="7dp" />
-
-        <include
-          android:id="@+id/a5"
-          layout="@layout/one_msg_item_receipient"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_below="@+id/a4"
-          android:layout_alignParentRight="true"
-          android:layout_marginLeft="10dp"
-          android:layout_marginRight="10dp"
-          android:layout_marginBottom="7dp" />
-
-        <include
-          android:id="@+id/a6"
-          layout="@layout/one_msg_item_sender"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_below="@+id/a5"
-          android:layout_alignParentLeft="true"
-          android:layout_marginLeft="10dp"
-          android:layout_marginRight="10dp"
-          android:layout_marginBottom="7dp" />
-
-        <include
-          android:id="@+id/a7"
-          layout="@layout/one_msg_item_sender"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_below="@+id/a6"
-          android:layout_alignParentLeft="true"
-          android:layout_marginLeft="10dp"
-          android:layout_marginRight="10dp"
-          android:layout_marginBottom="7dp" />
-
-      </RelativeLayout>
-    </LinearLayout>
-  </ScrollView>
+  </androidx.recyclerview.widget.RecyclerView>
 
   <!-- TEXTING BOX -->
 
   <LinearLayout
+    android:id="@+id/textbox_for_chatting"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:background="@color/appColorDark"
     android:elevation="3dp"
-    android:weightSum="3"
     android:orientation="horizontal"
     android:padding="10dp"
-    android:background="@color/appColorDark"
-    android:layout_alignParentBottom="true"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:weightSum="3">
+
     <EditText
-      android:textColorHint="@color/lightest_grey"
-      android:textColor="@android:color/white"
-      android:textSize="13dp"
-      android:paddingLeft="40dp"
-      android:hint="Send a message"
+      android:layout_width="wrap_content"
+      android:layout_height="40dp"
       android:layout_weight="2"
       android:background="@drawable/messaging_text_box"
-      android:layout_width="wrap_content"
-      android:layout_height="40dp" />
+      android:hint="Send a message"
+      android:paddingLeft="40dp"
+      android:textColor="@android:color/white"
+      android:textColorHint="@color/lightest_grey"
+      android:textSize="13dp" />
 
     <ImageView
-      android:clickable="true"
-      android:background="@drawable/app_color_ripple_borderless"
-      android:layout_weight="1"
-      android:src="@drawable/send_icon"
       android:layout_width="0dp"
-      android:layout_height="40dp" />
+      android:layout_height="40dp"
+      android:layout_weight="1"
+      android:background="@drawable/app_color_ripple_borderless"
+      android:clickable="true"
+      android:src="@drawable/send_icon" />
 
   </LinearLayout>
 </RelativeLayout>

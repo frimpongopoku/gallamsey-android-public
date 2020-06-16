@@ -4,6 +4,9 @@ import android.content.Intent;
 
 public class Konstants {
 
+  public static final int SENDER_VIEW_TYPE = 172;
+  public static final int RECEIPIENT_VIEW_TYPE = 169;
+
   public static final double sLat = 5.636029;
   public static final double sLong = -0.2915028;
 
