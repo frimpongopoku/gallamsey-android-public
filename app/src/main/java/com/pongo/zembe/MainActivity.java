@@ -22,8 +22,10 @@ public class MainActivity extends AppCompatActivity {
   }
 
   public void testDate(View v){
-    String errs = RandomHelpersClass.mergeTextsFromArray((ArrayList<String>) RandomHelpersClass.validateDOB("22-03-02").get("errors"));
-    Toast.makeText(this, errs, Toast.LENGTH_SHORT).show();
+//    String errs = RandomHelpersClass.mergeTextsFromArray((ArrayList<String>) RandomHelpersClass.validateDOB("22-03-02").get("errors"));
+//    Toast.makeText(this, errs, Toast.LENGTH_SHORT).show();
+    Intent home = new Intent(this, Home.class);
+    startActivity(home);
   }
   public void logout(View v){
     try {

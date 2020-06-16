@@ -29,7 +29,7 @@
       android:textColor="@android:color/white"
       android:textFontWeight="700"
       android:textSize="15sp"
-      android:textStyle="italic" />
+      />
 
     <ImageView
       android:id="@+id/star_icon"
@@ -51,7 +51,7 @@
       android:textColor="@color/star_count_color"
       android:textFontWeight="700"
       android:textSize="15sp"
-      android:textStyle="italic" />
+      />
 
     <TextView
       android:layout_width="wrap_content"

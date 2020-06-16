@@ -24,148 +24,196 @@
       android:layout_height="50dp"
       android:layout_alignParentTop="true"
       android:alpha="1"
-      android:background="@drawable/register_title_bar"></View>
+      android:background="@drawable/register_title_bar"
+      android:elevation="4dp"></View>
 
     <TextView
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginTop="5dp"
+      android:elevation="5dp"
       android:padding="10dp"
-      android:text="Complete Your Profile"
+      android:text="Edit Your Profile"
       android:textAlignment="center"
       android:textColor="@android:color/white"
       android:textSize="14sp" />
-    <!--<Button-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_centerInParent="true"-->
-    <!--android:onClick="goToMain"-->
-    <!--android:text="Go to main" />-->
 
-    <LinearLayout
-      android:id="@+id/prof_mother_div"
-
+    <ScrollView
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:orientation="vertical"
-      >
+      android:layout_height="match_parent"
+      android:scrollbars="none">
 
-      <LinearLayout
-        android:id="@+id/comp_profile_div1"
+      <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <TextView
+        <LinearLayout
+          android:id="@+id/prof_mother_div"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginLeft="25dp"
-          android:padding="10dp"
-          android:text="Please fill all boxes with appropriate information"
-          android:textColor="@android:color/black"
-          android:textSize="13sp" />
+          android:orientation="vertical">
 
-        <EditText
-          android:id="@+id/prof_username"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginLeft="30dp"
-          android:layout_marginRight="30dp"
-          android:layout_marginBottom="10dp"
-          android:background="@drawable/stroke_textbox"
-          android:hint="What is your preferred name?"
-          android:padding="15dp"
-          android:textSize="13dp" />
+          <LinearLayout
+            android:id="@+id/comp_profile_div1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70dp"
+            android:orientation="vertical">
 
-        <TextView
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginLeft="25dp"
-          android:padding="6dp"
-          android:text="Date format Eg. 22-03-1998\nFun fact, you must be 13 or older"
-          android:textColor="@color/star_color"
-          android:textSize="13sp" />
+            <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_gravity="center_horizontal"
+              android:padding="8dp"
+              android:text="Upload A Picture"
+              android:textColor="@android:color/black" />
 
-        <EditText
-          android:id="@+id/prof_dob"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginLeft="30dp"
-          android:layout_marginRight="30dp"
-          android:layout_marginBottom="10dp"
-          android:background="@drawable/stroke_textbox"
-          android:hint="Date of birth Eg. 22-03-1998"
-          android:inputType="date"
-          android:padding="15dp"
-          android:textSize="13dp" />
+            <RelativeLayout
 
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
 
-        <EditText
-          android:id="@+id/prof_whatsapp_number"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginLeft="30dp"
-          android:layout_marginRight="30dp"
-          android:layout_marginBottom="10dp"
-          android:background="@drawable/stroke_textbox"
-          android:hint="Whatsapp Number"
-          android:inputType="phone"
-          android:padding="15dp"
-          android:textSize="13dp" />
+              <ImageView
+                android:id="@+id/image_holder"
+                android:layout_width="300dp"
+                android:layout_height="250dp"
+                android:layout_centerInParent="true"
+                android:background="?selectableItemBackground"
+                android:clickable="true"
+                android:visibility="gone" />
 
-      </LinearLayout>
+              <ImageView
+                android:visibility="gone"
+                android:background="@drawable/app_color_ripple_borderless"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="0dp"
+                android:layout_below="@+id/image_holder"
+                android:layout_marginRight="80dp"
+                android:id="@+id/x_button"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:elevation="116dp"
+                android:src="@drawable/close_circle" />
 
-      <LinearLayout
-        android:id="@+id/btns_div"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/comp_profile_div1"
-        android:orientation="vertical"
-        android:padding="20dp">
+              <LinearLayout
+                android:id="@+id/profile_picture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="@drawable/profile_dummy_box_female"
+                android:clickable="true"
+                android:orientation="horizontal" />
+            </RelativeLayout>
 
-        <Button
-          android:id="@+id/reg_finish"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_below="@id/textboxes_div"
-          android:layout_marginBottom="10dp"
-          android:background="@drawable/login_button_shape"
-          android:onClick="saveUserInformation"
-          android:padding="15dp"
-          android:text="Save"
-          android:textAllCaps="false"
-          android:textColor="@android:color/white" />
+            <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginLeft="25dp"
+              android:padding="10dp"
+              android:text="Please fill all boxes with appropriate information"
+              android:textAlignment="center"
+              android:textColor="@android:color/black"
+              android:textSize="13sp" />
 
-        <Button
-          android:id="@+id/reg_google"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginBottom="27dp"
-          android:background="@drawable/google_button"
-          android:onClick="goToHomepage"
-          android:padding="15dp"
-          android:text="Skip For Now"
-          android:textAllCaps="false"
-          android:textColor="@android:color/white"
-          android:textSize="15sp" />
+            <EditText
+              android:id="@+id/prof_username"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginLeft="30dp"
+              android:layout_marginRight="30dp"
+              android:layout_marginBottom="10dp"
+              android:background="@drawable/stroke_textbox"
+              android:hint="What is your preferred name?"
+              android:padding="15dp"
+              android:textSize="13dp" />
 
+            <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginLeft="25dp"
+              android:padding="6dp"
+              android:text="Date format Eg. 22-03-1998\nFun fact, you must be 13 or older"
+              android:textColor="@color/star_color"
+              android:textSize="13sp" />
 
-        <!--<TextView-->
-        <!--android:id="@+id/message"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginLeft="25dp"-->
-        <!--android:padding="10dp"-->
-        <!--android:text="Please fill all boxes with appropriate information"-->
-        <!--android:textColor="@android:color/black"-->
-        <!--android:textSize="13sp" />-->
+            <EditText
+              android:id="@+id/prof_dob"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginLeft="30dp"
+              android:layout_marginRight="30dp"
+              android:layout_marginBottom="10dp"
+              android:background="@drawable/stroke_textbox"
+              android:hint="Date of birth Eg. 22-03-1998"
+              android:inputType="date"
+              android:padding="15dp"
+              android:textSize="13dp" />
 
 
-      </LinearLayout>
-    </LinearLayout>
+            <EditText
+              android:id="@+id/prof_whatsapp_number"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginLeft="30dp"
+              android:layout_marginRight="30dp"
+              android:layout_marginBottom="10dp"
+              android:background="@drawable/stroke_textbox"
+              android:hint="Whatsapp Number"
+              android:inputType="phone"
+              android:padding="15dp"
+              android:textSize="13dp" />
+
+          </LinearLayout>
+
+          <LinearLayout
+            android:id="@+id/btns_div"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/comp_profile_div1"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <Button
+              android:id="@+id/reg_finish"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_below="@id/textboxes_div"
+              android:layout_marginBottom="10dp"
+              android:background="@drawable/login_button_shape"
+              android:onClick="saveUserInformation"
+              android:padding="15dp"
+              android:text="Save"
+              android:textAllCaps="false"
+              android:textColor="@android:color/white" />
+
+            <Button
+              android:id="@+id/reg_google"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginBottom="27dp"
+              android:background="@drawable/google_button"
+              android:onClick="goToHomepage"
+              android:padding="15dp"
+              android:text="Skip For Now"
+              android:textAllCaps="false"
+              android:textColor="@android:color/white"
+              android:textSize="15sp" />
 
 
+            <!--<TextView-->
+            <!--android:id="@+id/message"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="25dp"-->
+            <!--android:padding="10dp"-->
+            <!--android:text="Please fill all boxes with appropriate information"-->
+            <!--android:textColor="@android:color/black"-->
+            <!--android:textSize="13sp" />-->
+
+
+          </LinearLayout>
+        </LinearLayout>
+      </RelativeLayout>
+    </ScrollView>
   </RelativeLayout>
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

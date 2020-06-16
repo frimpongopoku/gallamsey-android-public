@@ -8,13 +8,15 @@
 
 
   <View
-    android:alpha="1"
+    android:elevation="4dp"
     android:id="@+id/titlebar"
     android:layout_width="match_parent"
     android:layout_height="50dp"
+    android:alpha="1"
     android:background="@drawable/register_title_bar"></View>
 
   <TextView
+    android:elevation="5dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="5dp"
@@ -26,9 +28,9 @@
 
 
   <ScrollView
-    android:layout_marginTop="60dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_marginTop="60dp">
 
     <RelativeLayout
       android:layout_width="match_parent"
@@ -72,6 +74,7 @@
           android:padding="15dp"
           android:textSize="13dp" />
 
+
         <EditText
           android:id="@+id/reg_phone"
           android:layout_width="match_parent"
@@ -84,6 +87,24 @@
           android:inputType="phone"
           android:padding="15dp"
           android:textSize="13dp" />
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="30dp"
+          android:text="Gender ( If you prefer not to say, please choose 'other' ) "
+          android:textSize="12sp" />
+
+        <Spinner
+          android:id="@+id/gender_dropdown"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="30dp"
+          android:layout_marginTop="5dp"
+          android:layout_marginRight="30dp"
+          android:layout_marginBottom="10dp"
+          android:background="@drawable/stroke_textbox"
+          android:padding="15dp"></Spinner>
 
         <EditText
 
@@ -113,12 +134,12 @@
           android:textSize="13dp" />
 
         <!--<View-->
-          <!--android:layout_width="match_parent"-->
-          <!--android:layout_height="1dp"-->
-          <!--android:layout_marginLeft="40dp"-->
-          <!--android:layout_marginTop="10dp"-->
-          <!--android:layout_marginRight="40dp"-->
-          <!--android:background="@color/text_default" />-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:layout_marginLeft="40dp"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:layout_marginRight="40dp"-->
+        <!--android:background="@color/text_default" />-->
 
         <TextView
           android:layout_width="match_parent"
@@ -148,7 +169,7 @@
           android:padding="6dp"
           android:text="Date format Eg. 22-03-1998\nFun fact, you must be 13 or older"
           android:textColor="@color/star_color"
-          android:textSize="13sp" />
+          android:textSize="12sp" />
 
         <EditText
           android:id="@+id/reg_dob"
