@@ -78,7 +78,6 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
     holder.cost.setText(Costs.get(pos));
     holder.profit.setText(Profits.get(pos));
     holder.date.setText(Dates.get(pos));
-    holder.has_specifics.setText("Has Specifics");
 
   }
 
@@ -88,7 +87,6 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
     holder.cost.setText(Costs.get(pos));
     holder.profit.setText(Profits.get(pos));
     holder.date.setText(Dates.get(pos));
-    holder.has_specifics.setText("Has Specifics");
     holder.image.setImageResource(R.drawable.shoe50);
 
   }
@@ -109,8 +107,7 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
       this.description = itemView.findViewById(R.id.text_errand_card_desc);
       this.cost = itemView.findViewById(R.id.text_errand_card_cost);
       this.profit = itemView.findViewById(R.id.text_errand_card_allowance);
-      this.date = itemView.findViewById(R.id.text_errand_card_has_specifics);
-      this.has_specifics = itemView.findViewById(R.id.text_errand_card_has_specifics);
+      this.date = itemView.findViewById(R.id.text_errand_card_date);
       itemView.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -135,7 +132,6 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
       this.cost = itemView.findViewById(R.id.img_errand_card_cost);
       this.profit = itemView.findViewById(R.id.img_errand_card_allowance);
       this.date = itemView.findViewById(R.id.img_errand_card_date);
-      this.has_specifics = itemView.findViewById(R.id.img_errand_card_has_specifics);
       this.image = itemView.findViewById(R.id.img_errand_card_image);
       itemView.setOnClickListener(new View.OnClickListener() {
         @Override
