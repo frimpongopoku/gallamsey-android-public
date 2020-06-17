@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  tools:context=".ImageErrandView">
+
+  <include
+    android:id="@+id/my_toolbar"
+    layout="@layout/app_back_with_pic_toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="54dp"
+    android:layout_alignParentTop="true" />
+
+  <ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="60dp">
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_below="@+id/my_toolbar"
+      android:orientation="vertical"
+      android:paddingLeft="20dp"
+      android:paddingRight="20dp">
+
+      <LinearLayout
+        android:id="@+id/user_details_div"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp">
+
+        <ImageView
+          android:layout_width="45dp"
+          android:layout_height="45dp"
+          android:layout_marginEnd="15dp"
+          android:src="@drawable/w_p" />
+
+        <LinearLayout
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:orientation="vertical">
+
+          <TextView
+            android:id="@+id/post_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="2dp"
+            android:text="22nd March 2019"
+            android:textSize="11sp" />
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/google_sans_medium"
+            android:text="Akwesi Frimpong" />
+        </LinearLayout>
+      </LinearLayout>
+
+
+        <HorizontalScrollView
+          android:scrollbars="none"
+          android:layout_marginBottom="5dp"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent">
+
+         <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="match_parent">
+           <ImageView
+             android:elevation="3dp"
+             android:scaleType="fitCenter"
+             android:layout_marginRight="15dp"
+             android:layout_width="300dp"
+             android:layout_height="300dp"
+             android:src="@drawable/food1" />
+
+           <ImageView
+             android:elevation="3dp"
+             android:layout_marginRight="15dp"
+             android:layout_width="300dp"
+             android:layout_height="300dp"
+             android:src="@drawable/food2" />
+
+           <ImageView
+             android:elevation="3dp"
+             android:layout_width="300dp"
+             android:layout_height="300dp"
+             android:src="@drawable/food3" />
+         </LinearLayout>
+        </HorizontalScrollView>
+
+
+      <TextView
+        android:id="@+id/text_errand_card_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/user_details_div"
+        android:fontFamily="@font/google_sans_light"
+        android:text="I need someone to buy me waakye 3 cedis, Mcroni 10 cedis Fish 2 cedis, and Chicken 5 cedis"
+        android:textSize="23sp" />
+
+
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:background="@color/colorPrimary"
+        android:fontFamily="@font/google_sans_medium"
+        android:padding="15dp"
+        android:text="IMPORTANT DETAILS"
+
+        android:textColor="@android:color/white"
+        android:textSize="14sp" />
+
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/just_a_rectangle"
+        android:paddingLeft="20dp"
+        android:paddingTop="20dp"
+        android:paddingRight="20dp"
+        android:paddingBottom="20dp"
+        android:text="Size 43 \n I would like a brown color \n It must be Gucci"
+        android:textSize="13sp" />
+
+      <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+          android:id="@+id/post_title"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignParentLeft="true"
+          android:layout_marginTop="0dp"
+          android:padding="10dp"
+          android:text="This is the estimated cost of this errand"
+          android:textColor="@android:color/black"
+          android:textSize="14sp" />
+
+        <TextView
+          android:id="@+id/item_cost"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignParentRight="true"
+          android:layout_marginRight="20dp"
+          android:text="135"
+          android:textColor="@color/cost_color"
+          android:textFontWeight="700"
+          android:textSize="35sp" />
+
+        <TextView
+          android:id="@+id/profit_summary"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@+id/post_title"
+          android:layout_alignParentLeft="true"
+          android:layout_marginTop="0dp"
+          android:padding="10dp"
+          android:text="After the errand, you stand to earn "
+          android:textColor="@android:color/black"
+          android:textSize="14sp" />
+
+        <TextView
+          android:id="@+id/errand_profit_text"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@+id/item_cost"
+          android:layout_alignParentRight="true"
+          android:layout_marginRight="20dp"
+          android:text="63"
+          android:textColor="@color/colorPrimary"
+          android:textFontWeight="700"
+          android:textSize="35sp" />
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/errand_profit_text"
+          android:orientation="vertical">
+
+          <TextView
+
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:fontFamily="@font/google_sans_medium"
+            android:padding="10dp"
+            android:text="A total of 198 GHS will be transferred to your account on completing this errand"
+            android:textColor="@color/colorPrimary"
+            android:textSize="14sp"
+            android:textStyle="italic" />
+
+          <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/orange_rectangle"
+            android:clickable="true"
+            android:fontFamily="@font/google_sans_medium"
+            android:padding="15dp"
+            android:text="@string/errand_first_timers"
+            android:textColor="@color/deep_orange"
+            android:textSize="12sp" />
+
+          <androidx.legacy.widget.Space
+            android:layout_width="match_parent"
+            android:layout_height="70dp" />
+
+          <Button
+            android:id="@+id/run_errand"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/login_button_shape"
+            android:fontFamily="@font/google_sans_bold"
+            android:text="I Can Run This Errand"
+            android:textColor="@android:color/white" />
+
+
+        </LinearLayout>
+      </RelativeLayout>
+
+
+    </LinearLayout>
+  </ScrollView>
+
+</RelativeLayout>

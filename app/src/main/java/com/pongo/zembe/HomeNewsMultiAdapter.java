@@ -137,6 +137,13 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
       this.date = itemView.findViewById(R.id.img_errand_card_date);
       this.has_specifics = itemView.findViewById(R.id.img_errand_card_has_specifics);
       this.image = itemView.findViewById(R.id.img_errand_card_image);
+      itemView.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+          Intent imageErrandPage = new Intent(view.getContext(),ImageErrandView.class);
+          view.getContext().startActivity(imageErrandPage);
+        }
+      });
     }
   }
 }

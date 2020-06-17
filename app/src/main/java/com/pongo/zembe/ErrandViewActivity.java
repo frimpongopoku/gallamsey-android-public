@@ -21,8 +21,6 @@ public class ErrandViewActivity extends AppCompatActivity {
     toolbar = findViewById(R.id.my_toolbar);
     setSupportActionBar(toolbar);
     dialogCreator  = new MagicBoxes(this);
-
-
     runErrandButton = findViewById(R.id.run_errand);
     runErrandButton.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -44,4 +42,6 @@ public class ErrandViewActivity extends AppCompatActivity {
       }
     });
   }
+
+
 }
