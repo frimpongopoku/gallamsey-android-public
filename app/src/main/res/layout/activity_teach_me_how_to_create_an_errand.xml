@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  tools:context=".TeachMeHowToCreateAnErrand">
+
+  <include
+    android:id="@+id/my_toolbar"
+    layout="@layout/app_default_toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />
+
+  <ScrollView
+    android:layout_below="@id/my_toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:orientation="vertical"
+      android:paddingTop="10dp">
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="15dp">
+
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:fontFamily="@font/google_sans_bold"
+          android:padding="8dp"
+          android:text="Setting Your Description"
+          android:textColor="@android:color/black"
+          android:textSize="12sp" />
+
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:fontFamily="@font/google_sans_thin"
+          android:paddingLeft="8dp"
+          android:paddingRight="8dp"
+          android:text="This is where you fully explain what kind of item you want. Describe as vividly as possible. Like this: "
+          android:textSize="12sp" />
+
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="10dp"
+          android:layout_marginTop="10dp"
+          android:layout_marginRight="10dp"
+          android:background="@drawable/stroke_textbox_b"
+
+          android:padding="15dp"
+          android:paddingLeft="8dp"
+          android:text="I would like a plate of waakye for 5 cedis, with a side of spaghetti for GHS 3, GHS 2 salad, GHS 3 for sausages, 1 boiled egg, and a small piece of fish"
+          android:textSize="12sp" />
+      </LinearLayout>
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="15dp">
+
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:fontFamily="@font/google_sans_bold"
+          android:padding="8dp"
+          android:text="Setting Your Estimated Cost"
+          android:textColor="@android:color/black"
+          android:textSize="12sp" />
+
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:fontFamily="@font/google_sans_thin"
+          android:paddingLeft="8dp"
+          android:paddingRight="8dp"
+          android:text="Here, you indicate the exact amount you know for sure the time(s) would cost.\nDont write GHS 2 if you know your item costs GHS 5\n Your errand will be cancelled if you do this, but you will get your GHS 2 back\nOnly numbers are allowed in this box, and its in Ghana Cedis"
+          android:textSize="12sp" />
+
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="10dp"
+          android:layout_marginTop="10dp"
+          android:layout_marginRight="10dp"
+          android:background="@drawable/stroke_textbox_b"
+          android:padding="15dp"
+          android:paddingLeft="8dp"
+          android:text="15"
+          android:textSize="12sp" />
+      </LinearLayout>
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="15dp">
+
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:fontFamily="@font/google_sans_bold"
+          android:padding="8dp"
+          android:text="Setting Your Allowance"
+          android:textColor="@android:color/black"
+          android:textSize="12sp" />
+
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:fontFamily="@font/google_sans_thin"
+          android:paddingLeft="8dp"
+          android:paddingRight="8dp"
+          android:text="Here, you get to indicate exactly how much you wish to give whoever runs the errand for you.\n Allowance can never be '0', the least amount you can indicate is GHS 1\n Only numbers are allowed here too, and it indicates Ghana Cedis"
+          android:textSize="12sp" />
+
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="10dp"
+          android:layout_marginTop="10dp"
+          android:layout_marginRight="10dp"
+          android:background="@drawable/stroke_textbox_b"
+          android:padding="15dp"
+          android:paddingLeft="8dp"
+          android:text="6"
+          android:textSize="12sp" />
+      </LinearLayout>
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="15dp">
+
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:fontFamily="@font/google_sans_bold"
+          android:padding="8dp"
+          android:text="Setting Your Title"
+          android:textColor="@android:color/black"
+          android:textSize="12sp" />
+
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:fontFamily="@font/google_sans_thin"
+          android:paddingLeft="8dp"
+          android:paddingRight="8dp"
+          android:text="Here, indicate any 'catchy' title that will draw riders to run your errand\nBe creative, go crazy!"
+          android:textSize="12sp" />
+
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="10dp"
+          android:layout_marginTop="10dp"
+          android:layout_marginRight="10dp"
+          android:background="@drawable/stroke_textbox_b"
+          android:padding="15dp"
+          android:paddingLeft="8dp"
+          android:text="Anyone wants a quick GHS 5 for a quick dash to Amelia waakye and back?"
+          android:textSize="12sp" />
+      </LinearLayout>
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="15dp">
+
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:fontFamily="@font/google_sans_bold"
+          android:padding="8dp"
+          android:text="Adding An Image"
+          android:textColor="@android:color/black"
+          android:textSize="12sp" />
+
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:fontFamily="@font/google_sans_thin"
+          android:paddingLeft="8dp"
+          android:paddingRight="8dp"
+          android:text="Images will always be better than words, chip in a picture that better describes the item(s) you want, to help riders avoid silly mistakes \nTo add an image just turn the image switch on and choose a picture from your gallery\nIf you choose an image, and turn the switch back off, no image will be uploaded. If you want you errand to have a picture, simply choose a picture and keep the switch on"
+          android:textSize="12sp" />
+
+
+        <Switch
+          android:layout_margin="10dp"
+          android:text="Choose Image"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content" />
+
+      </LinearLayout>
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="15dp">
+
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:fontFamily="@font/google_sans_bold"
+          android:padding="8dp"
+          android:text="Setting Your Expiry Date"
+          android:textColor="@android:color/black"
+          android:textSize="12sp" />
+
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:fontFamily="@font/google_sans_thin"
+          android:paddingLeft="8dp"
+          android:paddingRight="8dp"
+          android:text="Here, you set when you errand should no longer be available.\nAfter this time, if no rider has picked up your errand, it will be closed, and your money will be sent back to your wallet\nNB: Usually, if no one picks up your errand, check your allowance, it might be a bit small on the sides"
+          android:textSize="12sp" />
+
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="10dp"
+          android:layout_marginTop="10dp"
+          android:layout_marginRight="10dp"
+          android:background="@drawable/stroke_textbox_b"
+          android:padding="15dp"
+          android:paddingLeft="8dp"
+          android:text="22-03-1998"
+          android:textSize="12sp" />
+      </LinearLayout>
+
+
+    </LinearLayout>
+
+  </ScrollView>
+
+</RelativeLayout>

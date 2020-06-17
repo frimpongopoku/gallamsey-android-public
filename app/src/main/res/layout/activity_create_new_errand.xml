@@ -5,7 +5,6 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:orientation="vertical"
-
   tools:context=".CreateNewErrand">
 
   <include
@@ -25,13 +24,24 @@
       android:padding="20dp">
 
 
+      <Button
+        android:id="@+id/teach_me"
+        android:textColor="@color/deep_orange"
+        android:fontFamily="@font/google_sans_bold"
+        android:textSize="12sp"
+        android:background="@drawable/orange_rectangle"
+        android:layout_marginBottom="8dp"
+        android:text="Teach Me how To Create An Errand First"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
       <EditText
         android:textSize="14sp"
         android:id="@+id/errand_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:height="150dp"
-        android:background="@drawable/stroke_textbox"
+        android:background="@drawable/stroke_textbox_b"
         android:ems="10"
         android:gravity="start|top"
         android:hint="Errand Description"
@@ -43,7 +53,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:background="@drawable/stroke_textbox"
+        android:background="@drawable/stroke_textbox_b"
         android:hint="Estimated Cost"
         android:inputType="number"
         android:padding="15dp" />
@@ -53,7 +63,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:background="@drawable/stroke_textbox"
+        android:background="@drawable/stroke_textbox_b"
         android:hint="Allowance"
         android:inputType="number"
         android:padding="15dp" />
@@ -63,7 +73,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:background="@drawable/stroke_textbox"
+        android:background="@drawable/stroke_textbox_b"
         android:hint="Title of post"
         android:padding="15dp" />
 
@@ -86,7 +96,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:background="@drawable/stroke_textbox"
+        android:background="@drawable/stroke_textbox_b"
         android:hint="Expiry Date"
         android:inputType="date"
         android:padding="15dp" />
@@ -97,16 +107,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <Button
-          android:textSize="14sp"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="6dp"
-          android:layout_marginBottom="6dp"
-          android:background="@drawable/box_button"
-          android:padding="10dp"
-          android:text="Set Pick Up Location"
-          android:textColor="@android:color/white" />
+        <!--<Button-->
+          <!--android:textSize="14sp"-->
+          <!--android:layout_width="match_parent"-->
+          <!--android:layout_height="wrap_content"-->
+          <!--android:layout_marginTop="6dp"-->
+          <!--android:layout_marginBottom="6dp"-->
+          <!--android:background="@drawable/box_button"-->
+          <!--android:padding="10dp"-->
+          <!--android:text="Set Pick Up Location"-->
+          <!--android:textColor="@android:color/white" />-->
 
         <Button
           android:textSize="14sp"
@@ -115,7 +125,7 @@
           android:layout_marginBottom="6dp"
           android:background="@drawable/box_button_bluish"
           android:padding="10dp"
-          android:text="Finish"
+          android:text="NEXT"
           android:textColor="@android:color/white" />
       </LinearLayout>
 
