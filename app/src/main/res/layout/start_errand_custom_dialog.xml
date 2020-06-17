@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:orientation="vertical"
+  android:padding="20dp">
+
+  <TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fontFamily="@font/google_sans_bold"
+    android:text="Pressing 'Add To List'"
+    android:textColor="@android:color/black"
+    android:textSize="15sp" />
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="15dp">
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="Will add this errand to your list if you havent exceeded your basket limit"
+      android:textSize="12sp" />
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="Owner of the errand will be notified that you have taken the errand, and will be starting soon"
+      android:textSize="12sp" />
+  </LinearLayout>
+
+  <!-- =================================     -->
+
+  <TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fontFamily="@font/google_sans_bold"
+    android:text="Pressing 'Start Now'"
+    android:textColor="@android:color/black"
+    android:textSize="15sp" />
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="15dp">
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="Will notify the owner right away that their errand is being worked on"
+      android:textSize="12sp" />
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="The owner will be shown whatever value you indicated as your estimated time to complete the errand"
+      android:textSize="12sp" />
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="Owner can start a timer based on that time and rate you however, based on that"
+      android:textSize="12sp" />
+  </LinearLayout>
+  <TextView
+    android:layout_marginTop="20dp"
+    android:textStyle="italic"
+    android:textColor="@android:color/holo_red_dark"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="NB: As long as you deliver the package, you will be paid. Enjoy your journey!"
+    android:textSize="12sp" />
+
+</LinearLayout>

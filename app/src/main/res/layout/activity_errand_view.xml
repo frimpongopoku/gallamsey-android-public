@@ -7,11 +7,11 @@
   tools:context=".ErrandViewActivity">
 
   <include
-    android:layout_alignParentTop="true"
     android:id="@+id/my_toolbar"
     layout="@layout/app_back_with_pic_toolbar"
     android:layout_width="match_parent"
-    android:layout_height="54dp" />
+    android:layout_height="54dp"
+    android:layout_alignParentTop="true" />
 
 
   <ScrollView
@@ -107,63 +107,95 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_alignParentLeft="true"
+          android:layout_marginTop="0dp"
           android:padding="10dp"
-          android:text="Go And Buy Me These Shoes"
+          android:text="This is the estimated cost of this errand"
           android:textColor="@android:color/black"
           android:textSize="14sp" />
-
-
-        <Button
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_below="@+id/post_title"
-          android:layout_alignParentLeft="true"
-          android:layout_marginLeft="10dp"
-          android:layout_marginTop="10dp"
-          android:background="@drawable/stroke_button"
-          android:padding="15dp"
-          android:text="I want To Go" />
-
-        <TextView
-          android:id="@+id/allowance"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-
-          android:layout_alignParentRight="true"
-          android:layout_marginRight="10dp"
-          android:text="63"
-          android:textColor="@color/allowance_color"
-          android:textFontWeight="700"
-          android:textSize="35sp" />
 
         <TextView
           android:id="@+id/item_cost"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-
+          android:layout_alignParentRight="true"
           android:layout_marginRight="20dp"
-          android:layout_toLeftOf="@+id/allowance"
           android:text="135"
           android:textColor="@color/cost_color"
           android:textFontWeight="700"
           android:textSize="35sp" />
 
         <TextView
+          android:id="@+id/profit_summary"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@+id/post_title"
+          android:layout_alignParentLeft="true"
+          android:layout_marginTop="0dp"
+          android:padding="10dp"
+          android:text="After the errand, you stand to earn "
+          android:textColor="@android:color/black"
+          android:textSize="14sp" />
+
+        <TextView
+          android:id="@+id/errand_profit_text"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_below="@+id/item_cost"
-          android:layout_marginRight="40dp"
-          android:layout_toLeftOf="@+id/allowance_currency"
-          android:text="GHC" />
-
-        <TextView
-          android:id="@+id/allowance_currency"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_below="@+id/allowance"
           android:layout_alignParentRight="true"
-          android:layout_marginRight="16dp"
-          android:text="GHC" />
+          android:layout_marginRight="20dp"
+          android:text="63"
+          android:textColor="@color/colorPrimary"
+          android:textFontWeight="700"
+          android:textSize="35sp" />
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/errand_profit_text"
+          android:orientation="vertical">
+
+          <TextView
+
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:fontFamily="@font/google_sans_medium"
+            android:padding="10dp"
+            android:text="A total of 198 GHS will be transferred to your account on completing this errand"
+            android:textColor="@color/colorPrimary"
+            android:textSize="14sp"
+            android:textStyle="italic" />
+
+          <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/orange_rectangle"
+            android:clickable="true"
+            android:fontFamily="@font/google_sans_medium"
+            android:padding="15dp"
+            android:text="@string/errand_first_timers"
+            android:textColor="@color/deep_orange"
+            android:textSize="12sp" />
+
+          <androidx.legacy.widget.Space
+            android:layout_width="match_parent"
+            android:layout_height="70dp" />
+
+          <Button
+            android:id="@+id/run_errand"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/login_button_shape"
+            android:fontFamily="@font/google_sans_bold"
+            android:text="I Can Run This Errand"
+            android:textColor="@android:color/white" />
+
+
+        </LinearLayout>
+
 
       </RelativeLayout>
 
