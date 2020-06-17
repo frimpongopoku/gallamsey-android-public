@@ -1,10 +1,12 @@
 package com.pongo.zembe;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -77,6 +79,7 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
     holder.profit.setText(Profits.get(pos));
     holder.date.setText(Dates.get(pos));
     holder.has_specifics.setText("Has Specifics");
+
   }
 
   public void setImageContent(@NonNull RecyclerView.ViewHolder _holder, int pos) {
@@ -87,6 +90,7 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
     holder.date.setText(Dates.get(pos));
     holder.has_specifics.setText("Has Specifics");
     holder.image.setImageResource(R.drawable.shoe50);
+
   }
 
   @Override
@@ -97,8 +101,7 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
 
 
   //........ TextCard
-
-  class TextViewHolder extends RecyclerView.ViewHolder {
+  class TextViewHolder extends RecyclerView.ViewHolder  {
     TextView description, cost, profit, date, has_specifics;
 
     public TextViewHolder(@NonNull View itemView) {
@@ -108,7 +111,16 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
       this.profit = itemView.findViewById(R.id.text_errand_card_allowance);
       this.date = itemView.findViewById(R.id.text_errand_card_has_specifics);
       this.has_specifics = itemView.findViewById(R.id.text_errand_card_has_specifics);
+      itemView.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+          Intent errandViewPage = new Intent(view.getContext(),ErrandViewActivity.class);
+          view.getContext().startActivity(errandViewPage);
+        }
+      });
+
     }
+
   }
 
 

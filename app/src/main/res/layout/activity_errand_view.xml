@@ -7,49 +7,93 @@
   tools:context=".ErrandViewActivity">
 
   <include
+    android:layout_alignParentTop="true"
     android:id="@+id/my_toolbar"
     layout="@layout/app_back_with_pic_toolbar"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" />
+    android:layout_height="54dp" />
 
 
   <ScrollView
-    android:paddingTop="70dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingTop="70dp">
 
     <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:layout_below="@+id/my_toolbar"
       android:orientation="vertical"
-      android:padding="20dp">
-      <include
-        android:id="@+id/my_toolbar"
-        layout="@layout/text_errand_card"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+      android:paddingLeft="20dp"
+      android:paddingRight="20dp">
 
-      <!--<include-->
-        <!--layout="@layout/errand_image_card"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_margin="10dp" />-->
+      <LinearLayout
+        android:id="@+id/user_details_div"
+        android:layout_width="match_parent"
+
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp">
+
+        <ImageView
+          android:layout_width="45dp"
+          android:layout_height="45dp"
+          android:layout_marginEnd="15dp"
+          android:src="@drawable/w_p" />
+
+        <LinearLayout
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:orientation="vertical">
+
+          <TextView
+            android:id="@+id/post_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="2dp"
+            android:text="22nd March 2019"
+            android:textSize="11sp" />
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/google_sans_medium"
+            android:text="Akwesi Frimpong" />
+        </LinearLayout>
+
+
+      </LinearLayout>
+
+      <TextView
+        android:id="@+id/text_errand_card_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/user_details_div"
+        android:fontFamily="@font/google_sans_light"
+        android:text="I need someone to buy me waakye 3 cedis, Mcroni 10 cedis Fish 2 cedis, and Chicken 5 cedis"
+        android:textSize="23sp" />
+
 
       <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/lightgreen"
-        android:padding="10dp"
-        android:text="Specifics"
-        android:textColor="@android:color/holo_green_dark"
+        android:layout_marginTop="15dp"
+        android:background="@color/colorPrimary"
+        android:fontFamily="@font/google_sans_medium"
+        android:padding="15dp"
+        android:text="IMPORTANT DETAILS"
+
+        android:textColor="@android:color/white"
         android:textSize="14sp" />
 
       <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/just_a_rectangle"
+        android:paddingLeft="20dp"
         android:paddingTop="20dp"
+        android:paddingRight="20dp"
         android:paddingBottom="20dp"
         android:text="Size 43 \n I would like a brown color \n It must be Gucci"
         android:textSize="13sp" />
@@ -59,72 +103,67 @@
         android:layout_height="wrap_content">
 
         <TextView
-          android:textColor="@android:color/black"
           android:id="@+id/post_title"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_alignParentLeft="true"
           android:padding="10dp"
           android:text="Go And Buy Me These Shoes"
+          android:textColor="@android:color/black"
           android:textSize="14sp" />
 
-        <TextView
-          android:layout_marginRight="30dp"
-          android:id="@+id/post_date"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="10dp"
-          android:layout_marginBottom="20dp"
-          android:layout_alignParentRight="true"
-          android:text="22nd March 2019" />
 
         <Button
-          android:layout_marginTop="10dp"
-          android:layout_marginLeft="10dp"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_below="@+id/post_title"
           android:layout_alignParentLeft="true"
+          android:layout_marginLeft="10dp"
+          android:layout_marginTop="10dp"
           android:background="@drawable/stroke_button"
           android:padding="15dp"
           android:text="I want To Go" />
+
         <TextView
-          android:textColor="@color/allowance_color"
           android:id="@+id/allowance"
-          android:textFontWeight="700"
-          android:text="63"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+
+          android:layout_alignParentRight="true"
           android:layout_marginRight="10dp"
-          android:textSize="35sp"
-          android:layout_alignParentRight="true"
-          android:layout_below="@+id/post_date"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content" />
-        <TextView
-          android:textColor="@color/cost_color"
-          android:id="@+id/item_cost"
+          android:text="63"
+          android:textColor="@color/allowance_color"
           android:textFontWeight="700"
-          android:text="135"
+          android:textSize="35sp" />
+
+        <TextView
+          android:id="@+id/item_cost"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+
           android:layout_marginRight="20dp"
-          android:textSize="35sp"
           android:layout_toLeftOf="@+id/allowance"
-          android:layout_below="@+id/post_date"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content" />
+          android:text="135"
+          android:textColor="@color/cost_color"
+          android:textFontWeight="700"
+          android:textSize="35sp" />
+
         <TextView
-          android:layout_marginRight="40dp"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
           android:layout_below="@+id/item_cost"
+          android:layout_marginRight="40dp"
           android:layout_toLeftOf="@+id/allowance_currency"
-          android:text="GHC"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content" />
+          android:text="GHC" />
+
         <TextView
-          android:layout_marginRight="16dp"
           android:id="@+id/allowance_currency"
-          android:layout_alignParentRight="true"
-          android:layout_below="@+id/allowance"
-          android:text="GHC"
           android:layout_width="wrap_content"
-          android:layout_height="wrap_content" />
+          android:layout_height="wrap_content"
+          android:layout_below="@+id/allowance"
+          android:layout_alignParentRight="true"
+          android:layout_marginRight="16dp"
+          android:text="GHC" />
 
       </RelativeLayout>
 
