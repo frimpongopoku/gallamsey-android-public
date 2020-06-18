@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
@@ -11,11 +11,14 @@
     android:id="@+id/my_toolbar"
     layout="@layout/app_default_toolbar"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" />
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true" />
 
   <ScrollView
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_above="@id/next_btn"
+    android:layout_below="@+id/my_toolbar">
 
     <LinearLayout
       android:layout_width="match_parent"
@@ -23,20 +26,7 @@
       android:orientation="vertical"
       android:padding="20dp">
 
-
-      <Button
-        android:id="@+id/teach_me"
-        android:textColor="@color/deep_orange"
-        android:fontFamily="@font/google_sans_bold"
-        android:textSize="12sp"
-        android:background="@drawable/orange_rectangle"
-        android:layout_marginBottom="8dp"
-        android:text="Teach Me how To Create An Errand First"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
       <EditText
-        android:textSize="14sp"
         android:id="@+id/errand_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -46,91 +36,102 @@
         android:gravity="start|top"
         android:hint="Errand Description"
         android:inputType="textMultiLine"
-        android:padding="15dp" />
+        android:padding="15dp"
+        android:textSize="14sp" />
 
       <EditText
-        android:textSize="14sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:background="@drawable/stroke_textbox_b"
         android:hint="Estimated Cost"
         android:inputType="number"
-        android:padding="15dp" />
+        android:padding="15dp"
+        android:textSize="14sp" />
 
       <EditText
-        android:textSize="14sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:background="@drawable/stroke_textbox_b"
         android:hint="Allowance"
         android:inputType="number"
-        android:padding="15dp" />
+        android:padding="15dp"
+        android:textSize="14sp" />
 
       <EditText
-        android:textSize="14sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:background="@drawable/stroke_textbox_b"
         android:hint="Title of post"
-        android:padding="15dp" />
+        android:padding="15dp"
+        android:textSize="14sp" />
 
       <Switch
-        android:id="@+id/switch1"
+        android:id="@+id/image_switcher"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:text="Add Images" />
 
       <ImageView
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="15dp"
+        android:id="@+id/errand_image_holder"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:src="@drawable/waakye_plate_2" />
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:src="@drawable/waakye_plate_2"
+        android:visibility="gone" />
 
       <EditText
-        android:textSize="14sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:background="@drawable/stroke_textbox_b"
         android:hint="Expiry Date"
         android:inputType="date"
-        android:padding="15dp" />
-
-      <LinearLayout
-        android:layout_marginTop="40dp"
-        android:orientation="vertical"
+        android:padding="15dp"
+        android:textSize="14sp" />
+      <TextView
+        android:textColor="@android:color/black"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:text="Add any important details"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <!--<Button-->
-          <!--android:textSize="14sp"-->
-          <!--android:layout_width="match_parent"-->
-          <!--android:layout_height="wrap_content"-->
-          <!--android:layout_marginTop="6dp"-->
-          <!--android:layout_marginBottom="6dp"-->
-          <!--android:background="@drawable/box_button"-->
-          <!--android:padding="10dp"-->
-          <!--android:text="Set Pick Up Location"-->
-          <!--android:textColor="@android:color/white" />-->
-
-        <Button
-          android:textSize="14sp"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginBottom="6dp"
-          android:background="@drawable/box_button_bluish"
-          android:padding="10dp"
-          android:text="NEXT"
-          android:textColor="@android:color/white" />
-      </LinearLayout>
-
-
+        android:layout_height="wrap_content" />
+      <androidx.recyclerview.widget.RecyclerView
+        android:minHeight="150dp"
+        android:id="@+id/details_recycler_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
     </LinearLayout>
   </ScrollView>
 
-</LinearLayout>
+
+  <Button
+    android:id="@+id/next_btn"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginBottom="6dp"
+    android:background="@drawable/box_button_bluish"
+    android:fontFamily="@font/google_sans_bold"
+    android:padding="10dp"
+    android:text="NEXT"
+    android:textColor="@android:color/white"
+    android:textSize="14sp" />
+
+  <Button
+    android:id="@+id/errand_creation_info"
+    android:layout_width="50dp"
+    android:layout_height="50dp"
+    android:layout_alignParentRight="true"
+    android:layout_alignParentBottom="true"
+    android:layout_marginRight="25dp"
+    android:layout_marginBottom="65dp"
+    android:background="@drawable/circle_info_button"
+    android:elevation="9dp" />
+</RelativeLayout>

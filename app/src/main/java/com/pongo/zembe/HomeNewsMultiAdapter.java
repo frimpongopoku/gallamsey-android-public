@@ -78,7 +78,6 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
     holder.cost.setText(Costs.get(pos));
     holder.profit.setText(Profits.get(pos));
     holder.date.setText(Dates.get(pos));
-
   }
 
   public void setImageContent(@NonNull RecyclerView.ViewHolder _holder, int pos) {
