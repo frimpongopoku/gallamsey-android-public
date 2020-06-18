@@ -6,7 +6,8 @@
   android:paddingTop="8dp"
   android:paddingRight="8dp"
   android:paddingBottom="8dp"
-  android:background="@color/appColorLight_hollow"
+  android:clickable="true"
+  android:background="@drawable/details_item_background"
   android:layout_marginBottom="3dp"
   android:orientation="vertical">
 

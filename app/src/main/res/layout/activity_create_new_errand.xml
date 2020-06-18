@@ -93,6 +93,7 @@
         android:inputType="date"
         android:padding="15dp"
         android:textSize="14sp" />
+
       <TextView
         android:textColor="@android:color/black"
         android:paddingTop="10dp"
@@ -100,6 +101,32 @@
         android:text="Add any important details"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+      <LinearLayout
+        android:layout_marginBottom="7dp"
+        android:weightSum="4"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+          android:id="@+id/details_textbox"
+          android:layout_marginRight="3dp"
+          android:textSize="14sp"
+          android:padding="15dp"
+          android:background="@drawable/stroke_textbox_b"
+          android:hint="Type specific details here..."
+          android:layout_width="0dp"
+          android:layout_weight="3"
+          android:layout_height="wrap_content" />
+        <Button
+          android:id="@+id/add_details_btn"
+          android:textColor="@android:color/white"
+          android:fontFamily="@font/google_sans_bold"
+          android:background="@drawable/green_button_rounded_solid"
+          android:text="Add"
+          android:layout_weight="1"
+          android:layout_width="0dp"
+          android:layout_height="46dp" />
+      </LinearLayout>
       <androidx.recyclerview.widget.RecyclerView
         android:minHeight="150dp"
         android:id="@+id/details_recycler_list"

@@ -10,18 +10,24 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
+import android.widget.Toast;
 
-public class CreateNewErrand extends AppCompatActivity {
+import java.util.ArrayList;
+
+public class CreateNewErrand extends AppCompatActivity implements OnDetailItemsClick {
   Toolbar toolbar;
-  Button teachMe;
+  Button teachMe, addDetails;
   Switch imageSwitcher;
   ImageView errandImageHolder;
   LinearLayoutManager manager;
   RecyclerView recyclerView;
   DetailsListAdapter detailsListAdapter;
-  String[] detailsArray;
+  ArrayList<String> detailsArray;
+  EditText detailsBox;
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +47,7 @@ public class CreateNewErrand extends AppCompatActivity {
         }
       }
     });
+//    -----------------------------------------------------
 
     teachMe = findViewById(R.id.errand_creation_info);
     teachMe.setOnClickListener(new View.OnClickListener() {
@@ -50,12 +57,43 @@ public class CreateNewErrand extends AppCompatActivity {
         startActivity(teachMePage);
       }
     });
-    detailsArray = new String[]{"All round me are familiar faces", "And then something else I dont know", "do you believe in magic?"};
-    detailsListAdapter = new DetailsListAdapter(this,detailsArray);
+//    -----------------------------------------------------
+    detailsArray = new ArrayList<>();
+    populateArray();
+    detailsListAdapter = new DetailsListAdapter(this,detailsArray,this);
     recyclerView = findViewById(R.id.details_recycler_list);
     manager = new LinearLayoutManager(this);
     recyclerView.setLayoutManager(manager);
     recyclerView.setHasFixedSize(true);
     recyclerView.setAdapter(detailsListAdapter);
+//  -----------------------------------------------------
+    detailsBox = findViewById(R.id.details_textbox);
+    addDetails = findViewById(R.id.add_details_btn);
+    addDetails.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        String val = detailsBox.getText().toString();
+        if(!val.isEmpty()){
+          detailsArray.add(val);
+          detailsListAdapter.notifyDataSetChanged();
+          detailsBox.setText("");
+        }
+      }
+    });
+  }
+
+  public void populateArray(){
+    detailsArray.add("My helper oooo, My helper");
+    detailsArray.add("My helper oooo, My helper2");
+    detailsArray.add("My helper oooo, My helper3");
+
+  }
+
+  @Override
+  public void onDetailItemClick(int pos) {
+    detailsArray.remove(pos);
+    detailsListAdapter.notifyDataSetChanged();
+    Toast.makeText(this, "Deleted", Toast.LENGTH_SHORT).show();
+    detailsBox.requestFocus();
   }
 }
