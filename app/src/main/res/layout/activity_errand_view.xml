@@ -32,7 +32,6 @@
       <LinearLayout
         android:id="@+id/user_details_div"
         android:layout_width="match_parent"
-
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp">
 
@@ -84,7 +83,6 @@
         android:fontFamily="@font/google_sans_medium"
         android:padding="15dp"
         android:text="IMPORTANT DETAILS"
-
         android:textColor="@android:color/white"
         android:textSize="14sp" />
 
