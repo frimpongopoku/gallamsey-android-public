@@ -2,7 +2,11 @@ package com.pongo.zembe;
 
 import android.content.Intent;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class Konstants {
+
 
   public static final int SENDER_VIEW_TYPE = 172;
   public static final int RECEIPIENT_VIEW_TYPE = 169;
@@ -39,5 +43,6 @@ public class Konstants {
   //FIREBASE COLLECTION SET CONSTANTS
   //--------------------------------
   public static String USER_COLLECTION = "USERS";
+  public static String COMMUNITIES_COLLECTION = "COMMUNITIES";
   public static String PROFILE_PICTURES_COLLECTION = "PROFILE PICTURES";
 }

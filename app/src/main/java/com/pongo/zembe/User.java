@@ -17,13 +17,15 @@ import java.util.Date;
  */
 public abstract class User implements  Parcelable {
 
-  public String profilePictureURL, gender, preferredName, uniqueUserName, email, dob, phoneNumber, whatsappNumber, uniqueID, geoLocation[],userDocumentID;
+  public String region,country, profilePictureURL, gender, preferredName, uniqueUserName, email, dob, phoneNumber, whatsappNumber, uniqueID, geoLocation[],userDocumentID;
   public Date ts = new Timestamp(System.currentTimeMillis());
 
   public User() {
   } //no-arg constructor because of Firebase
 
-  public User(String preferredName, String DOB, String email, String phoneNumber, String whatsappNumber, String uniqueID, String geoLocation[],String gender) {
+
+
+  public User(String preferredName, String DOB, String email, String phoneNumber, String whatsappNumber, String uniqueID, String geoLocation[], String gender) {
     this.preferredName = preferredName;
     this.phoneNumber = phoneNumber;
     this.whatsappNumber = whatsappNumber;
@@ -66,6 +68,21 @@ public abstract class User implements  Parcelable {
     this.profilePictureURL = profilePictureURL;
   }
 
+  public String getRegion() {
+    return region;
+  }
+
+  public void setRegion(String region) {
+    this.region = region;
+  }
+
+  public String getCountry() {
+    return country;
+  }
+
+  public void setCountry(String country) {
+    this.country = country;
+  }
   public String getPreferredName() {
     return preferredName;
   }
@@ -129,14 +146,19 @@ public abstract class User implements  Parcelable {
   @Override
   public String toString() {
     return "User{" +
-      "preferredName='" + preferredName + '\'' +
+      "region='" + region + '\'' +
+      ", country='" + country + '\'' +
+      ", profilePictureURL='" + profilePictureURL + '\'' +
+      ", gender='" + gender + '\'' +
+      ", preferredName='" + preferredName + '\'' +
       ", uniqueUserName='" + uniqueUserName + '\'' +
       ", email='" + email + '\'' +
-      ", DOB='" + dob + '\'' +
+      ", dob='" + dob + '\'' +
       ", phoneNumber='" + phoneNumber + '\'' +
       ", whatsappNumber='" + whatsappNumber + '\'' +
       ", uniqueID='" + uniqueID + '\'' +
       ", geoLocation=" + Arrays.toString(geoLocation) +
+      ", userDocumentID='" + userDocumentID + '\'' +
       ", ts=" + ts +
       '}';
   }
