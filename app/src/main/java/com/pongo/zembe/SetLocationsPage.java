@@ -31,10 +31,16 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.protobuf.Internal;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 
 public class SetLocationsPage extends AppCompatActivity {
 
@@ -43,6 +49,8 @@ public class SetLocationsPage extends AppCompatActivity {
   Location deviceLocation;
   LocationListener locationListener;
   LocationManager locationManager;
+  FirebaseFirestore db = FirebaseFirestore.getInstance();
+  CollectionReference communities = db.collection(Konstants.COMMUNITIES_COLLECTION);
   //--Widgets---------------
   Button saveButton, startButton;
   ProgressBar spinner;
@@ -51,8 +59,6 @@ public class SetLocationsPage extends AppCompatActivity {
   //------------------------
   Boolean servicesOK, gpsOK, permissionsOK;
   int btnCheck = 0;
-
-
   public ArrayList<String> regionsArrayList = new ArrayList<>();
 
   @Override
@@ -66,8 +72,19 @@ public class SetLocationsPage extends AppCompatActivity {
     startButton = findViewById(R.id.start_button);
     startLocationListener();
     regionsDropdown = findViewById(R.id.regions_dropdown);
-    regionsArrayList.add("Greater Accara");
-    regionsArrayList.add("Ashanti Accara");
+    regionsArrayList.add("Choose A Region");
+    getCommunitiesListFromFirebase("GHANA", new CommunitiesCallback() {
+      @Override
+      public void collectCommunities(ArrayList<HashMap<String, Object>> communities) {
+        for (int i = 0; i < communities.size(); i++) {
+          try {
+            regionsArrayList.add(communities.get(i).get("name").toString());
+          }catch (Exception e){
+            Log.d("gettingCommunities",e.getMessage());
+          }
+        }
+      }
+    });
     ArrayAdapter<String> dropdownAdapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, regionsArrayList);
     regionsDropdown.setAdapter(dropdownAdapter);
     regionsDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -81,6 +98,27 @@ public class SetLocationsPage extends AppCompatActivity {
 
       }
     });
+  }
+
+
+  public void getCommunitiesListFromFirebase(String country, final CommunitiesCallback callback) {
+    communities.document(country)
+      .get()
+      .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        @Override
+        public void onSuccess(DocumentSnapshot documentSnapshot) {
+          if (documentSnapshot.exists()) {
+            ArrayList<HashMap<String, Object>> communities = (ArrayList<HashMap<String, Object>>) documentSnapshot.get("Regions");
+            callback.collectCommunities(communities);
+          }
+        }
+      }).addOnFailureListener(new OnFailureListener() {
+      @Override
+      public void onFailure(@NonNull Exception e) {
+        Toast.makeText(SetLocationsPage.this, e.getMessage(), Toast.LENGTH_LONG).show();
+      }
+    });
+
   }
 
   public void saveUserLocation(View v) {
@@ -234,4 +272,10 @@ public class SetLocationsPage extends AppCompatActivity {
     finish();
   }
 
+  public interface CommunitiesCallback {
+    void collectCommunities(ArrayList<HashMap<String, Object>> communities);
+  }
+
 }
+
+
