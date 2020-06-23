@@ -91,6 +91,45 @@
         android:text="Suggest A New Feature"
         android:textSize="14sp" />
 
+
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/google_sans_medium"
+        android:text="Wallet"
+        android:textSize="20sp" />
+
+      <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:background="@color/lightest_grey"
+        android:clickable="true" />
+
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/orange_ripple"
+        android:clickable="true"
+        android:fontFamily="@font/google_sans_light"
+        android:padding="15dp"
+        android:text="Cash In"
+        android:textSize="14sp" />
+
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/orange_ripple"
+        android:clickable="true"
+        android:fontFamily="@font/google_sans_light"
+        android:padding="15dp"
+        android:text="Cash Out"
+        android:textSize="14sp" />
+
       <View
         android:layout_width="match_parent"
         android:layout_height="2dp"

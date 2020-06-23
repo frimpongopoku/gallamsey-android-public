@@ -12,8 +12,12 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,23 +31,35 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.protobuf.Internal;
 
-public class SetLocationsPage extends AppCompatActivity{
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+
+public class SetLocationsPage extends AppCompatActivity {
 
   LocationProtocol locationsProtocol;
   FusedLocationProviderClient locationProviderClient;
   Location deviceLocation;
   LocationListener locationListener;
   LocationManager locationManager;
+  FirebaseFirestore db = FirebaseFirestore.getInstance();
+  CollectionReference communities = db.collection(Konstants.COMMUNITIES_COLLECTION);
   //--Widgets---------------
   Button saveButton, startButton;
   ProgressBar spinner;
   TextView textNotification;
+  Spinner regionsDropdown;
   //------------------------
   Boolean servicesOK, gpsOK, permissionsOK;
-  int btnCheck =0;
-
+  int btnCheck = 0;
+  public ArrayList<String> regionsArrayList = new ArrayList<>();
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -52,37 +68,85 @@ public class SetLocationsPage extends AppCompatActivity{
     locationsProtocol = new LocationProtocol(this);
     spinner = findViewById(R.id.spinner);
     textNotification = findViewById(R.id.text_notification);
-    saveButton  = findViewById(R.id.save_my_location);
+    saveButton = findViewById(R.id.save_my_location);
     startButton = findViewById(R.id.start_button);
     startLocationListener();
+    regionsDropdown = findViewById(R.id.regions_dropdown);
+    regionsArrayList.add("Choose A Region");
+    getCommunitiesListFromFirebase("GHANA", new CommunitiesCallback() {
+      @Override
+      public void collectCommunities(ArrayList<HashMap<String, Object>> communities) {
+        for (int i = 0; i < communities.size(); i++) {
+          try {
+            regionsArrayList.add(communities.get(i).get("name").toString());
+          } catch (Exception e) {
+            Log.d("gettingCommunities", e.getMessage());
+          }
+        }
+      }
+    });
+    ArrayAdapter<String> dropdownAdapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, regionsArrayList);
+    regionsDropdown.setAdapter(dropdownAdapter);
+    regionsDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+      @Override
+      public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+      }
+
+      @Override
+      public void onNothingSelected(AdapterView<?> adapterView) {
+
+      }
+    });
   }
 
 
-  
-  public void saveUserLocation(View v){
+  public void getCommunitiesListFromFirebase(String country, final CommunitiesCallback callback) {
+    communities.document(country)
+      .get()
+      .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        @Override
+        public void onSuccess(DocumentSnapshot documentSnapshot) {
+          if (documentSnapshot.exists()) {
+            ArrayList<HashMap<String, Object>> communities = (ArrayList<HashMap<String, Object>>) documentSnapshot.get("Regions");
+            callback.collectCommunities(communities);
+          }
+        }
+      }).addOnFailureListener(new OnFailureListener() {
+      @Override
+      public void onFailure(@NonNull Exception e) {
+        Toast.makeText(SetLocationsPage.this, e.getMessage(), Toast.LENGTH_LONG).show();
+      }
+    });
+
+  }
+
+  public void saveUserLocation(View v) {
     //----disable location listener 
     locationManager.removeUpdates(locationListener);
     locationManager = null;
     Toast.makeText(this, "Dude, you are tryna save some shit here!", Toast.LENGTH_SHORT).show();
   }
-  public void startLocationListener(){
-     locationManager = (LocationManager) getSystemService(this.LOCATION_SERVICE);
+
+  public void startLocationListener() {
+    locationManager = (LocationManager) getSystemService(this.LOCATION_SERVICE);
     if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
       return;
     }
     locationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-      locationListener = new LocationListener() {
+    locationListener = new LocationListener() {
       @Override
       public void onLocationChanged(Location location) {
         deviceLocation = location;
         spinner.setVisibility(View.INVISIBLE);
-        if(btnCheck  == 1) {
+        if (btnCheck == 1) {
           textNotification.setText("Thanks for waiting, we have your location now.");
           startButton.setVisibility(View.GONE);
           saveButton.setVisibility(View.VISIBLE);
         }
       }
+
       @Override
       public void onStatusChanged(String s, int i, Bundle bundle) {
 
@@ -92,6 +156,7 @@ public class SetLocationsPage extends AppCompatActivity{
       public void onProviderEnabled(String s) {
 
       }
+
       @Override
       public void onProviderDisabled(String s) {
 
@@ -100,7 +165,7 @@ public class SetLocationsPage extends AppCompatActivity{
     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, locationListener);
 
   }
-  
+
   /**
    * 1. First check for google play services
    * -- if its not fine, show a dialog that tells the user how to get google play services
@@ -114,7 +179,7 @@ public class SetLocationsPage extends AppCompatActivity{
     getDeviceLocation("Sorry, for some reason we could not calculate your current location");
   }
 
-  private void getDeviceLocation(final String errorMsg){
+  private void getDeviceLocation(final String errorMsg) {
     spinner.setVisibility(View.VISIBLE);
     textNotification.setVisibility(View.VISIBLE);
     btnCheck = 1;
@@ -129,19 +194,19 @@ public class SetLocationsPage extends AppCompatActivity{
         @Override
         public void onComplete(@NonNull Task<android.location.Location> task) {
           if (task.isSuccessful()) {
-            Location location= task.getResult();
-            if(location != null) {
+            Location location = task.getResult();
+            if (location != null) {
               String[] coords = {String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude())};
               Log.w("hereAreYourCoords::->", location.getLatitude() + " ," + location.getLongitude());
               spinner.setVisibility(View.GONE);
               textNotification.setText("Thanks for waiting, we have your location now.");
               startButton.setVisibility(View.GONE);
               saveButton.setVisibility(View.VISIBLE);
-            }else{
+            } else {
               Log.w("onLocationNull::->", "Your location is null bro!");
             }
           } else {
-            if(!errorMsg.isEmpty()) {
+            if (!errorMsg.isEmpty()) {
               Toast.makeText(SetLocationsPage.this, errorMsg, Toast.LENGTH_SHORT).show();
             }
           }
@@ -151,7 +216,7 @@ public class SetLocationsPage extends AppCompatActivity{
       @Override
       public void onFailure(@NonNull Exception e) {
         Log.w("couldntGetLocation::", e.getMessage());
-        if(!errorMsg.isEmpty()) {
+        if (!errorMsg.isEmpty()) {
           Toast.makeText(SetLocationsPage.this, errorMsg, Toast.LENGTH_SHORT).show();
         }
       }
@@ -201,10 +266,16 @@ public class SetLocationsPage extends AppCompatActivity{
   }
 
 
-  public void goHome(View v){
+  public void goHome(View v) {
     Intent home = new Intent(this, Home.class);
     startActivity(home);
     finish();
   }
 
+  public interface CommunitiesCallback {
+    void collectCommunities(ArrayList<HashMap<String, Object>> communities);
+  }
+
 }
+
+

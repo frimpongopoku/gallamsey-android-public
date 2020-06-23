@@ -47,7 +47,7 @@ public class HomeNewsAdapter extends RecyclerView.Adapter<HomeNewsAdapter.ViewHo
     holder.cost.setText( Costs.get(pos));
     holder.profit.setText( Profits.get(pos));
     holder.date.setText( Dates.get(pos));
-    holder.has_specifics.setText("Has Specifics");
+//    holder.has_specifics.setText("Has Specifics");
   }
 
   @Override
@@ -63,8 +63,8 @@ public class HomeNewsAdapter extends RecyclerView.Adapter<HomeNewsAdapter.ViewHo
       this.cost = itemView.findViewById(R.id.text_errand_card_cost);
       this.profit = itemView.findViewById(R.id.text_errand_card_allowance);
       this.date = itemView.findViewById(R.id.text_errand_card_date);
-      this.date = itemView.findViewById(R.id.text_errand_card_has_specifics);
-      this.has_specifics = itemView.findViewById(R.id.text_errand_card_has_specifics);
+      this.date = itemView.findViewById(R.id.text_errand_card_date);
+//      this.has_specifics = itemView.findViewById(R.id.text_errand_card_has_specifics);
     }
   }
 }

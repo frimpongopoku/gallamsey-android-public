@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 import android.os.Parcelable;
@@ -23,6 +24,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+
 public class Home extends AppCompatActivity {
   ArrayList<String> desc = new ArrayList<>();
   ArrayList<String> profits = new ArrayList<>();
@@ -31,6 +33,7 @@ public class Home extends AppCompatActivity {
   ImageView userProfileImageOnToolbar;
   FirebaseAuth mAuth = FirebaseAuth.getInstance();
   User authenticatedUser;
+  Button addErrandBtn;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +61,16 @@ public class Home extends AppCompatActivity {
 //    Set Fragment Listener to switch pages
     BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
     bottomNav.setOnNavigationItemSelectedListener(navListener);
+
+    addErrandBtn = findViewById(R.id.add_errand_button);
+    addErrandBtn.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        Intent createErrandPage = new Intent(getApplicationContext(),CreateNewErrand.class);
+        startActivity(createErrandPage);
+
+      }
+    });
 
   }
 
@@ -128,5 +141,6 @@ public class Home extends AppCompatActivity {
   public void goToProfileViewPage(View v) {
     Intent profile = new Intent(this, ViewProfilePage.class);
     startActivity(profile);
+    this.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
   }
 }

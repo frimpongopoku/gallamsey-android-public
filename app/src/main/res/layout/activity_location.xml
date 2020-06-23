@@ -7,12 +7,14 @@
   tools:context=".SetLocationsPage">
 
   <View
+    android:elevation="5dp"
     android:id="@+id/titlebar"
     android:layout_width="match_parent"
     android:layout_height="50dp"
-    android:background="@drawable/register_title_bar"></View>
+    android:background="@drawable/register_title_bar"/>
 
   <TextView
+    android:elevation="6dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="5dp"
@@ -28,20 +30,32 @@
     android:layout_height="match_parent"
     android:layout_below="@+id/titlebar"
     android:orientation="vertical"
-    android:paddingTop="70dp">
+    android:paddingTop="20dp">
+    <Spinner
+      android:layout_marginLeft="30dp"
+      android:layout_marginRight="30dp"
+      android:id="@+id/regions_dropdown"
+      android:paddingLeft="10dp"
+      android:paddingRight="10dp"
+      android:paddingTop="2dp"
+      android:paddingBottom="2dp"
+      android:background="@drawable/stroke_textbox"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"/>
 
     <TextView
       android:layout_width="wrap_content"
-
       android:layout_height="wrap_content"
       android:layout_gravity="center_horizontal"
       android:layout_margin="20dp"
       android:paddingLeft="70dp"
       android:paddingRight="70dp"
-      android:text="This is to register your home in our mapping. Don't worry, you can change it later"
+      android:text="This is to register your home in our mapping. Don't worry, you can change it later. Choose a region above and then, tap the round button"
       android:textAlignment="center"
       android:textColor="@android:color/darker_gray"
       android:textSize="12sp" />
+
+
 
     <TextView
       android:textColor="@android:color/black"

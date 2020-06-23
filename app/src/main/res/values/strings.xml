@@ -5,4 +5,6 @@
     <item>MALE</item>
     <item>FEMALE</item>
   </string-array>
+
+  <string name="errand_first_timers"><u>Is this your first time, or you need clarity? Read more about errands before before you start your journey</u></string>
 </resources>

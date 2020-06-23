@@ -45,13 +45,13 @@
         android:paddingTop="15dp"
         android:paddingRight="25dp">
 
-        <Button
-          android:background="@drawable/transparent_btn_orange"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:fontFamily="@font/google_sans_medium"
-          android:padding="18dp"
-          android:text="Edit Profile" />
+        <!--<Button-->
+          <!--android:layout_width="match_parent"-->
+          <!--android:layout_height="wrap_content"-->
+          <!--android:background="@drawable/transparent_btn_orange"-->
+          <!--android:fontFamily="@font/google_sans_medium"-->
+          <!--android:padding="18dp"-->
+          <!--android:text="Edit Profile" />-->
 
         <LinearLayout
           android:layout_width="match_parent"
@@ -224,4 +224,15 @@
 
     </LinearLayout>
   </ScrollView>
+
+  <Button
+    android:id="@+id/errand_creation_info"
+    android:layout_width="50dp"
+    android:layout_height="50dp"
+    android:layout_alignParentRight="true"
+    android:layout_alignParentBottom="true"
+    android:layout_marginRight="25dp"
+    android:layout_marginBottom="50dp"
+    android:background="@drawable/circle_edit_button"
+    android:elevation="9dp"></Button>
 </RelativeLayout>

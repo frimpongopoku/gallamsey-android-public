@@ -4,7 +4,7 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  tools:context=".ErrandViewActivity">
+  tools:context=".ImageErrandView">
 
   <include
     android:id="@+id/my_toolbar"
@@ -13,13 +13,12 @@
     android:layout_height="54dp"
     android:layout_alignParentTop="true" />
 
-
   <ScrollView
     android:scrollbars="none"
     android:layout_above="@+id/run_errand"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="70dp">
+    android:paddingTop="60dp">
 
     <LinearLayout
       android:layout_width="match_parent"
@@ -61,9 +60,41 @@
             android:fontFamily="@font/google_sans_medium"
             android:text="Akwesi Frimpong" />
         </LinearLayout>
-
-
       </LinearLayout>
+
+
+        <HorizontalScrollView
+          android:scrollbars="none"
+          android:layout_marginBottom="5dp"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent">
+
+         <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="match_parent">
+           <ImageView
+             android:elevation="3dp"
+             android:scaleType="fitCenter"
+             android:layout_marginRight="15dp"
+             android:layout_width="300dp"
+             android:layout_height="300dp"
+             android:src="@drawable/food1" />
+
+           <ImageView
+             android:elevation="3dp"
+             android:layout_marginRight="15dp"
+             android:layout_width="300dp"
+             android:layout_height="300dp"
+             android:src="@drawable/food2" />
+
+           <ImageView
+             android:elevation="3dp"
+             android:layout_width="300dp"
+             android:layout_height="300dp"
+             android:src="@drawable/food3" />
+         </LinearLayout>
+        </HorizontalScrollView>
+
 
       <TextView
         android:id="@+id/text_errand_card_desc"
@@ -83,6 +114,7 @@
         android:fontFamily="@font/google_sans_medium"
         android:padding="15dp"
         android:text="IMPORTANT DETAILS"
+
         android:textColor="@android:color/white"
         android:textSize="14sp" />
 
@@ -181,13 +213,14 @@
       </RelativeLayout>
     </LinearLayout>
   </ScrollView>
+
   <Button
     android:id="@+id/run_errand"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
     android:layout_marginRight="10dp"
     android:layout_marginLeft="10dp"
-    android:layout_alignParentBottom="true"
     android:layout_marginBottom="10dp"
     android:background="@drawable/login_button_shape"
     android:fontFamily="@font/google_sans_bold"
@@ -199,10 +232,9 @@
     android:elevation="9dp"
     android:layout_marginBottom="70dp"
     android:background="@drawable/circle_info_button"
-   android:layout_alignParentRight="true"
+    android:layout_alignParentRight="true"
     android:layout_alignParentBottom="true"
     android:layout_marginRight="25dp"
     android:layout_width="50dp"
     android:layout_height="50dp" />
-
 </RelativeLayout>

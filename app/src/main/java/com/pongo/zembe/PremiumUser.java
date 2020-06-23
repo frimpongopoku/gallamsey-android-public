@@ -67,6 +67,8 @@ public class PremiumUser extends User {
     dest.writeStringArray(this.geoLocation);
     dest.writeString(this.userDocumentID);
     dest.writeSerializable(this.ts);
+    dest.writeString(this.region);
+    dest.writeString(this.country);
   }
 
   protected PremiumUser(Parcel in) {
@@ -84,6 +86,8 @@ public class PremiumUser extends User {
     this.geoLocation = in.createStringArray();
     this.userDocumentID = in.readString();
     this.ts = (java.sql.Timestamp) in.readSerializable();
+    this.region = in.readString();
+    this.country = in.readString();
   }
 
   public static final Creator<PremiumUser> CREATOR = new Creator<PremiumUser>() {
