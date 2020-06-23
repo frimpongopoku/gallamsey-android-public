@@ -79,8 +79,8 @@ public class SetLocationsPage extends AppCompatActivity {
         for (int i = 0; i < communities.size(); i++) {
           try {
             regionsArrayList.add(communities.get(i).get("name").toString());
-          }catch (Exception e){
-            Log.d("gettingCommunities",e.getMessage());
+          } catch (Exception e) {
+            Log.d("gettingCommunities", e.getMessage());
           }
         }
       }

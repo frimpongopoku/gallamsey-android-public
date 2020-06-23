@@ -11,4 +11,12 @@ public class ViewProfilePage extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_view_profile_page);
   }
+
+  @Override
+  public void finish() {
+    super.finish();
+    this.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+  }
 }
+
+

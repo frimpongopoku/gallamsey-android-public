@@ -141,5 +141,6 @@ public class Home extends AppCompatActivity {
   public void goToProfileViewPage(View v) {
     Intent profile = new Intent(this, ViewProfilePage.class);
     startActivity(profile);
+    this.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
   }
 }
