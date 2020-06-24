@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -35,6 +37,7 @@ public class CreateNewErrand extends AppCompatActivity implements OnDetailItemsC
   ArrayList<String> detailsArray;
   EditText detailsBox, errandDescriptionbox, errandTitleBox, errandAllowancebox, errandCostBox;
   Spinner expiryDateDropDown;
+  ImageUploadHelper imageHelper;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +75,7 @@ public class CreateNewErrand extends AppCompatActivity implements OnDetailItemsC
     errandImageHolder.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        ImageUploadHelper imageHelper = new ImageUploadHelper(getApplicationContext());
+        imageHelper = new ImageUploadHelper(getApplicationContext());
         imageHelper.openFileChooser(new ImageUploadHelper.FileChooserCallback() {
           @Override
           public void getBackChooserIntent(Intent intent) {
@@ -105,7 +108,6 @@ public class CreateNewErrand extends AppCompatActivity implements OnDetailItemsC
     });
 //    -----------------------------------------------------
     detailsArray = new ArrayList<>();
-    populateArray();
     detailsListAdapter = new DetailsListAdapter(this, detailsArray, this);
     recyclerView = findViewById(R.id.details_recycler_list);
     manager = new LinearLayoutManager(this);
@@ -133,8 +135,17 @@ public class CreateNewErrand extends AppCompatActivity implements OnDetailItemsC
     super.onActivityResult(requestCode, resultCode, data);
     if (requestCode == Konstants.CHOOSE_IMAGE_REQUEST_CODE && data.getData() != null && data != null && resultCode == RESULT_OK) {
       Uri uri = data.getData();
-      Picasso.get().load(uri).resize(200,200).centerInside().into(errandImageHolder);
-      errandImageHolder.requestFocus();
+//      Picasso.get().load(uri).resize(200,200).centerInside().into(errandImageHolder);
+      imageHelper.compressImage(uri, new ImageUploadHelper.CompressedImageCallback() {
+        @Override
+        public void getCompressedImage(byte[] compressedImageInBytesArray) {
+
+          Bitmap bitmap = BitmapFactory.decodeByteArray(compressedImageInBytesArray,0,compressedImageInBytesArray.length);
+          errandImageHolder.setImageBitmap(bitmap);
+          errandImageHolder.requestFocus();
+        }
+      });
+
     }
   }
 
@@ -172,12 +183,6 @@ public class CreateNewErrand extends AppCompatActivity implements OnDetailItemsC
 
 
     return allGood;
-  }
-
-  public void populateArray() {
-    detailsArray.add("My helper oooo, My helper");
-    detailsArray.add("My helper oooo, My helper2");
-    detailsArray.add("My helper oooo, My helper3");
   }
 
   @Override
