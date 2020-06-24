@@ -28,6 +28,10 @@ public class ImageUploadHelper {
   }
 
   public interface FileChooserCallback {
+    /**
+    * returns the image file picker intent
+    * Just call "startActivityForResult" with this intent and be on your way
+    * */
     void getBackChooserIntent(Intent intent);
   }
 
