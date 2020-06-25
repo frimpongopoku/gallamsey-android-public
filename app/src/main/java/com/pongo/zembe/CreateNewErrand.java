@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -38,6 +39,7 @@ public class CreateNewErrand extends AppCompatActivity implements OnDetailItemsC
   EditText detailsBox, errandDescriptionbox, errandTitleBox, errandAllowancebox, errandCostBox;
   Spinner expiryDateDropDown;
   ImageUploadHelper imageHelper;
+  Bitmap resizedUploadableImageBitmap;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -135,14 +137,17 @@ public class CreateNewErrand extends AppCompatActivity implements OnDetailItemsC
     super.onActivityResult(requestCode, resultCode, data);
     if (requestCode == Konstants.CHOOSE_IMAGE_REQUEST_CODE && data.getData() != null && data != null && resultCode == RESULT_OK) {
       Uri uri = data.getData();
-//      Picasso.get().load(uri).resize(200,200).centerInside().into(errandImageHolder);
       imageHelper.compressImage(uri, new ImageUploadHelper.CompressedImageCallback() {
         @Override
         public void getCompressedImage(byte[] compressedImageInBytesArray) {
-
           Bitmap bitmap = BitmapFactory.decodeByteArray(compressedImageInBytesArray,0,compressedImageInBytesArray.length);
+          errandImageHolder.getLayoutParams().height = 400;
+          errandImageHolder.getLayoutParams().width = RelativeLayout.LayoutParams.MATCH_PARENT;
+          errandImageHolder.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+          errandImageHolder.requestLayout();
           errandImageHolder.setImageBitmap(bitmap);
           errandImageHolder.requestFocus();
+          resizedUploadableImageBitmap = bitmap;
         }
       });
 

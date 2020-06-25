@@ -81,6 +81,7 @@ public class ImageUploadHelper {
     protected byte[] doInBackground(Uri... uris) {
       Log.w("resizing:", "started resizing in background");
       try {
+
         bitmap = MediaStore.Images.Media.getBitmap(resolver,uris[0]);
 
         Log.d("beforeCompression",String.valueOf(bitmap.getAllocationByteCount()));
@@ -88,7 +89,7 @@ public class ImageUploadHelper {
       } catch (Exception e) {
         Log.w("errorOnResizing", e.getMessage());
       }
-      byte[] bytes =  getBytesFromBitmap(bitmap,80);
+      byte[] bytes =  getBytesFromBitmap(bitmap,68);
       Log.d("afterCompression",String.valueOf(bytes.length));
       return bytes;
     }

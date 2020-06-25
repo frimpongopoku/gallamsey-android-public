@@ -79,10 +79,12 @@
         android:text="Add Image" />
 
       <ImageView
+        android:layout_gravity="center"
         android:background="@drawable/orange_ripple_boderless"
         android:id="@+id/errand_image_holder"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_width="250dp"
+        android:scaleType="centerInside"
+        android:layout_height="250dp"
         android:layout_marginTop="15dp"
         android:layout_marginBottom="15dp"
         android:src="@drawable/waakye_plate_2"
