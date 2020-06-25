@@ -6,16 +6,18 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public abstract class Errand {
-  private String title, errandType, description, creatorID, runnerID;
+  private String title, errandType, description, creatorID, runnerID, expiryDate;
   private Date date = new Date();
+  private ArrayList<String> details;
+  private Boolean errandComplete =false, creatorHasPaidAmount =false;
+  private String creatorPaymentTransactionCode;
+  private float allowance = 0, cost = 0;
 
-  public Errand(String title, String errandType, String description, String creatorID, String runnerID, Date date) {
+  public Errand(String title, String errandType, String description, String creatorID) {
     this.title = title;
     this.errandType = errandType;
     this.description = description;
     this.creatorID = creatorID;
-    this.runnerID = runnerID;
-    this.date = date;
   }
 
   public String getTitle() {
@@ -58,12 +60,67 @@ public abstract class Errand {
     this.runnerID = runnerID;
   }
 
-
   public Date getDate() {
     return date;
   }
 
   public void setDate(Date date) {
     this.date = date;
+  }
+
+  public String getExpiryDate() {
+    return expiryDate;
+  }
+
+  public void setExpiryDate(String expiryDate) {
+    this.expiryDate = expiryDate;
+  }
+
+  public ArrayList<String> getDetails() {
+    return details;
+  }
+
+  public void setDetails(ArrayList<String> details) {
+    this.details = details;
+  }
+
+  public Boolean getErrandComplete() {
+    return errandComplete;
+  }
+
+  public void setErrandComplete(Boolean errandComplete) {
+    this.errandComplete = errandComplete;
+  }
+
+  public Boolean getCreatorHasPaidAmount() {
+    return creatorHasPaidAmount;
+  }
+
+  public void setCreatorHasPaidAmount(Boolean creatorHasPaidAmount) {
+    this.creatorHasPaidAmount = creatorHasPaidAmount;
+  }
+
+  public String getCreatorPaymentTransactionCode() {
+    return creatorPaymentTransactionCode;
+  }
+
+  public void setCreatorPaymentTransactionCode(String creatorPaymentTransactionCode) {
+    this.creatorPaymentTransactionCode = creatorPaymentTransactionCode;
+  }
+
+  public float getAllowance() {
+    return allowance;
+  }
+
+  public void setAllowance(float allowance) {
+    this.allowance = allowance;
+  }
+
+  public float getCost() {
+    return cost;
+  }
+
+  public void setCost(float cost) {
+    this.cost = cost;
   }
 }

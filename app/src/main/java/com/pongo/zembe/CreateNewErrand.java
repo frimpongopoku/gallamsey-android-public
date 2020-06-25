@@ -39,7 +39,7 @@ public class CreateNewErrand extends AppCompatActivity implements OnDetailItemsC
   EditText detailsBox, errandDescriptionbox, errandTitleBox, errandAllowancebox, errandCostBox;
   Spinner expiryDateDropDown;
   ImageUploadHelper imageHelper;
-  Bitmap resizedUploadableImageBitmap;
+  Bitmap resizedUploadableImageBitmap = null;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -58,9 +58,7 @@ public class CreateNewErrand extends AppCompatActivity implements OnDetailItemsC
     expiryDateDropDown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
       @Override
       public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        Toast.makeText(CreateNewErrand.this, "Selected: " + adapterView.getItemAtPosition(i), Toast.LENGTH_SHORT).show();
         expiryDateDropDown.requestFocus();
-
       }
 
       @Override
@@ -94,6 +92,7 @@ public class CreateNewErrand extends AppCompatActivity implements OnDetailItemsC
           errandImageHolder.setVisibility(View.VISIBLE);
           errandImageHolder.requestFocus();
         } else {
+          resizedUploadableImageBitmap = null;
           errandImageHolder.setVisibility(View.GONE);
         }
       }
