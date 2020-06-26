@@ -7,9 +7,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -19,15 +22,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class errandPaymentStepPage extends AppCompatActivity {
-  Spinner countryDropdown, networkDropdown;
+  Spinner countryDropdown, networkDropdown, contactListDropdown;
   ImageView countryFlag, networkFlag;
   TextView countryNameView, networkNameView;
-
+  EditText chosenPaymentNumber;
+  Button floatingBtn;
+  MagicBoxes magicBoxes;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_errand_payment_step_page);
+    magicBoxes = new MagicBoxes(this);
+    floatingBtn = findViewById(R.id.payment_info);
+    chosenPaymentNumber = findViewById(R.id.chosen_payment_number);
+    contactListDropdown = findViewById(R.id.payment_contact_list_dropdown);
     networkDropdown = findViewById(R.id.network_dropdown);
     networkFlag = findViewById(R.id.network_flag);
     networkNameView = findViewById(R.id.network_name);
@@ -71,18 +80,53 @@ public class errandPaymentStepPage extends AppCompatActivity {
 
       }
     });
+    ContactDropDownAdapter contactDropDownAdapter = new ContactDropDownAdapter(this,Konstants.DUMMY_PAYMENT_CONTACT );
+    contactListDropdown.setAdapter(contactDropDownAdapter);
+    contactListDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+      @Override
+      public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        PaymentContact contact = (PaymentContact) adapterView.getItemAtPosition(i);
+        chosenPaymentNumber.setText(contact.getContactPhoneNumber());
+      }
 
-   new Handler().postDelayed(new Runnable() {
-     @Override
-     public void run() {
-       LinearLayout notificationLayout = findViewById(R.id.notification);
-       notificationLayout.setVisibility(View.GONE);
-     }
-   },2000);
+      @Override
+      public void onNothingSelected(AdapterView<?> adapterView) {
+
+      }
+    });
+    notificationVanish();
+    floatingBtn.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        floatingBtn.setAlpha(1);
+        View v = LayoutInflater.from(getApplicationContext()).inflate(R.layout.about_payment_dialog_layout,null,false);
+        magicBoxes.constructCustomDialogOneAction("About Payment", v,"I Understand", new MagicBoxCallables() {
+          @Override
+          public void negativeBtnCallable() {
+
+          }
+
+          @Override
+          public void positiveBtnCallable() {
+
+          }
+        }).show();
+      }
+    });
 
 
   }
 
+
+  public void notificationVanish(){
+    new Handler().postDelayed(new Runnable() {
+      @Override
+      public void run() {
+        LinearLayout notificationLayout = findViewById(R.id.notification);
+        notificationLayout.setVisibility(View.GONE);
+      }
+    },2000);
+  }
 
   public HashMap<String, Object> findCountry(String country) {
     HashMap<String, Object> item = null;

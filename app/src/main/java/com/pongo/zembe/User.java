@@ -6,8 +6,10 @@ import com.google.firebase.firestore.Exclude;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  * Abstract user class that all kinds of users in the application will extend from
@@ -15,14 +17,14 @@ import java.util.Date;
  * for that to happen, the obj is going to be serialized before sending and unserialized when its being retrieved
  * hence, cant do without "Serializable"
  */
-public abstract class User implements  Parcelable {
+public abstract class User implements Parcelable {
 
-  public String region,country, profilePictureURL, gender, preferredName, uniqueUserName, email, dob, phoneNumber, whatsappNumber, uniqueID, geoLocation[],userDocumentID;
+  public String region, country, profilePictureURL, gender, preferredName, uniqueUserName, email, dob, phoneNumber, whatsappNumber, uniqueID, geoLocation[], userDocumentID;
   public Date ts = new Timestamp(System.currentTimeMillis());
+  public ArrayList<PaymentContact> mobileNumbersForPayment;
 
   public User() {
   } //no-arg constructor because of Firebase
-
 
 
   public User(String preferredName, String DOB, String email, String phoneNumber, String whatsappNumber, String uniqueID, String geoLocation[], String gender) {
@@ -48,7 +50,7 @@ public abstract class User implements  Parcelable {
     this.userDocumentID = userDocumentID;
   }
 
-  public User(String preferredName, String dob, String email, String phoneNumber, String whatsappNumber, String uniqueID,String gender) {
+  public User(String preferredName, String dob, String email, String phoneNumber, String whatsappNumber, String uniqueID, String gender) {
     this.preferredName = preferredName;
     this.phoneNumber = phoneNumber;
     this.whatsappNumber = whatsappNumber;
@@ -58,6 +60,15 @@ public abstract class User implements  Parcelable {
     this.uniqueUserName = ts.getTime() + "-" + email.split("@")[0];
     this.geoLocation = geoLocation;
     this.gender = gender;
+  }
+
+
+  public ArrayList<PaymentContact> getMobileNumbersForPayment() {
+    return mobileNumbersForPayment;
+  }
+
+  public void setMobileNumbersForPayment(ArrayList<PaymentContact> mobileNumbersForPayment) {
+    this.mobileNumbersForPayment = mobileNumbersForPayment;
   }
 
   public String getProfilePictureURL() {
@@ -83,6 +94,7 @@ public abstract class User implements  Parcelable {
   public void setCountry(String country) {
     this.country = country;
   }
+
   public String getPreferredName() {
     return preferredName;
   }

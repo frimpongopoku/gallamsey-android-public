@@ -58,6 +58,19 @@ public class MagicBoxes extends AppCompatDialogFragment {
 
       return builder.create();
 
+  }public Dialog constructCustomDialogOneAction(String title, View v,String actionTitle, final MagicBoxCallables magicInterface){
+    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+    builder.setView(v)
+      .setTitle(title)
+      .setPositiveButton(actionTitle, new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialogInterface, int i) {
+          magicInterface.positiveBtnCallable();
+        }
+      });
+
+      return builder.create();
+
   }
 }
 

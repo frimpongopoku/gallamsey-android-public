@@ -22,7 +22,10 @@ public class Konstants {
   public static ArrayList<String> COUNTRIES = new ArrayList<>();
   public static ArrayList<String> GH_NETWORKS = new ArrayList<>();
   public static ArrayList<String> KE_NETWORKS = new ArrayList<>();
+  public static ArrayList<PaymentContact> DUMMY_PAYMENT_CONTACT = new ArrayList<>();
   static {
+    DUMMY_PAYMENT_CONTACT.add(new PaymentContact("Mummy","243983364"));
+    DUMMY_PAYMENT_CONTACT.add(new PaymentContact("Pongo","202386709"));
     DEFAULT_SPINNER_ARRAY.add("CHOOSE");
     GH_NETWORKS.add("MTN");
     GH_NETWORKS.add("AIRTEL TIGO");

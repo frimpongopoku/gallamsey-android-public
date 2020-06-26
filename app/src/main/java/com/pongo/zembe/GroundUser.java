@@ -7,6 +7,9 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.ServerTimestamp;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 
 
 public class GroundUser extends User  {
@@ -55,6 +58,8 @@ public class GroundUser extends User  {
   public void writeToParcel(Parcel dest, int flags) {
     dest.writeString(this.userType);
     dest.writeParcelable(this.timestamp, flags);
+    dest.writeString(this.region);
+    dest.writeString(this.country);
     dest.writeString(this.profilePictureURL);
     dest.writeString(this.gender);
     dest.writeString(this.preferredName);
@@ -66,14 +71,15 @@ public class GroundUser extends User  {
     dest.writeString(this.uniqueID);
     dest.writeStringArray(this.geoLocation);
     dest.writeString(this.userDocumentID);
-    dest.writeSerializable(this.ts);
-    dest.writeString(this.region);
-    dest.writeString(this.country);
+    dest.writeLong(this.ts != null ? this.ts.getTime() : -1);
+    dest.writeList(this.mobileNumbersForPayment);
   }
 
   protected GroundUser(Parcel in) {
     this.userType = in.readString();
     this.timestamp = in.readParcelable(Timestamp.class.getClassLoader());
+    this.region = in.readString();
+    this.country = in.readString();
     this.profilePictureURL = in.readString();
     this.gender = in.readString();
     this.preferredName = in.readString();
@@ -85,9 +91,10 @@ public class GroundUser extends User  {
     this.uniqueID = in.readString();
     this.geoLocation = in.createStringArray();
     this.userDocumentID = in.readString();
-    this.ts = (java.util.Date) in.readSerializable();
-    this.region = in.readString();
-    this.country = in.readString();
+    long tmpTs = in.readLong();
+    this.ts = tmpTs == -1 ? null : new Date(tmpTs);
+    this.mobileNumbersForPayment = new ArrayList<PaymentContact>();
+    in.readList(this.mobileNumbersForPayment, PaymentContact.class.getClassLoader());
   }
 
   public static final Creator<GroundUser> CREATOR = new Creator<GroundUser>() {
