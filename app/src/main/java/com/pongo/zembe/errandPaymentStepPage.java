@@ -1,13 +1,17 @@
 package com.pongo.zembe;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -67,6 +71,15 @@ public class errandPaymentStepPage extends AppCompatActivity {
 
       }
     });
+
+   new Handler().postDelayed(new Runnable() {
+     @Override
+     public void run() {
+       LinearLayout notificationLayout = findViewById(R.id.notification);
+       notificationLayout.setVisibility(View.GONE);
+     }
+   },2000);
+
 
   }
 

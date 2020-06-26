@@ -1,140 +1,238 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   tools:context=".errandPaymentStepPage">
 
-  <include
-    android:id="@+id/titlebar"
-    layout="@layout/app_default_toolbar"
+  <RelativeLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_alignParentTop="true"
-    android:layout_marginBottom="0dp" />
+    android:layout_height="match_parent">
 
-  <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_below="@+id/titlebar"
-    android:orientation="vertical">
-
-    <LinearLayout
+    <include
+      android:id="@+id/titlebar"
+      layout="@layout/app_default_toolbar"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:orientation="horizontal"
-      android:padding="20dp"
-      android:weightSum="3">
+      android:layout_alignParentTop="true"
+      android:layout_marginBottom="0dp" />
 
-      <ImageView
-        android:layout_width="60dp"
-        android:layout_height="40dp"
-        android:layout_marginRight="10dp"
-        android:src="@drawable/ic_check_circle_black_24dp" />
-
-      <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:text="Nice! almost there, finish creating your errand by settling the amount due"
-        android:textSize="13sp" />
-    </LinearLayout>
-
-    <LinearLayout
+    <ScrollView
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:orientation="vertical"
-      android:paddingLeft="40dp"
-      android:paddingRight="40dp">
-
-      <TextView
-        android:layout_marginLeft="10dp"
-        android:layout_marginBottom="4dp"
-        android:text="Which country are you currently in?"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-      <Spinner
-        android:layout_marginBottom="5dp"
-        android:paddingLeft="10dp"
-        android:background="@drawable/stroke_textbox"
-        android:id="@+id/country_dropdown"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+      android:layout_height="match_parent"
+      android:layout_below="@+id/titlebar"
+      android:paddingTop="20dp">
 
       <LinearLayout
-        android:paddingLeft="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <ImageView
-          android:id="@+id/country_flag"
-          android:layout_width="20dp"
-          android:layout_height="30dp"
-          android:layout_marginRight="7dp"
-          android:src="@drawable/ghana" />
-
-        <TextView
-          android:id="@+id/country_name"
-          android:textSize="11sp"
+        <LinearLayout
+          android:id="@+id/notification"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginTop="9dp"
-          android:fontFamily="@font/google_sans_medium"
-          android:text="GHANA" />
+          android:orientation="horizontal"
+          android:padding="20dp"
+          android:weightSum="3">
+
+          <ImageView
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/ic_check_circle_black_24dp" />
+
+          <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Nice! almost there, finish creating your errand by settling the amount due"
+            android:textSize="13sp" />
+        </LinearLayout>
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          android:paddingLeft="40dp"
+          android:paddingRight="40dp">
+
+          <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="4dp"
+            android:text="Which country are you currently in?" />
+
+          <Spinner
+            android:id="@+id/country_dropdown"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/stroke_textbox"
+            android:paddingLeft="10dp" />
+
+          <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp">
+
+            <ImageView
+              android:id="@+id/country_flag"
+              android:layout_width="20dp"
+              android:layout_height="30dp"
+              android:layout_marginRight="7dp"
+              android:src="@drawable/ghana" />
+
+            <TextView
+              android:id="@+id/country_name"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="9dp"
+              android:fontFamily="@font/google_sans_medium"
+              android:text="GHANA"
+              android:textSize="11sp" />
+
+          </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="15dp"
+          android:orientation="vertical"
+          android:paddingLeft="40dp"
+          android:paddingRight="40dp">
+
+          <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="4dp"
+            android:text="Choose a mobile network to pay with" />
+
+          <Spinner
+            android:id="@+id/network_dropdown"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/stroke_textbox"
+            android:paddingLeft="10dp" />
+
+          <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp">
+
+            <ImageView
+              android:id="@+id/network_flag"
+              android:layout_width="20dp"
+              android:layout_height="30dp"
+              android:layout_marginRight="7dp"
+              android:src="@drawable/mtn" />
+
+            <TextView
+              android:id="@+id/network_name"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="9dp"
+              android:fontFamily="@font/google_sans_medium"
+              android:text="MTN"
+              android:textSize="11sp" />
+
+          </LinearLayout>
+
+        </LinearLayout>
+
+        <RelativeLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="10dp"
+          android:paddingTop="10dp">
+
+
+        </RelativeLayout>
+      </LinearLayout>
+    </ScrollView>
+  </RelativeLayout>
+
+  <androidx.cardview.widget.CardView
+    android:layout_width="match_parent"
+    android:layout_height="270dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    app:behavior_peekHeight="112dp"
+    app:cardCornerRadius="6dp"
+    app:cardElevation="9dp"
+    app:layout_behavior="@string/bottom_sheet_behavior">
+
+    <LinearLayout
+      android:padding="25dp"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:orientation="vertical">
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="4">
+
+        <TextView
+          android:textColor="@color/colorPrimary"
+          android:id="@+id/amount_payable"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_weight="3"
+          android:fontFamily="@font/google_sans_thin"
+          android:text="144.56"
+          android:textSize="50sp" />
+
+        <TextView
+          android:textColor="@color/colorPrimary"
+          android:id="@+id/amount_currency"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:fontFamily="@font/google_sans_thin"
+          android:text="GHS"
+          android:textSize="50sp" />
 
       </LinearLayout>
 
-    </LinearLayout>
-    <LinearLayout
-      android:layout_marginTop="15dp"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:orientation="vertical"
-      android:paddingLeft="40dp"
-      android:paddingRight="40dp">
-
       <TextView
         android:layout_marginLeft="10dp"
-        android:layout_marginBottom="4dp"
-        android:text="Choose a mobile network to pay with"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-      <Spinner
-        android:layout_marginBottom="5dp"
-        android:paddingLeft="10dp"
-        android:background="@drawable/stroke_textbox"
-        android:id="@+id/network_dropdown"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-      <LinearLayout
-        android:paddingLeft="10dp"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:text="Pay Here" />
 
-        <ImageView
-          android:id="@+id/network_flag"
-          android:layout_width="20dp"
-          android:layout_height="30dp"
-          android:layout_marginRight="7dp"
-          android:src="@drawable/mtn" />
+      <Button
+        android:textColor="@android:color/white"
+        android:fontFamily="@font/google_sans_bold"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/login_button_shape"
+        android:text="PAY"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
-        <TextView
-          android:id="@+id/network_name"
-          android:textSize="11sp"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="9dp"
-          android:fontFamily="@font/google_sans_medium"
-          android:text="MTN" />
-
-      </LinearLayout>
+      <Button
+        android:textColor="@color/appColor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/stroke_button"
+        android:fontFamily="@font/google_sans_bold"
+        android:text="USE G WALLET"
+    />
 
     </LinearLayout>
 
-
-  </LinearLayout>
-</RelativeLayout>
+  </androidx.cardview.widget.CardView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
