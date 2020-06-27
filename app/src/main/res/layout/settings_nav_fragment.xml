@@ -15,18 +15,17 @@
       android:padding="15dp">
 
       <TextView
-        android:textColor="@color/appColor"
-        android:background="@color/appColorLight"
-        android:paddingLeft="15dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:background="@color/appColorLight"
         android:fontFamily="@font/google_sans_medium"
+        android:paddingLeft="15dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         android:text="Account Settings"
+        android:textColor="@color/appColor"
         android:textSize="17sp" />
-
 
 
       <TextView
@@ -86,18 +85,17 @@
 
 
       <TextView
-        android:textColor="@color/appColor"
-        android:background="@color/appColorLight"
-        android:paddingLeft="15dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:background="@color/appColorLight"
         android:fontFamily="@font/google_sans_medium"
+        android:paddingLeft="15dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         android:text="Wallet"
+        android:textColor="@color/appColor"
         android:textSize="17sp" />
-
 
 
       <TextView
@@ -110,7 +108,9 @@
         android:fontFamily="@font/google_sans_light"
         android:padding="15dp"
         android:text="Add Payment Mobile Number"
-        android:textSize="14sp" /><TextView
+        android:textSize="14sp" />
+
+      <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"

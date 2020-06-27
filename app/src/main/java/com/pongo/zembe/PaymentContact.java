@@ -26,4 +26,12 @@ public class PaymentContact {
   public void setContactPhoneNumber(String contactPhoneNumber) {
     this.contactPhoneNumber = contactPhoneNumber;
   }
+
+  @Override
+  public String toString() {
+    return "PaymentContact{" +
+      "contactName='" + contactName + '\'' +
+      ", contactPhoneNumber='" + contactPhoneNumber + '\'' +
+      '}';
+  }
 }

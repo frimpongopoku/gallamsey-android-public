@@ -18,6 +18,11 @@
     <item>2 days</item>
   </string-array>
 
+  <string name="how_to_write_number">
+    <b>Write numbers like this 243123456</b>\n
+    Not like this <b>+233 243123456</b> or this <b>0243123456</b>\n
+    Write only the nine important numbers
+  </string>
   <string name="money_back">
     Your money is sent back to your G wallet <b>only if</b>\n
     \n1. No one picks up your errand, and it expires based on your set expiry date.
