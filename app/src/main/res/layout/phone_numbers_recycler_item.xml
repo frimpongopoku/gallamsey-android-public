@@ -7,6 +7,7 @@
   android:paddingBottom="7dp"
   android:background="@color/appColorLight"
   android:layout_margin="3dp"
+  android:id="@+id/recycler_contact_item"
   android:orientation="vertical">
   <TextView
     android:textSize="12sp"

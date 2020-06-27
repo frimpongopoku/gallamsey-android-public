@@ -35,7 +35,7 @@
         android:background="@drawable/orange_ripple"
         android:clickable="true"
         android:fontFamily="@font/google_sans_light"
-        android:padding="15dp"
+        android:padding="10dp"
         android:text="Upgrade Membership"
         android:textSize="14sp" />
 
@@ -46,7 +46,7 @@
         android:background="@drawable/purple_ripple"
         android:clickable="true"
         android:fontFamily="@font/google_sans_light"
-        android:padding="15dp"
+        android:padding="10dp"
         android:text="Set Home Location"
         android:textSize="14sp" />
 
@@ -57,7 +57,7 @@
         android:background="@drawable/orange_ripple"
         android:clickable="true"
         android:fontFamily="@font/google_sans_light"
-        android:padding="15dp"
+        android:padding="10dp"
         android:text="Edit Profile"
         android:textSize="14sp" />
 
@@ -68,7 +68,7 @@
         android:background="@drawable/orange_ripple"
         android:clickable="true"
         android:fontFamily="@font/google_sans_light"
-        android:padding="15dp"
+        android:padding="10dp"
         android:text="Get Verified"
         android:textSize="14sp" />
 
@@ -79,7 +79,7 @@
         android:background="@drawable/orange_ripple"
         android:clickable="true"
         android:fontFamily="@font/google_sans_light"
-        android:padding="15dp"
+        android:padding="10dp"
         android:text="Suggest A New Feature"
         android:textSize="14sp" />
 
@@ -106,7 +106,7 @@
         android:background="@drawable/orange_ripple"
         android:clickable="true"
         android:fontFamily="@font/google_sans_light"
-        android:padding="15dp"
+        android:padding="10dp"
         android:text="Add Payment Mobile Number"
         android:textSize="14sp" />
 
@@ -117,7 +117,7 @@
         android:background="@drawable/orange_ripple"
         android:clickable="true"
         android:fontFamily="@font/google_sans_light"
-        android:padding="15dp"
+        android:padding="10dp"
         android:text="Cash In"
         android:textSize="14sp" />
 
@@ -128,7 +128,7 @@
         android:background="@drawable/orange_ripple"
         android:clickable="true"
         android:fontFamily="@font/google_sans_light"
-        android:padding="15dp"
+        android:padding="10dp"
         android:text="Cash Out"
         android:textSize="14sp" />
 

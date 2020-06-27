@@ -121,6 +121,7 @@ public class MagicBoxes extends AppCompatDialogFragment {
         @Override
         public void onClick(DialogInterface dialogInterface, int i) {
           callable.getContent(initialArray);
+
         }
       });
     return builder.create();

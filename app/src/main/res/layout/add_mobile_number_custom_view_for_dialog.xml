@@ -41,7 +41,7 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="7dp"
     android:orientation="horizontal"
-    android:weightSum="4">
+    android:weightSum="5">
 
     <EditText
       android:inputType="phone"
@@ -50,7 +50,7 @@
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginRight="3dp"
-      android:layout_weight="3"
+      android:layout_weight="4"
       android:background="@drawable/stroke_textbox_b"
       android:hint="270 998745"
       android:paddingTop="10dp"
@@ -61,7 +61,7 @@
     <Button
       android:id="@+id/add_btn"
       android:layout_width="0dp"
-      android:layout_height="40dp"
+      android:layout_height="35dp"
       android:layout_weight="1"
       android:background="@drawable/green_button_rounded_solid"
       android:fontFamily="@font/google_sans_bold"
