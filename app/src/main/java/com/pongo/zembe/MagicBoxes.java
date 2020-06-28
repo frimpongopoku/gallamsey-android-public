@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -112,7 +113,6 @@ public class MagicBoxes extends AppCompatDialogFragment {
         else{
           Toast.makeText(context, "Make sure you have put in name and a phone number", Toast.LENGTH_SHORT).show();
         }
-
       }
     });
     builder.setView(v)
@@ -126,6 +126,15 @@ public class MagicBoxes extends AppCompatDialogFragment {
       });
     return builder.create();
   }
+
+  public class AsyncDialog extends AsyncTask<ArrayList<PaymentContact>, Void, Dialog>{
+
+    @Override
+    protected Dialog doInBackground(ArrayList<PaymentContact>... arrayLists) {
+      return null;
+    }
+
+  }
 }
 
 interface PhoneNumberDialogContentCallable {
@@ -134,6 +143,5 @@ interface PhoneNumberDialogContentCallable {
 
 interface MagicBoxCallables {
   void negativeBtnCallable();
-
   void positiveBtnCallable();
 }

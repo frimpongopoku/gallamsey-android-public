@@ -1,5 +1,6 @@
 package com.pongo.zembe;
 
+import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.firebase.firestore.Exclude;
@@ -12,16 +13,16 @@ import java.util.Date;
 import java.util.HashMap;
 
 /**
- * Abstract user class that all kinds of users in the application will extend from
+ * <p>Abstract user class that all kinds of users in the application will extend from
  * Implements serializable because we want to be able to move this user obj in between activities
  * for that to happen, the obj is going to be serialized before sending and unserialized when its being retrieved
- * hence, cant do without "Serializable"
+ * hence, cant do without "Serializable" </p>
  */
-public abstract class User implements Parcelable {
+public class User implements Parcelable {
 
-  public String region, country, profilePictureURL, gender, preferredName, uniqueUserName, email, dob, phoneNumber, whatsappNumber, uniqueID, geoLocation[], userDocumentID;
-  public Date ts = new Timestamp(System.currentTimeMillis());
-  public ArrayList<PaymentContact> mobileNumbersForPayment;
+  private String region, country, profilePictureURL, gender, preferredName, uniqueUserName, email, dob, phoneNumber, whatsappNumber, uniqueID, geoLocation[], userDocumentID;
+  private Date ts = new Timestamp(System.currentTimeMillis());
+  private ArrayList<PaymentContact> mobileNumbersForPayment;
 
   public User() {
   } //no-arg constructor because of Firebase
@@ -43,6 +44,7 @@ public abstract class User implements Parcelable {
   public String getUserDocumentID() {
     return userDocumentID;
   }
+
 
 
   @Exclude
@@ -174,4 +176,61 @@ public abstract class User implements Parcelable {
       ", ts=" + ts +
       '}';
   }
+
+
+  @Override
+  public int describeContents() {
+    return 0;
+  }
+
+  @Override
+  public void writeToParcel(Parcel dest, int flags) {
+    dest.writeString(this.region);
+    dest.writeString(this.country);
+    dest.writeString(this.profilePictureURL);
+    dest.writeString(this.gender);
+    dest.writeString(this.preferredName);
+    dest.writeString(this.uniqueUserName);
+    dest.writeString(this.email);
+    dest.writeString(this.dob);
+    dest.writeString(this.phoneNumber);
+    dest.writeString(this.whatsappNumber);
+    dest.writeString(this.uniqueID);
+    dest.writeStringArray(this.geoLocation);
+    dest.writeString(this.userDocumentID);
+    dest.writeLong(this.ts != null ? this.ts.getTime() : -1);
+    dest.writeList(this.mobileNumbersForPayment);
+  }
+
+  protected User(Parcel in) {
+    this.region = in.readString();
+    this.country = in.readString();
+    this.profilePictureURL = in.readString();
+    this.gender = in.readString();
+    this.preferredName = in.readString();
+    this.uniqueUserName = in.readString();
+    this.email = in.readString();
+    this.dob = in.readString();
+    this.phoneNumber = in.readString();
+    this.whatsappNumber = in.readString();
+    this.uniqueID = in.readString();
+    this.geoLocation = in.createStringArray();
+    this.userDocumentID = in.readString();
+    long tmpTs = in.readLong();
+    this.ts = tmpTs == -1 ? null : new Date(tmpTs);
+    this.mobileNumbersForPayment = new ArrayList<PaymentContact>();
+    in.readList(this.mobileNumbersForPayment, PaymentContact.class.getClassLoader());
+  }
+
+  public static final Creator<User> CREATOR = new Creator<User>() {
+    @Override
+    public User createFromParcel(Parcel source) {
+      return new User(source);
+    }
+
+    @Override
+    public User[] newArray(int size) {
+      return new User[size];
+    }
+  };
 }

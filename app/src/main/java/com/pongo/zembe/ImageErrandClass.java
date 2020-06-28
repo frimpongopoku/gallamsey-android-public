@@ -10,8 +10,8 @@ public class ImageErrandClass extends Errand {
 
 
 
-  public ImageErrandClass(String title, String errandType, String description, String creatorID,  ArrayList<String> images) {
-    super(title, errandType, description, creatorID);
+  public ImageErrandClass(String title, String errandType, String description,   ArrayList<String> images) {
+    super(title, errandType, description);
     this.images = images;
   }
   public ArrayList<String> getImages() {

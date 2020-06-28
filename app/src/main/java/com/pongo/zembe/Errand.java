@@ -5,19 +5,20 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 
-public abstract class Errand {
-  private String title, errandType, description, creatorID, runnerID, expiryDate;
+public class Errand {
+  private String title, errandType, description, expiryDate;
   private Date date = new Date();
   private ArrayList<String> details;
   private Boolean errandComplete =false, creatorHasPaidAmount =false;
   private String creatorPaymentTransactionCode;
   private float allowance = 0, cost = 0;
+  private String status;
+  private SimpleUser creator, runner;
 
-  public Errand(String title, String errandType, String description, String creatorID) {
+  public Errand(String title, String errandType, String description) {
     this.title = title;
     this.errandType = errandType;
     this.description = description;
-    this.creatorID = creatorID;
   }
 
   public String getTitle() {
@@ -44,20 +45,28 @@ public abstract class Errand {
     this.description = description;
   }
 
-  public String getCreatorID() {
-    return creatorID;
+  public String getStatus() {
+    return status;
   }
 
-  public void setCreatorID(String creatorID) {
-    this.creatorID = creatorID;
+  public void setStatus(String status) {
+    this.status = status;
   }
 
-  public String getRunnerID() {
-    return runnerID;
+  public SimpleUser getCreator() {
+    return creator;
   }
 
-  public void setRunnerID(String runnerID) {
-    this.runnerID = runnerID;
+  public void setCreator(SimpleUser creator) {
+    this.creator = creator;
+  }
+
+  public SimpleUser getRunner() {
+    return runner;
+  }
+
+  public void setRunner(SimpleUser runner) {
+    this.runner = runner;
   }
 
   public Date getDate() {

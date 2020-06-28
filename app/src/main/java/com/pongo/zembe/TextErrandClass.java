@@ -5,9 +5,8 @@ import java.util.Date;
 
 public class TextErrandClass extends Errand {
 
-
-  public TextErrandClass(String title, String errandType, String description, String creatorID) {
-    super(title, errandType, description, creatorID);
+  public TextErrandClass(String title, String errandType, String description) {
+    super(title, errandType, description);
   }
 
 }
