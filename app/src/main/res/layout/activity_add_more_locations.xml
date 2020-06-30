@@ -1,17 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   tools:context=".AddMoreLocations">
 
- <include layout="@layout/app_default_toolbar"
-   android:layout_width="match_parent"
-   android:layout_height="wrap_content"
-   android:layout_alignParentTop="true"
-   />
+  <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+      android:id="@+id/title_bar"
+      layout="@layout/app_default_toolbar"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignParentTop="true" />
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_above="@+id/bottom_sheet_space"
+      android:layout_below="@id/title_bar"
+      android:orientation="vertical">
+
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/google_sans_medium"
+        android:paddingLeft="20dp"
+        android:paddingTop="20dp"
+        android:paddingRight="20dp"
+        android:paddingBottom="10dp"
+        android:text="Manage Your Locations Here"
+        android:textSize="16sp" />
+
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingBottom="10dp"
+        android:text="@string/add_more_locations_prelude"
+        android:textSize="14sp" />
+
+      <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 
+    </LinearLayout>
 
-</RelativeLayout>
+    <LinearLayout
+      android:id="@+id/bottom_sheet_space"
+      android:layout_width="match_parent"
+      android:layout_height="100dp"
+      android:layout_alignParentBottom="true"
+      android:orientation="vertical" />
+
+  </RelativeLayout>
+
+  <androidx.cardview.widget.CardView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:elevation="5dp"
+    android:minHeight="200dp"
+    app:behavior_peekHeight="100dp"
+    app:cardCornerRadius="6dp"
+    app:layout_behavior="@string/bottom_sheet_behavior">
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:orientation="vertical"
+      android:paddingTop="45dp"
+      android:paddingLeft="10dp"
+      android:paddingRight="10dp"
+      android:paddingBottom="10dp">
+
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/google_sans_medium"
+        android:text="Get My Current Location Now"
+        android:textAlignment="center"
+        android:textSize="15sp" />
+
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:text="Provide a name for this new location and start"
+        android:textAlignment="center"
+        android:textSize="13sp" />
+
+
+      <EditText
+        android:paddingLeft="25dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingRight="10dp"
+        android:layout_margin="5dp"
+        android:textSize="13sp"
+        android:hint="What would you like to call this location?..."
+        android:background="@drawable/stroke_textbox_b"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+      <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="4dp"
+        android:background="@drawable/login_button_shape"
+        android:fontFamily="@font/google_sans_bold"
+        android:text="START"
+        android:textColor="@android:color/white" />
+    </LinearLayout>
+
+
+  </androidx.cardview.widget.CardView>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

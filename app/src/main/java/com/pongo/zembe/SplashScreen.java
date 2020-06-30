@@ -28,7 +28,7 @@ public class SplashScreen extends AppCompatActivity {
   }
 
   private void goToHomepage() {
-    Intent home = new Intent(this, Home.class);
+    Intent home = new Intent(this, AddMoreLocations.class);
     startActivity(home);
     finish();
   }
