@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Errand {
-  private String title, errandType, description, expiryDate;
-  private Date date = new Date();
+  private String title, errandType, description, expiryDate,
+  createdAt = DateHelper.getDateInMyTimezone();
   private ArrayList<String> details;
-  private Boolean errandComplete =false, creatorHasPaidAmount =false;
+  private Boolean errandComplete = false, creatorHasPaidAmount = false;
   private String creatorPaymentTransactionCode;
   private float allowance = 0, cost = 0;
   private String status;
@@ -69,12 +69,8 @@ public class Errand {
     this.runner = runner;
   }
 
-  public Date getDate() {
-    return date;
-  }
-
-  public void setDate(Date date) {
-    this.date = date;
+  public String getCreatedAt() {
+    return createdAt;
   }
 
   public String getExpiryDate() {

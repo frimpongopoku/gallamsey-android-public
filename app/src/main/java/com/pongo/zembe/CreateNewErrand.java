@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -58,6 +59,10 @@ public class CreateNewErrand extends AppCompatActivity implements OnDetailItemsC
     expiryDateDropDown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
       @Override
       public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        String value = adapterView.getItemAtPosition(i).toString();
+        double hours = DateHelper.getHoursValueFromDurationString(value);
+        Log.w("getJumpedDate:",DateHelper.getDateInMyTimezone());
+        Log.w("getJumpedDate:",DateHelper.jumpDateByHours(DateHelper.getDateInMyTimezone(),hours));
         expiryDateDropDown.requestFocus();
       }
 
@@ -134,7 +139,7 @@ public class CreateNewErrand extends AppCompatActivity implements OnDetailItemsC
   @Override
   protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
-    if (requestCode == Konstants.CHOOSE_IMAGE_REQUEST_CODE && data.getData() != null && data != null && resultCode == RESULT_OK) {
+    if (requestCode == Konstants.CHOOSE_IMAGE_REQUEST_CODE && data.getData() != null && resultCode == RESULT_OK) {
       Uri uri = data.getData();
       imageHelper.compressImage(uri, new ImageUploadHelper.CompressedImageCallback() {
         @Override

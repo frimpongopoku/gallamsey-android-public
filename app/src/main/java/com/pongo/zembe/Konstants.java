@@ -14,6 +14,7 @@ public class Konstants {
   public static final double sLong = -0.2915028;
 
 
+
   //ARRAYS
   //-----------------------------
 
@@ -51,6 +52,16 @@ public class Konstants {
 
   // JUST VALUES
   //---------------
+  public static final String THIRTY_MINUTES = "30 Minutes";
+  public static final String ONE_HOUR = "1 Hour";
+  public static final String TWO_HOURS = "2 Hours";
+  public static final String THREE_HOURS = "3 Hours";
+  public static final String FOUR_HOURS = "4 Hours";
+  public static final String FIVE_HOURS = "5 Hours";
+  public static final String SIX_HOURS = "6 Hours";
+  public static final String ONE_DAY = "1 day";
+  public static final String TWO_DAYS = "2 days";
+
   public static final String MALE = "MALE";
   public static final String FEMALE = "FEMALE";
   public static final String OTHER = "OTHER";

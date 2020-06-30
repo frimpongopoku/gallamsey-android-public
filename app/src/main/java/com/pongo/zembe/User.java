@@ -21,7 +21,8 @@ import java.util.HashMap;
 public class User implements Parcelable {
 
   private String region, country, profilePictureURL, gender, preferredName, uniqueUserName, email, dob, phoneNumber, whatsappNumber, uniqueID, geoLocation[], userDocumentID;
-  private Date ts = new Timestamp(System.currentTimeMillis());
+  private Date ts = new Timestamp(DateHelper.getMilliSecondsFromDate(DateHelper.getDateInMyTimezone()));
+  private String createdAt = DateHelper.getDateInMyTimezone();
   private ArrayList<PaymentContact> mobileNumbersForPayment;
 
   public User() {
@@ -157,6 +158,12 @@ public class User implements Parcelable {
     this.gender = gender;
   }
 
+  public String getCreatedAt() {
+    return createdAt;
+  }
+
+
+
   @Override
   public String toString() {
     return "User{" +
@@ -199,6 +206,7 @@ public class User implements Parcelable {
     dest.writeStringArray(this.geoLocation);
     dest.writeString(this.userDocumentID);
     dest.writeLong(this.ts != null ? this.ts.getTime() : -1);
+    dest.writeString(this.createdAt);
     dest.writeList(this.mobileNumbersForPayment);
   }
 
@@ -218,6 +226,7 @@ public class User implements Parcelable {
     this.userDocumentID = in.readString();
     long tmpTs = in.readLong();
     this.ts = tmpTs == -1 ? null : new Date(tmpTs);
+    this.createdAt = in.readString();
     this.mobileNumbersForPayment = new ArrayList<PaymentContact>();
     in.readList(this.mobileNumbersForPayment, PaymentContact.class.getClassLoader());
   }
