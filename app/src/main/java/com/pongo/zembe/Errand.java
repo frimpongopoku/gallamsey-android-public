@@ -14,7 +14,11 @@ public class Errand {
   private float allowance = 0, cost = 0;
   private String status;
   private SimpleUser creator, runner;
+  private GallamseyLocationComponent pickUpLocation;
 
+  public Errand (){
+    //Firebase constructor
+  }
   public Errand(String title, String errandType, String description) {
     this.title = title;
     this.errandType = errandType;
@@ -47,6 +51,15 @@ public class Errand {
 
   public String getStatus() {
     return status;
+  }
+
+
+  public GallamseyLocationComponent getPickUpLocation() {
+    return pickUpLocation;
+  }
+
+  public void setPickUpLocation(GallamseyLocationComponent pickUpLocation) {
+    this.pickUpLocation = pickUpLocation;
   }
 
   public void setStatus(String status) {

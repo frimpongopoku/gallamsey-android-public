@@ -41,6 +41,7 @@ public class CreateNewErrand extends AppCompatActivity implements OnDetailItemsC
   Spinner expiryDateDropDown;
   ImageUploadHelper imageHelper;
   Bitmap resizedUploadableImageBitmap = null;
+  String expiryInMilliSeconds = null;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -61,8 +62,9 @@ public class CreateNewErrand extends AppCompatActivity implements OnDetailItemsC
       public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         String value = adapterView.getItemAtPosition(i).toString();
         double hours = DateHelper.getHoursValueFromDurationString(value);
+        expiryInMilliSeconds = DateHelper.jumpDateByHours(DateHelper.getDateInMyTimezone(),hours);
         Log.w("getJumpedDate:",DateHelper.getDateInMyTimezone());
-        Log.w("getJumpedDate:",DateHelper.jumpDateByHours(DateHelper.getDateInMyTimezone(),hours));
+        Log.w("getJumpedDate:",expiryInMilliSeconds);
         expiryDateDropDown.requestFocus();
       }
 
