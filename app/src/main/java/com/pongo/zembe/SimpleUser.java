@@ -7,12 +7,14 @@
  * @param userPlatformType groundUser | premium user?
  * @param profilePicture URL
  * @param userStatus is the user the <b>CREATOR</b> | <b>RUNNER</b>
+ * @param rating any number from 1 - 5 for either <b>CREATOR</b> | <b>RUNNER</b>
+ * @return SimpleUser
  *
  * */
 
 package com.pongo.zembe;
 
-public abstract class SimpleUser {
+public class SimpleUser {
 
   private String userPlatformID;
   private String userName;
@@ -20,6 +22,7 @@ public abstract class SimpleUser {
   private String userPlatformType;
   private String profilePicture;
   private String userStatus;
+  private int rating;
 
   public SimpleUser(String userPlatformID, String userName, String phoneNumber, String userPlatformType, String profilePicture, String userStatus) {
     this.userPlatformID = userPlatformID;
@@ -28,6 +31,14 @@ public abstract class SimpleUser {
     this.userPlatformType = userPlatformType;
     this.profilePicture = profilePicture;
     this.userStatus = userStatus;
+  }
+
+  public int getRating() {
+    return rating;
+  }
+
+  public void setRating(int rating) {
+    this.rating = rating;
   }
 
   public String getUserPlatformID() {

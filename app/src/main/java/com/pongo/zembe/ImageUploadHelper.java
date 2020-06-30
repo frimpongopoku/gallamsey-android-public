@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.ImageDecoder;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -30,8 +31,8 @@ public class ImageUploadHelper {
   public void compressImage(Uri uri, final CompressedImageCallback callback) {
     new BackgroundCompressor(context.getContentResolver(), new CompressedImageCallback() {
       @Override
-      public void getCompressedImage(byte[] compressedImageInBytesArray) {
-        callback.getCompressedImage(compressedImageInBytesArray);
+      public void getCompressedImage(Bitmap compressedBitmap) {
+        callback.getCompressedImage(compressedBitmap);
       }
     }).execute(uri);
   }
@@ -44,7 +45,7 @@ public class ImageUploadHelper {
   }
 
   public interface CompressedImageCallback {
-    void getCompressedImage(byte[] compressedImageInBytesArray);
+    void getCompressedImage(Bitmap compressedBitmap);
   }
 
   public interface FileChooserCallback {
@@ -56,7 +57,7 @@ public class ImageUploadHelper {
   }
 
 
-  public class BackgroundCompressor extends AsyncTask<Uri, Integer, byte[]> {
+  public class BackgroundCompressor extends AsyncTask<Uri, Integer, Bitmap> {
     ContentResolver resolver;
     Bitmap bitmap;
     CompressedImageCallback imageCallback;
@@ -78,19 +79,21 @@ public class ImageUploadHelper {
     }
 
     @Override
-    protected byte[] doInBackground(Uri... uris) {
+    protected Bitmap doInBackground(Uri... uris) {
       try {
         bitmap = MediaStore.Images.Media.getBitmap(resolver, uris[0]);
       } catch (Exception e) {
         Log.w("errorOnResizing", e.getMessage());
       }
-      return getBytesFromBitmap(bitmap, 68);
+      byte[] bytesArr = getBytesFromBitmap(bitmap, 60);
+      Bitmap bitmap = BitmapFactory.decodeByteArray(bytesArr,0,bytesArr.length);
+      return bitmap;
     }
 
     @Override
-    protected void onPostExecute(byte[] bytes) {
-      super.onPostExecute(bytes);
-      imageCallback.getCompressedImage(bytes);
+    protected void onPostExecute(Bitmap bitmap) {
+      super.onPostExecute(bitmap);
+      imageCallback.getCompressedImage(bitmap);
     }
 
   }

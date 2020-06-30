@@ -138,15 +138,14 @@ public class CreateNewErrand extends AppCompatActivity implements OnDetailItemsC
       Uri uri = data.getData();
       imageHelper.compressImage(uri, new ImageUploadHelper.CompressedImageCallback() {
         @Override
-        public void getCompressedImage(byte[] compressedImageInBytesArray) {
-          Bitmap bitmap = BitmapFactory.decodeByteArray(compressedImageInBytesArray,0,compressedImageInBytesArray.length);
+        public void getCompressedImage(Bitmap compressedBitmap) {
           errandImageHolder.getLayoutParams().height = 400;
           errandImageHolder.getLayoutParams().width = RelativeLayout.LayoutParams.MATCH_PARENT;
           errandImageHolder.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
           errandImageHolder.requestLayout();
-          errandImageHolder.setImageBitmap(bitmap);
+          errandImageHolder.setImageBitmap(compressedBitmap);
           errandImageHolder.requestFocus();
-          resizedUploadableImageBitmap = bitmap;
+          resizedUploadableImageBitmap = compressedBitmap;
         }
       });
 
