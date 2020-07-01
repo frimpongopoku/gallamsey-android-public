@@ -14,6 +14,7 @@
     android:layout_width="30dp"
     android:layout_height="30dp" />
   <TextView
+    android:id="@+id/location_list_item_name"
     android:layout_marginTop="7dp"
     android:layout_marginLeft="5dp"
     android:layout_weight="4"
