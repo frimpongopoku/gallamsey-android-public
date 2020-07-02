@@ -18,6 +18,10 @@ import android.os.Parcelable;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.json.JSONObject;
 
@@ -35,7 +39,10 @@ public class Home extends AppCompatActivity {
   FirebaseAuth mAuth = FirebaseAuth.getInstance();
   GroundUser authenticatedUser;
   Button addErrandBtn;
-
+  GalFirebaseHelper galFirebaseHelper = new GalFirebaseHelper();
+  FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+  CollectionReference userDB = firestore.collection(Konstants.USER_COLLECTION);
+  DocumentReference userDocumentReference;
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -47,6 +54,9 @@ public class Home extends AppCompatActivity {
     fillInTheBlankSpaces();
     //getAuthenticated User if they are coming from login | register
     authenticatedUser =  getIntent().getParcelableExtra("authUser");
+    if(authenticatedUser != null){
+      userDocumentReference = userDB.document(authenticatedUser.getUserDocumentID());
+    }
     userProfileImageOnToolbar = findViewById(R.id.toolbar_img);
     userProfileImageOnToolbar.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -72,6 +82,12 @@ public class Home extends AppCompatActivity {
 
       }
     });
+
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
 
   }
 
