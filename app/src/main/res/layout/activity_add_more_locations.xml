@@ -9,6 +9,12 @@
   <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <ProgressBar
+      android:visibility="gone"
+      android:layout_centerInParent="true"
+      android:id="@+id/spinner"
+      android:layout_width="70dp"
+      android:layout_height="70dp" />
 
     <include
       android:id="@+id/title_bar"
@@ -101,6 +107,7 @@
 
 
       <EditText
+        android:id="@+id/location_name"
         android:paddingLeft="25dp"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
@@ -112,14 +119,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
       <Button
+        android:id="@+id/location_start_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginBottom="6dp"
         android:background="@drawable/login_button_shape"
         android:fontFamily="@font/google_sans_bold"
         android:text="START"
         android:textColor="@android:color/white" />
+
     </LinearLayout>
 
 

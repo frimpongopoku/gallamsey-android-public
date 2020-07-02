@@ -23,7 +23,8 @@ public class User implements Parcelable {
   private String region, country, profilePictureURL, gender, preferredName, uniqueUserName, email, dob, phoneNumber, whatsappNumber, uniqueID, geoLocation[], userDocumentID;
   private Date ts = new Timestamp(DateHelper.getMilliSecondsFromDate(DateHelper.getDateInMyTimezone()));
   private String createdAt = DateHelper.getDateInMyTimezone();
-  private ArrayList<PaymentContact> mobileNumbersForPayment;
+  private ArrayList<PaymentContact> mobileNumbersForPayment = new ArrayList<>() ;
+  private ArrayList<GallamseyLocationComponent> deliveryLocations = new ArrayList<>();
 
   public User() {
   } //no-arg constructor because of Firebase
@@ -41,14 +42,11 @@ public class User implements Parcelable {
     this.gender = gender;
   }
 
-  @Exclude
+
   public String getUserDocumentID() {
     return userDocumentID;
   }
 
-
-
-  @Exclude
   public void setUserDocumentID(String userDocumentID) {
     this.userDocumentID = userDocumentID;
   }
@@ -65,6 +63,14 @@ public class User implements Parcelable {
     this.gender = gender;
   }
 
+
+  public ArrayList<GallamseyLocationComponent> getDeliveryLocations() {
+    return deliveryLocations;
+  }
+
+  public void setDeliveryLocations(ArrayList<GallamseyLocationComponent> deliveryLocations) {
+    this.deliveryLocations = deliveryLocations;
+  }
 
   public ArrayList<PaymentContact> getMobileNumbersForPayment() {
     return mobileNumbersForPayment;
@@ -208,6 +214,7 @@ public class User implements Parcelable {
     dest.writeLong(this.ts != null ? this.ts.getTime() : -1);
     dest.writeString(this.createdAt);
     dest.writeList(this.mobileNumbersForPayment);
+    dest.writeList(this.deliveryLocations);
   }
 
   protected User(Parcel in) {
@@ -229,6 +236,8 @@ public class User implements Parcelable {
     this.createdAt = in.readString();
     this.mobileNumbersForPayment = new ArrayList<PaymentContact>();
     in.readList(this.mobileNumbersForPayment, PaymentContact.class.getClassLoader());
+    this.deliveryLocations = new ArrayList<GallamseyLocationComponent>();
+    in.readList(this.deliveryLocations, GallamseyLocationComponent.class.getClassLoader());
   }
 
   public static final Creator<User> CREATOR = new Creator<User>() {

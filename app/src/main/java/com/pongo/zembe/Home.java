@@ -33,7 +33,7 @@ public class Home extends AppCompatActivity {
   ArrayList<String> dates = new ArrayList<>();
   ImageView userProfileImageOnToolbar;
   FirebaseAuth mAuth = FirebaseAuth.getInstance();
-  User authenticatedUser;
+  GroundUser authenticatedUser;
   Button addErrandBtn;
 
   @Override
@@ -46,7 +46,7 @@ public class Home extends AppCompatActivity {
     setContentView(R.layout.activity_home);
     fillInTheBlankSpaces();
     //getAuthenticated User if they are coming from login | register
-    authenticatedUser = (GroundUser) getIntent().getParcelableExtra("authUser");
+    authenticatedUser =  getIntent().getParcelableExtra("authUser");
     userProfileImageOnToolbar = findViewById(R.id.toolbar_img);
     userProfileImageOnToolbar.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -93,7 +93,7 @@ public class Home extends AppCompatActivity {
           destinationPage = new HomeFragment(changeToHash());
           break;
         case R.id.nav_settings:
-          destinationPage = new SettingsFragment();
+          destinationPage = new SettingsFragment(authenticatedUser);
           break;
         case R.id.nav_notification:
           destinationPage = new NotificationFragment();

@@ -1,5 +1,6 @@
 package com.pongo.zembe;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,14 +19,20 @@ import java.util.Arrays;
 
 public class SettingsFragment extends Fragment {
 
+  private GroundUser authenticatedUser;
+
+  public SettingsFragment(GroundUser authUser){
+    this.authenticatedUser = authUser;
+  }
   @Nullable
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-    TextView addPaymentNumber;
     final ArrayList<PaymentContact> phoneNumbersArray = new ArrayList<>();
     final MagicBoxes magicBoxes = new MagicBoxes(getContext());
-    View v = inflater.inflate(R.layout.settings_nav_fragment,container,false);
-    addPaymentNumber = v.findViewById(R.id.add_payment_mobile_number);
+    View v = inflater.inflate(R.layout.settings_nav_fragment, container, false);
+    TextView addMoreLocations = v.findViewById(R.id.add_pickup_location);
+    addMoreLocations.setOnClickListener(showAddLocationsPage);
+    TextView addPaymentNumber = v.findViewById(R.id.add_payment_mobile_number);
     addPaymentNumber.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -42,4 +49,13 @@ public class SettingsFragment extends Fragment {
 
     return v;
   }
+
+  private View.OnClickListener showAddLocationsPage = new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+      Intent addlocations = new Intent(getContext(), AddMoreLocations.class);
+      addlocations.putExtra("authUser",authenticatedUser);
+      startActivity(addlocations);
+    }
+  };
 }
