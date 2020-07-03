@@ -38,26 +38,11 @@ public class SettingsFragment extends Fragment {
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
     userDocumentReference = userDB.document(authenticatedUser.getUserDocumentID());
-    final ArrayList<PaymentContact> phoneNumbersArray = new ArrayList<>();
-    final MagicBoxes magicBoxes = new MagicBoxes(getContext());
     View v = inflater.inflate(R.layout.settings_nav_fragment, container, false);
     TextView addMoreLocations = v.findViewById(R.id.add_pickup_location);
     addMoreLocations.setOnClickListener(showAddLocationsPage);
     TextView addPaymentNumber = v.findViewById(R.id.add_payment_mobile_number);
-    addPaymentNumber.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        magicBoxes.constructDialogForMobileNumberAddition(phoneNumbersArray, new PhoneNumberDialogContentCallable() {
-          @Override
-          public void getContent(ArrayList<PaymentContact> phoneNumbers) {
-
-            Log.d("allContactsHere", phoneNumbers.toString());
-
-          }
-        }).show();
-      }
-    });
-
+    addPaymentNumber.setOnClickListener(showAddPaymentContactPage);
     return v;
   }
 
@@ -74,6 +59,14 @@ public class SettingsFragment extends Fragment {
     });
   }
 
+  private View.OnClickListener showAddPaymentContactPage = new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+      Intent page = new Intent(getContext(), AddMobilePaymentNumberPage.class);
+      page.putExtra("authUser", authenticatedUser);
+      startActivity(page);
+    }
+  };
   private View.OnClickListener showAddLocationsPage = new View.OnClickListener() {
     @Override
     public void onClick(View view) {

@@ -5,7 +5,10 @@
     <item>MALE</item>
     <item>FEMALE</item>
   </string-array>
-<string name="add_more_locations_prelude">Add locations so that you can point riders to the exact location you want your items to be delivered</string>
+  <string name="add_more_mobile_numbers_prelude">
+    You can add as many mobile payment numbers as possible.\nUse the sheet at the bottom to provide the details for any new number.\nAny time there is a need for payment, this list will show
+  </string>
+  <string name="add_more_locations_prelude">Add locations so that you can point riders to the exact location you want your items to be delivered</string>
   <string-array name="errand_expiry_values">
     <item>30 Minutes</item>
     <item>1 Hour</item>

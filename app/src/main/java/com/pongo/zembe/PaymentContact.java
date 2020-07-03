@@ -8,6 +8,8 @@ public class PaymentContact implements Parcelable {
 
   private String contactName;
   private String contactPhoneNumber;
+  private String networkName;
+  private String networkIcon;
 
   public PaymentContact(){}
   public PaymentContact(String contactName, String contactPhoneNumber) {
@@ -31,6 +33,22 @@ public class PaymentContact implements Parcelable {
     this.contactPhoneNumber = contactPhoneNumber;
   }
 
+  public String getNetworkName() {
+    return networkName;
+  }
+
+  public void setNetworkName(String networkName) {
+    this.networkName = networkName;
+  }
+
+  public String getNetworkIcon() {
+    return networkIcon;
+  }
+
+  public void setNetworkIcon(String networkIcon) {
+    this.networkIcon = networkIcon;
+  }
+
   @Override
   public String toString() {
     return "PaymentContact{" +
@@ -48,11 +66,15 @@ public class PaymentContact implements Parcelable {
   public void writeToParcel(Parcel dest, int flags) {
     dest.writeString(this.contactName);
     dest.writeString(this.contactPhoneNumber);
+    dest.writeString(this.networkName);
+    dest.writeString(this.networkIcon);
   }
 
   protected PaymentContact(Parcel in) {
     this.contactName = in.readString();
     this.contactPhoneNumber = in.readString();
+    this.networkName = in.readString();
+    this.networkIcon = in.readString();
   }
 
   public static final Creator<PaymentContact> CREATOR = new Creator<PaymentContact>() {

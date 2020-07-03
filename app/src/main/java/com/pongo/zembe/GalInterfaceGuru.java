@@ -8,5 +8,8 @@ public class GalInterfaceGuru {
     void callback(DocumentSnapshot document);
   }
 
+  interface PaymentContactAdapterClickable {
+    void callback(int position);
+  }
 
 }

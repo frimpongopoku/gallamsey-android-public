@@ -6,7 +6,9 @@ import android.os.Parcelable;
 public class GallamseyLocationComponent implements Parcelable {
   private String locationName, longitude, latitude;
 
-  public GallamseyLocationComponent(){} //for firebase
+  public GallamseyLocationComponent() {
+  } //for firebase
+
   public GallamseyLocationComponent(String locationName, double longitude, double latitude) {
     this.locationName = locationName;
     this.longitude = String.valueOf(longitude);
