@@ -13,9 +13,16 @@
     android:roundIcon="@mipmap/ic_launcher_round"
     android:supportsRtl="true"
     android:theme="@style/AppTheme">
-    <activity android:name=".AddMobilePaymentNumberPage" android:windowSoftInputMode="adjustPan">
+    <activity android:name=".NewErrandCreationPage" android:windowSoftInputMode="adjustResize">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
 
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
     </activity>
+    <activity
+      android:name=".AddMobilePaymentNumberPage"
+      android:windowSoftInputMode="adjustPan"></activity>
     <activity android:name=".AddMoreLocations" />
     <activity
       android:name=".errandPaymentStepPage"
