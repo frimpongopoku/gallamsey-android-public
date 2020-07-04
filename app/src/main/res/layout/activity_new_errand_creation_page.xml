@@ -48,7 +48,7 @@
     android:orientation="vertical"
     android:paddingStart="15dp"
     android:paddingBottom="20dp"
-    android:visibility="gone">
+    android:visibility="visible">
 
     <ScrollView
       android:layout_width="match_parent"
@@ -99,14 +99,17 @@
           android:visibility="visible">
 
           <ImageView
+            android:clickable="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            android:src="@drawable/ic_broken_image_black_24dp" />
+            android:src="@drawable/dummy_image" />
 
           <TextView
+            android:fontFamily="@font/quick_sand_light"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Tap to add or remove image"
+            android:text="Tap image to add or remove image"
             android:textAlignment="center" />
 
         </LinearLayout>
@@ -227,6 +230,7 @@
 
   <!-- DETAILS DIV-->
   <LinearLayout
+    android:visibility="gone"
     android:id="@+id/tab_for_details"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -311,41 +315,58 @@
         android:orientation="horizontal">
 
         <ImageView
+          android:background="?attr/selectableItemBackgroundBorderless"
+          android:clickable="true"
+          android:id="@+id/tab_for_description_btn"
           android:layout_width="30dp"
           android:layout_height="30dp"
           android:layout_marginEnd="15dp"
-          android:background="@drawable/ic_description_black_24dp" />
+          android:src="@drawable/ic_description_black_24dp" />
 
         <ImageView
+          android:background="?attr/selectableItemBackgroundBorderless"
+          android:id="@+id/tab_for_image_btn"
           android:layout_width="30dp"
           android:layout_height="30dp"
           android:layout_marginEnd="15dp"
-          android:background="@drawable/image_vector_icon" />
+          android:src="@drawable/image_vector_icon" />
 
         <ImageView
+          android:background="?attr/selectableItemBackgroundBorderless"
+          android:clickable="true"
+          android:id="@+id/tab_for_estimated_cost_btn"
           android:layout_width="30dp"
           android:layout_height="30dp"
           android:layout_marginTop="1dp"
           android:layout_marginEnd="15dp"
-          android:background="@drawable/errand_payment_icon" />
+          android:src="@drawable/errand_payment_icon" />
 
         <ImageView
+          android:background="?attr/selectableItemBackgroundBorderless"
+          android:clickable="true"
+          android:id="@+id/tab_for_allowance_btn"
           android:layout_width="30dp"
           android:layout_height="30dp"
           android:layout_marginEnd="15dp"
-          android:background="@drawable/ic_card_giftcard_black_24dp" />
+          android:src="@drawable/ic_card_giftcard_black_24dp" />
 
         <ImageView
+          android:background="?attr/selectableItemBackgroundBorderless"
+          android:clickable="true"
+          android:id="@+id/tab_for_location_btn"
           android:layout_width="30dp"
           android:layout_height="30dp"
           android:layout_marginEnd="15dp"
-          android:background="@drawable/location_vector_icon" />
+          android:src="@drawable/location_vector_icon" />
 
         <ImageView
+          android:background="?attr/selectableItemBackgroundBorderless"
+          android:clickable="true"
+          android:id="@+id/tab_for_details_btn"
           android:layout_width="30dp"
           android:layout_height="30dp"
           android:layout_marginEnd="15dp"
-          android:background="@drawable/ic_list" />
+          android:src="@drawable/ic_list" />
       </LinearLayout>
 
     </RelativeLayout>
