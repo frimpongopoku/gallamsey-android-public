@@ -15,6 +15,7 @@ public class Konstants {
 
   // ERRAND CREATION CONSTANTS
   //  --------------------------
+
   public static final String INACTIVE = "INACTIVE";
   public static final String ACTIVE = "ACTIVE";
   public static final String DESC_TAB = "DESCRIPTION";

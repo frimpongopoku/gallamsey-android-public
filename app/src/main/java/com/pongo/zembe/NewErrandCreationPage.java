@@ -6,11 +6,13 @@ import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,12 +23,15 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
 
   ArrayList<String> detailsList = new ArrayList<>();
   RecyclerView recyclerView;
-  ImageView addDetailsBtn, descriptionTabBtn, estimateTabBtn, allowanceTabBtn, locationTabBtn, detailsTabBtn, addPictureTabBtn;
+  ImageView userSelectedImageHolder, addDetailsBtn, descriptionTabBtn, estimateTabBtn, allowanceTabBtn, locationTabBtn, detailsTabBtn;
   LinearLayout detailsTab, descriptionTab, estimationTab, allowanceTab, locationTab, pictureTab;
-  EditText detailsBox;
+  Button addPictureTabBtn, removePictureBtn;
+  EditText detailsBox, allowanceBox, estimatedCostBox;
   DetailsListAdapter recyclerAdapter;
   Handler handler;
   String currentTabKey = Konstants.DESC_TAB;
+  String imageDivState = Konstants.INACTIVE;
+  Bitmap userSelectedImage = null;
 
   int DEFAULT_STATE_VALUE = 40, STATE_CHANGED_VALUE = 60;
 
@@ -46,11 +51,16 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     estimationTab = findViewById(R.id.tab_for_estimated_cost);
     allowanceTab = findViewById(R.id.tab_for_allowance);
     pictureTab = findViewById(R.id.tab_for_image);
+    removePictureBtn = findViewById(R.id.close_btn_in_description);
+    userSelectedImageHolder = findViewById(R.id.user_selected_image);
+    allowanceBox = findViewById(R.id.allowance_box);
 //  ..........................................................
     descriptionTabBtn.setOnClickListener(onTabClick(Konstants.DESC_TAB, descriptionTabBtn, descriptionTab));
     detailsTabBtn.setOnClickListener(onTabClick(Konstants.DETAILS_TAB, detailsTabBtn, detailsTab));
     estimateTabBtn.setOnClickListener(onTabClick(Konstants.ESTIMATION_TAB, estimateTabBtn, estimationTab));
     allowanceTabBtn.setOnClickListener(onTabClick(Konstants.ALLOWANCE_TAB, allowanceTabBtn, allowanceTab));
+    addPictureTabBtn.setOnClickListener(showImageDIv);
+    removePictureBtn.setOnClickListener(removeSelectedImage);
 
 //  ----------------------------------------------------------
     recyclerView = findViewById(R.id.recyclerview_in_details_tab);
@@ -65,12 +75,23 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
   }
 
 
-  public void showTabState() {
-    descriptionTabBtn.setImageResource(R.drawable.ic_description_green);
-    descriptionTabBtn.getLayoutParams().height = 55;
-    descriptionTabBtn.getLayoutParams().width = 55;
-  }
-
+  private View.OnClickListener removeSelectedImage = new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+      pictureTab.setVisibility(View.GONE);
+      removePictureBtn.setVisibility(View.GONE);
+      userSelectedImage = null;
+      userSelectedImageHolder.setImageResource(R.drawable.dummy_image);
+    }
+  };
+  private View.OnClickListener showImageDIv = new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+      addPictureTabBtn.setAlpha(1);
+      pictureTab.setVisibility(View.VISIBLE);
+      removePictureBtn.setVisibility(View.VISIBLE);
+    }
+  };
 
   private View.OnClickListener onTabClick(final String whichPage, final ImageView newPageBtn, final LinearLayout newPage) {
     return new View.OnClickListener() {
@@ -113,9 +134,6 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
 
   private ImageView bringMeTabButton(String whichTab) {
     switch (whichTab) {
-      case Konstants.IMAGE_TAB: {
-        return addPictureTabBtn;
-      }
       case Konstants.DESC_TAB: {
         return descriptionTabBtn;
       }
