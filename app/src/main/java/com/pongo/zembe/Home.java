@@ -77,7 +77,7 @@ public class Home extends AppCompatActivity {
     addErrandBtn.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        Intent createErrandPage = new Intent(getApplicationContext(),CreateNewErrand.class);
+        Intent createErrandPage = new Intent(getApplicationContext(),NewErrandCreationPage.class);
         startActivity(createErrandPage);
 
       }

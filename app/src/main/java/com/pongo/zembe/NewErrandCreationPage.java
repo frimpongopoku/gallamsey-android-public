@@ -1,12 +1,16 @@
 package com.pongo.zembe;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -20,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -30,7 +35,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
   ArrayList<String> locationList = new ArrayList<>();
   Spinner locationDropdown;
   RecyclerView recyclerView;
-  ImageView userSelectedImageHolder, addDetailsBtn, descriptionTabBtn, estimateTabBtn, allowanceTabBtn, locationTabBtn, detailsTabBtn;
+  ImageView quit, helpBtn, userSelectedImageHolder, addDetailsBtn, descriptionTabBtn, estimateTabBtn, allowanceTabBtn, locationTabBtn, detailsTabBtn;
   LinearLayout detailsTab, descriptionTab, estimationTab, allowanceTab, locationTab, pictureTab;
   Button addPictureTabBtn, removePictureBtn;
   EditText detailsBox, allowanceBox, estimatedCostBox, descriptionBox;
@@ -40,12 +45,22 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
   TextView locationText;
   int DEFAULT_STATE_VALUE = 40, STATE_CHANGED_VALUE = 60;
   Handler handler = new Handler();
+  ImageUploadHelper imageHelper;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_new_errand_creation_page);
-//  -----------------------------------------------------------
+    initializeActivity();
+
+  }
+
+
+  private void initializeActivity() {
+    //  -----------------------------------------------------------
+    imageHelper = new ImageUploadHelper(this);
+    quit = findViewById(R.id.quit);
+    helpBtn = findViewById(R.id.help_btn);
     locationText = findViewById(R.id.location_description_text);
     locationDropdown = findViewById(R.id.location_dropdown);
     descriptionTabBtn = findViewById(R.id.tab_for_description_btn);
@@ -73,6 +88,9 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     addPictureTabBtn.setOnClickListener(showImageDIv);
     removePictureBtn.setOnClickListener(removeSelectedImage);
     locationTabBtn.setOnClickListener(onTabClick(Konstants.LOCATION_TAB, locationTabBtn, locationTab));
+    helpBtn.setOnClickListener(showErrandHelp);
+    userSelectedImageHolder.setOnClickListener(chooseImageForErrand);
+    quit.setOnClickListener(quitCreating);
 
 //  ----------------------------------------------------------
     locationList.add(Konstants.CHOOSE);
@@ -92,9 +110,49 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     addDetailsBtn.setOnClickListener(addToDetailsList);
     locationDropdown.setOnItemSelectedListener(chooseLocation);
     startInvigilatingInfinitely();
-
   }
 
+
+  private View.OnClickListener quitCreating = new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+      finish();
+    }
+  };
+  private View.OnClickListener chooseImageForErrand = new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+      imageHelper.openFileChooser(new ImageUploadHelper.FileChooserCallback() {
+        @Override
+        public void getBackChooserIntent(Intent intent) {
+          startActivityForResult(intent, Konstants.CHOOSE_IMAGE_REQUEST_CODE);
+        }
+      });
+    }
+  };
+
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    if (requestCode == Konstants.CHOOSE_IMAGE_REQUEST_CODE && data != null && resultCode == RESULT_OK && data.getData() != null) {
+      Uri uri = data.getData();
+      imageHelper.compressImage(uri, new ImageUploadHelper.CompressedImageCallback() {
+        @Override
+        public void getCompressedImage(Bitmap compressedBitmap) {
+          userSelectedImage = compressedBitmap;
+          userSelectedImageHolder.setImageBitmap(compressedBitmap);
+        }
+      });
+    }
+  }
+
+  private View.OnClickListener showErrandHelp = new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+      Intent help = new Intent(NewErrandCreationPage.this, TeachMeHowToCreateAnErrand.class);
+      startActivity(help);
+    }
+  };
 
   private void startInvigilatingInfinitely() {
     handler.postDelayed(new Runnable() {
