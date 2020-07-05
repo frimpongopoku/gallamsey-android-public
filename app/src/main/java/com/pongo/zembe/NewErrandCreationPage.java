@@ -23,26 +23,23 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class NewErrandCreationPage extends AppCompatActivity implements OnDetailItemsClick, View.OnClickListener {
+public class NewErrandCreationPage extends AppCompatActivity implements OnDetailItemsClick {
 
   ArrayList<String> detailsList = new ArrayList<>();
   ArrayAdapter<String> locationDropdownAdapter;
   ArrayList<String> locationList = new ArrayList<>();
-  String selectedLocation;
   Spinner locationDropdown;
   RecyclerView recyclerView;
   ImageView userSelectedImageHolder, addDetailsBtn, descriptionTabBtn, estimateTabBtn, allowanceTabBtn, locationTabBtn, detailsTabBtn;
   LinearLayout detailsTab, descriptionTab, estimationTab, allowanceTab, locationTab, pictureTab;
   Button addPictureTabBtn, removePictureBtn;
-  EditText detailsBox, allowanceBox, estimatedCostBox;
+  EditText detailsBox, allowanceBox, estimatedCostBox, descriptionBox;
   DetailsListAdapter recyclerAdapter;
-  Handler handler;
-  String currentTabKey = Konstants.DESC_TAB;
-  String imageDivState = Konstants.INACTIVE;
+  String currentTabKey = Konstants.DESC_TAB, selectedLocation = Konstants.CHOOSE;
   Bitmap userSelectedImage = null;
   TextView locationText;
-
   int DEFAULT_STATE_VALUE = 40, STATE_CHANGED_VALUE = 60;
+  Handler handler = new Handler();
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +63,8 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     removePictureBtn = findViewById(R.id.close_btn_in_description);
     userSelectedImageHolder = findViewById(R.id.user_selected_image);
     allowanceBox = findViewById(R.id.allowance_box);
+    estimatedCostBox = findViewById(R.id.estimation_box);
+    descriptionBox = findViewById(R.id.description_box);
 //  ..........................................................
     descriptionTabBtn.setOnClickListener(onTabClick(Konstants.DESC_TAB, descriptionTabBtn, descriptionTab));
     detailsTabBtn.setOnClickListener(onTabClick(Konstants.DETAILS_TAB, detailsTabBtn, detailsTab));
@@ -73,9 +72,10 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     allowanceTabBtn.setOnClickListener(onTabClick(Konstants.ALLOWANCE_TAB, allowanceTabBtn, allowanceTab));
     addPictureTabBtn.setOnClickListener(showImageDIv);
     removePictureBtn.setOnClickListener(removeSelectedImage);
-    locationTabBtn.setOnClickListener(onTabClick(Konstants.LOCATION_TAB,locationTabBtn,locationTab));
+    locationTabBtn.setOnClickListener(onTabClick(Konstants.LOCATION_TAB, locationTabBtn, locationTab));
 
 //  ----------------------------------------------------------
+    locationList.add(Konstants.CHOOSE);
     locationList.add("Home");
     locationList.add("School");
     locationList.add("Club");
@@ -91,16 +91,76 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     recyclerView.hasFixedSize();
     addDetailsBtn.setOnClickListener(addToDetailsList);
     locationDropdown.setOnItemSelectedListener(chooseLocation);
+    startInvigilatingInfinitely();
 
   }
 
 
+  private void startInvigilatingInfinitely() {
+    handler.postDelayed(new Runnable() {
+      @Override
+      public void run() {
+        errandStepsInvigilator();
+        // restart the whole process again
+        startInvigilatingInfinitely();
+      }
+    }, 2000);
+
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+    startInvigilatingInfinitely();
+  }
+
+  @Override
+  protected void onPause() {
+    handler.removeCallbacksAndMessages(null);
+    super.onPause();
+  }
+
+  private void errandStepsInvigilator() {
+    //if description has been provided
+    //if estimated cost has been provided
+    //if allowance cost has been provided
+    //if location has been provided
+    //if extra details have been provided
+    if (!descriptionBox.getText().toString().isEmpty()) {
+      descriptionTabBtn.setImageResource(R.drawable.ic_description_green);
+    } else {
+      descriptionTabBtn.setImageResource(R.drawable.ic_description_black_24dp);
+    }
+
+    if (!estimatedCostBox.getText().toString().isEmpty()) {
+      estimateTabBtn.setImageResource(R.drawable.ic_payment_green);
+    } else {
+      estimateTabBtn.setImageResource(R.drawable.errand_payment_icon);
+    }
+    if (!allowanceBox.getText().toString().isEmpty()) {
+      allowanceTabBtn.setImageResource(R.drawable.ic_card_giftcard_green);
+    } else {
+      allowanceTabBtn.setImageResource(R.drawable.ic_card_giftcard_black_24dp);
+    }
+
+    if (!selectedLocation.equals(Konstants.CHOOSE)) {
+      locationTabBtn.setImageResource(R.drawable.ic_location_green);
+    } else {
+      locationTabBtn.setImageResource(R.drawable.location_vector_icon);
+    }
+
+    if (detailsList.size() != 0) {
+      detailsTabBtn.setImageResource(R.drawable.ic_list_green);
+    } else {
+      detailsTabBtn.setImageResource(R.drawable.ic_list);
+    }
+  }
 
   private AdapterView.OnItemSelectedListener chooseLocation = new AdapterView.OnItemSelectedListener() {
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
       selectedLocation = adapterView.getItemAtPosition(i).toString();
-      String text = "Your items(s) will be delivered at '"+selectedLocation+"'";
+      String text = "Your items(s) will be delivered at '" + selectedLocation + "'";
       locationText.setText(text);
     }
 
@@ -251,14 +311,5 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     recyclerAdapter.notifyItemRemoved(pos);
   }
 
-  @Override
-  public void onClick(View view) {
-    switch (view.getId()) {
-      case R.id.tab_for_allowance_btn: {
 
-      }
-
-
-    }
-  }
 }
