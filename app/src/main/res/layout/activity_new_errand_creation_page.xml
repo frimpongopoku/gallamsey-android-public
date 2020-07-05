@@ -87,8 +87,8 @@
 
           <Button
             android:id="@+id/close_btn_in_description"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_below="@id/tab_for_image_btn"
             android:layout_marginTop="10dp"
             android:background="@drawable/close_circle"
@@ -110,8 +110,6 @@
               android:hint="Need anything now?"
               android:paddingStart="10dp"
               android:paddingEnd="15dp" />
-
-
             <!-- UPLOAD PICTURE DIV -->
             <LinearLayout
               android:id="@+id/tab_for_image"
@@ -120,20 +118,20 @@
               android:layout_above="@id/bottom_fake_nav"
               android:layout_below="@id/top_controls"
               android:orientation="vertical"
-              android:visibility="gone">
+              android:visibility="visible">
 
               <ImageView
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp"
                 android:id="@+id/user_selected_image"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
-                android:src="@drawable/dummy_image" />
+                android:src="@drawable/galam_wakye" />
             </LinearLayout>
 
-
           </LinearLayout>
-
 
         </RelativeLayout>
       </LinearLayout>
@@ -162,7 +160,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
         <!-- ............................- -->
         <LinearLayout
           android:layout_width="match_parent"
@@ -205,6 +202,17 @@
           android:inputType="numberDecimal"
           android:textColor="@color/green"
           android:textSize="50sp" />
+        <RelativeLayout
+          android:layout_marginTop="50dp"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent">
+          <ImageView
+            android:alpha="0.2"
+            android:layout_centerInParent="true"
+            android:src="@drawable/galam_payment_colored"
+            android:layout_width="150dp"
+            android:layout_height="150dp" />
+        </RelativeLayout>
       </LinearLayout>
     </ScrollView>
   </LinearLayout>
@@ -274,7 +282,21 @@
           android:inputType="numberDecimal"
           android:textColor="@color/green"
           android:textSize="50sp" />
+
+        <RelativeLayout
+          android:layout_marginTop="60dp"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent">
+
+          <ImageView
+            android:alpha="0.2"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/galam_money_colored" />
+        </RelativeLayout>
       </LinearLayout>
+
 
     </ScrollView>
 
@@ -291,10 +313,25 @@
     android:padding="20dp"
     android:visibility="gone">
 
-    <TextView
+    <LinearLayout
+      android:weightSum="5"
+      android:orientation="horizontal"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:text="This is where you give specific instructions that the rider, should not miss" />
+      android:layout_height="wrap_content">
+      <ImageView
+        android:src="@drawable/galam_teacher_colored"
+        android:layout_width="40dp"
+        android:layout_height="40dp" />
+      <TextView
+        android:layout_marginLeft="5dp"
+        android:layout_weight="4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="This is where you give specific instructions that the rider, should not miss" />
+
+
+    </LinearLayout>
+
 
     <LinearLayout
       android:layout_width="match_parent"
@@ -307,7 +344,7 @@
         android:id="@+id/edittext_in_details_tab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="18dp"
         android:layout_weight="4"
         android:background="@android:color/white"
         android:hint="Does the shoe have to be from Samsung?"
@@ -330,6 +367,71 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:layout_marginTop="10dp" />
+  </LinearLayout>
+
+  <!-- LOCATION  DIV -->
+  <LinearLayout
+    android:id="@+id/tab_for_location"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_above="@id/bottom_fake_nav"
+    android:layout_below="@id/top_controls"
+    android:orientation="vertical"
+    android:paddingLeft="20dp"
+    android:paddingTop="20dp"
+    android:paddingRight="20dp"
+    android:visibility="gone">
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="Where would you like your item(s) to be delivered?\nDont think too much, just choose a location you are comfortable with.\nYou can always chat with your rider later to change" />
+
+    <Spinner
+      android:id="@+id/location_dropdown"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="5dp"
+      android:layout_marginBottom="7dp"
+      android:background="@drawable/stroke_textbox"
+      android:paddingLeft="25dp"
+      android:paddingTop="0dp"
+      android:paddingRight="0dp"
+      android:paddingBottom="0dp" />
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:weightSum="5">
+
+      <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_weight="1"
+        android:src="@drawable/ic_location_city_black_24dp" />
+
+      <TextView
+        android:id="@+id/location_description_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="13dp"
+        android:text="Item(s) will be delivered at home" />
+    </LinearLayout>
+
+    <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+
+      <ImageView
+        android:alpha="0.2"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/galam_new_rider_colored" />
+    </RelativeLayout>
+
+
   </LinearLayout>
 
   <!-- End Of ALl Component Divs -->

@@ -12,16 +12,24 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
 public class NewErrandCreationPage extends AppCompatActivity implements OnDetailItemsClick, View.OnClickListener {
 
   ArrayList<String> detailsList = new ArrayList<>();
+  ArrayAdapter<String> locationDropdownAdapter;
+  ArrayList<String> locationList = new ArrayList<>();
+  String selectedLocation;
+  Spinner locationDropdown;
   RecyclerView recyclerView;
   ImageView userSelectedImageHolder, addDetailsBtn, descriptionTabBtn, estimateTabBtn, allowanceTabBtn, locationTabBtn, detailsTabBtn;
   LinearLayout detailsTab, descriptionTab, estimationTab, allowanceTab, locationTab, pictureTab;
@@ -32,6 +40,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
   String currentTabKey = Konstants.DESC_TAB;
   String imageDivState = Konstants.INACTIVE;
   Bitmap userSelectedImage = null;
+  TextView locationText;
 
   int DEFAULT_STATE_VALUE = 40, STATE_CHANGED_VALUE = 60;
 
@@ -40,10 +49,13 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_new_errand_creation_page);
 //  -----------------------------------------------------------
+    locationText = findViewById(R.id.location_description_text);
+    locationDropdown = findViewById(R.id.location_dropdown);
     descriptionTabBtn = findViewById(R.id.tab_for_description_btn);
     estimateTabBtn = findViewById(R.id.tab_for_estimated_cost_btn);
     allowanceTabBtn = findViewById(R.id.tab_for_allowance_btn);
     locationTabBtn = findViewById(R.id.tab_for_location_btn);
+    locationTab = findViewById(R.id.tab_for_location);
     detailsTabBtn = findViewById(R.id.tab_for_details_btn);
     addPictureTabBtn = findViewById(R.id.tab_for_image_btn);
     detailsTab = findViewById(R.id.tab_for_details);
@@ -61,8 +73,14 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     allowanceTabBtn.setOnClickListener(onTabClick(Konstants.ALLOWANCE_TAB, allowanceTabBtn, allowanceTab));
     addPictureTabBtn.setOnClickListener(showImageDIv);
     removePictureBtn.setOnClickListener(removeSelectedImage);
+    locationTabBtn.setOnClickListener(onTabClick(Konstants.LOCATION_TAB,locationTabBtn,locationTab));
 
 //  ----------------------------------------------------------
+    locationList.add("Home");
+    locationList.add("School");
+    locationList.add("Club");
+    locationDropdownAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, locationList);
+    locationDropdown.setAdapter(locationDropdownAdapter);
     recyclerView = findViewById(R.id.recyclerview_in_details_tab);
     addDetailsBtn = findViewById(R.id.add_btn_in_details_tab);
     detailsBox = findViewById(R.id.edittext_in_details_tab);
@@ -72,16 +90,32 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     recyclerView.setAdapter(recyclerAdapter);
     recyclerView.hasFixedSize();
     addDetailsBtn.setOnClickListener(addToDetailsList);
+    locationDropdown.setOnItemSelectedListener(chooseLocation);
+
   }
 
 
+
+  private AdapterView.OnItemSelectedListener chooseLocation = new AdapterView.OnItemSelectedListener() {
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+      selectedLocation = adapterView.getItemAtPosition(i).toString();
+      String text = "Your items(s) will be delivered at '"+selectedLocation+"'";
+      locationText.setText(text);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
+  };
   private View.OnClickListener removeSelectedImage = new View.OnClickListener() {
     @Override
     public void onClick(View view) {
       pictureTab.setVisibility(View.GONE);
       removePictureBtn.setVisibility(View.GONE);
       userSelectedImage = null;
-      userSelectedImageHolder.setImageResource(R.drawable.dummy_image);
+      userSelectedImageHolder.setImageResource(R.drawable.galam_wakye);
     }
   };
   private View.OnClickListener showImageDIv = new View.OnClickListener() {
