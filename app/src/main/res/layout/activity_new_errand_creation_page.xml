@@ -118,17 +118,25 @@
               android:layout_above="@id/bottom_fake_nav"
               android:layout_below="@id/top_controls"
               android:orientation="vertical"
-              android:visibility="visible">
+              android:visibility="gone">
 
-              <ImageView
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="20dp"
-                android:id="@+id/user_selected_image"
-                android:layout_width="match_parent"
+              <androidx.cardview.widget.CardView
+                android:layout_marginBottom="10dp"
+                android:layout_width="wrap_content"
                 android:layout_height="300dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="20dp"
                 android:clickable="true"
-                android:src="@drawable/galam_wakye" />
+                app:cardCornerRadius="15dp">
+                <ImageView
+                  android:background="?attr/selectableItemBackgroundBorderless"
+                  android:scaleType="fitXY"
+                  android:id="@+id/user_selected_image"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:clickable="true"
+                  android:src="@drawable/galam_wakye" />
+              </androidx.cardview.widget.CardView><!---->
             </LinearLayout>
 
           </LinearLayout>
@@ -202,16 +210,18 @@
           android:inputType="numberDecimal"
           android:textColor="@color/green"
           android:textSize="50sp" />
+
         <RelativeLayout
-          android:layout_marginTop="50dp"
           android:layout_width="match_parent"
-          android:layout_height="match_parent">
+          android:layout_height="match_parent"
+          android:layout_marginTop="50dp">
+
           <ImageView
-            android:alpha="0.2"
-            android:layout_centerInParent="true"
-            android:src="@drawable/galam_payment_colored"
             android:layout_width="150dp"
-            android:layout_height="150dp" />
+            android:layout_height="150dp"
+            android:layout_centerInParent="true"
+            android:alpha="0.2"
+            android:src="@drawable/galam_payment_colored" />
         </RelativeLayout>
       </LinearLayout>
     </ScrollView>
@@ -284,15 +294,15 @@
           android:textSize="50sp" />
 
         <RelativeLayout
-          android:layout_marginTop="60dp"
           android:layout_width="match_parent"
-          android:layout_height="match_parent">
+          android:layout_height="match_parent"
+          android:layout_marginTop="60dp">
 
           <ImageView
-            android:alpha="0.2"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_centerInParent="true"
+            android:alpha="0.2"
             android:src="@drawable/galam_money_colored" />
         </RelativeLayout>
       </LinearLayout>
@@ -314,19 +324,21 @@
     android:visibility="gone">
 
     <LinearLayout
-      android:weightSum="5"
-      android:orientation="horizontal"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content">
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      android:weightSum="5">
+
       <ImageView
-        android:src="@drawable/galam_teacher_colored"
         android:layout_width="40dp"
-        android:layout_height="40dp" />
+        android:layout_height="40dp"
+        android:src="@drawable/galam_teacher_colored" />
+
       <TextView
-        android:layout_marginLeft="5dp"
-        android:layout_weight="4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_weight="4"
         android:text="This is where you give specific instructions that the rider, should not miss" />
 
 
@@ -424,10 +436,10 @@
       android:layout_height="match_parent">
 
       <ImageView
-        android:alpha="0.2"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_centerInParent="true"
+        android:alpha="0.2"
         android:src="@drawable/galam_new_rider_colored" />
     </RelativeLayout>
 
