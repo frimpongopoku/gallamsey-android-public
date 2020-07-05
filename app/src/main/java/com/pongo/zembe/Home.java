@@ -2,6 +2,7 @@ package com.pongo.zembe;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -38,11 +39,13 @@ public class Home extends AppCompatActivity {
   ImageView userProfileImageOnToolbar;
   FirebaseAuth mAuth = FirebaseAuth.getInstance();
   GroundUser authenticatedUser;
-  Button addErrandBtn;
+  Button addErrandBtn, favoritesBtn;
   GalFirebaseHelper galFirebaseHelper = new GalFirebaseHelper();
   FirebaseFirestore firestore = FirebaseFirestore.getInstance();
   CollectionReference userDB = firestore.collection(Konstants.USER_COLLECTION);
   DocumentReference userDocumentReference;
+
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -51,6 +54,12 @@ public class Home extends AppCompatActivity {
       goToLogin();
     }
     setContentView(R.layout.activity_home);
+    initializeActivity();
+
+
+  }
+
+  private void initializeActivity(){
     fillInTheBlankSpaces();
     //getAuthenticated User if they are coming from login | register
     authenticatedUser =  getIntent().getParcelableExtra("authUser");
@@ -73,24 +82,29 @@ public class Home extends AppCompatActivity {
     BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
     bottomNav.setOnNavigationItemSelectedListener(navListener);
 
+    favoritesBtn = findViewById(R.id.favorites_button);
+    favoritesBtn.setOnClickListener(viewFavorites);
     addErrandBtn = findViewById(R.id.add_errand_button);
-    addErrandBtn.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        Intent createErrandPage = new Intent(getApplicationContext(),NewErrandCreationPage.class);
-        startActivity(createErrandPage);
-
-      }
-    });
-
+    addErrandBtn.setOnClickListener(addNewErrand);
   }
 
-  @Override
-  protected void onResume() {
-    super.onResume();
 
-  }
 
+
+  private View.OnClickListener viewFavorites = new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+      favoritesBtn.setAlpha(1);
+      Intent fav = new Intent(getApplicationContext(),FavouritesActivity.class);
+      startActivity(fav);
+    }
+  }; private View.OnClickListener addNewErrand = new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+      Intent createErrandPage = new Intent(getApplicationContext(),NewErrandCreationPage.class);
+      startActivity(createErrandPage);
+    }
+  };
   private HashMap<String, ArrayList<String>> changeToHash() {
     HashMap<String, ArrayList<String>> map = new HashMap<>();
     map.put("descs", desc);
