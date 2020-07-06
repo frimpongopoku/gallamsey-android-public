@@ -95,7 +95,7 @@ public class Home extends AppCompatActivity {
     @Override
     public void onClick(View view) {
       favoritesBtn.setAlpha(1);
-      Intent fav = new Intent(getApplicationContext(),FavouritesActivity.class);
+      Intent fav = new Intent(getApplicationContext(),FavoritesActivity.class);
       startActivity(fav);
     }
   }; private View.OnClickListener addNewErrand = new View.OnClickListener() {

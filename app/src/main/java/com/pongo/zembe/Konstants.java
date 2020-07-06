@@ -16,6 +16,8 @@ public class Konstants {
   // ERRAND CREATION CONSTANTS
   //  --------------------------
 
+  public static final String USER_TEMPLATES_TAB = "ERRAND_TEMPLATES";
+  public static final String FAVORITE_RIDERS_TAB = "FAVORITE_RIDERS";
   public static final String CHOOSE = "CHOOSE";
   public static final String INACTIVE = "INACTIVE";
   public static final String ACTIVE = "ACTIVE";
