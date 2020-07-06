@@ -12,29 +12,71 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:orientation="vertical"
-      android:padding="30dp">
+      android:padding="15dp">
 
       <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/google_sans_bold"
-        android:text="Settings"
-        android:textSize="28sp" />
-
-      <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:background="@color/appColorLight"
         android:fontFamily="@font/google_sans_medium"
+        android:paddingLeft="15dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:text="Wallet"
+        android:textColor="@color/appColor"
+        android:textSize="17sp" />
+
+
+      <TextView
+        android:id="@+id/add_payment_mobile_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/orange_ripple"
+        android:clickable="true"
+        android:fontFamily="@font/google_sans_light"
+        android:padding="10dp"
+        android:text="Add Payment Mobile Number"
+        android:textSize="14sp" />
+
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/orange_ripple"
+        android:clickable="true"
+        android:fontFamily="@font/google_sans_light"
+        android:padding="10dp"
+        android:text="Cash In"
+        android:textSize="14sp" />
+
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/appColorLight"
+        android:fontFamily="@font/google_sans_medium"
+        android:paddingLeft="15dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         android:text="Account Settings"
-        android:textSize="20sp" />
+        android:textColor="@color/appColor"
+        android:textSize="17sp" />
 
-      <View
+
+      <TextView
+        android:id="@+id/add_pickup_location"
         android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="15dp"
-        android:background="@color/lightest_grey" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/orange_ripple"
+        android:clickable="true"
+        android:fontFamily="@font/google_sans_light"
+        android:padding="10dp"
+        android:text="Add pickup location"
+        android:textSize="14sp" />
+
 
       <TextView
         android:layout_width="match_parent"
@@ -43,29 +85,7 @@
         android:background="@drawable/orange_ripple"
         android:clickable="true"
         android:fontFamily="@font/google_sans_light"
-        android:padding="15dp"
-        android:text="Upgrade Membership"
-        android:textSize="14sp" />
-
-      <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/purple_ripple"
-        android:clickable="true"
-        android:fontFamily="@font/google_sans_light"
-        android:padding="15dp"
-        android:text="Set Home Location"
-        android:textSize="14sp" />
-
-      <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/orange_ripple"
-        android:clickable="true"
-        android:fontFamily="@font/google_sans_light"
-        android:padding="15dp"
+        android:padding="10dp"
         android:text="Edit Profile"
         android:textSize="14sp" />
 
@@ -76,10 +96,12 @@
         android:background="@drawable/orange_ripple"
         android:clickable="true"
         android:fontFamily="@font/google_sans_light"
-        android:padding="15dp"
+        android:padding="10dp"
         android:text="Get Verified"
         android:textSize="14sp" />
 
+
+
       <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -87,27 +109,9 @@
         android:background="@drawable/orange_ripple"
         android:clickable="true"
         android:fontFamily="@font/google_sans_light"
-        android:padding="15dp"
+        android:padding="10dp"
         android:text="Suggest A New Feature"
         android:textSize="14sp" />
-
-
-      <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:fontFamily="@font/google_sans_medium"
-        android:text="Wallet"
-        android:textSize="20sp" />
-
-      <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="15dp"
-        android:background="@color/lightest_grey"
-        android:clickable="true" />
-
       <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -115,10 +119,12 @@
         android:background="@drawable/orange_ripple"
         android:clickable="true"
         android:fontFamily="@font/google_sans_light"
-        android:padding="15dp"
-        android:text="Cash In"
+        android:padding="10dp"
+        android:text="Upgrade Membership"
         android:textSize="14sp" />
 
+
+
       <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -126,7 +132,7 @@
         android:background="@drawable/orange_ripple"
         android:clickable="true"
         android:fontFamily="@font/google_sans_light"
-        android:padding="15dp"
+        android:padding="10dp"
         android:text="Cash Out"
         android:textSize="14sp" />
 

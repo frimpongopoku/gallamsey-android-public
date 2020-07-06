@@ -13,7 +13,27 @@
     android:roundIcon="@mipmap/ic_launcher_round"
     android:supportsRtl="true"
     android:theme="@style/AppTheme">
-    <activity android:name=".TeachMeHowToCreateAnErrand"></activity>
+    <activity
+      android:name=".FavoritesActivity"
+      android:label="@string/title_activity_favorites"
+      android:theme="@style/AppTheme.NoActionBar">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+    </activity>
+    <activity
+      android:name=".NewErrandCreationPage"
+      android:windowSoftInputMode="adjustResize" />
+    <activity
+      android:name=".AddMobilePaymentNumberPage"
+      android:windowSoftInputMode="adjustPan" />
+    <activity android:name=".AddMoreLocations" />
+    <activity
+      android:name=".errandPaymentStepPage"
+      android:windowSoftInputMode="adjustPan" />
+    <activity android:name=".TeachMeHowToCreateAnErrand" />
     <activity android:name=".ImageErrandView" />
     <activity
       android:name=".ChattingPage"
@@ -38,7 +58,7 @@
         <action android:name="android.intent.action.MAIN" />
       </intent-filter>
     </activity>
-    <activity android:name=".CreateNewErrand" >
+    <activity android:name=".CreateNewErrand">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
       </intent-filter>
