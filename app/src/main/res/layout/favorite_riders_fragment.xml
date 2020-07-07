@@ -5,12 +5,9 @@
 
   android:orientation="vertical">
 
-  <include layout="@layout/favorite_ryders_recyclable_item"/>
-  <include layout="@layout/favorite_ryders_recyclable_item"/>
-  <include layout="@layout/favorite_ryders_recyclable_item"/>
-  <include layout="@layout/favorite_ryders_recyclable_item"/>
-  <include layout="@layout/favorite_ryders_recyclable_item"/>
-  <include layout="@layout/favorite_ryders_recyclable_item"/>
-  <include layout="@layout/favorite_ryders_recyclable_item"/>
+  <androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/fav_riders_recycler"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"/>
 
 </LinearLayout>

@@ -16,7 +16,8 @@ import android.widget.Toast;
 
 import com.pongo.zembe.ui.main.SectionsPagerAdapter;
 
-public class FavoritesActivity extends AppCompatActivity implements TempatesRecyclerAdapter.TemplateItemClick {
+public class FavoritesActivity extends AppCompatActivity implements TempatesRecyclerAdapter.TemplateItemClick, FavoriteRidersRecyclerAdapter.RidersItemClick {
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +34,11 @@ public class FavoritesActivity extends AppCompatActivity implements TempatesRecy
 
   @Override
   public void onClick(int position) {
+    Toast.makeText(this, "Clicked + " + position, Toast.LENGTH_SHORT).show();
+  }
 
-    Toast.makeText(this, "Clicked + "+position, Toast.LENGTH_SHORT).show();
-
+  @Override
+  public void onRiderClick(int position) {
+    Toast.makeText(this, "Rider Clicked + " + position, Toast.LENGTH_SHORT).show();
   }
 }
