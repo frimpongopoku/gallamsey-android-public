@@ -1,5 +1,5 @@
 # Gallamsey Android App
-![Gallamsey Logo](https://drive.google.com/file/d/1raSBl_5vK-nfP8cyWjCEPYFFIdfO9rZq/view?usp=sharing)
+![Gallamsey Logo](https://raw.githubusercontent.com/Biibisoft/Gallamsey-for-android/master/Gallamsey_logo%20(1).png?token=AGNWNN4QTYZ4W5PIYETQPFS7ARB34)
 Android Studio Repo For Gallamsey
 ### Created And Managed By 
 # Frimpong Opoku Agyemang
