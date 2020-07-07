@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:orientation="horizontal"
+  android:background="@android:color/white"
+  android:weightSum="6"
+  android:padding="10dp">
+
+  <ImageView
+    android:clickable="true"
+    android:background="?attr/selectableItemBackgroundBorderless"
+    android:layout_marginTop="10dp"
+    android:layout_weight="1"
+    android:id="@+id/toolbar_img"
+    android:layout_width="30dp"
+    android:layout_height="30dp"
+    android:src="@drawable/african_avatar_male"
+    />
+
+  <EditText
+    android:layout_weight="5"
+    android:id="@+id/search_box"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="10dp"
+    android:layout_marginTop="2dp"
+    android:background="@android:color/white"
+    android:hint="Search"
+    android:padding="13dp"
+    android:paddingStart="25dp"
+   />
+
+  <ImageView
+    android:clickable="true"
+    android:background="?attr/selectableItemBackgroundBorderless"
+    android:layout_marginEnd="10dp"
+    android:layout_marginTop="10dp"
+    android:layout_weight="1"
+    android:id="@+id/options"
+    android:layout_width="30dp"
+    android:layout_height="30dp"
+    android:layout_toRightOf="@id/search_box"
+    android:src="@drawable/option_icon"
+   />
+
+</LinearLayout>

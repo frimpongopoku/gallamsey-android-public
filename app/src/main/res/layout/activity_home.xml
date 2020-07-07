@@ -10,7 +10,7 @@
 
   <include
     android:id="@+id/titlebar"
-    layout="@layout/app_default_toolbar"
+    layout="@layout/app_title_bar_with_search"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_alignParentTop="true"

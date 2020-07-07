@@ -42,7 +42,7 @@
     <activity android:name=".ViewProfilePage" />
     <activity android:name=".UserEarningsPage" />
     <activity android:name=".ProfileCompletionPage" />
-    <activity android:name=".Home">
+    <activity android:name=".Home" android:windowSoftInputMode="adjustNothing">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
       </intent-filter>
