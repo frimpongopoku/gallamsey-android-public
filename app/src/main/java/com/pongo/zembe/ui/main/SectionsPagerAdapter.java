@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import com.pongo.zembe.FavoriteFragmentGenerator;
 import com.pongo.zembe.Konstants;
 import com.pongo.zembe.R;
+import com.pongo.zembe.TempatesRecyclerAdapter;
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to

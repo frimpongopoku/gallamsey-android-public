@@ -8,8 +8,13 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
 
 public class FavoriteFragmentGenerator extends Fragment {
+
 
   private static String WHICH_FRAGMENT = "FRAGMENT_NAME";
 
@@ -29,11 +34,22 @@ public class FavoriteFragmentGenerator extends Fragment {
       whichFragment = getArguments().getString(WHICH_FRAGMENT);
     }
     if (whichFragment.equals(Konstants.USER_TEMPLATES_TAB)) {
-      return LayoutInflater.from(getContext()).inflate(R.layout.errand_templates_fragment, container, false);
+      View v = LayoutInflater.from(getContext()).inflate(R.layout.errand_templates_fragment, container, false);
+
+      return initializeTemplatesTab(v);
     } else if (whichFragment.equals(Konstants.FAVORITE_RIDERS_TAB)) {
 
       return LayoutInflater.from(getContext()).inflate(R.layout.favorite_riders_fragment, container, false);
     }
     return null;
+  }
+
+  private View initializeTemplatesTab(View v) {
+    RecyclerView recycler = v.findViewById(R.id.templates_recycler);
+    TempatesRecyclerAdapter adapter = new TempatesRecyclerAdapter(getContext(), new ArrayList<Errand>(),(TempatesRecyclerAdapter.TemplateItemClick) getContext() );
+    LinearLayoutManager manager = new LinearLayoutManager(getContext());
+    recycler.setLayoutManager(manager);
+    recycler.setAdapter(adapter);
+    return v;
   }
 }
