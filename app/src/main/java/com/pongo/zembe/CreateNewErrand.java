@@ -47,8 +47,8 @@ public class CreateNewErrand extends AppCompatActivity implements OnDetailItemsC
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_create_new_errand);
-    toolbar = findViewById(R.id.app_default_toolbar);
-    setSupportActionBar(toolbar);
+//    toolbar = findViewById(R.id.app);
+//    setSupportActionBar(toolbar);
     initialize();
 
   }
