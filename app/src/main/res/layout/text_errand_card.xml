@@ -39,16 +39,16 @@
           android:id="@+id/text_errand_card_date"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:fontFamily="@font/google_sans_light"
+          android:fontFamily="@font/nunito_light"
           android:text="Akwesi Frimpong"
-          android:textSize="11dp" />
+          android:textSize="11sp" />
 
         <TextView
           android:textSize="12sp"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginTop="1dp"
-          android:fontFamily="@font/google_sans_medium"
+          android:fontFamily="@font/nunito_bold"
           android:text="Akwesi Frimpong" />
 
       </LinearLayout>
@@ -70,9 +70,8 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_below="@+id/user_details_div"
-      android:fontFamily="@font/google_sans_light"
       android:text="I need someone to buy me waakye 3 cedis, Mcroni 10 cedis Fish 2 cedis, and Chicken 5 cedis"
-      android:textSize="15sp" />
+      android:textSize="16sp" />
 
     <LinearLayout
       android:layout_below="@id/text_errand_card_desc"
@@ -87,7 +86,7 @@
         android:layout_height="20dp" />
       <TextView
 
-        android:fontFamily="@font/google_sans_bold"
+        android:fontFamily="@font/nunito_bold"
         android:layout_marginEnd="5dp"
         android:id="@+id/text_errand_card_cost"
         android:layout_width="wrap_content"
@@ -102,12 +101,12 @@
         android:layout_width="25dp"
         android:layout_height="25dp" />
       <TextView
-        android:fontFamily="@font/google_sans_bold"
+        android:fontFamily="@font/nunito_bold"
         android:id="@+id/text_errand_card_allowance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="55"
-        android:textColor="@color/allowance_color"
+        android:textColor="@color/green"
         android:textSize="15sp" />
 
 

@@ -13,15 +13,16 @@
 
   <ImageView
     android:id="@+id/toolbar_img"
-    android:layout_width="30dp"
-    android:layout_height="30dp"
-    android:layout_marginTop="10dp"
+    android:layout_width="25dp"
+    android:layout_height="25dp"
+    android:layout_marginTop="4dp"
     android:layout_weight="1"
     android:background="?attr/selectableItemBackgroundBorderless"
     android:clickable="true"
     android:src="@drawable/african_avatar_male" />
 
   <EditText
+    android:textSize="13sp"
     android:id="@+id/search_box"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -30,14 +31,14 @@
     android:layout_weight="5"
     android:background="@android:color/white"
     android:hint="Search"
-    android:padding="13dp"
+    android:padding="8dp"
     android:paddingStart="25dp" />
 
   <ImageView
     android:id="@+id/favorites"
-    android:layout_width="30dp"
-    android:layout_height="30dp"
-    android:layout_marginTop="10dp"
+    android:layout_width="25dp"
+    android:layout_height="25dp"
+    android:layout_marginTop="4dp"
     android:layout_marginEnd="10dp"
     android:layout_toRightOf="@id/search_box"
     android:layout_weight="1"
@@ -47,9 +48,9 @@
 
   <ImageView
     android:id="@+id/options"
-    android:layout_width="30dp"
-    android:layout_height="30dp"
-    android:layout_marginTop="10dp"
+    android:layout_width="25dp"
+    android:layout_height="25dp"
+    android:layout_marginTop="4dp"
     android:layout_marginEnd="10dp"
     android:layout_toRightOf="@id/search_box"
     android:layout_weight="1"

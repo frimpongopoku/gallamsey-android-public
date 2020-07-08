@@ -6,7 +6,7 @@
     <item name="colorPrimary">@color/colorPrimary</item>
     <item name="colorPrimaryDark">@color/appColorDark</item>
     <item name="colorAccent">@color/colorAccent</item>
-    <item name="android:fontFamily">@font/google_sans_light</item>
+    <item name="android:fontFamily">@font/nunito_regular</item>
     <item name="android:navigationBarColor">@android:color/black</item>
   </style>
 
