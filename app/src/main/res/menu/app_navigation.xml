@@ -19,7 +19,7 @@
     android:icon="@drawable/ic_monetization_on_black_24dp"
     android:title="Wallet" />
   <item
-    android:id="@+id/nav_settings"
+    android:id="@+id/tasks"
     android:icon="@drawable/ic_directions_bike_black_24dp"
     android:title="Tasks" />
 </menu>

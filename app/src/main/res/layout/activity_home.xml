@@ -15,16 +15,40 @@
     android:layout_alignParentTop="true"
     android:layout_marginBottom="0dp" />
 
-  <FrameLayout
-    android:layout_above="@id/bottom_nav"
-    android:id="@+id/app_frame_layout"
+  <View
+    android:id="@+id/underline"
+    android:layout_below="@id/titlebar"
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:background="@color/lightest_grey" />
+
+
+  <ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_below="@id/titlebar"
-    android:layout_marginTop="0dp"
-    android:layout_marginBottom="0dp">
+    android:layout_above="@id/bottom_nav"
+    android:layout_below="@id/underline"
+    android:scrollbars="none">
 
-  </FrameLayout>
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:orientation="vertical">
+
+
+      <FrameLayout
+        android:id="@+id/app_frame_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_nav"
+        android:layout_below="@id/titlebar"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp">
+
+      </FrameLayout>
+    </LinearLayout>
+
+  </ScrollView>
 
 
   <Button

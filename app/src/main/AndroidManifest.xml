@@ -13,10 +13,11 @@
     android:roundIcon="@mipmap/ic_launcher_round"
     android:supportsRtl="true"
     android:theme="@style/AppTheme">
+    <activity android:name=".OfficialSettingsPage"></activity>
     <activity
       android:name=".FavoritesActivity"
       android:label="@string/title_activity_favorites"
-      android:theme="@style/AppTheme.NoActionBar"/>
+      android:theme="@style/AppTheme.NoActionBar" />
     <activity
       android:name=".NewErrandCreationPage"
       android:windowSoftInputMode="adjustResize" />
@@ -42,7 +43,9 @@
     <activity android:name=".ViewProfilePage" />
     <activity android:name=".UserEarningsPage" />
     <activity android:name=".ProfileCompletionPage" />
-    <activity android:name=".Home" android:windowSoftInputMode="adjustNothing">
+    <activity
+      android:name=".Home"
+      android:windowSoftInputMode="adjustNothing">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
       </intent-filter>
