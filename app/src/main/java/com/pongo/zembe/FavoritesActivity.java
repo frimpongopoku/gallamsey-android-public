@@ -2,21 +2,16 @@ package com.pongo.zembe;
 
 import android.os.Bundle;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import com.pongo.zembe.ui.main.SectionsPagerAdapter;
 
-public class FavoritesActivity extends AppCompatActivity implements TempatesRecyclerAdapter.TemplateItemClick, FavoriteRidersRecyclerAdapter.RidersItemClick {
+public class FavoritesActivity extends AppCompatActivity {
 
 
   @Override
@@ -32,13 +27,5 @@ public class FavoritesActivity extends AppCompatActivity implements TempatesRecy
 
   }
 
-  @Override
-  public void onClick(int position) {
-    Toast.makeText(this, "Clicked + " + position, Toast.LENGTH_SHORT).show();
-  }
 
-  @Override
-  public void onRiderClick(int position) {
-    Toast.makeText(this, "Rider Clicked + " + position, Toast.LENGTH_SHORT).show();
-  }
 }

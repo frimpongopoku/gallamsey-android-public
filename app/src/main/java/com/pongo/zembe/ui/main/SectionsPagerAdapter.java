@@ -3,15 +3,12 @@ package com.pongo.zembe.ui.main;
 import android.content.Context;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.pongo.zembe.FavoriteFragmentGenerator;
 import com.pongo.zembe.Konstants;
-import com.pongo.zembe.R;
-import com.pongo.zembe.TempatesRecyclerAdapter;
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to

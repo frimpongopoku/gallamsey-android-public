@@ -7,6 +7,44 @@
   android:orientation="vertical"
   tools:context=".OfficialSettingsPage">
 
+  <LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="55dp"
+    >
+    <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+      <ImageView
+        android:clickable="true"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:id="@+id/back_btn"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="20dp"
+        android:src="@drawable/go_left"
+        android:layout_width="30dp"
+        android:layout_height="30dp" />
+      <TextView
+        android:textColor="@color/appColor"
+        android:layout_marginLeft="10dp"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@id/back_btn"
+        android:fontFamily="@font/nunito_bold"
+        android:textSize="18sp"
+        android:text="Settings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+      <View
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/lightest_grey" />
+
+    </RelativeLayout>
+
+
+  </LinearLayout>
+
   <ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -104,7 +142,6 @@
         android:textSize="14sp" />
 
 
-
       <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -115,6 +152,7 @@
         android:padding="10dp"
         android:text="Suggest A New Feature"
         android:textSize="14sp" />
+
       <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -125,7 +163,6 @@
         android:padding="10dp"
         android:text="Upgrade Membership"
         android:textSize="14sp" />
-
 
 
       <TextView

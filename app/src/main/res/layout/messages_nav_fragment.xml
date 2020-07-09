@@ -3,8 +3,7 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:orientation="vertical"
-  android:paddingLeft="12dp"
-  android:paddingRight="12dp">
+  >
 
   <ScrollView
     android:scrollbars="none"
@@ -22,31 +21,31 @@
         layout="@layout/chat_list_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="7dp" />
+       />
 
       <include
         layout="@layout/chat_list_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="7dp" />
+         />
 
       <include
         layout="@layout/chat_list_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="7dp" />
+      />
 
       <include
         layout="@layout/chat_list_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="7dp" />
+        />
 
       <include
         layout="@layout/chat_list_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="7dp" />
+        />
     </LinearLayout>
 
   </ScrollView>

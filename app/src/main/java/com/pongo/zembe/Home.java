@@ -127,7 +127,7 @@ public class Home extends AppCompatActivity {
   }
 
   private void goToTasksPage() {
-    Intent tasksPage = new Intent(this, FavoritesActivity.class);
+    Intent tasksPage = new Intent(this, TasksActivity.class);
     startActivity(tasksPage);
   }
 

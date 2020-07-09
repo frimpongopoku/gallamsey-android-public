@@ -18,7 +18,7 @@ public class MessagesFragment extends Fragment {
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
     View v =  inflater.inflate(R.layout.messages_nav_fragment,container,false);
-    RelativeLayout chatListItem = (RelativeLayout) v.findViewById(R.id.chat_item);
+    LinearLayout chatListItem = (LinearLayout) v.findViewById(R.id.chat_item);
     chatListItem.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
