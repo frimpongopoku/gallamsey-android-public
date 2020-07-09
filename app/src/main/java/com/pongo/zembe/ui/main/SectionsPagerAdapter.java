@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import com.pongo.zembe.FavoriteFragmentGenerator;
 import com.pongo.zembe.Konstants;
 import com.pongo.zembe.R;
+import com.pongo.zembe.TempatesRecyclerAdapter;
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
@@ -19,7 +20,7 @@ import com.pongo.zembe.R;
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
 
-  private String[] TAB_TITLES = {"Errand Templates","Favorite Riders"};
+  private String[] TAB_TITLES = {"Errand Templates","Your Favorite Riders"};
   private String[] TAB_KEYS = {Konstants.USER_TEMPLATES_TAB,Konstants.FAVORITE_RIDERS_TAB};
   private final Context mContext;
 

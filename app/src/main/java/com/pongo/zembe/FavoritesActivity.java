@@ -12,10 +12,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.pongo.zembe.ui.main.SectionsPagerAdapter;
 
-public class FavoritesActivity extends AppCompatActivity {
+public class FavoritesActivity extends AppCompatActivity implements TempatesRecyclerAdapter.TemplateItemClick, FavoriteRidersRecyclerAdapter.RidersItemClick {
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -28,5 +30,15 @@ public class FavoritesActivity extends AppCompatActivity {
     tabs.setupWithViewPager(viewPager);
 
 
+  }
+
+  @Override
+  public void onClick(int position) {
+    Toast.makeText(this, "Clicked + " + position, Toast.LENGTH_SHORT).show();
+  }
+
+  @Override
+  public void onRiderClick(int position) {
+    Toast.makeText(this, "Rider Clicked + " + position, Toast.LENGTH_SHORT).show();
   }
 }

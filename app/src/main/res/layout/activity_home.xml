@@ -7,28 +7,51 @@
   android:paddingTop="0dp"
   tools:context=".Home">
 
-
   <include
     android:id="@+id/titlebar"
-    layout="@layout/app_default_toolbar"
+    layout="@layout/app_title_bar_with_search"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_alignParentTop="true"
     android:layout_marginBottom="0dp" />
 
-  <FrameLayout
-    android:id="@+id/app_frame_layout"
+  <View
+    android:id="@+id/underline"
+    android:layout_below="@id/titlebar"
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:background="@color/lightest_grey" />
+
+
+  <ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_above="@+id/bottom_nav"
-    android:layout_below="@id/titlebar"
-    android:layout_marginTop="0dp"
-    android:layout_marginBottom="0dp">
+    android:layout_above="@id/bottom_nav"
+    android:layout_below="@id/underline"
+    android:scrollbars="none">
 
-  </FrameLayout>
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:orientation="vertical">
+
+
+      <FrameLayout
+        android:id="@+id/app_frame_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_nav"
+        android:layout_below="@id/titlebar"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp">
+
+      </FrameLayout>
+    </LinearLayout>
+
+  </ScrollView>
+
 
   <Button
-    android:alpha="0.4"
     android:id="@+id/favorites_button"
     android:layout_width="50dp"
     android:layout_height="50dp"
@@ -36,8 +59,10 @@
     android:layout_alignParentStart="true"
     android:layout_marginStart="15dp"
     android:layout_marginBottom="10dp"
+    android:alpha="0.4"
     android:background="@drawable/round_favorites_btn"
-    android:elevation="9dp" />
+    android:elevation="9dp"
+    android:visibility="gone" />
 
   <Button
     android:id="@+id/add_errand_button"

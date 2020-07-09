@@ -36,7 +36,7 @@ public class Home extends AppCompatActivity {
   ArrayList<String> profits = new ArrayList<>();
   ArrayList<String> costs = new ArrayList<>();
   ArrayList<String> dates = new ArrayList<>();
-  ImageView userProfileImageOnToolbar;
+  ImageView userProfileImageOnToolbar, favBtn, optionsBtn;
   FirebaseAuth mAuth = FirebaseAuth.getInstance();
   GroundUser authenticatedUser;
   Button addErrandBtn, favoritesBtn;
@@ -59,11 +59,11 @@ public class Home extends AppCompatActivity {
 
   }
 
-  private void initializeActivity(){
+  private void initializeActivity() {
     fillInTheBlankSpaces();
     //getAuthenticated User if they are coming from login | register
-    authenticatedUser =  getIntent().getParcelableExtra("authUser");
-    if(authenticatedUser != null){
+    authenticatedUser = getIntent().getParcelableExtra("authUser");
+    if (authenticatedUser != null) {
       userDocumentReference = userDB.document(authenticatedUser.getUserDocumentID());
     }
     userProfileImageOnToolbar = findViewById(R.id.toolbar_img);
@@ -82,6 +82,10 @@ public class Home extends AppCompatActivity {
     BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
     bottomNav.setOnNavigationItemSelectedListener(navListener);
 
+    favBtn = findViewById(R.id.favorites);
+    favBtn.setOnClickListener(viewFavorites);
+    optionsBtn = findViewById(R.id.options);
+    optionsBtn.setOnClickListener(goToSettings);
     favoritesBtn = findViewById(R.id.favorites_button);
     favoritesBtn.setOnClickListener(viewFavorites);
     addErrandBtn = findViewById(R.id.add_errand_button);
@@ -89,22 +93,30 @@ public class Home extends AppCompatActivity {
   }
 
 
-
-
   private View.OnClickListener viewFavorites = new View.OnClickListener() {
     @Override
     public void onClick(View view) {
       favoritesBtn.setAlpha(1);
-      Intent fav = new Intent(getApplicationContext(),FavoritesActivity.class);
+      Intent fav = new Intent(getApplicationContext(), FavoritesActivity.class);
       startActivity(fav);
     }
-  }; private View.OnClickListener addNewErrand = new View.OnClickListener() {
+  };
+
+  private View.OnClickListener goToSettings = new View.OnClickListener() {
     @Override
     public void onClick(View view) {
-      Intent createErrandPage = new Intent(getApplicationContext(),NewErrandCreationPage.class);
+      Intent fav = new Intent(getApplicationContext(), OfficialSettingsPage.class);
+      startActivity(fav);
+    }
+  };
+  private View.OnClickListener addNewErrand = new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+      Intent createErrandPage = new Intent(getApplicationContext(), NewErrandCreationPage.class);
       startActivity(createErrandPage);
     }
   };
+
   private HashMap<String, ArrayList<String>> changeToHash() {
     HashMap<String, ArrayList<String>> map = new HashMap<>();
     map.put("descs", desc);
@@ -114,17 +126,26 @@ public class Home extends AppCompatActivity {
     return map;
   }
 
+  private void goToTasksPage() {
+    Intent tasksPage = new Intent(this, FavoritesActivity.class);
+    startActivity(tasksPage);
+  }
+
   private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+      if (menuItem.getItemId() == R.id.tasks) {
+        goToTasksPage();
+        return false;
+      }
       Fragment destinationPage = null;
       switch (menuItem.getItemId()) {
         case R.id.nav_home:
           destinationPage = new HomeFragment(changeToHash());
           break;
-        case R.id.nav_settings:
-          destinationPage = new SettingsFragment(authenticatedUser);
-          break;
+//        case R.id.nav_settings:
+//          destinationPage = new SettingsFragment(authenticatedUser);
+//          break;
         case R.id.nav_notification:
           destinationPage = new NotificationFragment();
           break;

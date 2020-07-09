@@ -86,7 +86,7 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
     holder.cost.setText(Costs.get(pos));
     holder.profit.setText(Profits.get(pos));
     holder.date.setText(Dates.get(pos));
-    holder.image.setImageResource(R.drawable.shoe50);
+//    holder.image.setImageResource(R.drawable.shoe50);
 
   }
 
