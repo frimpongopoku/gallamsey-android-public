@@ -2,55 +2,72 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
-  android:orientation="horizontal"
-  android:background="@drawable/notificaition_rectangle"
-  android:padding="20dp"
+  android:background="?attr/selectableItemBackground"
+  android:orientation="vertical"
+  android:clickable="true"
+
   android:weightSum="2">
 
 
   <LinearLayout
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_weight="1"
-    android:orientation="vertical">
+    android:orientation="horizontal"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp"
+    android:padding="10dp"
+    android:weightSum="2">
 
-    <TextView
+
+    <LinearLayout
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:fontFamily="@font/google_sans_medium"
-      android:text="Kwame Dumebi" />
+      android:layout_weight="1"
+      android:orientation="vertical">
 
-    <TextView
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/google_sans_medium"
+        android:text="Kwame Dumebi" />
+
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Premium upgrade complete" />
+
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/google_sans_light"
+        android:text="Subscription Notification" />
+    </LinearLayout>
+
+    <LinearLayout
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="Premium upgrade complete" />
+      android:layout_weight="2"
+      android:orientation="vertical">
 
-    <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:fontFamily="@font/google_sans_light"
-      android:text="Subscription Notification" />
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/google_sans_light"
+        android:text="22nd March 1998" />
+
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/google_sans_bold"
+        android:text="65 GHC"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="26sp" />
+    </LinearLayout>
   </LinearLayout>
 
-  <LinearLayout
-    android:orientation="vertical"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_weight="2">
-
-    <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:fontFamily="@font/google_sans_light"
-      android:text="22nd March 1998" />
-
-    <TextView
-      android:textColor="@color/colorPrimaryDark"
-      android:textSize="26sp"
-      android:textAlignment="center"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:fontFamily="@font/google_sans_bold"
-      android:text="65 GHC" />
-  </LinearLayout>
+  <View
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:background="@color/lightest_grey" />
 </LinearLayout>

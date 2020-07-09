@@ -37,31 +37,31 @@
           layout="@layout/notfication_card_type_2"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginBottom="8dp" />
+           />
 
         <include
           layout="@layout/notfication_card_type_1"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginBottom="8dp" />
+        />
 
         <include
           layout="@layout/notfication_card_type_1"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginBottom="8dp" />
+           />
 
         <include
           layout="@layout/notfication_card_type_2"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginBottom="8dp" />
+           />
 
         <include
           layout="@layout/notfication_card_type_1"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginBottom="8dp" />
+           />
       </LinearLayout>
 
       <!-- End Notifications div-->
