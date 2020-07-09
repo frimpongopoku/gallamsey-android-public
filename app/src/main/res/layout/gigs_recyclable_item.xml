@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:clickable="true"
+  android:background="?attr/selectableItemBackground"
+  android:layout_height="wrap_content"
+  android:id="@+id/template_container"
+  android:orientation="vertical">
+
+  <ImageView
+    android:id="@+id/pin_icon"
+    android:layout_width="30dp"
+    android:layout_height="30dp"
+    android:layout_alignParentStart="true"
+    android:layout_centerVertical="true"
+    android:layout_marginStart="10dp"
+    android:src="@drawable/galam_new_rider_colored" />
+
+  <LinearLayout
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_centerVertical="true"
+    android:layout_marginStart="10dp"
+    android:layout_toEndOf="@id/pin_icon"
+    android:orientation="vertical">
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="There is a light, a certain kind of light that never"
+      android:textColor="@android:color/black" />
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="22nd march 1998"
+      android:textSize="12sp" />
+
+    <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+
+      <TextView
+        android:layout_centerVertical="true"
+        android:id="@+id/estimated_cost_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/google_sans_bold"
+        android:text="305"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="14sp" />
+      <ImageView
+        android:layout_centerVertical="true"
+        android:layout_marginStart="5dp"
+        android:layout_toEndOf="@id/estimated_cost_text"
+        android:id="@+id/compare_arrow"
+        android:src="@drawable/ic_compare_arrows_black_24dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp" />
+
+      <TextView
+        android:layout_centerVertical="true"
+        android:id="@+id/allowance_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_toEndOf="@id/compare_arrow"
+        android:fontFamily="@font/google_sans_bold"
+        android:text="75"
+        android:textColor="@color/green"
+        android:textSize="14sp" />
+
+      <TextView
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:layout_centerVertical="true"
+        android:fontFamily="@font/nunito_bold"
+        android:textSize="11sp"
+        android:padding="2dp"
+        android:background="@drawable/light_stroke_rectangle"
+        android:layout_marginLeft="5dp"
+        android:layout_toEndOf="@id/allowance_text"
+        android:id="@+id/errand_status"
+        android:text="NOT STARTED"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+
+  </LinearLayout>
+
+  <View
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:layout_below="@id/container"
+    android:layout_marginTop="20dp"
+    android:background="@color/lightest_grey" />
+
+</RelativeLayout>

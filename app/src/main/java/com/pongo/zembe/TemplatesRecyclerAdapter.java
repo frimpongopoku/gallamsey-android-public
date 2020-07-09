@@ -11,12 +11,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class TempatesRecyclerAdapter extends RecyclerView.Adapter<TempatesRecyclerAdapter.TemplatesRecyclerViewHolder> {
+public class TemplatesRecyclerAdapter extends RecyclerView.Adapter<TemplatesRecyclerAdapter.TemplatesRecyclerViewHolder> {
   Context context;
   ArrayList<Errand> templateList;
   TemplateItemClick onClickListener;
 
-  public TempatesRecyclerAdapter(Context context, ArrayList<Errand> templateList, TemplateItemClick onClickListener) {
+  public TemplatesRecyclerAdapter(Context context, ArrayList<Errand> templateList, TemplateItemClick onClickListener) {
     this.context = context;
     this.templateList = templateList;
     this.onClickListener = onClickListener;

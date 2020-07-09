@@ -32,9 +32,7 @@ public class FavoriteFragmentGenerator extends Fragment {
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
     String whichFragment = null;
-    if (getArguments() != null) {
-      whichFragment = getArguments().getString(WHICH_FRAGMENT);
-    }
+    whichFragment = getArguments().getString(WHICH_FRAGMENT);
     if (whichFragment.equals(Konstants.USER_TEMPLATES_TAB)) {
       View v = LayoutInflater.from(getContext()).inflate(R.layout.errand_templates_fragment, container, false);
 
@@ -50,7 +48,7 @@ public class FavoriteFragmentGenerator extends Fragment {
 
   private View initializeTemplatesTab(View v) {
     RecyclerView recycler = v.findViewById(R.id.templates_recycler);
-    TempatesRecyclerAdapter adapter = new TempatesRecyclerAdapter(getContext(), new ArrayList<Errand>(), (TempatesRecyclerAdapter.TemplateItemClick) getContext());
+    TemplatesRecyclerAdapter adapter = new TemplatesRecyclerAdapter(getContext(), new ArrayList<Errand>(), (TemplatesRecyclerAdapter.TemplateItemClick) getContext());
     LinearLayoutManager manager = new LinearLayoutManager(getContext());
     recycler.setLayoutManager(manager);
     new ItemTouchHelper(templateSwipeFunctionality).attachToRecyclerView(recycler);
