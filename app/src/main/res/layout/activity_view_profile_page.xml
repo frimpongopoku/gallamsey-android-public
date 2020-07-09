@@ -4,64 +4,149 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:background="@color/appColor"
+  android:background="@android:color/white"
   tools:context=".ViewProfilePage">
-  <ImageView
-    android:id="@+id/back_btn"
-    android:layout_alignParentLeft="true"
-    android:layout_alignParentTop="true"
-    android:layout_margin="20dp"
-    android:layout_width="30dp"
-    android:layout_height="30dp"
-    android:src="@drawable/go_left" />
-  <TextView
-    android:layout_marginStart="20dp"
-    android:layout_below="@id/back_btn"
-    android:textSize="20sp"
-    android:textColor="@android:color/white"
-    android:text="Profile"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content" />
 
-  <LinearLayout
-    android:weightSum="8"
-    android:orientation="vertical"
+  <RelativeLayout
+    android:id="@+id/title_bar"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <LinearLayout
-      android:layout_weight="5"
-      android:layout_width="match_parent"
-      android:layout_height="300dp"/>
-    <androidx.cardview.widget.CardView
-      android:layout_weight="2"
-      android:layout_margin="2dp"
-      app:cardCornerRadius="10dp"
+    android:layout_height="55dp"
+    android:background="@android:color/white">
+
+    <ImageView
+      android:id="@+id/back_btn"
+      android:layout_width="30dp"
+      android:layout_height="30dp"
+      android:layout_alignParentStart="true"
+      android:layout_centerVertical="true"
+      android:layout_marginStart="30dp"
+      android:background="?attr/selectableItemBackgroundBorderless"
+      android:clickable="true"
       android:elevation="10dp"
+      android:src="@drawable/go_left" />
+
+    <TextView
       android:layout_width="match_parent"
-      android:layout_height="match_parent">
-      <LinearLayout
-        android:padding="25dp"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+      android:layout_height="wrap_content"
+      android:layout_centerVertical="true"
+      android:layout_marginLeft="10dp"
+      android:layout_toEndOf="@id/back_btn"
+      android:text="Profile"
+      android:textSize="19sp" />
+
+    <View
+      android:layout_width="match_parent"
+      android:layout_height="1dp"
+      android:layout_alignParentBottom="true"
+      android:background="@color/lightest_grey" />
+  </RelativeLayout>
+
+  <ImageView
+    android:id="@+id/profile_picture_full"
+    android:layout_width="match_parent"
+    android:layout_height="270dp"
+    android:layout_below="@id/title_bar"
+    android:src="@drawable/white_gal" />
+
+  <androidx.cardview.widget.CardView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/profile_picture_full"
+    android:layout_marginStart="20dp"
+    android:layout_marginTop="-60dp"
+    android:layout_marginEnd="20dp"
+    app:cardCornerRadius="8dp">
+
+    <LinearLayout
+      android:padding="20dp"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:orientation="horizontal"
+      android:weightSum="4">
+
+      <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
         <ImageView
-          android:src="@drawable/galam_gold_medal"
-          android:layout_width="60dp"
-          android:layout_height="60dp" />
+          android:id="@+id/gold"
+          android:layout_width="50dp"
+          android:layout_height="50dp"
+          android:layout_centerHorizontal="true"
+          android:src="@drawable/gallam_gold_medal_2" />
+
         <TextView
-          android:layout_marginLeft="50dp"
-          android:layout_marginTop="10dp"
-          android:fontFamily="@font/nunito_light"
-          android:textSize="30sp"
-          android:text="204"
           android:layout_width="wrap_content"
-          android:layout_height="wrap_content" />
-      </LinearLayout>
+          android:layout_height="wrap_content"
+          android:layout_below="@id/gold"
+          android:layout_centerHorizontal="true"
+          android:text="2278" />
+      </RelativeLayout>
 
-    </androidx.cardview.widget.CardView>
+      <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
 
-  </LinearLayout>
+        <ImageView
+          android:id="@+id/silver"
+          android:layout_width="50dp"
+          android:layout_height="50dp"
+          android:layout_centerHorizontal="true"
+          android:src="@drawable/gallam_silver_medal" />
 
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/silver"
+          android:layout_centerHorizontal="true"
+          android:text="2278" />
+      </RelativeLayout>
+
+      <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <ImageView
+          android:id="@+id/bronze"
+          android:layout_width="50dp"
+          android:layout_height="50dp"
+          android:layout_centerHorizontal="true"
+          android:src="@drawable/gallam_bronze_medal" />
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/bronze"
+          android:layout_centerHorizontal="true"
+          android:text="2278" />
+      </RelativeLayout>
+
+      <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <ImageView
+          android:id="@+id/junk_cup"
+          android:layout_width="50dp"
+          android:layout_height="50dp"
+          android:layout_centerHorizontal="true"
+          android:src="@drawable/gallam_junk_cup" />
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/junk_cup"
+          android:layout_centerHorizontal="true"
+          android:text="278" />
+      </RelativeLayout>
+
+    </LinearLayout>
+
+  </androidx.cardview.widget.CardView>
 
 
 </RelativeLayout>
