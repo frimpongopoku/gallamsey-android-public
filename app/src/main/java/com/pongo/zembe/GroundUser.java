@@ -2,35 +2,30 @@ package com.pongo.zembe;
 
 import android.annotation.SuppressLint;
 import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.ServerTimestamp;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 
 
-public class GroundUser extends User  {
+public class GroundUser extends User implements Parcelable {
 
   private String userType;
-  //tells the server to give you a timestamp, so you dont have to be setting it yourself
-  private @ServerTimestamp
-  com.google.firebase.Timestamp timestamp;
+
 
   public GroundUser() {
   } //no-arg constructor because of Firebase
 
   public GroundUser(String preferredName, String DOB, String email, String phoneNumber, String whatsappNumber, String uniqueID, String userType, String geoLocation[], String gender) {
-    super(preferredName, DOB, email, phoneNumber, whatsappNumber, uniqueID, geoLocation,gender);
+    super(preferredName, DOB, email, phoneNumber, whatsappNumber, uniqueID, geoLocation, gender);
     this.userType = userType;
   }
 
-  public com.google.firebase.Timestamp getTimestamp() {
-    return timestamp;
-  }
-
-  public void setTimestamp(Timestamp timestamp) {
-    this.timestamp = timestamp;
-  }
 
   public GroundUser(String preferredName, String DOB, String email, String phoneNumber, String whatsappNumber, String uniqueID, String userType, String gender) {
     super(preferredName, DOB, email, phoneNumber, whatsappNumber, uniqueID, gender);
@@ -53,41 +48,13 @@ public class GroundUser extends User  {
 
   @Override
   public void writeToParcel(Parcel dest, int flags) {
+    super.writeToParcel(dest, flags);
     dest.writeString(this.userType);
-    dest.writeParcelable(this.timestamp, flags);
-    dest.writeString(this.profilePictureURL);
-    dest.writeString(this.gender);
-    dest.writeString(this.preferredName);
-    dest.writeString(this.uniqueUserName);
-    dest.writeString(this.email);
-    dest.writeString(this.dob);
-    dest.writeString(this.phoneNumber);
-    dest.writeString(this.whatsappNumber);
-    dest.writeString(this.uniqueID);
-    dest.writeStringArray(this.geoLocation);
-    dest.writeString(this.userDocumentID);
-    dest.writeSerializable(this.ts);
-    dest.writeString(this.region);
-    dest.writeString(this.country);
   }
 
   protected GroundUser(Parcel in) {
+    super(in);
     this.userType = in.readString();
-    this.timestamp = in.readParcelable(Timestamp.class.getClassLoader());
-    this.profilePictureURL = in.readString();
-    this.gender = in.readString();
-    this.preferredName = in.readString();
-    this.uniqueUserName = in.readString();
-    this.email = in.readString();
-    this.dob = in.readString();
-    this.phoneNumber = in.readString();
-    this.whatsappNumber = in.readString();
-    this.uniqueID = in.readString();
-    this.geoLocation = in.createStringArray();
-    this.userDocumentID = in.readString();
-    this.ts = (java.util.Date) in.readSerializable();
-    this.region = in.readString();
-    this.country = in.readString();
   }
 
   public static final Creator<GroundUser> CREATOR = new Creator<GroundUser>() {

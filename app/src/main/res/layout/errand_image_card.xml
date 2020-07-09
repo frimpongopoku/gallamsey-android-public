@@ -3,132 +3,143 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
-  android:layout_marginLeft="5dp"
-  android:layout_marginRight="5dp"
-  android:orientation="vertical"
+  android:background="?attr/selectableItemBackground"
   android:clickable="true"
-  android:background="@drawable/grey_rectangle"
+  android:elevation="5dp"
+  android:orientation="vertical"
+  android:translationZ="10dp"
 
   >
 
   <RelativeLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingStart="10dp"
+    android:paddingEnd="10dp">
 
     <LinearLayout
       android:id="@+id/user_details_div"
       android:layout_width="match_parent"
-      android:layout_marginLeft="20dp"
       android:layout_height="wrap_content"
-      android:padding="10dp">
+      android:layout_marginLeft="10dp"
+      android:layout_marginRight="10dp">
 
       <ImageView
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_marginRight="15dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
         android:src="@drawable/w_p" />
 
-
       <LinearLayout
-        android:paddingTop="5dp"
-        android:orientation="vertical"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <TextView
-          android:textSize="11dp"
-          android:id="@+id/img_errand_card_date"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:fontFamily="@font/google_sans_light"
-          android:text="Akwesi Frimpong" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="5dp">
 
         <TextView
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginTop="1dp"
-          android:fontFamily="@font/google_sans_medium"
-          android:text="Akwesi Frimpong" />
+          android:fontFamily="@font/nunito_regular"
+          android:text="Akwesi Frimpong"
+          android:textColor="@color/appColorMediumLight"
+          android:textSize="12sp" />
+
+        <TextView
+          android:id="@+id/img_errand_card_date"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:fontFamily="@font/nunito_light"
+          android:text="Akwesi Frimpong"
+          android:textSize="11sp" />
+
 
       </LinearLayout>
 
+      <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="7dp"
+        android:src="@drawable/galam_gold_medal" />
+
     </LinearLayout>
+  </RelativeLayout>
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+
+    >
+
+    <TextView
+      android:id="@+id/img_errand_card_title"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="15dp"
+      android:layout_marginEnd="15dp"
+      android:layout_marginBottom="5dp"
+      android:text="is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and"
+      android:textSize="18sp" />
+
+    <ImageView
+      android:id="@+id/img_errand_card_image"
+      android:layout_width="match_parent"
+      android:layout_height="300dp"
+      android:layout_marginTop="5dp"
+      android:layout_marginBottom="6dp"
+      android:src="@drawable/galam_shoe_dummy" />
 
     <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_below="@+id/user_details_div">
+      android:orientation="horizontal"
+      android:paddingStart="20dp"
+      android:paddingEnd="15dp"
+      android:paddingBottom="10dp">
 
       <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="5dp"
+        android:src="@drawable/minus_sign" />
 
-        android:id="@+id/img_errand_card_image"
-        android:layout_width="120dp"
-        android:layout_height="150dp"
-        android:layout_marginLeft="10dp"
-        android:src="@drawable/waakye_plate_2" />
+      <TextView
 
-      <LinearLayout
-
+        android:id="@+id/img_errand_card_cost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_toRightOf="@id/img_errand_card_image"
-        android:orientation="vertical"
-        android:paddingRight="20dp"
-        android:paddingBottom="20dp"
-        android:paddingLeft="20dp"
-        >
+        android:layout_marginEnd="5dp"
+        android:fontFamily="@font/nunito_bold"
+        android:text="25"
+        android:textColor="@color/cost_color"
+        android:textSize="15sp" />
 
-        <TextView
-          android:id="@+id/img_errand_card_title"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="20dp"
-          android:text="Buy Me These Shoes"
-          android:textSize="15sp" />
+      <ImageView
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginEnd="5dp"
+        android:src="@drawable/galam_handshake" />
+
+      <TextView
+        android:id="@+id/img_errand_card_allowance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/nunito_bold"
+        android:text="55"
+        android:textColor="@color/green"
+        android:textSize="15sp" />
 
 
-        <RelativeLayout
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content">
-          <TextView
-            android:id="@+id/img_errand_card_cost"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="20"
-            android:textColor="@color/cost_color"
-            android:textSize="40sp" />
-          <TextView
-            android:id="@+id/cost_currency"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/img_errand_card_cost"
-            android:layout_marginTop="2dp"
-            android:text="GHC" />
-          <TextView
-            android:id="@+id/img_errand_card_allowance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="5dp"
-            android:layout_marginRight="40dp"
-            android:text="5"
-            android:textColor="@color/allowance_color"
-            android:textSize="40sp" />
-          <TextView
-            android:id="@+id/profit_currency"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/img_errand_card_allowance"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="2dp"
-            android:layout_marginRight="40dp"
-            android:text="GHC" />
-        </RelativeLayout>
-      </LinearLayout>
     </LinearLayout>
-  </RelativeLayout>
 
+    <View
+      android:layout_width="match_parent"
+      android:layout_height="1dp"
+      android:background="@color/lightest_grey" />
 
+  </LinearLayout>
 
 </LinearLayout>

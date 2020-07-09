@@ -13,13 +13,13 @@
   <item
     android:id="@+id/nav_message"
     android:icon="@drawable/nav_msg_icon"
-    android:title="Message" />
+    android:title="Messages" />
   <item
     android:id="@+id/earnings"
     android:icon="@drawable/ic_monetization_on_black_24dp"
-    android:title="Earnings" />
+    android:title="Wallet" />
   <item
-    android:id="@+id/nav_settings"
-    android:icon="@drawable/nav_settings_icon"
-    android:title="Settings" />
+    android:id="@+id/tasks"
+    android:icon="@drawable/ic_directions_bike_black_24dp"
+    android:title="Tasks" />
 </menu>

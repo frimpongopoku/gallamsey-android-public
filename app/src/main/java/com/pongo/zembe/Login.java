@@ -61,10 +61,10 @@ public class Login extends AppCompatActivity {
     passwordBox = findViewById(R.id.log_password);
     Button loginButton = findViewById(R.id.login_btn);
     //------------------------
-    FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
-      .setTimestampsInSnapshotsEnabled(true)
-      .build();
-    db.setFirestoreSettings(settings);
+//    FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+//      .setTimestampsInSnapshotsEnabled(true)
+//      .build();
+//    db.setFirestoreSettings(settings);
     //------------------------
     usersCollection = db.collection(Konstants.USER_COLLECTION);
     loginButton.setOnClickListener(new View.OnClickListener() {

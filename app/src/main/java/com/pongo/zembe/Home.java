@@ -2,6 +2,7 @@ package com.pongo.zembe;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,10 +19,15 @@ import android.os.Parcelable;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 
@@ -30,10 +36,15 @@ public class Home extends AppCompatActivity {
   ArrayList<String> profits = new ArrayList<>();
   ArrayList<String> costs = new ArrayList<>();
   ArrayList<String> dates = new ArrayList<>();
-  ImageView userProfileImageOnToolbar;
+  ImageView userProfileImageOnToolbar, favBtn, optionsBtn;
   FirebaseAuth mAuth = FirebaseAuth.getInstance();
-  User authenticatedUser;
-  Button addErrandBtn;
+  GroundUser authenticatedUser;
+  Button addErrandBtn, favoritesBtn;
+  GalFirebaseHelper galFirebaseHelper = new GalFirebaseHelper();
+  FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+  CollectionReference userDB = firestore.collection(Konstants.USER_COLLECTION);
+  DocumentReference userDocumentReference;
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -43,9 +54,18 @@ public class Home extends AppCompatActivity {
       goToLogin();
     }
     setContentView(R.layout.activity_home);
+    initializeActivity();
+
+
+  }
+
+  private void initializeActivity() {
     fillInTheBlankSpaces();
     //getAuthenticated User if they are coming from login | register
-    authenticatedUser = (GroundUser) getIntent().getParcelableExtra("authUser");
+    authenticatedUser = getIntent().getParcelableExtra("authUser");
+    if (authenticatedUser != null) {
+      userDocumentReference = userDB.document(authenticatedUser.getUserDocumentID());
+    }
     userProfileImageOnToolbar = findViewById(R.id.toolbar_img);
     userProfileImageOnToolbar.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -62,17 +82,40 @@ public class Home extends AppCompatActivity {
     BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
     bottomNav.setOnNavigationItemSelectedListener(navListener);
 
+    favBtn = findViewById(R.id.favorites);
+    favBtn.setOnClickListener(viewFavorites);
+    optionsBtn = findViewById(R.id.options);
+    optionsBtn.setOnClickListener(goToSettings);
+    favoritesBtn = findViewById(R.id.favorites_button);
+    favoritesBtn.setOnClickListener(viewFavorites);
     addErrandBtn = findViewById(R.id.add_errand_button);
-    addErrandBtn.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        Intent createErrandPage = new Intent(getApplicationContext(),CreateNewErrand.class);
-        startActivity(createErrandPage);
-
-      }
-    });
-
+    addErrandBtn.setOnClickListener(addNewErrand);
   }
+
+
+  private View.OnClickListener viewFavorites = new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+      favoritesBtn.setAlpha(1);
+      Intent fav = new Intent(getApplicationContext(), FavoritesActivity.class);
+      startActivity(fav);
+    }
+  };
+
+  private View.OnClickListener goToSettings = new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+      Intent fav = new Intent(getApplicationContext(), OfficialSettingsPage.class);
+      startActivity(fav);
+    }
+  };
+  private View.OnClickListener addNewErrand = new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+      Intent createErrandPage = new Intent(getApplicationContext(), NewErrandCreationPage.class);
+      startActivity(createErrandPage);
+    }
+  };
 
   private HashMap<String, ArrayList<String>> changeToHash() {
     HashMap<String, ArrayList<String>> map = new HashMap<>();
@@ -83,17 +126,26 @@ public class Home extends AppCompatActivity {
     return map;
   }
 
+  private void goToTasksPage() {
+    Intent tasksPage = new Intent(this, TasksActivity.class);
+    startActivity(tasksPage);
+  }
+
   private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+      if (menuItem.getItemId() == R.id.tasks) {
+        goToTasksPage();
+        return false;
+      }
       Fragment destinationPage = null;
       switch (menuItem.getItemId()) {
         case R.id.nav_home:
           destinationPage = new HomeFragment(changeToHash());
           break;
-        case R.id.nav_settings:
-          destinationPage = new SettingsFragment();
-          break;
+//        case R.id.nav_settings:
+//          destinationPage = new SettingsFragment(authenticatedUser);
+//          break;
         case R.id.nav_notification:
           destinationPage = new NotificationFragment();
           break;

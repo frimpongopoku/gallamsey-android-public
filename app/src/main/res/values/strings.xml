@@ -5,6 +5,43 @@
     <item>MALE</item>
     <item>FEMALE</item>
   </string-array>
+  <string name="add_more_mobile_numbers_prelude">
+    You can add as many mobile payment numbers as possible.\nUse the sheet at the bottom to provide the details for any new number.\nAny time there is a need for payment, this list will show
+  </string>
+  <string name="add_more_locations_prelude">Add locations so that you can point riders to the exact location you want your items to be delivered</string>
+  <string-array name="errand_expiry_values">
+    <item>30 Minutes</item>
+    <item>1 Hour</item>
+    <item>2 Hours</item>
+    <item>3 Hours</item>
+    <item>4 Hours</item>
+    <item>5 Hours</item>
+    <item>6 Hours</item>
+    <item>1 day</item>
+    <item>2 days</item>
+  </string-array>
 
-  <string name="errand_first_timers"><u>Is this your first time, or you need clarity? Read more about errands before before you start your journey</u></string>
+  <string name="how_to_write_number">
+    <b>Write numbers like this 243123456</b>\n
+    Not like this <b>+233 243123456</b> or this <b>0243123456</b>\n
+    Write only the nine important numbers
+  </string>
+  <string name="money_back">
+    Your money is sent back to your G wallet <b>only if</b>\n
+    \n1. No one picks up your errand, and it expires based on your set expiry date.
+    \n2. You cancel an errand before anyone is able to pick it up.
+  </string>
+  <string name="payment_information_dialog_text">
+    When you make any payment, you pay for the cost of whatever you errand entails, and how much you are willing to give whoever runs your errand.\nThis amount of money does not go to anyone in the mean time, it is sent to Gallamsey\'s secure transaction account.
+    \nThe amount of money is only transferred to whoever run your errand, after you have received your items, and you have marked the errand as complete
+  </string>
+  <string name="payment_is_safe">Your payment is safe, your money does not go to any rider until the errand is complete. Tap the floating question mark on your right, to learn more about this ( A 5-second read )</string>
+
+  <string name="errand_first_timers"><u>Is this your first time, or you need clarity? Read more about errands before you start your journey</u></string>
+  <string name="title_activity_favorites">FavoritesActivity</string>
+  <string name="tab_text_1">Tab 1</string>
+  <string name="tab_text_2">Tab 2</string>
+
+  <!-- TODO: Remove or change this placeholder text -->
+  <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

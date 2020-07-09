@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-
   android:orientation="vertical">
 
 
@@ -22,38 +21,38 @@
       <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="10dp"
+
         android:orientation="vertical">
 
         <include
           layout="@layout/notfication_card_type_2"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginBottom="8dp" />
+          />
 
         <include
           layout="@layout/notfication_card_type_1"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginBottom="8dp" />
+          />
 
         <include
           layout="@layout/notfication_card_type_1"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginBottom="8dp" />
+         />
 
         <include
           layout="@layout/notfication_card_type_2"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginBottom="8dp" />
+         />
 
         <include
           layout="@layout/notfication_card_type_1"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginBottom="8dp" />
+       />
       </LinearLayout>
 
       <!-- End Notifications div-->

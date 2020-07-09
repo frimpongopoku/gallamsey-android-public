@@ -73,18 +73,7 @@ public class SetLocationsPage extends AppCompatActivity {
     startLocationListener();
     regionsDropdown = findViewById(R.id.regions_dropdown);
     regionsArrayList.add("Choose A Region");
-    getCommunitiesListFromFirebase("GHANA", new CommunitiesCallback() {
-      @Override
-      public void collectCommunities(ArrayList<HashMap<String, Object>> communities) {
-        for (int i = 0; i < communities.size(); i++) {
-          try {
-            regionsArrayList.add(communities.get(i).get("name").toString());
-          } catch (Exception e) {
-            Log.d("gettingCommunities", e.getMessage());
-          }
-        }
-      }
-    });
+    getCommunitiesListFromFirebase("GHANA", getCommunitiesCallback);
     ArrayAdapter<String> dropdownAdapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, regionsArrayList);
     regionsDropdown.setAdapter(dropdownAdapter);
     regionsDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -100,6 +89,19 @@ public class SetLocationsPage extends AppCompatActivity {
     });
   }
 
+
+  private CommunitiesCallback getCommunitiesCallback = new CommunitiesCallback() {
+    @Override
+    public void collectCommunities(ArrayList<HashMap<String, Object>> communities) {
+      for (int i = 0; i < communities.size(); i++) {
+        try {
+          regionsArrayList.add(communities.get(i).get("name").toString());
+        } catch (Exception e) {
+          Log.d("gettingCommunities", e.getMessage());
+        }
+      }
+    }
+  };
 
   public void getCommunitiesListFromFirebase(String country, final CommunitiesCallback callback) {
     communities.document(country)

@@ -13,7 +13,25 @@
     android:roundIcon="@mipmap/ic_launcher_round"
     android:supportsRtl="true"
     android:theme="@style/AppTheme">
-    <activity android:name=".TeachMeHowToCreateAnErrand"></activity>
+    <activity android:name=".TasksActivity">
+
+    </activity>
+    <activity android:name=".OfficialSettingsPage" />
+    <activity
+      android:name=".FavoritesActivity"
+      android:label="@string/title_activity_favorites"
+      android:theme="@style/AppTheme.NoActionBar" />
+    <activity
+      android:name=".NewErrandCreationPage"
+      android:windowSoftInputMode="adjustResize" />
+    <activity
+      android:name=".AddMobilePaymentNumberPage"
+      android:windowSoftInputMode="adjustPan" />
+    <activity android:name=".AddMoreLocations" />
+    <activity
+      android:name=".errandPaymentStepPage"
+      android:windowSoftInputMode="adjustPan" />
+    <activity android:name=".TeachMeHowToCreateAnErrand" />
     <activity android:name=".ImageErrandView" />
     <activity
       android:name=".ChattingPage"
@@ -28,7 +46,9 @@
     <activity android:name=".ViewProfilePage" />
     <activity android:name=".UserEarningsPage" />
     <activity android:name=".ProfileCompletionPage" />
-    <activity android:name=".Home">
+    <activity
+      android:name=".Home"
+      android:windowSoftInputMode="adjustNothing">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
       </intent-filter>
@@ -38,7 +58,7 @@
         <action android:name="android.intent.action.MAIN" />
       </intent-filter>
     </activity>
-    <activity android:name=".CreateNewErrand" >
+    <activity android:name=".CreateNewErrand">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
       </intent-filter>

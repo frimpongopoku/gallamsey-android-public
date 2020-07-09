@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical"
+  tools:context=".OfficialSettingsPage">
+
+  <LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="55dp"
+    >
+    <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+      <ImageView
+        android:clickable="true"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:id="@+id/back_btn"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="20dp"
+        android:src="@drawable/go_left"
+        android:layout_width="30dp"
+        android:layout_height="30dp" />
+      <TextView
+        android:textColor="@color/appColor"
+        android:layout_marginLeft="10dp"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@id/back_btn"
+        android:fontFamily="@font/nunito_bold"
+        android:textSize="18sp"
+        android:text="Settings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+      <View
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/lightest_grey" />
+
+    </RelativeLayout>
+
+
+  </LinearLayout>
+
+  <ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:orientation="vertical"
+      android:padding="15dp">
+
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/appColorLight"
+        android:fontFamily="@font/google_sans_medium"
+        android:paddingLeft="15dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:text="Wallet"
+        android:textColor="@color/appColor"
+        android:textSize="17sp" />
+
+
+      <TextView
+        android:id="@+id/add_payment_mobile_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/orange_ripple"
+        android:clickable="true"
+        android:fontFamily="@font/google_sans_light"
+        android:padding="10dp"
+        android:text="Add Payment Mobile Number"
+        android:textSize="14sp" />
+
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/orange_ripple"
+        android:clickable="true"
+        android:fontFamily="@font/google_sans_light"
+        android:padding="10dp"
+        android:text="Cash In"
+        android:textSize="14sp" />
+
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/appColorLight"
+        android:fontFamily="@font/google_sans_medium"
+        android:paddingLeft="15dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:text="Account Settings"
+        android:textColor="@color/appColor"
+        android:textSize="17sp" />
+
+
+      <TextView
+        android:id="@+id/add_pickup_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/orange_ripple"
+        android:clickable="true"
+        android:fontFamily="@font/google_sans_light"
+        android:padding="10dp"
+        android:text="Add pickup location"
+        android:textSize="14sp" />
+
+
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/orange_ripple"
+        android:clickable="true"
+        android:fontFamily="@font/google_sans_light"
+        android:padding="10dp"
+        android:text="Edit Profile"
+        android:textSize="14sp" />
+
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/orange_ripple"
+        android:clickable="true"
+        android:fontFamily="@font/google_sans_light"
+        android:padding="10dp"
+        android:text="Get Verified"
+        android:textSize="14sp" />
+
+
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/orange_ripple"
+        android:clickable="true"
+        android:fontFamily="@font/google_sans_light"
+        android:padding="10dp"
+        android:text="Suggest A New Feature"
+        android:textSize="14sp" />
+
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/orange_ripple"
+        android:clickable="true"
+        android:fontFamily="@font/google_sans_light"
+        android:padding="10dp"
+        android:text="Upgrade Membership"
+        android:textSize="14sp" />
+
+
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/orange_ripple"
+        android:clickable="true"
+        android:fontFamily="@font/google_sans_light"
+        android:padding="10dp"
+        android:text="Cash Out"
+        android:textSize="14sp" />
+
+      <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:background="@color/lightest_grey"
+        android:clickable="true" />
+
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/orange_ripple"
+        android:clickable="true"
+        android:fontFamily="@font/google_sans"
+        android:padding="15dp"
+        android:text="SIGN OUT"
+        android:textSize="14sp" />
+
+
+    </LinearLayout>
+  </ScrollView>
+
+
+</LinearLayout>

@@ -40,6 +40,7 @@
         android:textSize="14sp" />
 
       <EditText
+        android:id="@+id/errand_estimate_cost"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -50,6 +51,7 @@
         android:textSize="14sp" />
 
       <EditText
+        android:id="@+id/errand_allowance"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -60,6 +62,7 @@
         android:textSize="14sp" />
 
       <EditText
+        android:id="@+id/errand_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -73,65 +76,78 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:text="Add Images" />
+        android:text="Add Image" />
 
       <ImageView
+        android:layout_gravity="center"
+        android:background="@drawable/orange_ripple_boderless"
         android:id="@+id/errand_image_holder"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_width="250dp"
+        android:scaleType="centerInside"
+        android:layout_height="250dp"
         android:layout_marginTop="15dp"
         android:layout_marginBottom="15dp"
         android:src="@drawable/waakye_plate_2"
         android:visibility="gone" />
 
-      <EditText
+      <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/stroke_textbox_b"
-        android:hint="Expiry Date"
-        android:inputType="date"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:text="When do you want this errand to expire?"
+        android:textColor="@android:color/black" />
+
+      <Spinner
         android:padding="15dp"
-        android:textSize="14sp" />
+        android:id="@+id/expiry_date_dropdown"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/stroke_textbox_b"
+       />
 
       <TextView
-        android:textColor="@android:color/black"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:text="Add any important details"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:textColor="@android:color/black" />
+
       <LinearLayout
-        android:layout_marginBottom="7dp"
-        android:weightSum="4"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="7dp"
+        android:orientation="horizontal"
+        android:weightSum="4">
+
         <EditText
           android:id="@+id/details_textbox"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
           android:layout_marginRight="3dp"
-          android:textSize="14sp"
-          android:padding="15dp"
+          android:layout_weight="3"
           android:background="@drawable/stroke_textbox_b"
           android:hint="Type specific details here..."
-          android:layout_width="0dp"
-          android:layout_weight="3"
-          android:layout_height="wrap_content" />
+          android:padding="15dp"
+          android:textSize="14sp" />
+
         <Button
           android:id="@+id/add_details_btn"
-          android:textColor="@android:color/white"
-          android:fontFamily="@font/google_sans_bold"
-          android:background="@drawable/green_button_rounded_solid"
-          android:text="Add"
-          android:layout_weight="1"
           android:layout_width="0dp"
-          android:layout_height="46dp" />
+          android:layout_height="46dp"
+          android:layout_weight="1"
+          android:background="@drawable/green_button_rounded_solid"
+          android:fontFamily="@font/google_sans_bold"
+          android:text="Add"
+          android:textColor="@android:color/white" />
       </LinearLayout>
+
       <androidx.recyclerview.widget.RecyclerView
-        android:minHeight="150dp"
         android:id="@+id/details_recycler_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:minHeight="150dp" />
     </LinearLayout>
   </ScrollView>
 

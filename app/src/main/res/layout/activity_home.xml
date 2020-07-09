@@ -7,48 +7,85 @@
   android:paddingTop="0dp"
   tools:context=".Home">
 
-
-
   <include
-    android:layout_marginBottom="0dp"
-    layout="@layout/app_default_toolbar"
     android:id="@+id/titlebar"
+    layout="@layout/app_title_bar_with_search"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_alignParentTop="true" />
+    android:layout_alignParentTop="true"
+    android:layout_marginBottom="0dp" />
 
-  <FrameLayout
+  <View
+    android:id="@+id/underline"
     android:layout_below="@id/titlebar"
-    android:id="@+id/app_frame_layout"
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:background="@color/lightest_grey" />
+
+
+  <ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_above="@+id/bottom_nav"
-    android:layout_marginTop="0dp"
-    android:layout_marginBottom="0dp">
+    android:layout_above="@id/bottom_nav"
+    android:layout_below="@id/underline"
+    android:scrollbars="none">
 
-  </FrameLayout>
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:orientation="vertical">
+
+
+      <FrameLayout
+        android:id="@+id/app_frame_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_nav"
+        android:layout_below="@id/titlebar"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp">
+
+      </FrameLayout>
+    </LinearLayout>
+
+  </ScrollView>
+
+
+  <Button
+    android:id="@+id/favorites_button"
+    android:layout_width="50dp"
+    android:layout_height="50dp"
+    android:layout_above="@+id/bottom_nav"
+    android:layout_alignParentStart="true"
+    android:layout_marginStart="15dp"
+    android:layout_marginBottom="10dp"
+    android:alpha="0.4"
+    android:background="@drawable/round_favorites_btn"
+    android:elevation="9dp"
+    android:visibility="gone" />
 
   <Button
     android:id="@+id/add_errand_button"
-    android:elevation="9dp"
+    android:layout_width="50dp"
+    android:layout_height="50dp"
+    android:layout_above="@+id/bottom_nav"
+    android:layout_alignParentEnd="true"
+    android:layout_marginEnd="15dp"
     android:layout_marginBottom="10dp"
     android:background="@drawable/circle_add_btn"
-  android:layout_alignParentRight="true"
-    android:layout_above="@+id/bottom_nav"
-    android:layout_marginRight="15dp"
-    android:layout_width="50dp"
-    android:layout_height="50dp" />
+    android:elevation="9dp" />
 
 
   <com.google.android.material.bottomnavigation.BottomNavigationView
 
-    android:layout_alignParentBottom="true"
-    android:background="@color/appColor"
-    app:itemIconTint="@android:color/white"
-    app:itemTextColor="@android:color/white"
     android:id="@+id/bottom_nav"
     android:layout_width="match_parent"
     android:layout_height="60dp"
+    android:layout_alignParentBottom="true"
+    android:background="@color/appColor"
+    app:itemIconTint="@drawable/bottom_nav_selector"
+    app:itemTextColor="@drawable/bottom_nav_selector"
+    app:labelVisibilityMode="labeled"
     app:menu="@menu/app_navigation">
 
   </com.google.android.material.bottomnavigation.BottomNavigationView>

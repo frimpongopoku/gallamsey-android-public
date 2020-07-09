@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple android:color="@android:color/white" android:shape="oval" xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <item>
+    <shape android:shape="rectangle">
+      <solid android:color="@color/appColor"></solid>
+      <corners android:radius="1000dp" />
+    </shape>
+  </item>
+  <item
+    android:bottom="5dp"
+    android:drawable="@drawable/help_outline_icon"
+    android:left="5dp"
+    android:right="5dp"
+    android:top="5dp" />
+
+
+</ripple>

@@ -25,7 +25,7 @@
       android:layout_alignParentTop="true"
       android:alpha="1"
       android:background="@drawable/register_title_bar"
-      android:elevation="4dp"></View>
+      android:elevation="4dp"/>
 
     <TextView
       android:layout_width="match_parent"
