@@ -4,7 +4,7 @@
   android:clickable="true"
   android:background="?attr/selectableItemBackground"
   android:layout_height="wrap_content"
-  android:id="@+id/template_container"
+  android:id="@+id/main_container"
   android:orientation="vertical">
 
   <ImageView

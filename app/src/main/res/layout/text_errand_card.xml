@@ -3,17 +3,17 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
-  android:background="?attr/selectableItemBackground"
   android:layout_marginTop="10dp"
   android:layout_marginBottom="10dp"
+  android:background="?attr/selectableItemBackground"
   android:clickable="true"
   android:orientation="vertical">
 
   <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp"
-    android:minHeight="130dp">
+    android:minHeight="130dp"
+    android:padding="10dp">
 
     <LinearLayout
       android:id="@+id/user_details_div"
@@ -23,9 +23,9 @@
       android:paddingEnd="10dp">
 
       <ImageView
-        android:layout_marginTop="7dp"
         android:layout_width="30dp"
         android:layout_height="30dp"
+        android:layout_marginTop="7dp"
         android:layout_marginRight="10dp"
         android:src="@drawable/w_p" />
 
@@ -35,6 +35,16 @@
         android:orientation="vertical"
         android:paddingTop="5dp">
 
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="1dp"
+          android:fontFamily="@font/nunito_regular"
+          android:text="Akwesi Frimpong"
+          android:textColor="@color/appColorMediumLight"
+          android:textSize="12sp" />
+
         <TextView
           android:id="@+id/text_errand_card_date"
           android:layout_width="wrap_content"
@@ -43,73 +53,69 @@
           android:text="Akwesi Frimpong"
           android:textSize="11sp" />
 
-        <TextView
-          android:textColor="@color/appColorMediumLight"
-          android:textSize="12sp"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="1dp"
-          android:fontFamily="@font/nunito_regular"
-          android:text="Akwesi Frimpong" />
 
       </LinearLayout>
+
       <ImageView
-        android:layout_marginTop="7dp"
-        android:layout_marginStart="5dp"
-        android:src="@drawable/galam_gold_medal"
         android:layout_width="30dp"
-        android:layout_height="30dp" />
+        android:layout_height="30dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="7dp"
+        android:src="@drawable/galam_gold_medal" />
 
 
     </LinearLayout>
 
     <TextView
-      android:layout_marginTop="5dp"
-      android:paddingStart="10dp"
-      android:paddingEnd="10dp"
       android:id="@+id/text_errand_card_desc"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_below="@+id/user_details_div"
+      android:layout_marginTop="5dp"
+      android:paddingStart="10dp"
+      android:paddingEnd="10dp"
       android:text="I need someone to buy me waakye 3 cedis, Mcroni 10 cedis Fish 2 cedis, and Chicken 5 cedis"
       android:textSize="19sp" />
 
     <LinearLayout
-      android:layout_below="@id/text_errand_card_desc"
-      android:padding="10dp"
-      android:orientation="horizontal"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content">
+      android:layout_height="wrap_content"
+      android:layout_below="@id/text_errand_card_desc"
+      android:orientation="horizontal"
+      android:padding="10dp">
+
       <ImageView
-        android:layout_marginEnd="5dp"
-        android:src="@drawable/minus_sign"
         android:layout_width="20dp"
-        android:layout_height="20dp" />
+        android:layout_height="20dp"
+        android:layout_marginEnd="5dp"
+        android:src="@drawable/minus_sign" />
+
       <TextView
 
-        android:fontFamily="@font/nunito_bold"
-        android:layout_marginEnd="5dp"
         android:id="@+id/text_errand_card_cost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/text_errand_card_desc"
+        android:layout_marginEnd="5dp"
+        android:fontFamily="@font/nunito_bold"
         android:text="25"
         android:textColor="@color/cost_color"
         android:textSize="15sp" />
+
       <ImageView
-        android:layout_marginEnd="5dp"
-        android:src="@drawable/galam_handshake"
         android:layout_width="25dp"
-        android:layout_height="25dp" />
+        android:layout_height="25dp"
+        android:layout_marginEnd="5dp"
+        android:src="@drawable/galam_handshake" />
+
       <TextView
-        android:fontFamily="@font/nunito_bold"
         android:id="@+id/text_errand_card_allowance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/nunito_bold"
         android:text="55"
         android:textColor="@color/green"
         android:textSize="15sp" />
-
 
 
     </LinearLayout>

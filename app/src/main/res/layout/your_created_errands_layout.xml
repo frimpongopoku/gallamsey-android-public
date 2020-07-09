@@ -4,11 +4,10 @@
   android:layout_height="match_parent"
   android:orientation="vertical">
 
-  <include layout="@layout/created_errands_recyclable" />
-  <include layout="@layout/created_errands_recyclable" />
-  <include layout="@layout/created_errands_recyclable" />
-  <include layout="@layout/created_errands_recyclable" />
-  <include layout="@layout/created_errands_recyclable" />
+  <androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/your_errands_recycler"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />
 
 
 </LinearLayout>
