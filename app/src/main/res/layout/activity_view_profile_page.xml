@@ -37,9 +37,26 @@
       android:layout_margin="2dp"
       app:cardCornerRadius="10dp"
       android:elevation="10dp"
-      android:layout_alignParentBottom="true"
       android:layout_width="match_parent"
       android:layout_height="match_parent">
+      <LinearLayout
+        android:padding="25dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+          android:src="@drawable/galam_gold_medal"
+          android:layout_width="60dp"
+          android:layout_height="60dp" />
+        <TextView
+          android:layout_marginLeft="50dp"
+          android:layout_marginTop="10dp"
+          android:fontFamily="@font/nunito_light"
+          android:textSize="30sp"
+          android:text="204"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content" />
+      </LinearLayout>
 
     </androidx.cardview.widget.CardView>
 
