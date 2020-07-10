@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
@@ -7,88 +7,189 @@
   android:paddingTop="0dp"
   tools:context=".Home">
 
-  <include
-    android:id="@+id/titlebar"
-    layout="@layout/app_title_bar_with_search"
+  <RelativeLayout
+    android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_alignParentTop="true"
-    android:layout_marginBottom="0dp" />
+    android:layout_height="match_parent">
 
-  <View
-    android:id="@+id/underline"
-    android:layout_below="@id/titlebar"
-    android:layout_width="match_parent"
-    android:layout_height="1dp"
-    android:background="@color/lightest_grey" />
+    <include
+      android:id="@+id/titlebar"
+      layout="@layout/app_title_bar_with_search"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignParentTop="true"
+      android:layout_marginBottom="0dp" />
+
+    <View
+      android:id="@+id/underline"
+      android:layout_width="match_parent"
+      android:layout_height="1dp"
+      android:layout_below="@id/titlebar"
+      android:background="@color/lightest_grey" />
 
 
-  <ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_above="@id/bottom_nav"
-    android:layout_below="@id/underline"
-    android:scrollbars="none">
-
-    <LinearLayout
+    <ScrollView
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:orientation="vertical">
+      android:layout_above="@id/bottom_nav"
+      android:layout_below="@id/underline"
+      android:scrollbars="none">
 
-
-      <FrameLayout
-        android:id="@+id/app_frame_layout"
+      <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/bottom_nav"
-        android:layout_below="@id/titlebar"
-        android:layout_marginTop="0dp"
-        android:layout_marginBottom="0dp">
-
-      </FrameLayout>
-    </LinearLayout>
-
-  </ScrollView>
+        android:orientation="vertical">
 
 
-  <Button
-    android:id="@+id/favorites_button"
-    android:layout_width="50dp"
-    android:layout_height="50dp"
-    android:layout_above="@+id/bottom_nav"
-    android:layout_alignParentStart="true"
-    android:layout_marginStart="15dp"
-    android:layout_marginBottom="10dp"
-    android:alpha="0.4"
-    android:background="@drawable/round_favorites_btn"
-    android:elevation="9dp"
-    android:visibility="gone" />
+        <FrameLayout
+          android:id="@+id/app_frame_layout"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:layout_above="@id/bottom_nav"
+          android:layout_below="@id/titlebar"
+          android:layout_marginTop="0dp"
+          android:layout_marginBottom="0dp">
 
-  <Button
-    android:id="@+id/add_errand_button"
-    android:layout_width="50dp"
-    android:layout_height="50dp"
-    android:layout_above="@+id/bottom_nav"
-    android:layout_alignParentEnd="true"
-    android:layout_marginEnd="15dp"
-    android:layout_marginBottom="10dp"
-    android:background="@drawable/circle_add_btn"
-    android:elevation="9dp" />
+        </FrameLayout>
+      </LinearLayout>
+
+    </ScrollView>
 
 
-  <com.google.android.material.bottomnavigation.BottomNavigationView
+    <Button
+      android:id="@+id/favorites_button"
+      android:layout_width="50dp"
+      android:layout_height="50dp"
+      android:layout_above="@+id/bottom_nav"
+      android:layout_alignParentStart="true"
+      android:layout_marginStart="15dp"
+      android:layout_marginBottom="10dp"
+      android:alpha="0.4"
+      android:background="@drawable/round_favorites_btn"
+      android:elevation="9dp"
+      android:visibility="gone" />
 
-    android:id="@+id/bottom_nav"
-    android:layout_width="match_parent"
-    android:layout_height="60dp"
-    android:layout_alignParentBottom="true"
-    android:background="@color/appColor"
-    app:itemIconTint="@drawable/bottom_nav_selector"
-    app:itemTextColor="@drawable/bottom_nav_selector"
-    app:labelVisibilityMode="labeled"
-    app:menu="@menu/app_navigation">
+    <Button
+      android:id="@+id/add_errand_button"
+      android:layout_width="50dp"
+      android:layout_height="50dp"
+      android:layout_above="@+id/bottom_nav"
+      android:layout_alignParentEnd="true"
+      android:layout_marginEnd="15dp"
+      android:layout_marginBottom="10dp"
+      android:background="@drawable/circle_add_btn"
+      android:elevation="9dp" />
 
-  </com.google.android.material.bottomnavigation.BottomNavigationView>
 
+    <com.google.android.material.bottomnavigation.BottomNavigationView
 
-</RelativeLayout>
+      android:id="@+id/bottom_nav"
+      android:layout_width="match_parent"
+      android:layout_height="60dp"
+      android:layout_alignParentBottom="true"
+      android:background="@color/appColor"
+      app:itemIconTint="@drawable/bottom_nav_selector"
+      app:itemTextColor="@drawable/bottom_nav_selector"
+      app:labelVisibilityMode="labeled"
+      app:menu="@menu/app_navigation">
+
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
+  </RelativeLayout>
+
+  <TextView
+    android:visibility="gone"
+    android:id="@+id/msg_notification_badge"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="8dp"
+    android:background="@drawable/notifcation_badge_background"
+    android:fontFamily="@font/nunito_bold"
+    android:paddingLeft="5dp"
+    android:paddingTop="3dp"
+    android:paddingRight="5dp"
+    android:paddingBottom="3dp"
+    android:text="50+"
+    android:textColor="@android:color/white"
+    android:textSize="9dp"
+    app:layout_constraintBottom_toBottomOf="@+id/relativeLayout"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.544"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="@+id/relativeLayout"
+    app:layout_constraintVertical_bias="0.941" />
+
+  <TextView
+    android:visibility="gone"
+    android:id="@+id/nav_notification_badge"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="8dp"
+    android:background="@drawable/notifcation_badge_background"
+    android:fontFamily="@font/nunito_bold"
+    android:paddingLeft="5dp"
+    android:paddingTop="3dp"
+    android:paddingRight="5dp"
+    android:paddingBottom="3dp"
+    android:text="50+"
+    android:textColor="@android:color/white"
+    android:textSize="9dp"
+    app:layout_constraintBottom_toBottomOf="@+id/relativeLayout"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.3"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="@+id/relativeLayout"
+    app:layout_constraintVertical_bias="0.941" />
+
+  <TextView
+    android:visibility="gone"
+    android:id="@+id/wallet_notification_badge"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="8dp"
+    android:background="@drawable/notifcation_badge_background"
+    android:fontFamily="@font/nunito_bold"
+    android:paddingLeft="5dp"
+    android:paddingTop="3dp"
+    android:paddingRight="5dp"
+    android:paddingBottom="3dp"
+    android:text="50+"
+    android:textColor="@android:color/white"
+    android:textSize="9dp"
+    app:layout_constraintBottom_toBottomOf="@+id/relativeLayout"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.753"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="@+id/relativeLayout"
+    app:layout_constraintVertical_bias="0.941" />
+
+  <TextView
+    android:visibility="gone"
+    android:id="@+id/tasks_notification_badge"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="8dp"
+    android:background="@drawable/notifcation_badge_background"
+    android:fontFamily="@font/nunito_bold"
+    android:paddingLeft="5dp"
+    android:paddingTop="3dp"
+    android:paddingRight="5dp"
+    android:paddingBottom="3dp"
+    android:text="50+"
+    android:textColor="@android:color/white"
+    android:textSize="9dp"
+    app:layout_constraintBottom_toBottomOf="@+id/relativeLayout"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.978"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="@+id/relativeLayout"
+    app:layout_constraintVertical_bias="0.941" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

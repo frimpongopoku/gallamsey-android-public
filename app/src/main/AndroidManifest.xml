@@ -48,6 +48,7 @@
     <activity android:name=".ProfileCompletionPage" />
     <activity
       android:name=".Home"
+      android:configChanges="keyboardHidden|orientation"
       android:windowSoftInputMode="adjustNothing">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />

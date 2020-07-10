@@ -105,8 +105,9 @@ public class Home extends AppCompatActivity {
   private View.OnClickListener goToSettings = new View.OnClickListener() {
     @Override
     public void onClick(View view) {
-      Intent fav = new Intent(getApplicationContext(), OfficialSettingsPage.class);
-      startActivity(fav);
+      Intent settings = new Intent(getApplicationContext(), OfficialSettingsPage.class);
+      settings.putExtra("authUser",authenticatedUser);
+      startActivity(settings);
     }
   };
   private View.OnClickListener addNewErrand = new View.OnClickListener() {
