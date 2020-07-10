@@ -132,7 +132,6 @@
                 app:cardCornerRadius="15dp">
                 <ImageView
                   android:background="?attr/selectableItemBackgroundBorderless"
-                  android:scaleType="fitXY"
                   android:id="@+id/user_selected_image"
                   android:layout_width="match_parent"
                   android:layout_height="match_parent"

@@ -8,8 +8,10 @@ import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -46,11 +48,13 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
   int DEFAULT_STATE_VALUE = 40, STATE_CHANGED_VALUE = 60;
   Handler handler = new Handler();
   ImageUploadHelper imageHelper;
+  Activity activity;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_new_errand_creation_page);
+    activity = this;
     initializeActivity();
 
   }
@@ -122,28 +126,33 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
   private View.OnClickListener chooseImageForErrand = new View.OnClickListener() {
     @Override
     public void onClick(View view) {
-      imageHelper.openFileChooser(new ImageUploadHelper.FileChooserCallback() {
-        @Override
-        public void getBackChooserIntent(Intent intent) {
-          startActivityForResult(intent, Konstants.CHOOSE_IMAGE_REQUEST_CODE);
-        }
-      });
+      imageHelper.openFileChooserWithCropper(activity, 6,6 );
     }
   };
 
   @Override
   protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
-    if (requestCode == Konstants.CHOOSE_IMAGE_REQUEST_CODE && data != null && resultCode == RESULT_OK && data.getData() != null) {
-      Uri uri = data.getData();
-      imageHelper.compressImage(uri, new ImageUploadHelper.CompressedImageCallback() {
-        @Override
-        public void getCompressedImage(Bitmap compressedBitmap) {
-          userSelectedImage = compressedBitmap;
-          userSelectedImageHolder.setImageBitmap(compressedBitmap);
-        }
-      });
-    }
+    imageHelper.collectCroppedImage(requestCode, resultCode, data, new ImageUploadHelper.CroppingImageCallback() {
+      @Override
+      public void getCroppedImage(Uri uri) {
+        imageHelper.compressImageToBytes(uri, new ImageUploadHelper.CompressedImageToBytesCallback() {
+          @Override
+          public void getCompressedImage(byte[] compressedImage) {
+            Bitmap bitmap = BitmapFactory.decodeByteArray(compressedImage, 0, compressedImage.length);
+            userSelectedImage = bitmap;
+            userSelectedImageHolder.setImageBitmap(bitmap);
+          }
+        });
+
+      }
+
+      @Override
+      public void getCroppingError(Exception e) {
+        e.printStackTrace();
+        Toast.makeText(activity, e.getMessage(), Toast.LENGTH_SHORT).show();
+      }
+    });
   }
 
   private View.OnClickListener showErrandHelp = new View.OnClickListener() {
