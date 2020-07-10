@@ -5,8 +5,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -40,6 +43,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ProfileCompletionPage extends AppCompatActivity {
   CoordinatorLayout rootLayout;
   EditText dobBox, usernameBox, whatsappNumberBox;
@@ -52,18 +57,20 @@ public class ProfileCompletionPage extends AppCompatActivity {
   LinearLayout elementsDiv;
   LinearLayout profilePicture;
   ImageUploadHelper imageUploadHelper;
-  Uri selectedImageURI = null;
-  ImageView imageHolder;
+  byte[] selectedImageBytes = null;
+  CircleImageView imageHolder;
   StorageReference storageReference;
   String selectedImageExt;
   User recoveredUser; //Gallamsey User class
   ImageView roundCloseBtn;
+  Activity activity;
 
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_profile_completion_page);
+    activity = this;
     user = mAuth.getCurrentUser();
     spinner = findViewById(R.id.prof_spinner);
     //-----------------
@@ -116,7 +123,7 @@ public class ProfileCompletionPage extends AppCompatActivity {
 
           @Override
           public void positiveBtnCallable() {
-           deleteCurrentProfilePicture();
+            deleteCurrentProfilePicture();
           }
         });
         dialog.show();
@@ -145,7 +152,7 @@ public class ProfileCompletionPage extends AppCompatActivity {
           }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-              Toast.makeText(ProfileCompletionPage.this, "We could not remove your picture:: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+              Toast.makeText(ProfileCompletionPage.this, "We could not remove your picture:: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
           });
         }
@@ -153,12 +160,7 @@ public class ProfileCompletionPage extends AppCompatActivity {
   }
 
   private void startImageChooser() {
-    imageUploadHelper.openFileChooser(new ImageUploadHelper.FileChooserCallback() {
-      @Override
-      public void getBackChooserIntent(Intent intent) {
-        startActivityForResult(intent, Konstants.CHOOSE_IMAGE_REQUEST_CODE);
-      }
-    });
+    imageUploadHelper.openFileChooserWithCropper(activity, 4, 3);
   }
 
   private void goToLogin() {
@@ -216,7 +218,7 @@ public class ProfileCompletionPage extends AppCompatActivity {
         profilePicture.setBackgroundResource(R.drawable.profile_dummy_box_male);
       } else if (gallamseyUser.getGender().equals(Konstants.OTHER)) {
         profilePicture.setBackgroundResource(R.drawable.profile_dummy_box_other);
-      }else{
+      } else {
         profilePicture.setBackgroundResource(R.drawable.profile_dummy_box_female);
       }
     }
@@ -225,19 +227,37 @@ public class ProfileCompletionPage extends AppCompatActivity {
   @Override
   protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
-    if (requestCode == Konstants.CHOOSE_IMAGE_REQUEST_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {
-      selectedImageURI = data.getData();
-      selectedImageExt = imageUploadHelper.getFileExtension(selectedImageURI);
-      profilePicture.setVisibility(View.GONE);
-      imageHolder.setVisibility(View.VISIBLE);
-      Picasso.get().load(selectedImageURI).into(imageHolder);
-    }
+    imageUploadHelper.collectCroppedImage(requestCode, resultCode, data, new ImageUploadHelper.CroppingImageCallback() {
+      @Override
+      public void getCroppedImage(Uri uri) {
+        selectedImageExt = imageUploadHelper.getFileExtension(uri);
+        imageUploadHelper.compressImageToBytes(uri, new ImageUploadHelper.CompressedImageToBytesCallback() {
+          @Override
+          public void getCompressedImage(byte[] compressedImage) {
+            selectedImageBytes = compressedImage;
+            profilePicture.setVisibility(View.GONE);
+            imageHolder.setVisibility(View.VISIBLE);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(compressedImage, 0, compressedImage.length);
+            imageHolder.setImageBitmap(bitmap);
+
+          }
+        });
+
+      }
+
+      @Override
+      public void getCroppingError(Exception e) {
+        e.printStackTrace();
+        Toast.makeText(activity, e.getMessage(), Toast.LENGTH_SHORT).show();
+
+      }
+    });
   }
 
   public void uploadImage(final ImageUploadCallback imageUploadCallback) {
     String filename = user.getUid() + "_profile_" + System.currentTimeMillis() + "." + selectedImageExt;
     final StorageReference fileReference = storageReference.child(filename);
-    fileReference.putFile(selectedImageURI)
+    fileReference.putBytes(selectedImageBytes)
       .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
         @Override
         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -305,7 +325,7 @@ public class ProfileCompletionPage extends AppCompatActivity {
 
         // Upload Profile Picture if available, else : do normal user updates
         //------------------------------------
-        if (selectedImageURI != null) {
+        if (selectedImageBytes != null) {
           uploadImage(new ImageUploadCallback() {
             @Override
             public void getDownloadableURL(String URL) {

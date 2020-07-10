@@ -61,6 +61,15 @@ public class ImageUploadHelper {
 
   }
 
+  public void compressImageToBytes(Uri uri, final CompressedImageToBytesCallback callback) {
+    new BackgroundCompressorToBytes(context.getContentResolver(), new CompressedImageToBytesCallback() {
+      @Override
+      public void getCompressedImage(byte[] compressedImage) {
+        callback.getCompressedImage(compressedImage);
+      }
+    }).execute(uri);
+  }
+
   public void compressImage(Uri uri, final CompressedImageCallback callback) {
     new BackgroundCompressor(context.getContentResolver(), new CompressedImageCallback() {
       @Override
@@ -88,6 +97,10 @@ public class ImageUploadHelper {
     void getCompressedImage(Bitmap compressedBitmap);
   }
 
+  public interface CompressedImageToBytesCallback {
+    void getCompressedImage(byte[] compressedImage);
+  }
+
   public interface FileChooserCallback {
     /**
      * returns the image file picker intent
@@ -96,6 +109,7 @@ public class ImageUploadHelper {
     void getBackChooserIntent(Intent intent);
   }
 
+//  ============================================================================================
 
   public class BackgroundCompressor extends AsyncTask<Uri, Integer, Bitmap> {
     ContentResolver resolver;
@@ -135,7 +149,46 @@ public class ImageUploadHelper {
       super.onPostExecute(bitmap);
       imageCallback.getCompressedImage(bitmap);
     }
+  }
 
+
+  // ==================================== ASYNC COMPRESSION TO BYTES ====================================
+  public class BackgroundCompressorToBytes extends AsyncTask<Uri, Integer, byte[]> {
+    ContentResolver resolver;
+    Bitmap bitmap;
+    CompressedImageToBytesCallback imageCallback;
+
+    public BackgroundCompressorToBytes(ContentResolver resolver, CompressedImageToBytesCallback imageCallback) {
+      this.resolver = resolver;
+      this.imageCallback = imageCallback;
+    }
+
+    public byte[] getBytesFromBitmap(Bitmap bitmap, Integer quality) {
+      ByteArrayOutputStream stream = new ByteArrayOutputStream();
+      bitmap.compress(Bitmap.CompressFormat.JPEG, quality, stream);
+      return stream.toByteArray();
+    }
+
+    @Override
+    protected void onPreExecute() {
+      super.onPreExecute();
+    }
+
+    @Override
+    protected byte[] doInBackground(Uri... uris) {
+      try {
+        bitmap = MediaStore.Images.Media.getBitmap(resolver, uris[0]);
+      } catch (Exception e) {
+        Log.w("errorOnResizing", e.getMessage());
+      }
+      return getBytesFromBitmap(bitmap, 60);
+    }
+
+    @Override
+    protected void onPostExecute(byte[] imageBytes) {
+      super.onPostExecute(imageBytes);
+      imageCallback.getCompressedImage(imageBytes);
+    }
   }
 
 }
