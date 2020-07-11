@@ -9,6 +9,9 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -19,6 +22,8 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.hsalf.smilerating.SmileRating;
 import com.hsalf.smileyrating.SmileyRating;
 
@@ -105,52 +110,75 @@ public class MagicBoxes extends AppCompatDialogFragment {
     return builder.create();
   }
 
-
-//  public Dialog constructDialogForMobileNumberAddition(final ArrayList<PaymentContact> initialArray, final PhoneNumberDialogContentCallable callable) {
-//    final EditText addingBox, nameBox;
-//    Button addButton;
-//    RecyclerView recyclerView ;
+//  public Dialog constructTagDialog(final ArrayList<String> tags, final TagDialogContentCallable tagDialogContent) {
+//    final ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, tags);
+//    final ChipGroup group;
+//    AutoCompleteTextView textbox;
 //    AlertDialog.Builder builder = new AlertDialog.Builder(context);
-//    View v = LayoutInflater.from(context).inflate(R.layout.add_mobile_number_custom_view_for_dialog, null, false);
-//    addingBox = v.findViewById(R.id.adding_textbox);
-//    nameBox = v.findViewById(R.id.name_textbox);
-//    addButton = v.findViewById(R.id.add_btn);
-//    recyclerView = v.findViewById(R.id.phone_numbers_recycler);
-//    final PhoneNumberRecyclerAdapter recyclerAdapter = new PhoneNumberRecyclerAdapter(context,initialArray);
-//    LinearLayoutManager manager = new LinearLayoutManager(context);
-//    recyclerView.setLayoutManager(manager);
-//    recyclerView.setAdapter(recyclerAdapter);
-//    addButton.setOnClickListener(new View.OnClickListener() {
+//    View v = LayoutInflater.from(context).inflate(R.layout.tagging_dialog_layout, null, false);
+//    group = v.findViewById(R.id.tags_chip_group);
+//    textbox = v.findViewById(R.id.tag_textbox);
+//    textbox.setAdapter(adapter);
+//    textbox.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 //      @Override
-//      public void onClick(View view) {
-//        String name, phone;
-//        name = nameBox.getText().toString().trim();
-//        phone = addingBox.getText().toString().trim();
-//        if(!name.isEmpty() && !phone.isEmpty()){
-//          initialArray.add(new PaymentContact(name,phone));
-//          recyclerAdapter.notifyDataSetChanged();
-//          addingBox.setText("");
-//          nameBox.setText("");
-//          nameBox.requestFocus();
-//        }
-//        else{
-//          Toast.makeText(context, "Make sure you have put in name and a phone number", Toast.LENGTH_SHORT).show();
-//        }
+//      public void onItemSelected(AdapterView<?> adapterView, View view, final int i, long l) {
+//        final String item = adapterView.getItemAtPosition(i).toString();
+//        tags.add(item);
+//        group.addView(createChip(item, group, new TagDialogChipActions() {
+//          @Override
+//          public void removeTag(View v) {
+//            group.removeView(v);
+//            tags.remove(i);
+//            Toast.makeText(context, "Removed : " + item, Toast.LENGTH_SHORT).show();
+//          }
+//        }));
+//      }
+//
+//      @Override
+//      public void onNothingSelected(AdapterView<?> adapterView) {
+//
 //      }
 //    });
 //    builder.setView(v)
-//      .setTitle("Add Payment Mobile Number")
-//      .setPositiveButton("Finish", new DialogInterface.OnClickListener() {
+//      .setTitle("Tagging (Optional)")
+//      .setPositiveButton("Save & Continue", new DialogInterface.OnClickListener() {
 //        @Override
 //        public void onClick(DialogInterface dialogInterface, int i) {
-//          callable.getContent(initialArray);
-//
+//          tagDialogContent.getContent(tags);
+//        }
+//      })
+//      .setNegativeButton("Skip This", new DialogInterface.OnClickListener() {
+//        @Override
+//        public void onClick(DialogInterface dialogInterface, int i) {
+//          Toast.makeText(context, "Nothing will happen here bro!", Toast.LENGTH_SHORT).show();
 //        }
 //      });
 //    return builder.create();
 //  }
 
+  private Chip createChip(final String name, final ChipGroup group, final TagDialogChipActions tagDialogChipActions) {
+    Chip chip = new Chip(context);
+    chip.setText(name);
+    chip.setCloseIconEnabled(true);
+    chip.setOnCloseIconClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        tagDialogChipActions.removeTag(view);
+      }
+    });
+    return chip;
+  }
 
+
+//  ----------------------- END OF THE LINE FOR THIS CLASS -------------------------
+}
+
+interface TagDialogChipActions {
+  void removeTag(View v);
+}
+
+interface TagDialogContentCallable {
+  void getContent(ArrayList<String> tags);
 }
 
 interface PhoneNumberDialogContentCallable {

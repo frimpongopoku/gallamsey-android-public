@@ -22,8 +22,9 @@
       android:theme="@style/Base.Theme.AppCompat" />
 
     <activity android:name=".TestActivity">
+
     </activity>
-    <activity android:name=".TasksActivity"></activity>
+    <activity android:name=".TasksActivity"/>
     <activity android:name=".OfficialSettingsPage" />
     <activity
       android:name=".FavoritesActivity"
