@@ -25,6 +25,21 @@
       android:src="@drawable/ic_close_icon_black_24dp" />
 
     <Button
+      android:layout_marginRight="6dp"
+      android:layout_toLeftOf="@+id/post_btn"
+      android:paddingLeft="20dp"
+      android:textSize="12sp"
+      android:fontFamily="@font/google_sans_medium"
+      android:textColor="@color/appColor"
+      android:paddingRight="20dp"
+      android:text="Save As Template"
+      android:background="@drawable/stroke_button_light"
+      android:id="@+id/template_btn"
+      android:layout_width="wrap_content"
+      android:layout_height="40dp" />
+
+    <Button
+      android:id="@+id/post_btn"
       android:layout_width="100dp"
       android:layout_height="40dp"
       android:layout_alignParentEnd="true"
@@ -541,7 +556,18 @@
     android:layout_above="@id/bottom_fake_nav"
     android:background="@color/lightest_grey" />
 
+  <Button
+    android:layout_marginRight="25dp"
+    android:layout_above="@id/bottom_fake_nav"
+    android:layout_alignParentRight="true"
+    android:background="@drawable/select_rider_button"
+    android:layout_width="50dp"
+    android:elevation="20dp"
+    android:layout_marginBottom="15dp"
+    android:layout_height="50dp" />
+
   <LinearLayout
+    android:layout_above="@id/bottom_fake_nav"
     android:id="@+id/bottom_fake_nav"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"

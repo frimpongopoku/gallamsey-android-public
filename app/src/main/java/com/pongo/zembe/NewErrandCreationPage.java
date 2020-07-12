@@ -325,6 +325,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
   }
 
   private void changeTabBtnState(ImageView btn, String how) {
+    if (btn == null) return;
     switch (how) {
       case Konstants.INACTIVE: {
         btn.getLayoutParams().width = DEFAULT_STATE_VALUE;
@@ -390,18 +391,6 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
       }
     }
     return null;
-  }
-
-
-  private void handleRepeatition() {
-    new Handler().postDelayed(new Runnable() {
-      @Override
-      public void run() {
-
-        Log.d("printingPress", "print me every second... do it....");
-        handleRepeatition();
-      }
-    }, 1000);
   }
 
   private View.OnClickListener addToDetailsList = new View.OnClickListener() {
