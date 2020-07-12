@@ -29,6 +29,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
 import java.util.ArrayList;
@@ -66,16 +67,6 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
   }
 
 
-  private void initializeAutoCompleteLists() {
-    autoCompleteList.add("January");
-    autoCompleteList.add("February");
-    autoCompleteList.add("March");
-    autoCompleteList.add("April");
-    autoCompleteList.add("May");
-    autoCompleteList.add("June");
-    autoCompleteList.add("July");
-  }
-
   private void initializeActivity() {
     //  -----------------------------------------------------------
     imageHelper = new ImageUploadHelper(this);
@@ -85,7 +76,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     chipGroup = findViewById(R.id.chip_group);
     autoCompleteBox = findViewById(R.id.auto_complete);
     autoCompleteBox.setAdapter(autoCompleteAdapter);
-    autoCompleteBox.showDropDown();
+    autoCompleteBox.setOnItemClickListener(completeItemSelected);
     locationText = findViewById(R.id.location_description_text);
     locationDropdown = findViewById(R.id.location_dropdown);
     descriptionTabBtn = findViewById(R.id.tab_for_description_btn);
@@ -140,6 +131,32 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     startInvigilatingInfinitely();
   }
 
+  private void initializeAutoCompleteLists() {
+    autoCompleteList.add("January");
+    autoCompleteList.add("February");
+    autoCompleteList.add("March");
+    autoCompleteList.add("April");
+    autoCompleteList.add("May");
+    autoCompleteList.add("June");
+    autoCompleteList.add("July");
+  }
+
+  private AdapterView.OnItemClickListener completeItemSelected = new AdapterView.OnItemClickListener() {
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
+      String item = adapterView.getItemAtPosition(i).toString();
+      tagList.add(item);
+      Chip newTag = RandomHelpersClass.createChip(activity, item, new GalInterfaceGuru.TagDialogChipActions() {
+        @Override
+        public void removeTag(View v) {
+          chipGroup.removeView(v);
+          tagList.remove(i);
+        }
+      });
+      chipGroup.addView(newTag);
+      autoCompleteBox.setText("");
+    }
+  };
 
   private View.OnClickListener quitCreating = new View.OnClickListener() {
     @Override
@@ -240,10 +257,16 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
       locationTabBtn.setImageResource(R.drawable.location_vector_icon);
     }
 
+
     if (detailsList.size() != 0) {
       detailsTabBtn.setImageResource(R.drawable.ic_list_green);
     } else {
       detailsTabBtn.setImageResource(R.drawable.ic_list);
+    }
+    if (tagList.size() != 0) {
+      taggingTabBtn.setImageResource(R.drawable.label_active);
+    } else {
+      taggingTabBtn.setImageResource(R.drawable.label_normal);
     }
   }
 
@@ -368,6 +391,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     }
     return null;
   }
+
 
   private void handleRepeatition() {
     new Handler().postDelayed(new Runnable() {

@@ -7,7 +7,6 @@
   android:background="@android:color/white"
   tools:context=".NewErrandCreationPage">
 
-
   <RelativeLayout
     android:id="@+id/top_controls"
     android:layout_width="match_parent"
@@ -48,7 +47,7 @@
     android:orientation="vertical"
     android:paddingStart="15dp"
     android:paddingBottom="0dp"
-    android:visibility="gone">
+    android:visibility="visible">
 
     <ScrollView
       android:layout_width="match_parent"
@@ -395,7 +394,7 @@
     android:paddingLeft="20dp"
     android:paddingTop="5dp"
     android:paddingRight="20dp"
-    android:visibility="visible">
+    android:visibility="gone">
 
     <ScrollView
       android:layout_width="match_parent"
@@ -429,31 +428,39 @@
               android:layout_height="wrap_content"
               android:layout_marginLeft="5dp"
               android:layout_weight="4"
-              android:text="Here, check our list to see if the items you need fall under any of our categories." />
+              android:text="Here, quickly search our list to see if the items you need fall under any of our categories." />
           </LinearLayout>
 
           <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:layout_marginBottom="10dp"
-            android:fontFamily="@font/nunito_bold"
+            android:paddingLeft="40dp"
             android:text="NB: This makes it easier for riders to find your errands"
             android:textColor="@color/green" />
-
-          <androidx.appcompat.widget.AppCompatAutoCompleteTextView
-            android:id="@+id/auto_complete"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/white"
-            android:hint="Eg. Food, Electronics, Fashion etc."
-            android:padding="10dp"
-            android:paddingStart="25dp" />
 
           <com.google.android.material.chip.ChipGroup
             android:id="@+id/chip_group"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp" />
+
+          <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+            android:id="@+id/auto_complete"
+            android:textSize="14sp"
+            android:textAlignment="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@android:color/white"
+            android:hint="Eg. Food, Electronics, Fashion etc."
+            android:padding="10dp" />
+          <!--<LinearLayout-->
+          <!--android:id="@+id/chip_group"-->
+          <!--android:layout_width="match_parent"-->
+          <!--android:layout_height="wrap_content"/>-->
+
+
         </LinearLayout>
 
 

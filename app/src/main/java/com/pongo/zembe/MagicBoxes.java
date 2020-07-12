@@ -156,26 +156,13 @@ public class MagicBoxes extends AppCompatDialogFragment {
 //    return builder.create();
 //  }
 
-  private Chip createChip(final String name, final ChipGroup group, final TagDialogChipActions tagDialogChipActions) {
-    Chip chip = new Chip(context);
-    chip.setText(name);
-    chip.setCloseIconEnabled(true);
-    chip.setOnCloseIconClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        tagDialogChipActions.removeTag(view);
-      }
-    });
-    return chip;
-  }
+
 
 
 //  ----------------------- END OF THE LINE FOR THIS CLASS -------------------------
 }
 
-interface TagDialogChipActions {
-  void removeTag(View v);
-}
+
 
 interface TagDialogContentCallable {
   void getContent(ArrayList<String> tags);
