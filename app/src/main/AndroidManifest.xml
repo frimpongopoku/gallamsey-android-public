@@ -24,7 +24,7 @@
     <activity android:name=".TestActivity">
 
     </activity>
-    <activity android:name=".TasksActivity"/>
+    <activity android:name=".TasksActivity" />
     <activity android:name=".OfficialSettingsPage" />
     <activity
       android:name=".FavoritesActivity"
@@ -32,7 +32,13 @@
       android:theme="@style/AppTheme.NoActionBar" />
     <activity
       android:name=".NewErrandCreationPage"
-      android:windowSoftInputMode="adjustResize" />
+      android:windowSoftInputMode="adjustResize">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+    </activity>
     <activity
       android:name=".AddMobilePaymentNumberPage"
       android:windowSoftInputMode="adjustPan" />

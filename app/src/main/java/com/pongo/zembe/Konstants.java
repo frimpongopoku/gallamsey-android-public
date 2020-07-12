@@ -29,6 +29,7 @@ public class Konstants {
   public static final String ESTIMATION_TAB = "ESTIMATION_TAB";
   public static final String LOCATION_TAB = "LOCATION_TAB";
   public static final String DETAILS_TAB = "DETAILS_TAB";
+  public static final String TAGGING_TAB = "TAGGING_TAB";
 
   //ARRAYS
   //-----------------------------
