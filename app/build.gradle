@@ -35,6 +35,11 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'com.google.android.material:material:1.0.0'
+
+    //circular images
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+    //image cropper
+    implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
     //smiley face rating
     implementation 'com.github.sujithkanna:smileyrating:2.0.0'
     //google location

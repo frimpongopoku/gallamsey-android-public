@@ -7,7 +7,6 @@
   android:background="@android:color/white"
   tools:context=".NewErrandCreationPage">
 
-
   <RelativeLayout
     android:id="@+id/top_controls"
     android:layout_width="match_parent"
@@ -26,6 +25,21 @@
       android:src="@drawable/ic_close_icon_black_24dp" />
 
     <Button
+      android:layout_marginRight="6dp"
+      android:layout_toLeftOf="@+id/post_btn"
+      android:paddingLeft="20dp"
+      android:textSize="12sp"
+      android:fontFamily="@font/google_sans_medium"
+      android:textColor="@color/appColor"
+      android:paddingRight="20dp"
+      android:text="Save As Template"
+      android:background="@drawable/stroke_button_light"
+      android:id="@+id/template_btn"
+      android:layout_width="wrap_content"
+      android:layout_height="40dp" />
+
+    <Button
+      android:id="@+id/post_btn"
       android:layout_width="100dp"
       android:layout_height="40dp"
       android:layout_alignParentEnd="true"
@@ -58,7 +72,8 @@
       <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="visible">
 
         <RelativeLayout
           android:id="@+id/text_box_div"
@@ -123,19 +138,19 @@
 
               <androidx.cardview.widget.CardView
                 android:id="@+id/image_holder_card"
-                android:layout_marginBottom="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="300dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="20dp"
+                android:layout_marginBottom="10dp"
                 android:clickable="true"
                 app:cardCornerRadius="15dp">
+
                 <ImageView
-                  android:background="?attr/selectableItemBackgroundBorderless"
-                  android:scaleType="fitXY"
                   android:id="@+id/user_selected_image"
                   android:layout_width="match_parent"
                   android:layout_height="match_parent"
+                  android:background="?attr/selectableItemBackgroundBorderless"
                   android:clickable="true"
                   android:src="@drawable/galam_wakye" />
               </androidx.cardview.widget.CardView><!---->
@@ -157,7 +172,7 @@
     android:layout_below="@id/top_controls"
     android:orientation="vertical"
     android:paddingLeft="20dp"
-    android:paddingTop="20dp"
+    android:paddingTop="5dp"
     android:paddingEnd="20dp"
     android:visibility="gone">
 
@@ -239,7 +254,7 @@
     android:layout_below="@id/top_controls"
     android:orientation="vertical"
     android:paddingLeft="20dp"
-    android:paddingTop="20dp"
+    android:paddingTop="5dp"
     android:paddingRight="20dp"
     android:visibility="gone">
 
@@ -343,8 +358,6 @@
         android:layout_marginLeft="5dp"
         android:layout_weight="4"
         android:text="This is where you give specific instructions that the rider, should not miss" />
-
-
     </LinearLayout>
 
 
@@ -382,6 +395,92 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:layout_marginTop="10dp" />
+
+  </LinearLayout>
+
+  <!-- TAGGING DIV -->
+  <LinearLayout
+    android:id="@+id/tab_for_tagging"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_above="@id/bottom_fake_nav"
+    android:layout_below="@id/top_controls"
+    android:orientation="vertical"
+    android:paddingLeft="20dp"
+    android:paddingTop="5dp"
+    android:paddingRight="20dp"
+    android:visibility="gone">
+
+    <ScrollView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:scrollbars="none">
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="15dp"
+          android:orientation="vertical">
+
+          <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="5">
+
+            <ImageView
+              android:layout_width="40dp"
+              android:layout_height="40dp"
+              android:src="@drawable/ic_label_black_24dp" />
+
+            <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginLeft="5dp"
+              android:layout_weight="4"
+              android:text="Here, quickly search our list to see if the items you need fall under any of our categories." />
+          </LinearLayout>
+
+          <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:paddingLeft="40dp"
+            android:text="NB: This makes it easier for riders to find your errands"
+            android:textColor="@color/green" />
+
+          <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chip_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp" />
+
+          <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+            android:id="@+id/auto_complete"
+            android:textSize="14sp"
+            android:textAlignment="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@android:color/white"
+            android:hint="Eg. Food, Electronics, Fashion etc."
+            android:padding="10dp" />
+          <!--<LinearLayout-->
+          <!--android:id="@+id/chip_group"-->
+          <!--android:layout_width="match_parent"-->
+          <!--android:layout_height="wrap_content"/>-->
+
+
+        </LinearLayout>
+
+
+      </LinearLayout>
+    </ScrollView>
   </LinearLayout>
 
   <!-- LOCATION  DIV -->
@@ -457,7 +556,18 @@
     android:layout_above="@id/bottom_fake_nav"
     android:background="@color/lightest_grey" />
 
+  <Button
+    android:layout_marginRight="25dp"
+    android:layout_above="@id/bottom_fake_nav"
+    android:layout_alignParentRight="true"
+    android:background="@drawable/select_rider_button"
+    android:layout_width="50dp"
+    android:elevation="20dp"
+    android:layout_marginBottom="15dp"
+    android:layout_height="50dp" />
+
   <LinearLayout
+    android:layout_above="@id/bottom_fake_nav"
     android:id="@+id/bottom_fake_nav"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -540,6 +650,17 @@
           android:background="?attr/selectableItemBackgroundBorderless"
           android:clickable="true"
           android:src="@drawable/ic_list" />
+
+        <ImageView
+          android:id="@+id/tab_for_tagging_btn"
+          android:layout_width="30dp"
+          android:layout_height="30dp"
+          android:layout_centerInParent="true"
+          android:layout_marginEnd="15dp"
+          android:layout_toEndOf="@id/tab_for_details_btn"
+          android:background="?attr/selectableItemBackgroundBorderless"
+          android:clickable="true"
+          android:src="@drawable/label_normal" />
       </RelativeLayout>
 
     </RelativeLayout>

@@ -8,8 +8,10 @@ import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -26,19 +29,23 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
+
 import java.util.ArrayList;
 
 public class NewErrandCreationPage extends AppCompatActivity implements OnDetailItemsClick {
 
-  ArrayList<String> detailsList = new ArrayList<>();
-  ArrayAdapter<String> locationDropdownAdapter;
+  ArrayList<String> detailsList = new ArrayList<>(), tagList = new ArrayList<>(), autoCompleteList = new ArrayList<>();
+  ArrayAdapter<String> locationDropdownAdapter, autoCompleteAdapter;
   ArrayList<String> locationList = new ArrayList<>();
   Spinner locationDropdown;
   RecyclerView recyclerView;
-  ImageView quit, helpBtn, userSelectedImageHolder, addDetailsBtn, descriptionTabBtn, estimateTabBtn, allowanceTabBtn, locationTabBtn, detailsTabBtn;
-  LinearLayout detailsTab, descriptionTab, estimationTab, allowanceTab, locationTab, pictureTab;
+  ImageView taggingTabBtn, quit, helpBtn, userSelectedImageHolder, addDetailsBtn, descriptionTabBtn, estimateTabBtn, allowanceTabBtn, locationTabBtn, detailsTabBtn;
+  LinearLayout taggingTab, detailsTab, descriptionTab, estimationTab, allowanceTab, locationTab, pictureTab;
   Button addPictureTabBtn, removePictureBtn;
   EditText detailsBox, allowanceBox, estimatedCostBox, descriptionBox;
+  AutoCompleteTextView autoCompleteBox;
   DetailsListAdapter recyclerAdapter;
   String currentTabKey = Konstants.DESC_TAB, selectedLocation = Konstants.CHOOSE;
   Bitmap userSelectedImage = null;
@@ -46,11 +53,15 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
   int DEFAULT_STATE_VALUE = 40, STATE_CHANGED_VALUE = 60;
   Handler handler = new Handler();
   ImageUploadHelper imageHelper;
+  Activity activity;
+  ChipGroup chipGroup;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_new_errand_creation_page);
+    activity = this;
+    initializeAutoCompleteLists();
     initializeActivity();
 
   }
@@ -59,11 +70,17 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
   private void initializeActivity() {
     //  -----------------------------------------------------------
     imageHelper = new ImageUploadHelper(this);
+    autoCompleteAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, autoCompleteList);
     quit = findViewById(R.id.quit);
     helpBtn = findViewById(R.id.help_btn);
+    chipGroup = findViewById(R.id.chip_group);
+    autoCompleteBox = findViewById(R.id.auto_complete);
+    autoCompleteBox.setAdapter(autoCompleteAdapter);
+    autoCompleteBox.setOnItemClickListener(completeItemSelected);
     locationText = findViewById(R.id.location_description_text);
     locationDropdown = findViewById(R.id.location_dropdown);
     descriptionTabBtn = findViewById(R.id.tab_for_description_btn);
+    taggingTabBtn = findViewById(R.id.tab_for_tagging_btn);
     estimateTabBtn = findViewById(R.id.tab_for_estimated_cost_btn);
     allowanceTabBtn = findViewById(R.id.tab_for_allowance_btn);
     locationTabBtn = findViewById(R.id.tab_for_location_btn);
@@ -74,6 +91,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     descriptionTab = findViewById(R.id.tab_for_description);
     estimationTab = findViewById(R.id.tab_for_estimated_cost);
     allowanceTab = findViewById(R.id.tab_for_allowance);
+    taggingTab = findViewById(R.id.tab_for_tagging);
     pictureTab = findViewById(R.id.tab_for_image);
     removePictureBtn = findViewById(R.id.close_btn_in_description);
     userSelectedImageHolder = findViewById(R.id.user_selected_image);
@@ -81,6 +99,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     estimatedCostBox = findViewById(R.id.estimation_box);
     descriptionBox = findViewById(R.id.description_box);
 //  ..........................................................
+    taggingTabBtn.setOnClickListener(onTabClick(Konstants.TAGGING_TAB, taggingTabBtn, taggingTab));
     descriptionTabBtn.setOnClickListener(onTabClick(Konstants.DESC_TAB, descriptionTabBtn, descriptionTab));
     detailsTabBtn.setOnClickListener(onTabClick(Konstants.DETAILS_TAB, detailsTabBtn, detailsTab));
     estimateTabBtn.setOnClickListener(onTabClick(Konstants.ESTIMATION_TAB, estimateTabBtn, estimationTab));
@@ -112,6 +131,32 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     startInvigilatingInfinitely();
   }
 
+  private void initializeAutoCompleteLists() {
+    autoCompleteList.add("January");
+    autoCompleteList.add("February");
+    autoCompleteList.add("March");
+    autoCompleteList.add("April");
+    autoCompleteList.add("May");
+    autoCompleteList.add("June");
+    autoCompleteList.add("July");
+  }
+
+  private AdapterView.OnItemClickListener completeItemSelected = new AdapterView.OnItemClickListener() {
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
+      String item = adapterView.getItemAtPosition(i).toString();
+      tagList.add(item);
+      Chip newTag = RandomHelpersClass.createChip(activity, item, new GalInterfaceGuru.TagDialogChipActions() {
+        @Override
+        public void removeTag(View v) {
+          chipGroup.removeView(v);
+          tagList.remove(i);
+        }
+      });
+      chipGroup.addView(newTag);
+      autoCompleteBox.setText("");
+    }
+  };
 
   private View.OnClickListener quitCreating = new View.OnClickListener() {
     @Override
@@ -122,28 +167,33 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
   private View.OnClickListener chooseImageForErrand = new View.OnClickListener() {
     @Override
     public void onClick(View view) {
-      imageHelper.openFileChooser(new ImageUploadHelper.FileChooserCallback() {
-        @Override
-        public void getBackChooserIntent(Intent intent) {
-          startActivityForResult(intent, Konstants.CHOOSE_IMAGE_REQUEST_CODE);
-        }
-      });
+      imageHelper.openFileChooserWithCropper(activity, 6, 6);
     }
   };
 
   @Override
   protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
-    if (requestCode == Konstants.CHOOSE_IMAGE_REQUEST_CODE && data != null && resultCode == RESULT_OK && data.getData() != null) {
-      Uri uri = data.getData();
-      imageHelper.compressImage(uri, new ImageUploadHelper.CompressedImageCallback() {
-        @Override
-        public void getCompressedImage(Bitmap compressedBitmap) {
-          userSelectedImage = compressedBitmap;
-          userSelectedImageHolder.setImageBitmap(compressedBitmap);
-        }
-      });
-    }
+    imageHelper.collectCroppedImage(requestCode, resultCode, data, new ImageUploadHelper.CroppingImageCallback() {
+      @Override
+      public void getCroppedImage(Uri uri) {
+        imageHelper.compressImageToBytes(uri, new ImageUploadHelper.CompressedImageToBytesCallback() {
+          @Override
+          public void getCompressedImage(byte[] compressedImage) {
+            Bitmap bitmap = BitmapFactory.decodeByteArray(compressedImage, 0, compressedImage.length);
+            userSelectedImage = bitmap;
+            userSelectedImageHolder.setImageBitmap(bitmap);
+          }
+        });
+
+      }
+
+      @Override
+      public void getCroppingError(Exception e) {
+        e.printStackTrace();
+        Toast.makeText(activity, e.getMessage(), Toast.LENGTH_SHORT).show();
+      }
+    });
   }
 
   private View.OnClickListener showErrandHelp = new View.OnClickListener() {
@@ -207,10 +257,16 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
       locationTabBtn.setImageResource(R.drawable.location_vector_icon);
     }
 
+
     if (detailsList.size() != 0) {
       detailsTabBtn.setImageResource(R.drawable.ic_list_green);
     } else {
       detailsTabBtn.setImageResource(R.drawable.ic_list);
+    }
+    if (tagList.size() != 0) {
+      taggingTabBtn.setImageResource(R.drawable.label_active);
+    } else {
+      taggingTabBtn.setImageResource(R.drawable.label_normal);
     }
   }
 
@@ -269,6 +325,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
   }
 
   private void changeTabBtnState(ImageView btn, String how) {
+    if (btn == null) return;
     switch (how) {
       case Konstants.INACTIVE: {
         btn.getLayoutParams().width = DEFAULT_STATE_VALUE;
@@ -301,6 +358,9 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
       case Konstants.ALLOWANCE_TAB: {
         return allowanceTabBtn;
       }
+      case Konstants.TAGGING_TAB: {
+        return taggingTabBtn;
+      }
     }
     return null;
   }
@@ -326,19 +386,11 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
       case Konstants.ESTIMATION_TAB: {
         return estimationTab;
       }
+      case Konstants.TAGGING_TAB: {
+        return taggingTab;
+      }
     }
     return null;
-  }
-
-  private void handleRepeatition() {
-    new Handler().postDelayed(new Runnable() {
-      @Override
-      public void run() {
-
-        Log.d("printingPress", "print me every second... do it....");
-        handleRepeatition();
-      }
-    }, 1000);
   }
 
   private View.OnClickListener addToDetailsList = new View.OnClickListener() {

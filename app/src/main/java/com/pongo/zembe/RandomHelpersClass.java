@@ -1,7 +1,12 @@
 package com.pongo.zembe;
 
+import android.content.Context;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
+
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -12,10 +17,29 @@ import java.util.HashMap;
 public class RandomHelpersClass {
 
 
+
+  public static Chip createChip(Context context, final String name, final GalInterfaceGuru.TagDialogChipActions tagDialogChipActions) {
+    Chip chip = new Chip(context);
+    chip.setText(name);
+//    chip.setCloseIconEnabled(true);
+    chip.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        tagDialogChipActions.removeTag(view);
+      }
+    });
+//    chip.setOnCloseIconClickListener(new View.OnClickListener() {
+//      @Override
+//      public void onClick(View view) {
+//        tagDialogChipActions.removeTag(view);
+//      }
+//    });
+    return chip;
+  }
   public static String mergeTextsFromArray(ArrayList<String> arr) {
     String finalR = "";
     for (int i = 0; i < arr.size(); i++) {
-      finalR = finalR == "" ? arr.get(i) : finalR + ", " + arr.get(i);
+      finalR = finalR.equals("") ? arr.get(i) : finalR + ", " + arr.get(i);
     }
     return finalR;
   }

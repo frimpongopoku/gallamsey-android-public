@@ -1,5 +1,6 @@
 package com.pongo.zembe;
 
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -12,8 +13,19 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
 
+import androidx.annotation.Nullable;
+
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
+
 import java.io.ByteArrayOutputStream;
 
+import static android.app.Activity.RESULT_OK;
+
+/**
+ * In case you forget to brind in some libraries for this helper, links are down below
+ * https://github.com/ArthurHub/Android-Image-Cropper
+ */
 public class ImageUploadHelper {
   private Context context;
 
@@ -28,6 +40,36 @@ public class ImageUploadHelper {
   }
 
 
+  public void openFileChooserWithCropper(Activity activity, int aspectRationX, int aspectRatioY) {
+    CropImage.activity()
+      .setGuidelines(CropImageView.Guidelines.ON)
+      .setAspectRatio(aspectRationX, aspectRatioY)
+      .start(activity);
+  }
+
+  public void collectCroppedImage(int requestCode, int resultCode, @Nullable Intent data, CroppingImageCallback croppingResult) {
+    if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+      CropImage.ActivityResult result = CropImage.getActivityResult(data);
+      if (resultCode == RESULT_OK) {
+        Uri resultUri = result.getUri();
+        croppingResult.getCroppedImage(result.getUri());
+      } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+        Exception error = result.getError();
+        croppingResult.getCroppingError(error);
+      }
+    }
+
+  }
+
+  public void compressImageToBytes(Uri uri, final CompressedImageToBytesCallback callback) {
+    new BackgroundCompressorToBytes(context.getContentResolver(), new CompressedImageToBytesCallback() {
+      @Override
+      public void getCompressedImage(byte[] compressedImage) {
+        callback.getCompressedImage(compressedImage);
+      }
+    }).execute(uri);
+  }
+
   public void compressImage(Uri uri, final CompressedImageCallback callback) {
     new BackgroundCompressor(context.getContentResolver(), new CompressedImageCallback() {
       @Override
@@ -37,6 +79,7 @@ public class ImageUploadHelper {
     }).execute(uri);
   }
 
+
   public void openFileChooser(FileChooserCallback fileChooserCallback) {
     Intent intent = new Intent();
     intent.setType("image/*");
@@ -44,8 +87,18 @@ public class ImageUploadHelper {
     fileChooserCallback.getBackChooserIntent(intent);
   }
 
+  public interface CroppingImageCallback {
+    void getCroppedImage(Uri uri);
+
+    void getCroppingError(Exception e);
+  }
+
   public interface CompressedImageCallback {
     void getCompressedImage(Bitmap compressedBitmap);
+  }
+
+  public interface CompressedImageToBytesCallback {
+    void getCompressedImage(byte[] compressedImage);
   }
 
   public interface FileChooserCallback {
@@ -56,6 +109,7 @@ public class ImageUploadHelper {
     void getBackChooserIntent(Intent intent);
   }
 
+//  ============================================================================================
 
   public class BackgroundCompressor extends AsyncTask<Uri, Integer, Bitmap> {
     ContentResolver resolver;
@@ -86,7 +140,7 @@ public class ImageUploadHelper {
         Log.w("errorOnResizing", e.getMessage());
       }
       byte[] bytesArr = getBytesFromBitmap(bitmap, 60);
-      Bitmap bitmap = BitmapFactory.decodeByteArray(bytesArr,0,bytesArr.length);
+      Bitmap bitmap = BitmapFactory.decodeByteArray(bytesArr, 0, bytesArr.length);
       return bitmap;
     }
 
@@ -95,7 +149,46 @@ public class ImageUploadHelper {
       super.onPostExecute(bitmap);
       imageCallback.getCompressedImage(bitmap);
     }
+  }
 
+
+  // ==================================== ASYNC COMPRESSION TO BYTES ====================================
+  public class BackgroundCompressorToBytes extends AsyncTask<Uri, Integer, byte[]> {
+    ContentResolver resolver;
+    Bitmap bitmap;
+    CompressedImageToBytesCallback imageCallback;
+
+    public BackgroundCompressorToBytes(ContentResolver resolver, CompressedImageToBytesCallback imageCallback) {
+      this.resolver = resolver;
+      this.imageCallback = imageCallback;
+    }
+
+    public byte[] getBytesFromBitmap(Bitmap bitmap, Integer quality) {
+      ByteArrayOutputStream stream = new ByteArrayOutputStream();
+      bitmap.compress(Bitmap.CompressFormat.JPEG, quality, stream);
+      return stream.toByteArray();
+    }
+
+    @Override
+    protected void onPreExecute() {
+      super.onPreExecute();
+    }
+
+    @Override
+    protected byte[] doInBackground(Uri... uris) {
+      try {
+        bitmap = MediaStore.Images.Media.getBitmap(resolver, uris[0]);
+      } catch (Exception e) {
+        Log.w("errorOnResizing", e.getMessage());
+      }
+      return getBytesFromBitmap(bitmap, 60);
+    }
+
+    @Override
+    protected void onPostExecute(byte[] imageBytes) {
+      super.onPostExecute(imageBytes);
+      imageCallback.getCompressedImage(imageBytes);
+    }
   }
 
 }
