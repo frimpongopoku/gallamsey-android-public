@@ -8,14 +8,19 @@ import java.util.HashMap;
 public class Konstants {
 
 
+  public static final String AUTH_USER_KEY = "authUser";
+  public static final String NOT_SET = "NOT SET";
   public static final int SENDER_VIEW_TYPE = 172;
   public static final int RECEIPIENT_VIEW_TYPE = 169;
   public static final double sLat = 5.636029;
   public static final double sLong = -0.2915028;
 
+//  USER STATUS
+  public static  final String  CREATOR = "CREATOR";
+  public static  final String  RIDER = "RIDER";
+
   // ERRAND CREATION CONSTANTS
   //  --------------------------
-
   public static final String USER_TEMPLATES_TAB = "ERRAND_TEMPLATES";
   public static final String FAVORITE_RIDERS_TAB = "FAVORITE_RIDERS";
   public static final String TASKS_GIGS_TAB = "GIGS";
@@ -102,17 +107,17 @@ public class Konstants {
   public static String PREMIUM_USER = "xx-pong-:premium:-num--x";
 
 
-//   ERRAND STAGE VALUES
+  //   ERRAND STAGE VALUES
   public static String ERRAND_IS_IN_MOTION = "MOTION";
   public static String ERRAND_HAS_NOT_STARTED = "HAS_NOT_STARTED";
   public static String ERRAND_IS_COMPLETE = "IS_COMPLETE";
-  public static String ERRAND_READY_FOR_PAYMENT_TRANSACTIOn = "PAYMENT_TRANSACTION";
+  public static String ERRAND_READY_FOR_PAYMENT_TRANSACTION = "PAYMENT_TRANSACTION";
 
   //ERRAND ERROR VALUES
-  //-------------------------------
-    public static String ERROR_FAILED ="ERROR FAILED";
-    public static String ERROR_PASSED = "ERROR PASSED";
-    public static String ERROR_SEMI_PASSED = "ERROR SEMI PASSED";
+  //-----------------------------------------------
+  public static String ERROR_FAILED = "ERROR FAILED";
+  public static String ERROR_PASSED = "ERROR PASSED";
+  public static String ERROR_SEMI_PASSED = "ERROR SEMI PASSED";
 
   //FIREBASE COLLECTION SET CONSTANTS
   //--------------------------------

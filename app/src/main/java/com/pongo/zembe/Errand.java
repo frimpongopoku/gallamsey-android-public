@@ -17,7 +17,6 @@ public class Errand {
   private ArrayList<SimpleUser> notifiableRiders = new ArrayList<>();
   private GallamseyLocationComponent pickUpLocation;
 
-
   public Errand() {
     //Firebase constructor
   }
@@ -37,7 +36,6 @@ public class Errand {
     if (!description.trim().isEmpty()) {
       title = description.substring(0,30);
     }
-
     return title;
   }
 

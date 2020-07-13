@@ -10,6 +10,7 @@
   </string>
   <string name="add_more_locations_prelude">Add locations so that you can point riders to the exact location you want your items to be delivered</string>
   <string-array name="errand_expiry_values">
+    <item>NOT SET</item>
     <item>30 Minutes</item>
     <item>1 Hour</item>
     <item>2 Hours</item>

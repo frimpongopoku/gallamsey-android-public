@@ -33,15 +33,18 @@ import android.widget.Toast;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
 public class NewErrandCreationPage extends AppCompatActivity implements OnDetailItemsClick, RiderForSelectionRecyclerAdapter.SelectRiderCallback {
-
+  SimpleUser creator;
   ArrayList<String> fakeSelectedRiders = new ArrayList<>(), detailsList = new ArrayList<>(), tagList = new ArrayList<>(), autoCompleteList = new ArrayList<>();
   ArrayAdapter<String> locationDropdownAdapter, autoCompleteAdapter;
+  ArrayAdapter<CharSequence> expiryDateAdapter;
+  Spinner expiryDateDropDown;
   ArrayList<String> locationList = new ArrayList<>();
   Spinner locationDropdown;
   RecyclerView recyclerView, ridersRecyclerView;
@@ -51,9 +54,9 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
   EditText detailsBox, allowanceBox, estimatedCostBox, descriptionBox;
   AutoCompleteTextView autoCompleteBox;
   DetailsListAdapter recyclerAdapter;
-  String currentTabKey = Konstants.DESC_TAB, selectedLocation = Konstants.CHOOSE;
+  String currentTabKey = Konstants.DESC_TAB, selectedLocation = Konstants.CHOOSE, expiryDurationSelected;
   Bitmap userSelectedImage = null;
-  TextView locationText;
+  TextView locationText, durationText;
   int DEFAULT_STATE_VALUE = 40, STATE_CHANGED_VALUE = 60;
   Handler handler = new Handler();
   ImageUploadHelper imageHelper;
@@ -63,6 +66,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
   FirebaseFirestore store = FirebaseFirestore.getInstance();
   CollectionReference errandDB = store.collection(Konstants.ERRAND_COLLECTION);
   MagicBoxes dialogCreator;
+  GroundUser authenticatedUser;
 
 
   @Override
@@ -71,9 +75,24 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     setContentView(R.layout.activity_new_errand_creation_page);
     activity = this;
     dialogCreator = new MagicBoxes(this);
+    authenticatedUser = getIntent().getParcelableExtra(Konstants.AUTH_USER_KEY);
+    if (authenticatedUser != null) {
+      makeSimpleUserFrom(authenticatedUser);
+    }
     initializeAutoCompleteLists();
     initializeActivity();
 
+  }
+
+  private void makeSimpleUserFrom(GroundUser user) {
+    creator = new SimpleUser(
+      user.getUserDocumentID(),
+      user.getPreferredName(),
+      user.getPhoneNumber(),
+      user.getUserType(),
+      user.getProfilePictureURL(),
+      Konstants.CREATOR)
+    ;
   }
 
   private View.OnClickListener postMyErrand = new View.OnClickListener() {
@@ -104,6 +123,10 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
       error.setStatus(Konstants.ERROR_FAILED);
     }
 
+    if (expiryDurationSelected.equals(Konstants.NOT_SET)) {
+      errorString = RandomHelpersClass.concactToWhat(errorString, "When should your errand expire?");
+      error.setStatus(Konstants.ERROR_FAILED);
+    }
     if (estimatedCostBox.getText().toString().isEmpty()) {
       errorString = RandomHelpersClass.concactToWhat(errorString, "You need to provide a value for how much your item(s) will cost");
       error.setStatus(Konstants.ERROR_FAILED);
@@ -113,7 +136,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
       error.setStatus(Konstants.ERROR_FAILED);
     }
     if (selectedLocation.equals(Konstants.CHOOSE)) {
-      errorForOptionalFields = RandomHelpersClass.concactToWhat(errorForOptionalFields, "No destination to receive items was provided. You change now, or just chat with your rider later");
+      errorForOptionalFields = RandomHelpersClass.concactToWhat(errorForOptionalFields, "No destination to receive items was provided. You can change now, or just chat with your rider later");
       if (!error.getStatus().equals(Konstants.ERROR_FAILED))
         error.setStatus(Konstants.ERROR_SEMI_PASSED);
     }
@@ -145,7 +168,12 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
   private void initializeActivity() {
     //  -----------------------------------------------------------
     imageHelper = new ImageUploadHelper(this);
+    durationText = findViewById(R.id.duration_text_label);
     ridersChipGroup = findViewById(R.id.select_rider_chip_group);
+    expiryDateDropDown = findViewById(R.id.errand_expiry_spinner);
+    expiryDateAdapter = ArrayAdapter.createFromResource(this, R.array.errand_expiry_values, android.R.layout.simple_list_item_1);
+    expiryDateAdapter.setDropDownViewResource(android.R.layout.simple_list_item_1);
+    expiryDateDropDown.setAdapter(expiryDateAdapter);
     postBtn = findViewById(R.id.post_btn);
     autoCompleteAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, autoCompleteList);
     quit = findViewById(R.id.quit);
@@ -191,13 +219,15 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     userSelectedImageHolder.setOnClickListener(chooseImageForErrand);
     quit.setOnClickListener(quitCreating);
     postBtn.setOnClickListener(postMyErrand);
+    expiryDateDropDown.setOnItemSelectedListener(selectExpiryDate);
 
 //  ----------------------------------------------------------
     locationList.add(Konstants.CHOOSE);
     locationList.add("Home");
     locationList.add("School");
     locationList.add("Club");
-    locationDropdownAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, locationList);
+    locationDropdownAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, locationList);
+    locationDropdownAdapter.setDropDownViewResource(android.R.layout.simple_list_item_1);
     locationDropdown.setAdapter(locationDropdownAdapter);
     recyclerView = findViewById(R.id.recyclerview_in_details_tab);
     addDetailsBtn = findViewById(R.id.add_btn_in_details_tab);
@@ -227,6 +257,25 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     autoCompleteList.add("July");
   }
 
+
+  private AdapterView.OnItemSelectedListener selectExpiryDate = new AdapterView.OnItemSelectedListener() {
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+      String duration = adapterView.getItemAtPosition(i).toString();
+      expiryDurationSelected = duration;
+      if (duration.equals(Konstants.NOT_SET)) {
+        durationText.setText("");
+      } else {
+        durationText.setText("You errand is set to expire in : " + expiryDurationSelected);
+      }
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
+  };
   private AdapterView.OnItemClickListener completeItemSelected = new AdapterView.OnItemClickListener() {
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
@@ -344,7 +393,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     }
 
 
-    if (detailsList.size() != 0) {
+    if (detailsList.size() != 0 && !expiryDurationSelected.equals(Konstants.NOT_SET)) {
       detailsTabBtn.setImageResource(R.drawable.ic_list_green);
     } else {
       detailsTabBtn.setImageResource(R.drawable.ic_list);

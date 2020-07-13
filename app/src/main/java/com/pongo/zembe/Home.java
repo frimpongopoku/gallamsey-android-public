@@ -55,8 +55,6 @@ public class Home extends AppCompatActivity {
     }
     setContentView(R.layout.activity_home);
     initializeActivity();
-
-
   }
 
   private void initializeActivity() {
@@ -106,7 +104,7 @@ public class Home extends AppCompatActivity {
     @Override
     public void onClick(View view) {
       Intent settings = new Intent(getApplicationContext(), OfficialSettingsPage.class);
-      settings.putExtra("authUser",authenticatedUser);
+      settings.putExtra("authUser", authenticatedUser);
       startActivity(settings);
     }
   };
@@ -114,6 +112,7 @@ public class Home extends AppCompatActivity {
     @Override
     public void onClick(View view) {
       Intent createErrandPage = new Intent(getApplicationContext(), NewErrandCreationPage.class);
+      createErrandPage.putExtra(Konstants.AUTH_USER_KEY, authenticatedUser);
       startActivity(createErrandPage);
     }
   };
@@ -193,7 +192,7 @@ public class Home extends AppCompatActivity {
 
   public void goToProfileViewPage(View v) {
     Intent profile = new Intent(this, ViewProfilePage.class);
-    profile.putExtra("authUser",authenticatedUser);
+    profile.putExtra("authUser", authenticatedUser);
     startActivity(profile);
     this.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
   }

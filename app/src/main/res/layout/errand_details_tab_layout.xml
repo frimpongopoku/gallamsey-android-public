@@ -64,8 +64,47 @@
     <androidx.recyclerview.widget.RecyclerView
       android:id="@+id/recyclerview_in_details_tab"
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
+      android:layout_height="wrap_content"
+      android:minHeight="20dp"
       android:layout_marginTop="10dp" />
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="16dp"
+      android:orientation="horizontal"
+      android:weightSum="5">
+
+      <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/gallam_clock" />
+
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_weight="4"
+        android:text="This is where you specify how long before your errand expires. How long should your errand stay?" />
+    </LinearLayout>
+
+    <Spinner
+      android:padding="5dp"
+      android:paddingStart="25dp"
+      android:id="@+id/errand_expiry_spinner"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="10dp"
+      android:background="@drawable/stroke_textbox" />
+    <TextView
+      android:textSize="12sp"
+      android:layout_marginTop="7dp"
+      android:layout_marginLeft="10dp"
+      android:id="@+id/duration_text_label"
+      android:textColor="@color/green"
+      android:text="Your errand will expire in..."
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content" />
 
   </LinearLayout>
 </merge>
