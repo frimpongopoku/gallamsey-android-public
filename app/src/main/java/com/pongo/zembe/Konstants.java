@@ -30,6 +30,7 @@ public class Konstants {
   public static final String LOCATION_TAB = "LOCATION_TAB";
   public static final String DETAILS_TAB = "DETAILS_TAB";
   public static final String TAGGING_TAB = "TAGGING_TAB";
+  public static final String SELECT_RIDERS_TAB = "SELECT_RIDERS_TAB";
 
   //ARRAYS
   //-----------------------------

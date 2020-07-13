@@ -12,6 +12,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -35,16 +36,16 @@ import com.google.android.material.chip.ChipGroup;
 
 import java.util.ArrayList;
 
-public class NewErrandCreationPage extends AppCompatActivity implements OnDetailItemsClick {
+public class NewErrandCreationPage extends AppCompatActivity implements OnDetailItemsClick, RiderForSelectionRecyclerAdapter.SelectRiderCallback {
 
-  ArrayList<String> detailsList = new ArrayList<>(), tagList = new ArrayList<>(), autoCompleteList = new ArrayList<>();
+  ArrayList<String> fakeSelectedRiders = new ArrayList<>(), detailsList = new ArrayList<>(), tagList = new ArrayList<>(), autoCompleteList = new ArrayList<>();
   ArrayAdapter<String> locationDropdownAdapter, autoCompleteAdapter;
   ArrayList<String> locationList = new ArrayList<>();
   Spinner locationDropdown;
-  RecyclerView recyclerView;
+  RecyclerView recyclerView, ridersRecyclerView;
   ImageView taggingTabBtn, quit, helpBtn, userSelectedImageHolder, addDetailsBtn, descriptionTabBtn, estimateTabBtn, allowanceTabBtn, locationTabBtn, detailsTabBtn;
-  LinearLayout taggingTab, detailsTab, descriptionTab, estimationTab, allowanceTab, locationTab, pictureTab;
-  Button addPictureTabBtn, removePictureBtn;
+  LinearLayout selectRidersTab, taggingTab, detailsTab, descriptionTab, estimationTab, allowanceTab, locationTab, pictureTab;
+  Button addPictureTabBtn, removePictureBtn, selectRidersBtn;
   EditText detailsBox, allowanceBox, estimatedCostBox, descriptionBox;
   AutoCompleteTextView autoCompleteBox;
   DetailsListAdapter recyclerAdapter;
@@ -55,7 +56,8 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
   Handler handler = new Handler();
   ImageUploadHelper imageHelper;
   Activity activity;
-  ChipGroup chipGroup;
+  ChipGroup chipGroup, ridersChipGroup;
+  RiderForSelectionRecyclerAdapter riderSelectionAdapter;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -71,8 +73,11 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
   private void initializeActivity() {
     //  -----------------------------------------------------------
     imageHelper = new ImageUploadHelper(this);
+    ridersChipGroup = findViewById(R.id.select_rider_chip_group);
+
     autoCompleteAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, autoCompleteList);
     quit = findViewById(R.id.quit);
+    selectRidersBtn = findViewById(R.id.select_riders_btn);
     helpBtn = findViewById(R.id.help_btn);
     chipGroup = findViewById(R.id.chip_group);
     autoCompleteBox = findViewById(R.id.auto_complete);
@@ -91,6 +96,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     detailsTab = findViewById(R.id.tab_for_details);
     descriptionTab = findViewById(R.id.tab_for_description);
     estimationTab = findViewById(R.id.tab_for_estimated_cost);
+    selectRidersTab = findViewById(R.id.tab_for_selecting_riders);
     allowanceTab = findViewById(R.id.tab_for_allowance);
     taggingTab = findViewById(R.id.tab_for_tagging);
     pictureTab = findViewById(R.id.tab_for_image);
@@ -100,6 +106,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     estimatedCostBox = findViewById(R.id.estimation_box);
     descriptionBox = findViewById(R.id.description_box);
 //  ..........................................................
+    selectRidersBtn.setOnClickListener(onTabClick(Konstants.SELECT_RIDERS_TAB, null, selectRidersTab));
     taggingTabBtn.setOnClickListener(onTabClick(Konstants.TAGGING_TAB, taggingTabBtn, taggingTab));
     descriptionTabBtn.setOnClickListener(onTabClick(Konstants.DESC_TAB, descriptionTabBtn, descriptionTab));
     detailsTabBtn.setOnClickListener(onTabClick(Konstants.DETAILS_TAB, detailsTabBtn, detailsTab));
@@ -127,6 +134,11 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     recyclerView.setLayoutManager(manager);
     recyclerView.setAdapter(recyclerAdapter);
     recyclerView.hasFixedSize();
+    ridersRecyclerView = findViewById(R.id.select_rider_recycler);
+    LinearLayoutManager riderRecyclerManager = new LinearLayoutManager(this);
+    ridersRecyclerView.setLayoutManager(riderRecyclerManager);
+    riderSelectionAdapter = new RiderForSelectionRecyclerAdapter(this, null, this);
+    ridersRecyclerView.setAdapter(riderSelectionAdapter);
     addDetailsBtn.setOnClickListener(addToDetailsList);
     locationDropdown.setOnItemSelectedListener(chooseLocation);
     startInvigilatingInfinitely();
@@ -269,6 +281,12 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     } else {
       taggingTabBtn.setImageResource(R.drawable.label_normal);
     }
+    if (fakeSelectedRiders.size() != 0) {
+      selectRidersBtn.setBackgroundResource(R.drawable.just_a_white_circle);
+      selectRidersBtn.setText(String.valueOf(fakeSelectedRiders.size()));
+    } else {
+      selectRidersBtn.setBackgroundResource(R.drawable.select_rider_button);
+    }
   }
 
   private AdapterView.OnItemSelectedListener chooseLocation = new AdapterView.OnItemSelectedListener() {
@@ -390,6 +408,9 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
       case Konstants.TAGGING_TAB: {
         return taggingTab;
       }
+      case Konstants.SELECT_RIDERS_TAB: {
+        return selectRidersTab;
+      }
     }
     return null;
   }
@@ -423,4 +444,19 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
   }
 
 
+  @Override
+  public void onRiderClick(final int position) {
+    fakeSelectedRiders.add("Somen random");
+    riderSelectionAdapter.notifyItemRemoved(position);
+    Chip chip = RandomHelpersClass.createChip(this, "Somen random", new GalInterfaceGuru.TagDialogChipActions() {
+      @Override
+      public void removeTag(View v) {
+        fakeSelectedRiders.remove(position);
+        ridersChipGroup.removeView(v);
+        Toast.makeText(activity, "I have been removed", Toast.LENGTH_SHORT).show();
+      }
+    });
+    ridersChipGroup.addView(chip);
+
+  }
 }
