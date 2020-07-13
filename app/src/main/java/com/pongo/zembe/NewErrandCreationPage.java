@@ -79,7 +79,9 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
   private View.OnClickListener postMyErrand = new View.OnClickListener() {
     @Override
     public void onClick(View view) {
-      dialogCreator.constructASimpleDialog("Confirmation", validateErrand().errorMessage, new MagicBoxCallables() {
+      SimpleError result = validateErrand();
+      String errorMsg = result.getErrorMessage(), fatal = errorMsg.split("<==>")[0], semi = errorMsg.split("<==>")[1];
+      dialogCreator.createErrandErrorDialog("Confirmation", fatal, semi, new MagicBoxCallables() {
         @Override
         public void negativeBtnCallable() {
 
@@ -98,7 +100,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     String errorString = "";
     String errorForOptionalFields = "";
     if (descriptionBox.getText().toString().isEmpty()) {
-      errorString = RandomHelpersClass.concactToWhat(errorString, "You did not provide a description for you errand");
+      errorString = RandomHelpersClass.concactToWhat(errorString, "You did not provide a description for your errand");
       error.setStatus(Konstants.ERROR_FAILED);
     }
 
@@ -111,12 +113,12 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
       error.setStatus(Konstants.ERROR_FAILED);
     }
     if (selectedLocation.equals(Konstants.CHOOSE)) {
-      errorForOptionalFields = RandomHelpersClass.concactToWhat(errorForOptionalFields, "No destination to receive items were provided, you change now, or just chat with your rider later");
+      errorForOptionalFields = RandomHelpersClass.concactToWhat(errorForOptionalFields, "No destination to receive items was provided. You change now, or just chat with your rider later");
       if (!error.getStatus().equals(Konstants.ERROR_FAILED))
         error.setStatus(Konstants.ERROR_SEMI_PASSED);
     }
     if (detailsList.size() == 0) {
-      errorForOptionalFields = RandomHelpersClass.concactToWhat(errorForOptionalFields, "No particular details were provided for this errand, hopefully, you know what you are doing");
+      errorForOptionalFields = RandomHelpersClass.concactToWhat(errorForOptionalFields, "No particular details were provided for this errand");
       if (!error.getStatus().equals(Konstants.ERROR_FAILED))
         error.setStatus(Konstants.ERROR_SEMI_PASSED);
     }
@@ -125,8 +127,18 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
       if (!error.getStatus().equals(Konstants.ERROR_FAILED))
         error.setStatus(Konstants.ERROR_SEMI_PASSED);
     }
+    if (fakeSelectedRiders.size() == 0) {
+      errorForOptionalFields = RandomHelpersClass.concactToWhat(errorForOptionalFields, "No riders have been selected");
+      if (!error.getStatus().equals(Konstants.ERROR_FAILED))
+        error.setStatus(Konstants.ERROR_SEMI_PASSED);
+    }
+    if (!errorForOptionalFields.trim().isEmpty()) {
+      errorForOptionalFields = errorForOptionalFields + "\n-Hopefully, you know what you are doing...";
+    }
 
-    error.setErrorMessage(RandomHelpersClass.concactToWhat(errorString,"Other things (optional) things you missed\n"+errorForOptionalFields));
+    String bothErrors = errorString + "<==>" + errorForOptionalFields;
+    error.setErrorMessage(bothErrors);
+//    error.setErrorMessage(RandomHelpersClass.concactToWhat(errorString,"Other things (optional) things you missed\n"+errorForOptionalFields));
     return error;
   }
 

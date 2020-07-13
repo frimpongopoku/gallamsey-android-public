@@ -77,6 +77,38 @@ public class MagicBoxes extends AppCompatDialogFragment {
 
     return builder.create();
 
+  } public Dialog createErrandErrorDialog(String title, String fatal, String semiError, final MagicBoxCallables magicInterface) {
+    LayoutInflater inflater = LayoutInflater.from(context);
+    View view = inflater.inflate(R.layout.errand_error_dialog_layout,null,false);
+    TextView fatalHeader, fatalErr, semiErrHeader, semiErr;
+    fatalHeader = view.findViewById(R.id.fatal_error_header);
+    fatalErr = view.findViewById(R.id.fatal_error);
+    semiErrHeader = view.findViewById(R.id.semi_error_header);
+    semiErr = view.findViewById(R.id.semi_error);
+    if(fatal.isEmpty()){
+      fatalHeader.setVisibility(View.GONE);
+      fatalErr.setVisibility(View.GONE);
+    }
+    fatalErr.setText(fatal);
+    semiErr.setText(semiError);
+    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+    builder.setView(view)
+      .setTitle(title)
+      .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialogInterface, int i) {
+          magicInterface.positiveBtnCallable();
+        }
+      })
+      .setNegativeButton("quit", new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialogInterface, int i) {
+          magicInterface.negativeBtnCallable();
+        }
+      });
+
+    return builder.create();
+
   }
 
   public Dialog constructCustomDialogOneAction(String title, View v, String actionTitle, final MagicBoxCallables magicInterface) {
@@ -110,51 +142,6 @@ public class MagicBoxes extends AppCompatDialogFragment {
     return builder.create();
   }
 
-//  public Dialog constructTagDialog(final ArrayList<String> tags, final TagDialogContentCallable tagDialogContent) {
-//    final ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, tags);
-//    final ChipGroup group;
-//    AutoCompleteTextView textbox;
-//    AlertDialog.Builder builder = new AlertDialog.Builder(context);
-//    View v = LayoutInflater.from(context).inflate(R.layout.tagging_dialog_layout, null, false);
-//    group = v.findViewById(R.id.tags_chip_group);
-//    textbox = v.findViewById(R.id.tag_textbox);
-//    textbox.setAdapter(adapter);
-//    textbox.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//      @Override
-//      public void onItemSelected(AdapterView<?> adapterView, View view, final int i, long l) {
-//        final String item = adapterView.getItemAtPosition(i).toString();
-//        tags.add(item);
-//        group.addView(createChip(item, group, new TagDialogChipActions() {
-//          @Override
-//          public void removeTag(View v) {
-//            group.removeView(v);
-//            tags.remove(i);
-//            Toast.makeText(context, "Removed : " + item, Toast.LENGTH_SHORT).show();
-//          }
-//        }));
-//      }
-//
-//      @Override
-//      public void onNothingSelected(AdapterView<?> adapterView) {
-//
-//      }
-//    });
-//    builder.setView(v)
-//      .setTitle("Tagging (Optional)")
-//      .setPositiveButton("Save & Continue", new DialogInterface.OnClickListener() {
-//        @Override
-//        public void onClick(DialogInterface dialogInterface, int i) {
-//          tagDialogContent.getContent(tags);
-//        }
-//      })
-//      .setNegativeButton("Skip This", new DialogInterface.OnClickListener() {
-//        @Override
-//        public void onClick(DialogInterface dialogInterface, int i) {
-//          Toast.makeText(context, "Nothing will happen here bro!", Toast.LENGTH_SHORT).show();
-//        }
-//      });
-//    return builder.create();
-//  }
 
 
 
