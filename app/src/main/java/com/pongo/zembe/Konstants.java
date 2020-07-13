@@ -102,9 +102,16 @@ public class Konstants {
   public static String PREMIUM_USER = "xx-pong-:premium:-num--x";
 
 
+  //ERROR VALUES
+  //-------------------------------
+    public static String ERROR_FAILED ="ERROR FAILED";
+    public static String ERROR_PASSED = "ERROR PASSED";
+    public static String ERROR_SEMI_PASSED = "ERROR SEMI PASSED";
+
   //FIREBASE COLLECTION SET CONSTANTS
   //--------------------------------
   public static String USER_COLLECTION = "USERS";
+  public static String ERRAND_COLLECTION = "ERRANDS";
   public static String COMMUNITIES_COLLECTION = "COMMUNITIES";
   public static String PROFILE_PICTURES_COLLECTION = "PROFILE PICTURES";
 }

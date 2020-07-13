@@ -33,6 +33,8 @@ import android.widget.Toast;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
@@ -45,7 +47,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
   RecyclerView recyclerView, ridersRecyclerView;
   ImageView taggingTabBtn, quit, helpBtn, userSelectedImageHolder, addDetailsBtn, descriptionTabBtn, estimateTabBtn, allowanceTabBtn, locationTabBtn, detailsTabBtn;
   LinearLayout selectRidersTab, taggingTab, detailsTab, descriptionTab, estimationTab, allowanceTab, locationTab, pictureTab;
-  Button addPictureTabBtn, removePictureBtn, selectRidersBtn;
+  Button postBtn, addPictureTabBtn, removePictureBtn, selectRidersBtn;
   EditText detailsBox, allowanceBox, estimatedCostBox, descriptionBox;
   AutoCompleteTextView autoCompleteBox;
   DetailsListAdapter recyclerAdapter;
@@ -58,23 +60,81 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
   Activity activity;
   ChipGroup chipGroup, ridersChipGroup;
   RiderForSelectionRecyclerAdapter riderSelectionAdapter;
+  FirebaseFirestore store = FirebaseFirestore.getInstance();
+  CollectionReference errandDB = store.collection(Konstants.ERRAND_COLLECTION);
+  MagicBoxes dialogCreator;
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_new_errand_creation_page);
     activity = this;
+    dialogCreator = new MagicBoxes(this);
     initializeAutoCompleteLists();
     initializeActivity();
 
   }
 
+  private View.OnClickListener postMyErrand = new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+      dialogCreator.constructASimpleDialog("Confirmation", validateErrand().errorMessage, new MagicBoxCallables() {
+        @Override
+        public void negativeBtnCallable() {
+
+        }
+
+        @Override
+        public void positiveBtnCallable() {
+
+        }
+      }).show();
+    }
+  };
+
+  private SimpleError validateErrand() {
+    SimpleError error = new SimpleError();
+    String errorString = "";
+    String errorForOptionalFields = "";
+    if (descriptionBox.getText().toString().isEmpty()) {
+      errorString = RandomHelpersClass.concactToWhat(errorString, "You did not provide a description for you errand");
+      error.setStatus(Konstants.ERROR_FAILED);
+    }
+
+    if (estimatedCostBox.getText().toString().isEmpty()) {
+      errorString = RandomHelpersClass.concactToWhat(errorString, "You need to provide a value for how much your item(s) will cost");
+      error.setStatus(Konstants.ERROR_FAILED);
+    }
+    if (allowanceBox.getText().toString().isEmpty()) {
+      errorString = RandomHelpersClass.concactToWhat(errorString, "You need to provide a value for how much you are willing to give");
+      error.setStatus(Konstants.ERROR_FAILED);
+    }
+    if (selectedLocation.equals(Konstants.CHOOSE)) {
+      errorForOptionalFields = RandomHelpersClass.concactToWhat(errorForOptionalFields, "No destination to receive items were provided, you change now, or just chat with your rider later");
+      if (!error.getStatus().equals(Konstants.ERROR_FAILED))
+        error.setStatus(Konstants.ERROR_SEMI_PASSED);
+    }
+    if (detailsList.size() == 0) {
+      errorForOptionalFields = RandomHelpersClass.concactToWhat(errorForOptionalFields, "No particular details were provided for this errand, hopefully, you know what you are doing");
+      if (!error.getStatus().equals(Konstants.ERROR_FAILED))
+        error.setStatus(Konstants.ERROR_SEMI_PASSED);
+    }
+    if (tagList.size() == 0) {
+      errorForOptionalFields = RandomHelpersClass.concactToWhat(errorForOptionalFields, "It is always better to add tags to you errands");
+      if (!error.getStatus().equals(Konstants.ERROR_FAILED))
+        error.setStatus(Konstants.ERROR_SEMI_PASSED);
+    }
+
+    error.setErrorMessage(RandomHelpersClass.concactToWhat(errorString,"Other things (optional) things you missed\n"+errorForOptionalFields));
+    return error;
+  }
 
   private void initializeActivity() {
     //  -----------------------------------------------------------
     imageHelper = new ImageUploadHelper(this);
     ridersChipGroup = findViewById(R.id.select_rider_chip_group);
-
+    postBtn = findViewById(R.id.post_btn);
     autoCompleteAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, autoCompleteList);
     quit = findViewById(R.id.quit);
     selectRidersBtn = findViewById(R.id.select_riders_btn);
@@ -118,6 +178,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     helpBtn.setOnClickListener(showErrandHelp);
     userSelectedImageHolder.setOnClickListener(chooseImageForErrand);
     quit.setOnClickListener(quitCreating);
+    postBtn.setOnClickListener(postMyErrand);
 
 //  ----------------------------------------------------------
     locationList.add(Konstants.CHOOSE);

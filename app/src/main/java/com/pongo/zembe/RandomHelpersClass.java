@@ -17,25 +17,28 @@ import java.util.HashMap;
 public class RandomHelpersClass {
 
 
+  public static String concactToWhat(String motherString, String tobeAttached) {
+    if (motherString.trim().equals("")) {
+      motherString = motherString + tobeAttached + " ";
+    } else {
+      motherString = motherString + "\n" + tobeAttached;
+    }
+
+    return motherString;
+  }
 
   public static Chip createChip(Context context, final String name, final GalInterfaceGuru.TagDialogChipActions tagDialogChipActions) {
     Chip chip = new Chip(context);
     chip.setText(name);
-//    chip.setCloseIconEnabled(true);
     chip.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
         tagDialogChipActions.removeTag(view);
       }
     });
-//    chip.setOnCloseIconClickListener(new View.OnClickListener() {
-//      @Override
-//      public void onClick(View view) {
-//        tagDialogChipActions.removeTag(view);
-//      }
-//    });
     return chip;
   }
+
   public static String mergeTextsFromArray(ArrayList<String> arr) {
     String finalR = "";
     for (int i = 0; i < arr.size(); i++) {
@@ -70,8 +73,8 @@ public class RandomHelpersClass {
   public static boolean validateYear(int year) {
     //the year should be in a full four digit code
     int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-      Log.w("Check yearhere:::", String.valueOf(countChar(String.valueOf(year))));
-    if ( year <= 0 || year >= currentYear - 12 || countChar(String.valueOf(year)) != 4) {
+    Log.w("Check yearhere:::", String.valueOf(countChar(String.valueOf(year))));
+    if (year <= 0 || year >= currentYear - 12 || countChar(String.valueOf(year)) != 4) {
       //No zero years, age limit = 13
       return false;
     }
