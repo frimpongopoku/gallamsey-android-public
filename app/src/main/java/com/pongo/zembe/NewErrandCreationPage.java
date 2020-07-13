@@ -81,7 +81,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     public void onClick(View view) {
       SimpleError result = validateErrand();
       String errorMsg = result.getErrorMessage(), fatal = errorMsg.split("<==>")[0], semi = errorMsg.split("<==>")[1];
-      dialogCreator.createErrandErrorDialog("Confirmation", fatal, semi, new MagicBoxCallables() {
+      dialogCreator.createErrandErrorDialog("Confirmation", fatal, semi, "quit", "Okay", new MagicBoxCallables() {
         @Override
         public void negativeBtnCallable() {
 

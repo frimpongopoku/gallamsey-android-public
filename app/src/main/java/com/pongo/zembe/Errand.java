@@ -7,20 +7,23 @@ import java.util.Date;
 
 public class Errand {
   private String title, errandType, description, expiryDate,
-  createdAt = DateHelper.getDateInMyTimezone();
-  private ArrayList<String> details;
+    createdAt = DateHelper.getDateInMyTimezone();
+  private ArrayList<String> details = new ArrayList<>(), tags = new ArrayList<>();
   private Boolean errandComplete = false, creatorHasPaidAmount = false;
   private String creatorPaymentTransactionCode;
   private float allowance = 0, cost = 0;
-  private String status;
+  private String status = Konstants.ERRAND_HAS_NOT_STARTED;
   private SimpleUser creator, runner;
+  private ArrayList<SimpleUser> notifiableRiders = new ArrayList<>();
   private GallamseyLocationComponent pickUpLocation;
 
-  public Errand (){
+
+  public Errand() {
     //Firebase constructor
   }
-  public Errand(String title, String errandType, String description) {
-    this.title = title;
+
+  public Errand(String errandType, String description) {
+    this.title = setTitle(description);
     this.errandType = errandType;
     this.description = description;
   }
@@ -29,8 +32,13 @@ public class Errand {
     return title;
   }
 
-  public void setTitle(String title) {
-    this.title = title;
+  public String setTitle(String description) {
+    String title="";
+    if (!description.trim().isEmpty()) {
+      title = description.substring(0,30);
+    }
+
+    return title;
   }
 
   public String getErrandType() {

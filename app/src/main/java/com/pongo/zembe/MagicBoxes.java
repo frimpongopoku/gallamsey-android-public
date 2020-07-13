@@ -77,15 +77,17 @@ public class MagicBoxes extends AppCompatDialogFragment {
 
     return builder.create();
 
-  } public Dialog createErrandErrorDialog(String title, String fatal, String semiError, final MagicBoxCallables magicInterface) {
+  }
+
+  public Dialog createErrandErrorDialog(String title, String fatal, String semiError, String negative, String positive, final MagicBoxCallables magicInterface) {
     LayoutInflater inflater = LayoutInflater.from(context);
-    View view = inflater.inflate(R.layout.errand_error_dialog_layout,null,false);
+    View view = inflater.inflate(R.layout.errand_error_dialog_layout, null, false);
     TextView fatalHeader, fatalErr, semiErrHeader, semiErr;
     fatalHeader = view.findViewById(R.id.fatal_error_header);
     fatalErr = view.findViewById(R.id.fatal_error);
     semiErrHeader = view.findViewById(R.id.semi_error_header);
     semiErr = view.findViewById(R.id.semi_error);
-    if(fatal.isEmpty()){
+    if (fatal.isEmpty()) {
       fatalHeader.setVisibility(View.GONE);
       fatalErr.setVisibility(View.GONE);
     }
@@ -94,13 +96,13 @@ public class MagicBoxes extends AppCompatDialogFragment {
     AlertDialog.Builder builder = new AlertDialog.Builder(context);
     builder.setView(view)
       .setTitle(title)
-      .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+      .setPositiveButton(positive, new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialogInterface, int i) {
           magicInterface.positiveBtnCallable();
         }
       })
-      .setNegativeButton("quit", new DialogInterface.OnClickListener() {
+      .setNegativeButton(negative, new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialogInterface, int i) {
           magicInterface.negativeBtnCallable();
@@ -143,12 +145,8 @@ public class MagicBoxes extends AppCompatDialogFragment {
   }
 
 
-
-
-
 //  ----------------------- END OF THE LINE FOR THIS CLASS -------------------------
 }
-
 
 
 interface TagDialogContentCallable {

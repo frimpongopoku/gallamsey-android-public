@@ -102,7 +102,13 @@ public class Konstants {
   public static String PREMIUM_USER = "xx-pong-:premium:-num--x";
 
 
-  //ERROR VALUES
+//   ERRAND STAGE VALUES
+  public static String ERRAND_IS_IN_MOTION = "MOTION";
+  public static String ERRAND_HAS_NOT_STARTED = "HAS_NOT_STARTED";
+  public static String ERRAND_IS_COMPLETE = "IS_COMPLETE";
+  public static String ERRAND_READY_FOR_PAYMENT_TRANSACTIOn = "PAYMENT_TRANSACTION";
+
+  //ERRAND ERROR VALUES
   //-------------------------------
     public static String ERROR_FAILED ="ERROR FAILED";
     public static String ERROR_PASSED = "ERROR PASSED";
