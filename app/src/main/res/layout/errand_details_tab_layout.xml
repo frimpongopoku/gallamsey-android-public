@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools">
+
+  <LinearLayout
+    android:id="@+id/tab_for_details"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_above="@id/bottom_fake_nav"
+    android:layout_below="@id/top_controls"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:visibility="gone">
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      android:weightSum="5">
+
+      <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/galam_teacher_colored" />
+
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_weight="4"
+        android:text="This is where you give specific instructions that the rider, should not miss" />
+    </LinearLayout>
+
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginRight="10dp"
+      android:orientation="horizontal"
+      android:weightSum="5">
+
+      <EditText
+        android:id="@+id/edittext_in_details_tab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:layout_weight="4"
+        android:background="@android:color/white"
+        android:hint="Does the shoe have to be from Samsung?"
+        android:textSize="16sp" />
+
+      <ImageView
+        android:id="@+id/add_btn_in_details_tab"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="3dp"
+        android:layout_weight="1"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:src="@drawable/ic_add_circle_black_24dp" />
+    </LinearLayout>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/recyclerview_in_details_tab"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_marginTop="10dp" />
+
+  </LinearLayout>
+</merge>

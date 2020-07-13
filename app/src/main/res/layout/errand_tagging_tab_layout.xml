@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+  <LinearLayout
+    android:id="@+id/tab_for_tagging"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_above="@id/bottom_fake_nav"
+    android:layout_below="@id/top_controls"
+    android:orientation="vertical"
+    android:paddingLeft="20dp"
+    android:paddingTop="5dp"
+    android:paddingRight="20dp"
+    android:visibility="gone">
+
+    <ScrollView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:scrollbars="none">
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="15dp"
+          android:orientation="vertical">
+
+          <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="5">
+
+            <ImageView
+              android:layout_width="40dp"
+              android:layout_height="40dp"
+              android:src="@drawable/ic_label_black_24dp" />
+
+            <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginLeft="5dp"
+              android:layout_weight="4"
+              android:text="Here, quickly search our list to see if the items you need fall under any of our categories." />
+          </LinearLayout>
+
+          <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:paddingLeft="40dp"
+            android:text="NB: This makes it easier for riders to find your errands"
+            android:textColor="@color/green" />
+
+          <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chip_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp" />
+
+          <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+            android:id="@+id/auto_complete"
+            android:textSize="14sp"
+            android:textAlignment="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@android:color/white"
+            android:hint="Eg. Food, Electronics, Fashion etc."
+            android:padding="10dp" />
+          <!--<LinearLayout-->
+          <!--android:id="@+id/chip_group"-->
+          <!--android:layout_width="match_parent"-->
+          <!--android:layout_height="wrap_content"/>-->
+
+
+        </LinearLayout>
+
+
+      </LinearLayout>
+    </ScrollView>
+  </LinearLayout>
+</merge>
