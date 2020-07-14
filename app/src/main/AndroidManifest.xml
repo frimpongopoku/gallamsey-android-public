@@ -35,9 +35,9 @@
       android:windowSoftInputMode="adjustResize">
 
       <!--<intent-filter>-->
-        <!--<action android:name="android.intent.action.MAIN" />-->
+      <!--<action android:name="android.intent.action.MAIN" />-->
 
-        <!--<category android:name="android.intent.category.LAUNCHER" />-->
+      <!--<category android:name="android.intent.category.LAUNCHER" />-->
       <!--</intent-filter>-->
 
     </activity>
@@ -47,7 +47,14 @@
     <activity android:name=".AddMoreLocations" />
     <activity
       android:name=".errandPaymentStepPage"
-      android:windowSoftInputMode="adjustPan" />
+      android:windowSoftInputMode="adjustPan">
+      <!--<intent-filter>-->
+        <!--<action android:name="android.intent.action.MAIN" />-->
+
+        <!--<category android:name="android.intent.category.LAUNCHER" />-->
+      <!--</intent-filter>-->
+
+    </activity>
     <activity android:name=".TeachMeHowToCreateAnErrand" />
     <activity android:name=".ImageErrandView" />
     <activity

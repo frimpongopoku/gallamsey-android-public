@@ -14,23 +14,18 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -282,7 +277,7 @@ public class ProfileCompletionPage extends AppCompatActivity {
     dob = dobBox.getText().toString().trim();
     name = usernameBox.getText().toString().trim();
     number = whatsappNumberBox.getText().toString().trim();
-    HashMap<String, Object> dobValidation = RandomHelpersClass.validateDOB(dob);
+    HashMap<String, Object> dobValidation = MyHelper.validateDOB(dob);
     if (name.isEmpty()) {
       usernameBox.setError("Sorry, you cant leave this empty");
       usernameBox.requestFocus();
@@ -294,7 +289,7 @@ public class ProfileCompletionPage extends AppCompatActivity {
       return;
     }
     if (dobValidation.get("status").equals(false)) {
-      String intoOne = RandomHelpersClass.mergeTextsFromArray((ArrayList<String>) dobValidation.get("errors"));
+      String intoOne = MyHelper.mergeTextsFromArray((ArrayList<String>) dobValidation.get("errors"));
       dobBox.setError(intoOne);
       dobBox.requestFocus();
       return;

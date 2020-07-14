@@ -1,8 +1,11 @@
 package com.pongo.zembe;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.material.chip.Chip;
@@ -14,8 +17,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
-public class RandomHelpersClass {
+public class MyHelper {
 
+
+
+
+  public static String grabCleanText(EditText box) {
+    return box.getText().toString().trim();
+  }
 
   public static String concactToWhat(String motherString, String tobeAttached) {
     if (motherString.trim().equals("")) {

@@ -22,6 +22,8 @@ public class Konstants {
 
   // ERRAND CREATION CONSTANTS
   //  --------------------------
+  public static final String ERRAND_PICTURES_COLLECTION = "_errand_img_";
+  public static final String IMG_ERRAND_CONSTANT = "_errand_img_";
   public static final String TEXT_ERRAND = ":jyon@2203:x:text:x:znump:";
   public static final String IMAGE_ERRAND = "jyon@2203:x:img:x:znump:";
   public static final String USER_TEMPLATES_TAB = "ERRAND_TEMPLATES";

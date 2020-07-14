@@ -1,10 +1,8 @@
 package com.pongo.zembe;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,14 +10,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -31,11 +25,15 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 
@@ -55,7 +53,8 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
   AutoCompleteTextView autoCompleteBox;
   DetailsListAdapter recyclerAdapter;
   String currentTabKey = Konstants.DESC_TAB, selectedLocation = Konstants.CHOOSE, expiryDurationSelected = Konstants.NOT_SET;
-  byte[] userSelectedImage = null;
+  byte[] userSelectedImage = null; //this is what is going to be uploaded
+  Uri selectedImageURI; // image extension will be determined from this
   TextView locationText, durationText;
   int DEFAULT_STATE_VALUE = 40, STATE_CHANGED_VALUE = 60;
   Handler handler = new Handler();
@@ -67,7 +66,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
   CollectionReference errandDB = store.collection(Konstants.ERRAND_COLLECTION);
   MagicBoxes dialogCreator;
   GroundUser authenticatedUser;
-
+  StorageReference storageReference;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -95,29 +94,38 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     ;
   }
 
-
-  private String grabCleanText(EditText box) {
-    return box.getText().toString().trim();
-  }
-
-  private GenericErrandClass getErrandForShipment() {
-    String description = grabCleanText(descriptionBox), estimated = grabCleanText(estimatedCostBox), allowance = grabCleanText(allowanceBox);
-    GenericErrandClass errand = new GenericErrandClass(Konstants.NOT_SET, description);
-    if (userSelectedImage == null) {
-      errand.setErrandType(Konstants.TEXT_ERRAND);
-    } else {
-      errand.setErrandType(Konstants.IMAGE_ERRAND);
-    }
+  private void getErrandForShipment(final GalInterfaceGuru.CollectErrandTrainFormShipment errandCallback) {
+    String description = MyHelper.grabCleanText(descriptionBox), estimated = MyHelper.grabCleanText(estimatedCostBox), allowance = MyHelper.grabCleanText(allowanceBox);
+    final GenericErrandClass errand = new GenericErrandClass(Konstants.NOT_SET, description);
     String date = DateHelper.getDateInMyTimezone();
     errand.setTags(tagList);
     errand.setCost(Float.valueOf(estimated));
     errand.setAllowance(Float.valueOf(allowance));
     errand.setDetails(detailsList);
     errand.setCreator(creator);
-    errand.setExpiryDate(DateHelper.jumpDateByHours(date,DateHelper.getHoursValueFromDurationString(expiryDurationSelected)));
-//    errand.setPickUpLocation(selectedLocation);
+    errand.setExpiryDate(DateHelper.jumpDateByHours(date, DateHelper.getHoursValueFromDurationString(expiryDurationSelected)));
+    //    errand.setPickUpLocation(selectedLocation);
 //    errand.setNotifiableRiders(fakeSelectedRiders);
-    return errand;
+    if (userSelectedImage == null) {
+      errand.setErrandType(Konstants.TEXT_ERRAND);
+      errandCallback.getErrandObject(errand);
+    } else {
+      errand.setErrandType(Konstants.IMAGE_ERRAND);
+      imageHelper.uploadImageToFirebase(storageReference,
+        selectedImageURI, Konstants.IMG_ERRAND_CONSTANT,
+        authenticatedUser.getUserDocumentID(), userSelectedImage,
+        new ImageUploadHelper.CollectUploadedImageURI() {
+          @Override
+          public void getURI(Uri uri) {
+            ArrayList<String> imgs = new ArrayList<>();
+            imgs.add(uri.toString());
+            errand.setImages(imgs);
+            errandCallback.getErrandObject(errand);
+          }
+        });
+    }
+
+
   }
 
   private View.OnClickListener postMyErrand = new View.OnClickListener() {
@@ -163,42 +171,51 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
 
   private SimpleError validateErrand() {
     SimpleError error = new SimpleError();
+    int count = 0;
     String errorString = "";
     String errorForOptionalFields = "";
     if (descriptionBox.getText().toString().isEmpty()) {
-      errorString = RandomHelpersClass.concactToWhat(errorString, "You did not provide a description for your errand");
+      count ++;
+      errorString = MyHelper.concactToWhat(errorString, count+". You did not provide a description for your errand");
       error.setStatus(Konstants.ERROR_FAILED);
     }
 
     if (expiryDurationSelected.equals(Konstants.NOT_SET)) {
-      errorString = RandomHelpersClass.concactToWhat(errorString, "When should your errand expire?");
+      count ++;
+      errorString = MyHelper.concactToWhat(errorString, count+". When should your errand expire?");
       error.setStatus(Konstants.ERROR_FAILED);
     }
     if (estimatedCostBox.getText().toString().isEmpty()) {
-      errorString = RandomHelpersClass.concactToWhat(errorString, "You need to provide a value for how much your item(s) will cost");
+      count ++;
+      errorString = MyHelper.concactToWhat(errorString, count+". You need to provide a value for how much your item(s) will cost");
       error.setStatus(Konstants.ERROR_FAILED);
     }
     if (allowanceBox.getText().toString().isEmpty()) {
-      errorString = RandomHelpersClass.concactToWhat(errorString, "You need to provide a value for how much you are willing to give");
+      count ++;
+      errorString = MyHelper.concactToWhat(errorString, count+". You need to provide a value for how much you are willing to give");
       error.setStatus(Konstants.ERROR_FAILED);
     }
     if (selectedLocation.equals(Konstants.CHOOSE)) {
-      errorForOptionalFields = RandomHelpersClass.concactToWhat(errorForOptionalFields, "No destination to receive items was provided. You can change now, or just chat with your rider later");
+      count ++;
+      errorForOptionalFields = MyHelper.concactToWhat(errorForOptionalFields, count+". No destination to receive items was provided. You can change now, or just chat with your rider later");
       if (!error.getStatus().equals(Konstants.ERROR_FAILED))
         error.setStatus(Konstants.ERROR_SEMI_PASSED);
     }
     if (detailsList.size() == 0) {
-      errorForOptionalFields = RandomHelpersClass.concactToWhat(errorForOptionalFields, "No particular details were provided for this errand");
+      count ++;
+      errorForOptionalFields = MyHelper.concactToWhat(errorForOptionalFields, count+". No particular details were provided for this errand");
       if (!error.getStatus().equals(Konstants.ERROR_FAILED))
         error.setStatus(Konstants.ERROR_SEMI_PASSED);
     }
     if (tagList.size() == 0) {
-      errorForOptionalFields = RandomHelpersClass.concactToWhat(errorForOptionalFields, "It is always better to add tags to you errands");
+      count ++;
+      errorForOptionalFields = MyHelper.concactToWhat(errorForOptionalFields, count+". It is always better to add tags to you errands");
       if (!error.getStatus().equals(Konstants.ERROR_FAILED))
         error.setStatus(Konstants.ERROR_SEMI_PASSED);
     }
     if (fakeSelectedRiders.size() == 0) {
-      errorForOptionalFields = RandomHelpersClass.concactToWhat(errorForOptionalFields, "No riders have been selected");
+      count ++;
+      errorForOptionalFields = MyHelper.concactToWhat(errorForOptionalFields, count+". No riders have been selected");
       if (!error.getStatus().equals(Konstants.ERROR_FAILED))
         error.setStatus(Konstants.ERROR_SEMI_PASSED);
     }
@@ -208,12 +225,13 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
 
     String bothErrors = errorString + "<==>" + errorForOptionalFields;
     error.setErrorMessage(bothErrors);
-//    error.setErrorMessage(RandomHelpersClass.concactToWhat(errorString,"Other things (optional) things you missed\n"+errorForOptionalFields));
+//    error.setErrorMessage(MyHelper.concactToWhat(errorString,"Other things (optional) things you missed\n"+errorForOptionalFields));
     return error;
   }
 
   private void initializeActivity() {
     //  -----------------------------------------------------------
+    storageReference = FirebaseStorage.getInstance().getReference(Konstants.ERRAND_PICTURES_COLLECTION);
     imageHelper = new ImageUploadHelper(this);
     durationText = findViewById(R.id.duration_text_label);
     ridersChipGroup = findViewById(R.id.select_rider_chip_group);
@@ -328,7 +346,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
       String item = adapterView.getItemAtPosition(i).toString();
       tagList.add(item);
-      Chip newTag = RandomHelpersClass.createChip(activity, item, new GalInterfaceGuru.TagDialogChipActions() {
+      Chip newTag = MyHelper.createChip(activity, item, new GalInterfaceGuru.TagDialogChipActions() {
         @Override
         public void removeTag(View v) {
           chipGroup.removeView(v);
@@ -359,12 +377,12 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     imageHelper.collectCroppedImage(requestCode, resultCode, data, new ImageUploadHelper.CroppingImageCallback() {
       @Override
       public void getCroppedImage(Uri uri) {
+        selectedImageURI = uri;
         imageHelper.compressImageToBytes(uri, new ImageUploadHelper.CompressedImageToBytesCallback() {
           @Override
           public void getCompressedImage(byte[] compressedImage) {
-            Bitmap bitmap = BitmapFactory.decodeByteArray(compressedImage, 0, compressedImage.length);
             userSelectedImage = compressedImage;
-            userSelectedImageHolder.setImageBitmap(bitmap);
+            userSelectedImageHolder.setImageBitmap(ImageUploadHelper.changeBytesToBitmap(compressedImage));
           }
         });
 
@@ -617,7 +635,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
   public void onRiderClick(final int position) {
     fakeSelectedRiders.add("Somen random");
     riderSelectionAdapter.notifyItemRemoved(position);
-    Chip chip = RandomHelpersClass.createChip(this, "Somen random", new GalInterfaceGuru.TagDialogChipActions() {
+    Chip chip = MyHelper.createChip(this, "Somen random", new GalInterfaceGuru.TagDialogChipActions() {
       @Override
       public void removeTag(View v) {
         fakeSelectedRiders.remove(position);

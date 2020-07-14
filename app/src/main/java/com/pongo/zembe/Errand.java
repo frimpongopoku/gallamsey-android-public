@@ -16,6 +16,8 @@ public class Errand {
   private SimpleUser creator, runner;
   private ArrayList<SimpleUser> notifiableRiders = new ArrayList<>();
   private GallamseyLocationComponent pickUpLocation;
+  private ArrayList<String> images = new ArrayList<>();
+
 
   public Errand() {
     //Firebase constructor
@@ -32,11 +34,19 @@ public class Errand {
   }
 
   public String setTitle(String description) {
-    String title="";
+    String title = "";
     if (!description.trim().isEmpty()) {
-      title = description.substring(0,30);
+      title = description.substring(0, 30);
     }
     return title;
+  }
+
+  public ArrayList<String> getImages() {
+    return images;
+  }
+
+  public void setImages(ArrayList<String> images) {
+    this.images = images;
   }
 
   public ArrayList<String> getTags() {

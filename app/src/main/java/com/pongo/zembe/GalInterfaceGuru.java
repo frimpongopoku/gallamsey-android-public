@@ -1,5 +1,6 @@
 package com.pongo.zembe;
 
+import android.net.Uri;
 import android.view.View;
 
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -16,5 +17,12 @@ public class GalInterfaceGuru {
 
   interface TagDialogChipActions {
     void removeTag(View v);
+  }
+  interface CollectUploadPictureURL{
+    void collectURI (Uri uri);
+  }
+
+  interface  CollectErrandTrainFormShipment{
+    void getErrandObject(GenericErrandClass errand);
   }
 }
