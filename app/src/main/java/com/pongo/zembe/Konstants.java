@@ -8,6 +8,7 @@ import java.util.HashMap;
 public class Konstants {
 
 
+  public static final String INIT_STRING = "";
   public static final String AUTH_USER_KEY = "authUser";
   public static final String NOT_SET = "NOT SET";
   public static final int SENDER_VIEW_TYPE = 172;
@@ -21,6 +22,8 @@ public class Konstants {
 
   // ERRAND CREATION CONSTANTS
   //  --------------------------
+  public static final String TEXT_ERRAND = ":jyon@2203:x:text:x:znump:";
+  public static final String IMAGE_ERRAND = "jyon@2203:x:img:x:znump:";
   public static final String USER_TEMPLATES_TAB = "ERRAND_TEMPLATES";
   public static final String FAVORITE_RIDERS_TAB = "FAVORITE_RIDERS";
   public static final String TASKS_GIGS_TAB = "GIGS";

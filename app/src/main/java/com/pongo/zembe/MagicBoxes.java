@@ -79,7 +79,7 @@ public class MagicBoxes extends AppCompatDialogFragment {
 
   }
 
-  public Dialog createErrandErrorDialog(String title, String fatal, String semiError, String negative, String positive, final MagicBoxCallables magicInterface) {
+  public Dialog constructErrandErrorDialog(String title, String fatal, String semiError, String negative, String positive, final MagicBoxCallables magicInterface) {
     LayoutInflater inflater = LayoutInflater.from(context);
     View view = inflater.inflate(R.layout.errand_error_dialog_layout, null, false);
     TextView fatalHeader, fatalErr, semiErrHeader, semiErr;

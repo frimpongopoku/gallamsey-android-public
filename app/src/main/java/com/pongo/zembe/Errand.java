@@ -39,6 +39,22 @@ public class Errand {
     return title;
   }
 
+  public ArrayList<String> getTags() {
+    return tags;
+  }
+
+  public void setTags(ArrayList<String> tags) {
+    this.tags = tags;
+  }
+
+  public ArrayList<SimpleUser> getNotifiableRiders() {
+    return notifiableRiders;
+  }
+
+  public void setNotifiableRiders(ArrayList<SimpleUser> notifiableRiders) {
+    this.notifiableRiders = notifiableRiders;
+  }
+
   public String getErrandType() {
     return errandType;
   }

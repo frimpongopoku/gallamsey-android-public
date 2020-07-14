@@ -2,7 +2,7 @@ package com.pongo.zembe;
 
 public class SimpleError {
   String status = Konstants.ERROR_PASSED ;
-  String errorMessage;
+  String errorMessage=Konstants.INIT_STRING;
 
   public String getStatus() {
     return status;

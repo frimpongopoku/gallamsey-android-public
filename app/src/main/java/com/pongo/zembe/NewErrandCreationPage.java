@@ -54,8 +54,8 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
   EditText detailsBox, allowanceBox, estimatedCostBox, descriptionBox;
   AutoCompleteTextView autoCompleteBox;
   DetailsListAdapter recyclerAdapter;
-  String currentTabKey = Konstants.DESC_TAB, selectedLocation = Konstants.CHOOSE, expiryDurationSelected;
-  Bitmap userSelectedImage = null;
+  String currentTabKey = Konstants.DESC_TAB, selectedLocation = Konstants.CHOOSE, expiryDurationSelected = Konstants.NOT_SET;
+  byte[] userSelectedImage = null;
   TextView locationText, durationText;
   int DEFAULT_STATE_VALUE = 40, STATE_CHANGED_VALUE = 60;
   Handler handler = new Handler();
@@ -95,22 +95,69 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     ;
   }
 
+
+  private String grabCleanText(EditText box) {
+    return box.getText().toString().trim();
+  }
+
+  private GenericErrandClass getErrandForShipment() {
+    String description = grabCleanText(descriptionBox), estimated = grabCleanText(estimatedCostBox), allowance = grabCleanText(allowanceBox);
+    GenericErrandClass errand = new GenericErrandClass(Konstants.NOT_SET, description);
+    if (userSelectedImage == null) {
+      errand.setErrandType(Konstants.TEXT_ERRAND);
+    } else {
+      errand.setErrandType(Konstants.IMAGE_ERRAND);
+    }
+    String date = DateHelper.getDateInMyTimezone();
+    errand.setTags(tagList);
+    errand.setCost(Float.valueOf(estimated));
+    errand.setAllowance(Float.valueOf(allowance));
+    errand.setDetails(detailsList);
+    errand.setCreator(creator);
+    errand.setExpiryDate(DateHelper.jumpDateByHours(date,DateHelper.getHoursValueFromDurationString(expiryDurationSelected)));
+//    errand.setPickUpLocation(selectedLocation);
+//    errand.setNotifiableRiders(fakeSelectedRiders);
+    return errand;
+  }
+
   private View.OnClickListener postMyErrand = new View.OnClickListener() {
     @Override
     public void onClick(View view) {
       SimpleError result = validateErrand();
-      String errorMsg = result.getErrorMessage(), fatal = errorMsg.split("<==>")[0], semi = errorMsg.split("<==>")[1];
-      dialogCreator.createErrandErrorDialog("Confirmation", fatal, semi, "quit", "Okay", new MagicBoxCallables() {
-        @Override
-        public void negativeBtnCallable() {
+      String errorMsg = result.getErrorMessage(), fatal = Konstants.INIT_STRING, semi = Konstants.INIT_STRING;
+      if (!result.getStatus().equals(Konstants.ERROR_PASSED)) {
+        fatal = errorMsg.split("<==>")[0];
+        semi = errorMsg.split("<==>")[1];
+      }
+      if (result.getStatus().equals(Konstants.ERROR_PASSED)) {
+        Toast.makeText(activity, "Well done bro, you are the first person to fill this shit!", Toast.LENGTH_SHORT).show();
+      }
+      if (result.getStatus().equals(Konstants.ERROR_SEMI_PASSED)) {
+        dialogCreator.constructErrandErrorDialog("Confirmation", fatal, semi, "Go back & Edit", "Post Anyway", new MagicBoxCallables() {
+          @Override
+          public void negativeBtnCallable() {
 
-        }
+          }
 
-        @Override
-        public void positiveBtnCallable() {
+          @Override
+          public void positiveBtnCallable() {
 
-        }
-      }).show();
+          }
+        }).show();
+      }
+      if (result.getStatus().equals(Konstants.ERROR_FAILED)) {
+        dialogCreator.constructErrandErrorDialog("Not Ready Yet", fatal, semi, "Quit", "Go back & Edit", new MagicBoxCallables() {
+          @Override
+          public void negativeBtnCallable() {
+
+          }
+
+          @Override
+          public void positiveBtnCallable() {
+
+          }
+        }).show();
+      }
     }
   };
 
@@ -316,7 +363,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
           @Override
           public void getCompressedImage(byte[] compressedImage) {
             Bitmap bitmap = BitmapFactory.decodeByteArray(compressedImage, 0, compressedImage.length);
-            userSelectedImage = bitmap;
+            userSelectedImage = compressedImage;
             userSelectedImageHolder.setImageBitmap(bitmap);
           }
         });
@@ -369,7 +416,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     //if allowance cost has been provided
     //if location has been provided
     //if extra details have been provided
-    if (!descriptionBox.getText().toString().isEmpty()) {
+    if (!descriptionBox.getText().toString().isEmpty() || userSelectedImage != null) {
       descriptionTabBtn.setImageResource(R.drawable.ic_description_green);
     } else {
       descriptionTabBtn.setImageResource(R.drawable.ic_description_black_24dp);
