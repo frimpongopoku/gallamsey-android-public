@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<merge>
+  <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/title_bar"
+    android:layout_width="match_parent"
+    android:layout_height="55dp"
+    android:layout_alignParentTop="true"
+    android:background="@android:color/white">
+
+    <ImageView
+      android:id="@+id/back_btn"
+      android:layout_width="30dp"
+      android:layout_height="30dp"
+      android:layout_alignParentStart="true"
+      android:layout_centerVertical="true"
+      android:layout_marginStart="30dp"
+      android:background="?attr/selectableItemBackgroundBorderless"
+      android:clickable="true"
+      android:elevation="10dp"
+      android:src="@drawable/go_left" />
+
+    <TextView
+      android:id="@+id/page_name"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_centerVertical="true"
+      android:layout_marginLeft="10dp"
+      android:layout_toEndOf="@id/back_btn"
+      android:text="Page Name"
+      android:textColor="@color/appColorDark"
+      android:textSize="18sp" />
+
+    <View
+      android:layout_width="match_parent"
+      android:layout_height="1dp"
+      android:layout_alignParentBottom="true"
+      android:background="@color/lightest_grey" />
+  </RelativeLayout>
+</merge>

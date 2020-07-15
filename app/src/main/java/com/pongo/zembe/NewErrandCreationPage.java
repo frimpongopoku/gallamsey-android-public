@@ -170,13 +170,19 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     //    errand.setPickUpLocation(selectedLocation);
 //    errand.setNotifiableRiders(fakeSelectedRiders);
     if (userSelectedImage == null) {
+
       errand.setErrandType(Konstants.TEXT_ERRAND);
       errandCallback.getErrandObject(errand);
+
     } else {
+
       errand.setErrandType(Konstants.IMAGE_ERRAND);
-      imageHelper.uploadImageToFirebase(storageReference,
-        selectedImageURI, Konstants.IMG_ERRAND_CONSTANT,
-        authenticatedUser.getUserDocumentID(), userSelectedImage,
+      imageHelper.uploadImageToFirebase(
+        storageReference,
+        selectedImageURI,
+        Konstants.IMG_ERRAND_CONSTANT,
+        authenticatedUser.getUserDocumentID(),
+        userSelectedImage,
         new ImageUploadHelper.CollectUploadedImageURI() {
           @Override
           public void getURI(Uri uri) {
@@ -393,7 +399,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
   private View.OnClickListener saveAsTemplate = new View.OnClickListener() {
     @Override
     public void onClick(View view) {
-      showLoader(Konstants.DO);
+      goToPaymentPage(null);
     }
   };
   private AdapterView.OnItemSelectedListener selectExpiryDate = new AdapterView.OnItemSelectedListener() {
