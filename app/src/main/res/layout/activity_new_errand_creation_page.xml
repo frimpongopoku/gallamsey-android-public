@@ -7,14 +7,17 @@
   android:background="@android:color/white"
   tools:context=".NewErrandCreationPage">
 
+
+  <include layout="@layout/loading_progress" />
+
   <include layout="@layout/errand_creation_title_bar" />
 
   <!-- RIDER CHOICE TAB -->
 
-  <include layout="@layout/errand_rider_choice_tab_layout"/>
+  <include layout="@layout/errand_rider_choice_tab_layout" />
 
   <!-- DESCRIPTION TAB -->
-  <include layout="@layout/errand_description_tab_layout"  />
+  <include layout="@layout/errand_description_tab_layout" />
 
   <!-- ESTIMATE COST DIV -->
   <include layout="@layout/errand_estimate_cost_tab_layout" />

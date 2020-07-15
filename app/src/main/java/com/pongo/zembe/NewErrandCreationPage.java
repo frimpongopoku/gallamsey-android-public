@@ -3,6 +3,7 @@ package com.pongo.zembe;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -48,7 +49,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
   RecyclerView recyclerView, ridersRecyclerView;
   ImageView taggingTabBtn, quit, helpBtn, userSelectedImageHolder, addDetailsBtn, descriptionTabBtn, estimateTabBtn, allowanceTabBtn, locationTabBtn, detailsTabBtn;
   LinearLayout selectRidersTab, taggingTab, detailsTab, descriptionTab, estimationTab, allowanceTab, locationTab, pictureTab;
-  Button postBtn, addPictureTabBtn, removePictureBtn, selectRidersBtn;
+  Button saveAsTemplateBtn, postBtn, addPictureTabBtn, removePictureBtn, selectRidersBtn;
   EditText detailsBox, allowanceBox, estimatedCostBox, descriptionBox;
   AutoCompleteTextView autoCompleteBox;
   DetailsListAdapter recyclerAdapter;
@@ -83,6 +84,58 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
 
   }
 
+
+  public void goToPaymentPage(GenericErrandClass errand) {
+    Intent page = new Intent(this, ErrandPaymentStepPage.class);
+    page.putExtra(Konstants.PASS_ERRAND_AROUND, errand);
+    startActivity(page);
+    finish();
+  }
+
+  public void showLoader(String toggler) {
+    CardView card = findViewById(R.id.spinner_holder);
+    View v = findViewById(R.id.background_transparent);
+    if (toggler.equals(Konstants.DO)) {
+      v.setVisibility(View.VISIBLE);
+      v.invalidate();
+      card.setVisibility(View.VISIBLE);
+      card.bringToFront();
+      selectRidersBtn.setVisibility(View.GONE);
+    } else {
+      v.setVisibility(View.GONE);
+      v.invalidate();
+      card.setVisibility(View.GONE);
+      selectRidersBtn.setVisibility(View.VISIBLE);
+    }
+
+
+  }
+
+  public void publishErrand() {
+    showLoader(Konstants.DO);
+    getErrandForShipment(new GalInterfaceGuru.CollectErrandTrainFormShipment() {
+      @Override
+      public void getErrandObject(final GenericErrandClass errand) {
+        String id = errandDB.document().getId(); // get id before its saved, so we can save in the document itself
+        errand.setErrandDocumentID(id);
+        errandDB.document(id).set(errand).addOnSuccessListener(new OnSuccessListener<Void>() {
+          @Override
+          public void onSuccess(Void aVoid) {
+            goToPaymentPage(errand);
+          }
+        }).addOnFailureListener(new OnFailureListener() {
+          @Override
+          public void onFailure(@NonNull Exception e) {
+            showLoader(Konstants.UNDO);
+            e.printStackTrace();
+            Toast.makeText(activity, e.getMessage(), Toast.LENGTH_SHORT).show();
+          }
+        });
+
+      }
+    });
+  }
+
   private void makeSimpleUserFrom(GroundUser user) {
     creator = new SimpleUser(
       user.getUserDocumentID(),
@@ -103,7 +156,17 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     errand.setAllowance(Float.valueOf(allowance));
     errand.setDetails(detailsList);
     errand.setCreator(creator);
-    errand.setExpiryDate(DateHelper.jumpDateByHours(date, DateHelper.getHoursValueFromDurationString(expiryDurationSelected)));
+    errand.setExpiryDate(
+      String.valueOf(
+        DateHelper.getMilliSecondsFromDate(
+          DateHelper.jumpDateByHours(
+            date, DateHelper.getHoursValueFromDurationString(
+              expiryDurationSelected
+            )
+          )
+        )
+      )
+    );
     //    errand.setPickUpLocation(selectedLocation);
 //    errand.setNotifiableRiders(fakeSelectedRiders);
     if (userSelectedImage == null) {
@@ -138,7 +201,8 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
         semi = errorMsg.split("<==>")[1];
       }
       if (result.getStatus().equals(Konstants.ERROR_PASSED)) {
-        Toast.makeText(activity, "Well done bro, you are the first person to fill this shit!", Toast.LENGTH_SHORT).show();
+        publishErrand();
+
       }
       if (result.getStatus().equals(Konstants.ERROR_SEMI_PASSED)) {
         dialogCreator.constructErrandErrorDialog("Confirmation", fatal, semi, "Go back & Edit", "Post Anyway", new MagicBoxCallables() {
@@ -149,6 +213,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
 
           @Override
           public void positiveBtnCallable() {
+            publishErrand();
 
           }
         }).show();
@@ -157,7 +222,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
         dialogCreator.constructErrandErrorDialog("Not Ready Yet", fatal, semi, "Quit", "Go back & Edit", new MagicBoxCallables() {
           @Override
           public void negativeBtnCallable() {
-
+            finish();
           }
 
           @Override
@@ -175,47 +240,47 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     String errorString = "";
     String errorForOptionalFields = "";
     if (descriptionBox.getText().toString().isEmpty()) {
-      count ++;
-      errorString = MyHelper.concactToWhat(errorString, count+". You did not provide a description for your errand");
+      count++;
+      errorString = MyHelper.concactToWhat(errorString, count + ". You did not provide a description for your errand");
       error.setStatus(Konstants.ERROR_FAILED);
     }
 
     if (expiryDurationSelected.equals(Konstants.NOT_SET)) {
-      count ++;
-      errorString = MyHelper.concactToWhat(errorString, count+". When should your errand expire?");
+      count++;
+      errorString = MyHelper.concactToWhat(errorString, count + ". When should your errand expire?");
       error.setStatus(Konstants.ERROR_FAILED);
     }
     if (estimatedCostBox.getText().toString().isEmpty()) {
-      count ++;
-      errorString = MyHelper.concactToWhat(errorString, count+". You need to provide a value for how much your item(s) will cost");
+      count++;
+      errorString = MyHelper.concactToWhat(errorString, count + ". You need to provide a value for how much your item(s) will cost");
       error.setStatus(Konstants.ERROR_FAILED);
     }
     if (allowanceBox.getText().toString().isEmpty()) {
-      count ++;
-      errorString = MyHelper.concactToWhat(errorString, count+". You need to provide a value for how much you are willing to give");
+      count++;
+      errorString = MyHelper.concactToWhat(errorString, count + ". You need to provide a value for how much you are willing to give");
       error.setStatus(Konstants.ERROR_FAILED);
     }
     if (selectedLocation.equals(Konstants.CHOOSE)) {
-      count ++;
-      errorForOptionalFields = MyHelper.concactToWhat(errorForOptionalFields, count+". No destination to receive items was provided. You can change now, or just chat with your rider later");
+      count++;
+      errorForOptionalFields = MyHelper.concactToWhat(errorForOptionalFields, count + ". No destination to receive items was provided. You can change now, or just chat with your rider later");
       if (!error.getStatus().equals(Konstants.ERROR_FAILED))
         error.setStatus(Konstants.ERROR_SEMI_PASSED);
     }
     if (detailsList.size() == 0) {
-      count ++;
-      errorForOptionalFields = MyHelper.concactToWhat(errorForOptionalFields, count+". No particular details were provided for this errand");
+      count++;
+      errorForOptionalFields = MyHelper.concactToWhat(errorForOptionalFields, count + ". No particular details were provided for this errand");
       if (!error.getStatus().equals(Konstants.ERROR_FAILED))
         error.setStatus(Konstants.ERROR_SEMI_PASSED);
     }
     if (tagList.size() == 0) {
-      count ++;
-      errorForOptionalFields = MyHelper.concactToWhat(errorForOptionalFields, count+". It is always better to add tags to you errands");
+      count++;
+      errorForOptionalFields = MyHelper.concactToWhat(errorForOptionalFields, count + ". It is always better to add tags to you errands");
       if (!error.getStatus().equals(Konstants.ERROR_FAILED))
         error.setStatus(Konstants.ERROR_SEMI_PASSED);
     }
     if (fakeSelectedRiders.size() == 0) {
-      count ++;
-      errorForOptionalFields = MyHelper.concactToWhat(errorForOptionalFields, count+". No riders have been selected");
+      count++;
+      errorForOptionalFields = MyHelper.concactToWhat(errorForOptionalFields, count + ". No riders have been selected");
       if (!error.getStatus().equals(Konstants.ERROR_FAILED))
         error.setStatus(Konstants.ERROR_SEMI_PASSED);
     }
@@ -231,6 +296,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
 
   private void initializeActivity() {
     //  -----------------------------------------------------------
+    saveAsTemplateBtn = findViewById(R.id.template_btn);
     storageReference = FirebaseStorage.getInstance().getReference(Konstants.ERRAND_PICTURES_COLLECTION);
     imageHelper = new ImageUploadHelper(this);
     durationText = findViewById(R.id.duration_text_label);
@@ -285,6 +351,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     quit.setOnClickListener(quitCreating);
     postBtn.setOnClickListener(postMyErrand);
     expiryDateDropDown.setOnItemSelectedListener(selectExpiryDate);
+    saveAsTemplateBtn.setOnClickListener(saveAsTemplate);
 
 //  ----------------------------------------------------------
     locationList.add(Konstants.CHOOSE);
@@ -323,6 +390,12 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
   }
 
 
+  private View.OnClickListener saveAsTemplate = new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+      showLoader(Konstants.DO);
+    }
+  };
   private AdapterView.OnItemSelectedListener selectExpiryDate = new AdapterView.OnItemSelectedListener() {
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {

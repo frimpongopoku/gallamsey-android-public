@@ -46,7 +46,7 @@
       android:windowSoftInputMode="adjustPan" />
     <activity android:name=".AddMoreLocations" />
     <activity
-      android:name=".errandPaymentStepPage"
+      android:name=".ErrandPaymentStepPage"
       android:windowSoftInputMode="adjustPan">
       <!--<intent-filter>-->
         <!--<action android:name="android.intent.action.MAIN" />-->

@@ -14,8 +14,10 @@
 
 package com.pongo.zembe;
 
-public class SimpleUser {
+import android.os.Parcel;
+import android.os.Parcelable;
 
+public class SimpleUser implements Parcelable {
   private String userPlatformID;
   private String userName;
   private String phoneNumber;
@@ -24,6 +26,7 @@ public class SimpleUser {
   private String userStatus;
   private int rating;
 
+  SimpleUser(){}
   public SimpleUser(String userPlatformID, String userName, String phoneNumber, String userPlatformType, String profilePicture, String userStatus) {
     this.userPlatformID = userPlatformID;
     this.userName = userName;
@@ -88,4 +91,42 @@ public class SimpleUser {
   public void setUserStatus(String userStatus) {
     this.userStatus = userStatus;
   }
+
+  @Override
+  public int describeContents() {
+    return 0;
+  }
+
+  @Override
+  public void writeToParcel(Parcel dest, int flags) {
+    dest.writeString(this.userPlatformID);
+    dest.writeString(this.userName);
+    dest.writeString(this.phoneNumber);
+    dest.writeString(this.userPlatformType);
+    dest.writeString(this.profilePicture);
+    dest.writeString(this.userStatus);
+    dest.writeInt(this.rating);
+  }
+
+  protected SimpleUser(Parcel in) {
+    this.userPlatformID = in.readString();
+    this.userName = in.readString();
+    this.phoneNumber = in.readString();
+    this.userPlatformType = in.readString();
+    this.profilePicture = in.readString();
+    this.userStatus = in.readString();
+    this.rating = in.readInt();
+  }
+
+  public static final Creator<SimpleUser> CREATOR = new Creator<SimpleUser>() {
+    @Override
+    public SimpleUser createFromParcel(Parcel source) {
+      return new SimpleUser(source);
+    }
+
+    @Override
+    public SimpleUser[] newArray(int size) {
+      return new SimpleUser[size];
+    }
+  };
 }

@@ -1,11 +1,15 @@
 package com.pongo.zembe;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Errand {
+public class Errand implements Parcelable {
+
   private String title, errandType, description, expiryDate,
     createdAt = DateHelper.getDateInMyTimezone();
   private ArrayList<String> details = new ArrayList<>(), tags = new ArrayList<>();
@@ -17,6 +21,7 @@ public class Errand {
   private ArrayList<SimpleUser> notifiableRiders = new ArrayList<>();
   private GallamseyLocationComponent pickUpLocation;
   private ArrayList<String> images = new ArrayList<>();
+  private String errandDocumentID;
 
 
   public Errand() {
@@ -29,6 +34,7 @@ public class Errand {
     this.description = description;
   }
 
+
   public String getTitle() {
     return title;
   }
@@ -39,6 +45,15 @@ public class Errand {
       title = description.substring(0, 30);
     }
     return title;
+  }
+
+
+  public String getErrandDocumentID() {
+    return errandDocumentID;
+  }
+
+  public void setErrandDocumentID(String errandDocumentID) {
+    this.errandDocumentID = errandDocumentID;
   }
 
   public ArrayList<String> getImages() {
@@ -173,4 +188,67 @@ public class Errand {
   public void setCost(float cost) {
     this.cost = cost;
   }
+
+  @Override
+  public int describeContents() {
+    return 0;
+  }
+
+  @Override
+  public void writeToParcel(Parcel dest, int flags) {
+    dest.writeString(this.title);
+    dest.writeString(this.errandType);
+    dest.writeString(this.description);
+    dest.writeString(this.expiryDate);
+    dest.writeString(this.createdAt);
+    dest.writeStringList(this.details);
+    dest.writeStringList(this.tags);
+    dest.writeValue(this.errandComplete);
+    dest.writeValue(this.creatorHasPaidAmount);
+    dest.writeString(this.creatorPaymentTransactionCode);
+    dest.writeFloat(this.allowance);
+    dest.writeFloat(this.cost);
+    dest.writeString(this.status);
+    dest.writeParcelable(this.creator, flags);
+    dest.writeParcelable(this.runner, flags);
+    dest.writeList(this.notifiableRiders);
+    dest.writeParcelable(this.pickUpLocation, flags);
+    dest.writeStringList(this.images);
+    dest.writeString(this.errandDocumentID);
+  }
+
+  protected Errand(Parcel in) {
+    this.title = in.readString();
+    this.errandType = in.readString();
+    this.description = in.readString();
+    this.expiryDate = in.readString();
+    this.createdAt = in.readString();
+    this.details = in.createStringArrayList();
+    this.tags = in.createStringArrayList();
+    this.errandComplete = (Boolean) in.readValue(Boolean.class.getClassLoader());
+    this.creatorHasPaidAmount = (Boolean) in.readValue(Boolean.class.getClassLoader());
+    this.creatorPaymentTransactionCode = in.readString();
+    this.allowance = in.readFloat();
+    this.cost = in.readFloat();
+    this.status = in.readString();
+    this.creator = in.readParcelable(SimpleUser.class.getClassLoader());
+    this.runner = in.readParcelable(SimpleUser.class.getClassLoader());
+    this.notifiableRiders = new ArrayList<SimpleUser>();
+    in.readList(this.notifiableRiders, SimpleUser.class.getClassLoader());
+    this.pickUpLocation = in.readParcelable(GallamseyLocationComponent.class.getClassLoader());
+    this.images = in.createStringArrayList();
+    this.errandDocumentID = in.readString();
+  }
+
+  public static final Creator<Errand> CREATOR = new Creator<Errand>() {
+    @Override
+    public Errand createFromParcel(Parcel source) {
+      return new Errand(source);
+    }
+
+    @Override
+    public Errand[] newArray(int size) {
+      return new Errand[size];
+    }
+  };
 }

@@ -21,7 +21,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class errandPaymentStepPage extends AppCompatActivity {
+public class ErrandPaymentStepPage extends AppCompatActivity {
   Spinner countryDropdown, networkDropdown, contactListDropdown;
   ImageView countryFlag, networkFlag;
   TextView countryNameView, networkNameView;

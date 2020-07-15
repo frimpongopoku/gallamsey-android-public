@@ -7,9 +7,11 @@ import java.util.HashMap;
 
 public class Konstants {
 
-
+  public static final String DO = "DO";
+  public static final String UNDO = "UNDO";
   public static final String INIT_STRING = "";
   public static final String AUTH_USER_KEY = "authUser";
+  public static final String PASS_ERRAND_AROUND = "ERRAND";
   public static final String NOT_SET = "NOT SET";
   public static final int SENDER_VIEW_TYPE = 172;
   public static final int RECEIPIENT_VIEW_TYPE = 169;
