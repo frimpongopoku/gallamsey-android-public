@@ -81,8 +81,8 @@ public class ErrandViewActivity extends AppCompatActivity {
   }
 
   private void removeDetailsBox(){
-    detailsTitleBox.setVisibility(View.GONE);
-    detailsText.setVisibility(View.GONE);
+    detailsTitleBox.setVisibility(View.INVISIBLE);
+    detailsText.setVisibility(View.INVISIBLE);
   }
 
   private View.OnClickListener runErrand = new View.OnClickListener() {

@@ -44,10 +44,10 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
     View view;
     if (viewType == TEXT_CODE) {
       view = inflater.inflate(R.layout.text_errand_card, parent, false);
-      return new TextViewHolder(view,listener);
+      return new TextViewHolder(view, listener);
     } else if (viewType == IMAGE_CODE) {
       view = inflater.inflate(R.layout.errand_image_card, parent, false);
-      return new ImageViewHolder(view,listener);
+      return new ImageViewHolder(view, listener);
     }
 
     return null;
@@ -123,7 +123,8 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
       itemView.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-         listener.callback(getAdapterPosition());
+          GenericErrandClass errand = news.get(getAdapterPosition());
+          listener.newsItemCallback(getAdapterPosition(), errand);
         }
       });
 
@@ -151,21 +152,16 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
       itemView.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-         listener.callback(getAdapterPosition());
+          GenericErrandClass errand = news.get(getAdapterPosition());
+          listener.newsItemCallback(getAdapterPosition(), errand);
         }
       });
     }
   }
 
-  public interface OnNewsItemClick{
-    void callback(int pos);
+  public interface OnNewsItemClick {
+    void newsItemCallback(int pos, GenericErrandClass selectedErrand);
   }
-
-
-
-
-
-
 
 
 }

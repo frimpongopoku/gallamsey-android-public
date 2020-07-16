@@ -6,6 +6,8 @@ import android.view.View;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.util.ArrayList;
+
 public class GalInterfaceGuru {
   interface SnapshotTakerInterface {
     void callback(DocumentSnapshot document);
@@ -24,5 +26,10 @@ public class GalInterfaceGuru {
 
   interface  CollectErrandTrainFormShipment{
     void getErrandObject(GenericErrandClass errand);
+  }
+  interface TrackHomeFragmentState{
+    void saveFragmentState(ArrayList<GenericErrandClass> news,View view);
+  }interface TrackWalletFragmentState{
+    void saveFragmentState(View view);
   }
 }

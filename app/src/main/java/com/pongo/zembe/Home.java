@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,7 +32,8 @@ import java.util.Date;
 import java.util.HashMap;
 
 
-public class Home extends AppCompatActivity {
+public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHomeFragmentState, HomeNewsMultiAdapter.OnNewsItemClick {
+
   ArrayList<String> desc = new ArrayList<>();
   ArrayList<String> profits = new ArrayList<>();
   ArrayList<String> costs = new ArrayList<>();
@@ -44,6 +46,10 @@ public class Home extends AppCompatActivity {
   FirebaseFirestore firestore = FirebaseFirestore.getInstance();
   CollectionReference userDB = firestore.collection(Konstants.USER_COLLECTION);
   DocumentReference userDocumentReference;
+  ArrayList<GenericErrandClass> homeFragContent;
+  View homeFragState;
+  Context thisActivity = this;
+  Fragment currentFrag;
 
 
   @Override
@@ -73,13 +79,12 @@ public class Home extends AppCompatActivity {
     });
 
 //   ----Set default home fragment: HomePage
-    Fragment default_fragment = new HomeFragment();
+    Fragment default_fragment = new HomeFragment(homeFragContent,homeFragState,this);
     getSupportFragmentManager().beginTransaction().replace(R.id.app_frame_layout, default_fragment).commit();
 
 //    Set Fragment Listener to switch pages
     BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
     bottomNav.setOnNavigationItemSelectedListener(navListener);
-
     favBtn = findViewById(R.id.favorites);
     favBtn.setOnClickListener(viewFavorites);
     optionsBtn = findViewById(R.id.options);
@@ -133,11 +138,8 @@ public class Home extends AppCompatActivity {
       Fragment destinationPage = null;
       switch (menuItem.getItemId()) {
         case R.id.nav_home:
-          destinationPage = new HomeFragment();
+          destinationPage = new HomeFragment(homeFragContent, homeFragState,(GalInterfaceGuru.TrackHomeFragmentState) thisActivity);
           break;
-//        case R.id.nav_settings:
-//          destinationPage = new SettingsFragment(authenticatedUser);
-//          break;
         case R.id.nav_notification:
           destinationPage = new NotificationFragment();
           break;
@@ -150,6 +152,7 @@ public class Home extends AppCompatActivity {
       }
 
       getSupportFragmentManager().beginTransaction().replace(R.id.app_frame_layout, destinationPage).commit();
+      currentFrag = destinationPage;
       return true;
     }
   };
@@ -184,8 +187,21 @@ public class Home extends AppCompatActivity {
 
   public void goToProfileViewPage(View v) {
     Intent profile = new Intent(this, ViewProfilePage.class);
-    profile.putExtra("authUser", authenticatedUser);
+    profile.putExtra(Konstants.AUTH_USER_KEY, authenticatedUser);
     startActivity(profile);
     this.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+  }
+
+  @Override
+  public void newsItemCallback(int pos, GenericErrandClass selectedErrand) {
+    Intent page = new Intent(this,ErrandViewActivity.class);
+    page.putExtra(Konstants.PASS_ERRAND_AROUND,selectedErrand);
+    startActivity(page);
+  }
+
+  @Override
+  public void saveFragmentState(ArrayList<GenericErrandClass> news, View view) {
+    homeFragState = view;
+    homeFragContent = news;
   }
 }

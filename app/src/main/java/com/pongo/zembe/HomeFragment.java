@@ -30,21 +30,35 @@ import com.google.firebase.storage.FirebaseStorage;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class HomeFragment extends Fragment implements HomeNewsMultiAdapter.OnNewsItemClick {
+public class HomeFragment extends Fragment {
 
 
   private FirebaseFirestore store = FirebaseFirestore.getInstance();
   private CollectionReference errandsDB = store.collection(Konstants.ERRAND_COLLECTION);
   private ArrayList<GenericErrandClass> news = new ArrayList<>();
+  ArrayList<GenericErrandClass> oldNews;
+  View currentState;
+  GalInterfaceGuru.TrackHomeFragmentState fragmentStateListener;
+  HomeNewsMultiAdapter adapter;
+  RecyclerView recyclerView;
+  ShimmerFrameLayout skeleton;
+  Context context = getContext();
 
-  @Override
-  public void setAllowEnterTransitionOverlap(boolean allow) {
+
+  public HomeFragment(ArrayList<GenericErrandClass> news,View oldViewState, GalInterfaceGuru.TrackHomeFragmentState fragmentStateListener) {
+    this.news = news;
+    this.currentState = oldViewState;
+    this.fragmentStateListener = fragmentStateListener;
 
   }
 
+  public void setCurrentState(View currentState) {
+    this.currentState = currentState;
+  }
 
   public void setNews(ArrayList<GenericErrandClass> news) {
     this.news = news;
@@ -53,14 +67,21 @@ public class HomeFragment extends Fragment implements HomeNewsMultiAdapter.OnNew
   @Nullable
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    if(currentState !=null){
+      return currentState;
+    }
     View view = inflater.inflate(R.layout.home_nav_fragment, container, false);
-    final ShimmerFrameLayout skeleton = view.findViewById(R.id.news_skeleton_view);
-    skeleton.startShimmer();
-    final HomeNewsMultiAdapter adapter = new HomeNewsMultiAdapter(getContext(), new ArrayList<GenericErrandClass>(), this);
-    final RecyclerView recyclerView = view.findViewById(R.id.home_news_recycler);
-    recyclerView.setAdapter(adapter);
+    recyclerView = view.findViewById(R.id.home_news_recycler);
+    skeleton = view.findViewById(R.id.news_skeleton_view);
+    adapter = new HomeNewsMultiAdapter(getContext(), news, (HomeNewsMultiAdapter.OnNewsItemClick) getContext());
     RecyclerView.LayoutManager manager = new LinearLayoutManager(getContext());
     recyclerView.setLayoutManager(manager);
+    recyclerView.setAdapter(adapter);
+    if (this.news == null || this.news.size() == 0) {
+      skeleton.setVisibility(View.VISIBLE);
+      skeleton.startShimmer();
+    }
+//    For the first time : getNewsHere();
     getNewsFromFirebase(new NewsCollectionCallback() {
       @Override
       public void getErrands(ArrayList<GenericErrandClass> errands) {
@@ -69,8 +90,10 @@ public class HomeFragment extends Fragment implements HomeNewsMultiAdapter.OnNew
         adapter.notifyDataSetChanged();
         skeleton.setVisibility(View.GONE);
         recyclerView.setVisibility(View.VISIBLE);
+        setNews(errands);
       }
     });
+    setCurrentState(view);
     return view;
   }
 
@@ -95,12 +118,25 @@ public class HomeFragment extends Fragment implements HomeNewsMultiAdapter.OnNew
   }
 
   @Override
-  public void callback(int pos) {
-    GenericErrandClass errand = this.news.get(pos);
-    Intent page = new Intent(getContext(),ErrandViewActivity.class);
-    page.putExtra(Konstants.PASS_ERRAND_AROUND,errand);
-    startActivity(page);
+  public void onResume() {
+    super.onResume();
+
+
   }
+
+  @Override
+  public void onDestroy() {
+    this.fragmentStateListener.saveFragmentState(news,currentState);
+    super.onDestroy();
+  }
+
+//  @Override
+//  public void newsItemCallback(int pos) {
+//    GenericErrandClass errand = this.news.get(pos);
+//    Intent page = new Intent(context, ErrandViewActivity.class);
+//    page.putExtra(Konstants.PASS_ERRAND_AROUND, errand);
+//    startActivity(page);
+//  }
 
   private interface NewsCollectionCallback {
     void getErrands(ArrayList<GenericErrandClass> errands);
