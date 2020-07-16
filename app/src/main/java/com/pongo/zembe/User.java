@@ -20,17 +20,18 @@ import java.util.HashMap;
  */
 public class User implements Parcelable {
 
-  private String region, country, profilePictureURL, gender, preferredName, uniqueUserName, email, dob, phoneNumber, whatsappNumber, uniqueID, geoLocation[], userDocumentID;
+  private String region, country, profilePictureURL, gender, preferredName, uniqueUserName, email, dob, phoneNumber, whatsappNumber, uniqueID, userDocumentID;
   private Date ts = new Timestamp(DateHelper.getMilliSecondsFromDate(DateHelper.getDateInMyTimezone()));
   private String createdAt = DateHelper.getDateInMyTimezone();
   private ArrayList<PaymentContact> mobileNumbersForPayment = new ArrayList<>() ;
   private ArrayList<GallamseyLocationComponent> deliveryLocations = new ArrayList<>();
+  private GallamseyLocationComponent geoLocation;
 
   public User() {
   } //no-arg constructor because of Firebase
 
 
-  public User(String preferredName, String DOB, String email, String phoneNumber, String whatsappNumber, String uniqueID, String geoLocation[], String gender) {
+  public User(String preferredName, String DOB, String email, String phoneNumber, String whatsappNumber, String uniqueID, GallamseyLocationComponent geoLocation, String gender) {
     this.preferredName = preferredName;
     this.phoneNumber = phoneNumber;
     this.whatsappNumber = whatsappNumber;
@@ -144,11 +145,11 @@ public class User implements Parcelable {
     return uniqueID;
   }
 
-  public String[] getGeoLocation() {
+  public GallamseyLocationComponent getGeoLocation() {
     return geoLocation;
   }
 
-  public void setGeoLocation(String geoLocation[]) {
+  public void setGeoLocation(GallamseyLocationComponent geoLocation) {
     this.geoLocation = geoLocation;
   }
 
@@ -169,7 +170,6 @@ public class User implements Parcelable {
   }
 
 
-
   @Override
   public String toString() {
     return "User{" +
@@ -184,12 +184,14 @@ public class User implements Parcelable {
       ", phoneNumber='" + phoneNumber + '\'' +
       ", whatsappNumber='" + whatsappNumber + '\'' +
       ", uniqueID='" + uniqueID + '\'' +
-      ", geoLocation=" + Arrays.toString(geoLocation) +
       ", userDocumentID='" + userDocumentID + '\'' +
       ", ts=" + ts +
+      ", createdAt='" + createdAt + '\'' +
+      ", mobileNumbersForPayment=" + mobileNumbersForPayment +
+      ", deliveryLocations=" + deliveryLocations +
+      ", geoLocation=" + geoLocation +
       '}';
   }
-
 
   @Override
   public int describeContents() {
@@ -209,12 +211,12 @@ public class User implements Parcelable {
     dest.writeString(this.phoneNumber);
     dest.writeString(this.whatsappNumber);
     dest.writeString(this.uniqueID);
-    dest.writeStringArray(this.geoLocation);
     dest.writeString(this.userDocumentID);
     dest.writeLong(this.ts != null ? this.ts.getTime() : -1);
     dest.writeString(this.createdAt);
-    dest.writeList(this.mobileNumbersForPayment);
-    dest.writeList(this.deliveryLocations);
+    dest.writeTypedList(this.mobileNumbersForPayment);
+    dest.writeTypedList(this.deliveryLocations);
+    dest.writeParcelable(this.geoLocation, flags);
   }
 
   protected User(Parcel in) {
@@ -229,15 +231,13 @@ public class User implements Parcelable {
     this.phoneNumber = in.readString();
     this.whatsappNumber = in.readString();
     this.uniqueID = in.readString();
-    this.geoLocation = in.createStringArray();
     this.userDocumentID = in.readString();
     long tmpTs = in.readLong();
     this.ts = tmpTs == -1 ? null : new Date(tmpTs);
     this.createdAt = in.readString();
-    this.mobileNumbersForPayment = new ArrayList<PaymentContact>();
-    in.readList(this.mobileNumbersForPayment, PaymentContact.class.getClassLoader());
-    this.deliveryLocations = new ArrayList<GallamseyLocationComponent>();
-    in.readList(this.deliveryLocations, GallamseyLocationComponent.class.getClassLoader());
+    this.mobileNumbersForPayment = in.createTypedArrayList(PaymentContact.CREATOR);
+    this.deliveryLocations = in.createTypedArrayList(GallamseyLocationComponent.CREATOR);
+    this.geoLocation = in.readParcelable(GallamseyLocationComponent.class.getClassLoader());
   }
 
   public static final Creator<User> CREATOR = new Creator<User>() {

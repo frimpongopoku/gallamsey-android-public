@@ -3,6 +3,7 @@ package com.pongo.zembe;
 import android.annotation.SuppressLint;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.webkit.GeolocationPermissions;
 
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.ServerTimestamp;
@@ -21,7 +22,7 @@ public class GroundUser extends User implements Parcelable {
   public GroundUser() {
   } //no-arg constructor because of Firebase
 
-  public GroundUser(String preferredName, String DOB, String email, String phoneNumber, String whatsappNumber, String uniqueID, String userType, String geoLocation[], String gender) {
+  public GroundUser(String preferredName, String DOB, String email, String phoneNumber, String whatsappNumber, String uniqueID, String userType, GallamseyLocationComponent geoLocation, String gender) {
     super(preferredName, DOB, email, phoneNumber, whatsappNumber, uniqueID, geoLocation, gender);
     this.userType = userType;
   }

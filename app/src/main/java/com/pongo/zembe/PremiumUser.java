@@ -20,7 +20,7 @@ public class PremiumUser extends User implements Parcelable {
   } //no-arg constructor because of Firebase
 
 
-  public PremiumUser(String preferredName, String DOB, String email, String phoneNumber, String whatsappNumber, String uniqueID, String userType, String geoLocation[], String gender) {
+  public PremiumUser(String preferredName, String DOB, String email, String phoneNumber, String whatsappNumber, String uniqueID, String userType, GallamseyLocationComponent geoLocation, String gender) {
     super(preferredName, DOB, email, phoneNumber, whatsappNumber, uniqueID, geoLocation, gender);
     this.userType = userType;
   }

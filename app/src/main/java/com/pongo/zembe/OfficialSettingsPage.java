@@ -21,8 +21,8 @@ public class OfficialSettingsPage extends AppCompatActivity {
     setContentView(R.layout.activity_official_settings_page);
     addPaymentBtn = findViewById(R.id.add_payment_mobile_number);
     addPaymentBtn.setOnClickListener(goToPayment);
-//    addLocationBtn = findViewById(R.id.add_pickup_location);
-//    addLocationBtn.setOnClickListener(goToLocations);
+    addLocationBtn = findViewById(R.id.add_pickup_location);
+    addLocationBtn.setOnClickListener(goToLocations);
   }
 
   private View.OnClickListener goToPayment = new View.OnClickListener() {

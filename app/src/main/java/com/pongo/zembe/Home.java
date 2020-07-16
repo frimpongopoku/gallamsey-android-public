@@ -109,7 +109,7 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHom
     @Override
     public void onClick(View view) {
       Intent settings = new Intent(getApplicationContext(), OfficialSettingsPage.class);
-      settings.putExtra("authUser", authenticatedUser);
+      settings.putExtra(Konstants.AUTH_USER_KEY, authenticatedUser);
       startActivity(settings);
     }
   };
