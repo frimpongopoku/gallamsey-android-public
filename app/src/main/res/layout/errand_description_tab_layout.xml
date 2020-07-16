@@ -85,7 +85,7 @@
               android:layout_above="@id/bottom_fake_nav"
               android:layout_below="@id/top_controls"
               android:orientation="vertical"
-              android:visibility="gone">
+              android:visibility="visible">
 
               <!--<androidx.cardview.widget.CardView-->
                 <!--android:id="@+id/image_holder_card"-->
@@ -99,8 +99,9 @@
               <!--</androidx.cardview.widget.CardView>&lt;!&ndash;&ndash;&gt;-->
 
                 <ImageView
-
-                  android:layout_marginTop="20dp"
+                  android:adjustViewBounds="true"
+                  android:layout_marginEnd="10dp"
+                  android:layout_marginTop="10dp"
                   android:id="@+id/user_selected_image"
                   android:layout_width="match_parent"
                   android:layout_height="300dp"

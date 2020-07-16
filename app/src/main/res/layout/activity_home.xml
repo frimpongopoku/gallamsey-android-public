@@ -90,6 +90,7 @@
       app:itemIconTint="@drawable/bottom_nav_selector"
       app:itemTextColor="@drawable/bottom_nav_selector"
       app:labelVisibilityMode="labeled"
+      style="@style/BottomNavigationView"
       app:menu="@menu/app_navigation">
 
     </com.google.android.material.bottomnavigation.BottomNavigationView>

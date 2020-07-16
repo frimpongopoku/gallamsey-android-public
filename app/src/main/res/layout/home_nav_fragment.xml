@@ -5,7 +5,9 @@
   android:paddingTop="0dp"
   android:layout_height="match_parent">
 
+  <include layout="@layout/shimmer_news_layout"/>
   <androidx.recyclerview.widget.RecyclerView
+    android:visibility="gone"
     android:background="@android:color/white"
     android:id="@+id/home_news_recycler"
     android:layout_width="match_parent"

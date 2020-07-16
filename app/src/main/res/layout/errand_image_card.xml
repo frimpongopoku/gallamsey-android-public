@@ -7,6 +7,7 @@
   android:clickable="true"
   android:elevation="5dp"
   android:orientation="vertical"
+  android:id="@+id/container"
   android:translationZ="10dp"
 
   >
@@ -85,9 +86,10 @@
       android:textSize="18sp" />
 
     <ImageView
+      android:adjustViewBounds="true"
       android:id="@+id/img_errand_card_image"
       android:layout_width="match_parent"
-      android:layout_height="300dp"
+      android:layout_height="wrap_content"
       android:layout_marginTop="5dp"
       android:layout_marginBottom="6dp"
       android:src="@drawable/galam_shoe_dummy" />
