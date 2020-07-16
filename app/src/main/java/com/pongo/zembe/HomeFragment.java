@@ -1,6 +1,7 @@
 package com.pongo.zembe;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -32,12 +33,13 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements HomeNewsMultiAdapter.OnNewsItemClick {
 
   HashMap<String, ArrayList<String>> items;
   ArrayList<String> test = new ArrayList<>();
   FirebaseFirestore store = FirebaseFirestore.getInstance();
   CollectionReference errandsDB = store.collection(Konstants.ERRAND_COLLECTION);
+  public ArrayList<GenericErrandClass> news = new ArrayList<>();
 
   @Override
   public void setAllowEnterTransitionOverlap(boolean allow) {
@@ -49,13 +51,17 @@ public class HomeFragment extends Fragment {
 
   }
 
+  public void setNews(ArrayList<GenericErrandClass> news) {
+    this.news = news;
+  }
+
   @Nullable
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.home_nav_fragment, container, false);
     final ShimmerFrameLayout skeleton = view.findViewById(R.id.news_skeleton_view);
     skeleton.startShimmer();
-    HomeNewsMultiAdapter adapter = new HomeNewsMultiAdapter(getContext(), new ArrayList<GenericErrandClass>());
+    final HomeNewsMultiAdapter adapter = new HomeNewsMultiAdapter(getContext(), new ArrayList<GenericErrandClass>(), this);
     final RecyclerView recyclerView = view.findViewById(R.id.home_news_recycler);
     recyclerView.setAdapter(adapter);
     RecyclerView.LayoutManager manager = new LinearLayoutManager(getContext());
@@ -63,20 +69,13 @@ public class HomeFragment extends Fragment {
     getNewsFromFirebase(new NewsCollectionCallback() {
       @Override
       public void getErrands(ArrayList<GenericErrandClass> errands) {
-        HomeNewsMultiAdapter newsAdapter = new HomeNewsMultiAdapter(getContext(), errands);
-        recyclerView.setAdapter(newsAdapter);
+        setNews(errands);
+        adapter.setNews(errands);
+        adapter.notifyDataSetChanged();
         skeleton.setVisibility(View.GONE);
         recyclerView.setVisibility(View.VISIBLE);
       }
     });
-//    new Handler().postDelayed(new Runnable() {
-//      @Override
-//      public void run() {
-//        skeleton.stopShimmer();
-//        skeleton.setVisibility(View.GONE);
-//        recyclerView.setVisibility(View.VISIBLE);
-//      }
-//    }, 2000);
     return view;
   }
 
@@ -98,6 +97,14 @@ public class HomeFragment extends Fragment {
         Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
       }
     });
+  }
+
+  @Override
+  public void callback(int pos) {
+    GenericErrandClass errand = this.news.get(pos);
+    Intent page = new Intent(getContext(),ErrandViewActivity.class);
+    page.putExtra(Konstants.PASS_ERRAND_AROUND,errand);
+    startActivity(page);
   }
 
   private interface NewsCollectionCallback {

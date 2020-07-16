@@ -28,9 +28,10 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
 
   ArrayList<GenericErrandClass> news = new ArrayList<>();
   Context context;
+  OnNewsItemClick listener;
 
-  public HomeNewsMultiAdapter(Context context, ArrayList<GenericErrandClass> news) {
-
+  public HomeNewsMultiAdapter(Context context, ArrayList<GenericErrandClass> news, OnNewsItemClick listener) {
+    this.listener = listener;
     this.context = context;
     this.news = news;
 
@@ -43,13 +44,17 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
     View view;
     if (viewType == TEXT_CODE) {
       view = inflater.inflate(R.layout.text_errand_card, parent, false);
-      return new TextViewHolder(view);
+      return new TextViewHolder(view,listener);
     } else if (viewType == IMAGE_CODE) {
       view = inflater.inflate(R.layout.errand_image_card, parent, false);
-      return new ImageViewHolder(view);
+      return new ImageViewHolder(view,listener);
     }
 
     return null;
+  }
+
+  public void setNews(ArrayList<GenericErrandClass> news) {
+    this.news = news;
   }
 
   @Override
@@ -105,19 +110,20 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
   class TextViewHolder extends RecyclerView.ViewHolder {
     TextView description, cost, profit, date, has_specifics;
     LinearLayout container;
+    OnNewsItemClick listener;
 
-    public TextViewHolder(@NonNull View itemView) {
+    public TextViewHolder(@NonNull View itemView, final OnNewsItemClick listener) {
       super(itemView);
       this.description = itemView.findViewById(R.id.text_errand_card_desc);
       this.cost = itemView.findViewById(R.id.text_errand_card_cost);
       this.profit = itemView.findViewById(R.id.text_errand_card_allowance);
       this.date = itemView.findViewById(R.id.text_errand_card_date);
       this.container = itemView.findViewById(R.id.container);
+      this.listener = listener;
       itemView.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-          Intent errandViewPage = new Intent(view.getContext(), ErrandViewActivity.class);
-          view.getContext().startActivity(errandViewPage);
+         listener.callback(getAdapterPosition());
         }
       });
 
@@ -131,8 +137,9 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
     TextView title, cost, profit, date, has_specifics;
     ImageView image;
     LinearLayout container;
+    OnNewsItemClick listener;
 
-    public ImageViewHolder(@NonNull View itemView) {
+    public ImageViewHolder(@NonNull View itemView, final OnNewsItemClick listener) {
       super(itemView);
       this.title = itemView.findViewById(R.id.img_errand_card_title);
       this.cost = itemView.findViewById(R.id.img_errand_card_cost);
@@ -140,13 +147,25 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
       this.date = itemView.findViewById(R.id.img_errand_card_date);
       this.image = itemView.findViewById(R.id.img_errand_card_image);
       this.container = itemView.findViewById(R.id.container);
+      this.listener = listener;
       itemView.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-          Intent imageErrandPage = new Intent(view.getContext(), ImageErrandView.class);
-          view.getContext().startActivity(imageErrandPage);
+         listener.callback(getAdapterPosition());
         }
       });
     }
   }
+
+  public interface OnNewsItemClick{
+    void callback(int pos);
+  }
+
+
+
+
+
+
+
+
 }
