@@ -35,21 +35,16 @@ import java.util.HashMap;
 
 public class HomeFragment extends Fragment implements HomeNewsMultiAdapter.OnNewsItemClick {
 
-  HashMap<String, ArrayList<String>> items;
-  ArrayList<String> test = new ArrayList<>();
-  FirebaseFirestore store = FirebaseFirestore.getInstance();
-  CollectionReference errandsDB = store.collection(Konstants.ERRAND_COLLECTION);
-  public ArrayList<GenericErrandClass> news = new ArrayList<>();
+
+  private FirebaseFirestore store = FirebaseFirestore.getInstance();
+  private CollectionReference errandsDB = store.collection(Konstants.ERRAND_COLLECTION);
+  private ArrayList<GenericErrandClass> news = new ArrayList<>();
 
   @Override
   public void setAllowEnterTransitionOverlap(boolean allow) {
 
   }
 
-  public HomeFragment(HashMap<String, ArrayList<String>> items) {
-    this.items = items;
-
-  }
 
   public void setNews(ArrayList<GenericErrandClass> news) {
     this.news = news;

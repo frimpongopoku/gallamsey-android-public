@@ -49,9 +49,17 @@ public class MyHelper {
   }
 
   public static String mergeTextsFromArray(ArrayList<String> arr) {
+    if(arr == null)  return "";
     String finalR = "";
     for (int i = 0; i < arr.size(); i++) {
       finalR = finalR.equals("") ? arr.get(i) : finalR + ", " + arr.get(i);
+    }
+    return finalR;
+  }public static String mergeTextsFromArrayWithLines(ArrayList<String> arr) {
+    if(arr == null)  return "";
+    String finalR = "";
+    for (int i = 0; i < arr.size(); i++) {
+      finalR = finalR.equals("") ? arr.get(i) : finalR + "\n" + arr.get(i);
     }
     return finalR;
   }

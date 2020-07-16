@@ -73,7 +73,7 @@ public class Home extends AppCompatActivity {
     });
 
 //   ----Set default home fragment: HomePage
-    Fragment default_fragment = new HomeFragment(changeToHash());
+    Fragment default_fragment = new HomeFragment();
     getSupportFragmentManager().beginTransaction().replace(R.id.app_frame_layout, default_fragment).commit();
 
 //    Set Fragment Listener to switch pages
@@ -117,14 +117,6 @@ public class Home extends AppCompatActivity {
     }
   };
 
-  private HashMap<String, ArrayList<String>> changeToHash() {
-    HashMap<String, ArrayList<String>> map = new HashMap<>();
-    map.put("descs", desc);
-    map.put("profits", profits);
-    map.put("costs", costs);
-    map.put("dates", dates);
-    return map;
-  }
 
   private void goToTasksPage() {
     Intent tasksPage = new Intent(this, TasksActivity.class);
@@ -141,7 +133,7 @@ public class Home extends AppCompatActivity {
       Fragment destinationPage = null;
       switch (menuItem.getItemId()) {
         case R.id.nav_home:
-          destinationPage = new HomeFragment(changeToHash());
+          destinationPage = new HomeFragment();
           break;
 //        case R.id.nav_settings:
 //          destinationPage = new SettingsFragment(authenticatedUser);

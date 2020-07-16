@@ -240,15 +240,4 @@ public class Errand implements Parcelable {
     this.errandDocumentID = in.readString();
   }
 
-  public static final Creator<Errand> CREATOR = new Creator<Errand>() {
-    @Override
-    public Errand createFromParcel(Parcel source) {
-      return new Errand(source);
-    }
-
-    @Override
-    public Errand[] newArray(int size) {
-      return new Errand[size];
-    }
-  };
 }
