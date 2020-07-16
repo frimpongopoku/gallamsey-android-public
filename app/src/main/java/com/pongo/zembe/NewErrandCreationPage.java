@@ -157,7 +157,6 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     errand.setDetails(detailsList);
     errand.setCreator(creator);
     errand.setExpiryDate(
-      String.valueOf(
         DateHelper.getMilliSecondsFromDate(
           DateHelper.jumpDateByHours(
             date, DateHelper.getHoursValueFromDurationString(
@@ -165,7 +164,6 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
             )
           )
         )
-      )
     );
     //    errand.setPickUpLocation(selectedLocation);
 //    errand.setNotifiableRiders(fakeSelectedRiders);

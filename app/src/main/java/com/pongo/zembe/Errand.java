@@ -10,7 +10,7 @@ import java.util.Date;
 
 public class Errand implements Parcelable {
 
-  private String title, errandType, description, expiryDate,
+  private String title, errandType, description,
     createdAt = DateHelper.getDateInMyTimezone();
   private ArrayList<String> details = new ArrayList<>(), tags = new ArrayList<>();
   private Boolean errandComplete = false, creatorHasPaidAmount = false;
@@ -22,7 +22,7 @@ public class Errand implements Parcelable {
   private GallamseyLocationComponent pickUpLocation;
   private ArrayList<String> images = new ArrayList<>();
   private String errandDocumentID;
-
+  private long expiryDate;
 
   public Errand() {
     //Firebase constructor
@@ -133,11 +133,11 @@ public class Errand implements Parcelable {
     return createdAt;
   }
 
-  public String getExpiryDate() {
+  public long getExpiryDate() {
     return expiryDate;
   }
 
-  public void setExpiryDate(String expiryDate) {
+  public void setExpiryDate(long expiryDate) {
     this.expiryDate = expiryDate;
   }
 
@@ -199,7 +199,6 @@ public class Errand implements Parcelable {
     dest.writeString(this.title);
     dest.writeString(this.errandType);
     dest.writeString(this.description);
-    dest.writeString(this.expiryDate);
     dest.writeString(this.createdAt);
     dest.writeStringList(this.details);
     dest.writeStringList(this.tags);
@@ -211,17 +210,17 @@ public class Errand implements Parcelable {
     dest.writeString(this.status);
     dest.writeParcelable(this.creator, flags);
     dest.writeParcelable(this.runner, flags);
-    dest.writeList(this.notifiableRiders);
+    dest.writeTypedList(this.notifiableRiders);
     dest.writeParcelable(this.pickUpLocation, flags);
     dest.writeStringList(this.images);
     dest.writeString(this.errandDocumentID);
+    dest.writeLong(this.expiryDate);
   }
 
   protected Errand(Parcel in) {
     this.title = in.readString();
     this.errandType = in.readString();
     this.description = in.readString();
-    this.expiryDate = in.readString();
     this.createdAt = in.readString();
     this.details = in.createStringArrayList();
     this.tags = in.createStringArrayList();
@@ -233,11 +232,22 @@ public class Errand implements Parcelable {
     this.status = in.readString();
     this.creator = in.readParcelable(SimpleUser.class.getClassLoader());
     this.runner = in.readParcelable(SimpleUser.class.getClassLoader());
-    this.notifiableRiders = new ArrayList<SimpleUser>();
-    in.readList(this.notifiableRiders, SimpleUser.class.getClassLoader());
+    this.notifiableRiders = in.createTypedArrayList(SimpleUser.CREATOR);
     this.pickUpLocation = in.readParcelable(GallamseyLocationComponent.class.getClassLoader());
     this.images = in.createStringArrayList();
     this.errandDocumentID = in.readString();
+    this.expiryDate = in.readLong();
   }
 
+  public static final Creator<Errand> CREATOR = new Creator<Errand>() {
+    @Override
+    public Errand createFromParcel(Parcel source) {
+      return new Errand(source);
+    }
+
+    @Override
+    public Errand[] newArray(int size) {
+      return new Errand[size];
+    }
+  };
 }
