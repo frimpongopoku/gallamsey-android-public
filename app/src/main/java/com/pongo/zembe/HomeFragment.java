@@ -24,6 +24,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 
@@ -46,10 +47,10 @@ public class HomeFragment extends Fragment {
   HomeNewsMultiAdapter adapter;
   RecyclerView recyclerView;
   ShimmerFrameLayout skeleton;
-  Context context = getContext();
+  GalFirebaseHelper firebaseHelper = new GalFirebaseHelper();
 
 
-  public HomeFragment(ArrayList<GenericErrandClass> news,View oldViewState, GalInterfaceGuru.TrackHomeFragmentState fragmentStateListener) {
+  public HomeFragment(ArrayList<GenericErrandClass> news, View oldViewState, GalInterfaceGuru.TrackHomeFragmentState fragmentStateListener) {
     this.news = news;
     this.currentState = oldViewState;
     this.fragmentStateListener = fragmentStateListener;
@@ -67,19 +68,20 @@ public class HomeFragment extends Fragment {
   @Nullable
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-    if(currentState !=null){
+    View view = inflater.inflate(R.layout.home_nav_fragment, container, false);
+    justInflate(view);
+    // Return old view state and items when the user comes back to the fragment again.
+    // we don't want multiple loading for reasons as just switching between fragments
+    //so return old view and recycler items, that were saved in root activity "onDestroy",
+    //but still check for new items in "onResume" and fill the recycler up if there are any new stuff
+    // NOTE: inflation comes before view is returned for  a reason(view items are null if justInflate comes later on)
+    if (currentState != null) {
       return currentState;
     }
-    View view = inflater.inflate(R.layout.home_nav_fragment, container, false);
-    recyclerView = view.findViewById(R.id.home_news_recycler);
-    skeleton = view.findViewById(R.id.news_skeleton_view);
-    adapter = new HomeNewsMultiAdapter(getContext(), news, (HomeNewsMultiAdapter.OnNewsItemClick) getContext());
-    RecyclerView.LayoutManager manager = new LinearLayoutManager(getContext());
-    recyclerView.setLayoutManager(manager);
-    recyclerView.setAdapter(adapter);
+    //------ Loading for the first time, show beautiful shimmer effect and load data
     if (this.news == null || this.news.size() == 0) {
       skeleton.setVisibility(View.VISIBLE);
-      skeleton.startShimmer();
+
     }
 //    For the first time : getNewsHere();
     getNewsFromFirebase(new NewsCollectionCallback() {
@@ -95,6 +97,16 @@ public class HomeFragment extends Fragment {
     });
     setCurrentState(view);
     return view;
+  }
+
+
+  private void justInflate(View view) {
+    recyclerView = view.findViewById(R.id.home_news_recycler);
+    skeleton = view.findViewById(R.id.news_skeleton_view);
+    this.adapter = new HomeNewsMultiAdapter(getContext(), news, (HomeNewsMultiAdapter.OnNewsItemClick) getContext());
+    RecyclerView.LayoutManager manager = new LinearLayoutManager(getContext());
+    recyclerView.setLayoutManager(manager);
+    recyclerView.setAdapter(adapter);
   }
 
   private void getNewsFromFirebase(final NewsCollectionCallback newsCallback) {
@@ -120,23 +132,31 @@ public class HomeFragment extends Fragment {
   @Override
   public void onResume() {
     super.onResume();
+    firebaseHelper.setSnapshotListenerOnFolder(errandsDB, new GalInterfaceGuru.FolderTakerInterface() {
+      @Override
+      public void callback(QuerySnapshot documents) {
+        ArrayList<GenericErrandClass> newErrands = new ArrayList<>();
+        for (QueryDocumentSnapshot document : documents) {
+          if (document.exists()) {
+            GenericErrandClass tempErrand = document.toObject(GenericErrandClass.class);
+            newErrands.add(tempErrand);
+          }
 
+        }
+        setNews(newErrands);
+        adapter.setNews(newErrands);
+        adapter.notifyDataSetChanged();
+      }
+    });
 
   }
 
   @Override
   public void onDestroy() {
-    this.fragmentStateListener.saveFragmentState(news,currentState);
+    this.fragmentStateListener.saveFragmentState(news, currentState);
     super.onDestroy();
   }
 
-//  @Override
-//  public void newsItemCallback(int pos) {
-//    GenericErrandClass errand = this.news.get(pos);
-//    Intent page = new Intent(context, ErrandViewActivity.class);
-//    page.putExtra(Konstants.PASS_ERRAND_AROUND, errand);
-//    startActivity(page);
-//  }
 
   private interface NewsCollectionCallback {
     void getErrands(ArrayList<GenericErrandClass> errands);

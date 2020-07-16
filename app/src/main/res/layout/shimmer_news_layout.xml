@@ -4,6 +4,7 @@
 
 
   <com.facebook.shimmer.ShimmerFrameLayout
+    app:shimmer_auto_start="true"
       android:visibility="gone"
     android:id="@+id/news_skeleton_view"
     android:layout_width="match_parent"
