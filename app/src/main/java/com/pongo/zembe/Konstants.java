@@ -7,6 +7,8 @@ import java.util.HashMap;
 
 public class Konstants {
 
+  public static final String NEGATIVE = "NEGATIVE";
+  public static final String POSITIVE = "POSITIVE";
   public static final String DO = "DO";
   public static final String UNDO = "UNDO";
   public static final String INIT_STRING = "";
@@ -15,8 +17,14 @@ public class Konstants {
   public static final String NOT_SET = "NOT SET";
   public static final int SENDER_VIEW_TYPE = 172;
   public static final int RECEIPIENT_VIEW_TYPE = 169;
+//  public static final double sLat = 7.636029;
+//  public static final double sLong = -0.4915028;
   public static final double sLat = 5.636029;
   public static final double sLong = -0.2915028;
+
+//   LOCATION POINTS STUFF
+
+  public static final double MAGIC_DECIMAL = 0.02;
 
 //  USER STATUS
   public static  final String  CREATOR = "CREATOR";

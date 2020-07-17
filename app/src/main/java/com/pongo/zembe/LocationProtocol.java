@@ -39,6 +39,50 @@ public class LocationProtocol {
     this.appContext = context;
   }
 
+
+  public static Location generatePointOfSensibleDistanceAway(Location location) {
+    //Just add the magic number "0.001" to the coordinate's lat & long values
+    double lat, longi, refinedLat, refinedLong;
+    lat = location.getLatitude();
+    longi = location.getLongitude();
+    refinedLat = switchToPositiveOrNegative(Konstants.POSITIVE,lat);
+    refinedLong = switchToPositiveOrNegative(Konstants.POSITIVE,longi);
+    //now add
+    refinedLat = refinedLat + Konstants.MAGIC_DECIMAL;
+    refinedLong = refinedLong + Konstants.MAGIC_DECIMAL;
+    //now return coords with to their original signs
+    Location loc = new Location(Konstants.INIT_STRING);
+    if(lat < 0.0){
+      loc.setLatitude(switchToPositiveOrNegative(Konstants.NEGATIVE,refinedLat));
+    }
+    else{
+      loc.setLatitude(refinedLat);
+    }
+
+    if(longi <0.0){
+      loc.setLongitude(switchToPositiveOrNegative(Konstants.NEGATIVE,refinedLong));
+    }
+    else{
+      loc.setLongitude(refinedLong);
+    }
+    return loc;
+  }
+
+  public static double switchToPositiveOrNegative(String type, double val) {
+    if (type.equals(Konstants.NEGATIVE)) { //change my value to negative
+      if (val < 0.0) {//if its already -ve, leave it
+        return val;
+      }
+      return -1.0 * val; // if its not, multiply by -1
+    } else if (type.equals(Konstants.POSITIVE)) {//change my value to +ve
+      if (val < 0.0) { // if value is a -ve number, multiply by -1 and bring me +ve
+        return -1 * val;
+      }
+      return val; // it you get here, you are already +ve, GET OUT
+    }
+    return 0.0;
+  }
+
   public boolean isServiceOk() {
     int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(appContext);
     SERVICE_CHECK_RESULT = available;
@@ -126,7 +170,7 @@ public class LocationProtocol {
     locationListener = new LocationListener() {
       @Override
       public void onLocationChanged(Location location) {
-        locationRetriever.callback(location,locationManager, locationListener);
+        locationRetriever.callback(location, locationManager, locationListener);
 
       }
 
@@ -152,7 +196,7 @@ public class LocationProtocol {
   }
 
   public interface LocationRetriever {
-    void callback(Location location,LocationManager locationManager, LocationListener listener);
+    void callback(Location location, LocationManager locationManager, LocationListener listener);
   }
 }
 

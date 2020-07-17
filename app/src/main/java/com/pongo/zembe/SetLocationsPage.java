@@ -91,6 +91,7 @@ public class SetLocationsPage extends AppCompatActivity {
 
       }
     });
+
   }
 
 

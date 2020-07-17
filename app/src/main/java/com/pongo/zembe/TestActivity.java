@@ -7,8 +7,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationProvider;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -36,6 +39,7 @@ public class TestActivity extends AppCompatActivity {
   ChipGroup group;
   AutoCompleteTextView autoTextbox;
   MagicBoxes boxCreator;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -45,32 +49,27 @@ public class TestActivity extends AppCompatActivity {
     activity = this;
     imageUploadHelper = new ImageUploadHelper(this);
     words = findViewById(R.id.words);
-  boxCreator = new MagicBoxes(this);
+    boxCreator = new MagicBoxes(this);
 
     autoTextbox = findViewById(R.id.auto_complete);
-    final String[] arr = {"Ghana","Land","Of Freedom","zidane","Keyna","Gambia"};
-    ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,arr);
+    final String[] arr = {"Ghana", "Land", "Of Freedom", "zidane", "Keyna", "Gambia"};
+    ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, arr);
     autoTextbox.setAdapter(adapter);
-
-
-
 
 
     btn.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        ArrayList<String> nArr = new ArrayList<>();
-        nArr.add("January");
-        nArr.add("February");
-        nArr.add("March");
-        nArr.add("April");
-        nArr.add("May");
-        nArr.add("June");
-        nArr.add("July");
-        nArr.add("December");
-        nArr.add("August");
-//       imageUploadHelper.openFileChooserWithCropper(activity,1,1);
+//        Location loc = new Location(Konstants.INIT_STRING);
+//        loc.setLongitude(Konstants.sLong);
+//        loc.setLatitude(Konstants.sLat);
 
+        GallamseyLocationComponent loc = new GallamseyLocationComponent("Test",Konstants.sLong, Konstants.sLat);
+
+
+        Log.d("locTesting:", "Distance: " + loc.getRadius());
+        Log.d("locTesting:", loc.getLocation().toString());
+        Log.d("locTesting:", loc.getEndPoint().toString());
       }
     });
 
