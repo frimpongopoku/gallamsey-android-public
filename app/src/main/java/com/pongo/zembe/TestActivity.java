@@ -69,7 +69,8 @@ public class TestActivity extends AppCompatActivity {
 
         Log.d("locTesting:", "Distance: " + loc.getRadius());
         Log.d("locTesting:", loc.getLocation().toString());
-        Log.d("locTesting:", loc.getEndPoint().toString());
+        Log.d("locTesting:upper>", loc.getEndPoint().toString());
+        Log.d("locTesting:lower>", loc.getEndPointLowerTier().toString());
       }
     });
 

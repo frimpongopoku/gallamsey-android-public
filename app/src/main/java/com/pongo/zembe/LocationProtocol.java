@@ -40,16 +40,22 @@ public class LocationProtocol {
   }
 
 
-  public static Location generatePointOfSensibleDistanceAway(Location location) {
+  public static Location generatePointOfSensibleDistanceAway(Location location , String tier) {
     //Just add the magic number "0.001" to the coordinate's lat & long values
     double lat, longi, refinedLat, refinedLong;
     lat = location.getLatitude();
     longi = location.getLongitude();
     refinedLat = switchToPositiveOrNegative(Konstants.POSITIVE,lat);
     refinedLong = switchToPositiveOrNegative(Konstants.POSITIVE,longi);
-    //now add
-    refinedLat = refinedLat + Konstants.MAGIC_DECIMAL;
-    refinedLong = refinedLong + Konstants.MAGIC_DECIMAL;
+    //now add or subtract
+    if(tier.equals(Konstants.UPPER_TIER)){
+      refinedLat = refinedLat + Konstants.MAGIC_DECIMAL;
+      refinedLong = refinedLong + Konstants.MAGIC_DECIMAL;
+    }
+    else if(tier.equals(Konstants.LOWER_TIER)){
+      refinedLat = refinedLat - Konstants.MAGIC_DECIMAL;
+      refinedLong = refinedLong - Konstants.MAGIC_DECIMAL;
+    }
     //now return coords with to their original signs
     Location loc = new Location(Konstants.INIT_STRING);
     if(lat < 0.0){

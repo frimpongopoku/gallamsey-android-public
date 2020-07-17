@@ -5,10 +5,11 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class GallamseyLocationComponent implements Parcelable {
-  private String locationName, longitude, latitude, endPointLong, endPointLat;
+  private String locationName, longitude, latitude, endPointLong, endPointLat, endPointLowerLat, endPointLowerLong;
   private float radius;
   private float[] radiusResult = new float[1];
   private Location endPoint;
+  private Location endPointLowerTier;
   private Location location;
 
 
@@ -22,11 +23,26 @@ public class GallamseyLocationComponent implements Parcelable {
     this.location = new Location(Konstants.INIT_STRING);
     this.location.setLatitude(latitude);
     this.location.setLongitude(longitude);
-    this.endPoint = LocationProtocol.generatePointOfSensibleDistanceAway(this.location);
+    this.endPoint = LocationProtocol.generatePointOfSensibleDistanceAway(this.location,Konstants.UPPER_TIER);
+    this.endPointLowerTier = LocationProtocol.generatePointOfSensibleDistanceAway(this.location,Konstants.LOWER_TIER);
     this.endPointLat = String.valueOf(this.endPoint.getLatitude());
     this.endPointLong = String.valueOf(this.endPoint.getLongitude());
+    this.endPointLowerLat = String.valueOf(this.endPointLowerTier.getLatitude());
+    this.endPointLowerLong = String.valueOf(this.endPointLowerTier.getLongitude());
     Location.distanceBetween(latitude,longitude,this.endPoint.getLatitude(),this.endPoint.getLongitude(),this.radiusResult);
     this.radius = this.radiusResult[0];
+  }
+
+  public String getEndPointLowerLat() {
+    return endPointLowerLat;
+  }
+
+  public String getEndPointLowerLong() {
+    return endPointLowerLong;
+  }
+
+  public Location getEndPointLowerTier() {
+    return endPointLowerTier;
   }
 
   public String getEndPointLong() {

@@ -7,6 +7,8 @@ import java.util.HashMap;
 
 public class Konstants {
 
+  public static final String UPPER_TIER = "UPPER";
+  public static final String LOWER_TIER = "LOWER";
   public static final String NEGATIVE = "NEGATIVE";
   public static final String POSITIVE = "POSITIVE";
   public static final String DO = "DO";
@@ -24,7 +26,7 @@ public class Konstants {
 
 //   LOCATION POINTS STUFF
 
-  public static final double MAGIC_DECIMAL = 0.02;
+  public static final double MAGIC_DECIMAL = 0.04; // this gives a distance that is approximately 12 mins
 
 //  USER STATUS
   public static  final String  CREATOR = "CREATOR";
