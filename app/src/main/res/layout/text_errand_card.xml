@@ -16,6 +16,16 @@
     android:minHeight="130dp"
     android:padding="10dp">
 
+    <!--<ImageView-->
+      <!--android:id="@+id/options"-->
+      <!--android:layout_marginTop="10dp"-->
+      <!--android:background="?attr/selectableItemBackgroundBorderless"-->
+      <!--android:layout_marginRight="15dp"-->
+      <!--android:layout_alignParentRight="true"-->
+      <!--android:src="@drawable/option_icon"-->
+      <!--android:layout_width="25dp"-->
+      <!--android:layout_height="25dp" />-->
+
     <LinearLayout
       android:id="@+id/user_details_div"
       android:layout_width="match_parent"

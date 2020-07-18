@@ -40,4 +40,8 @@ public class GalInterfaceGuru {
   interface TrackWalletFragmentState {
     void saveFragmentState(View view);
   }
+
+  interface  EditContextMenuItemListener{
+    void getErrandToBeEdited(int pos, GenericErrandClass errand);
+  }
 }

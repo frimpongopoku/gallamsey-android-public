@@ -35,7 +35,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 
-public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHomeFragmentState, HomeNewsMultiAdapter.OnNewsItemClick {
+public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHomeFragmentState, HomeNewsMultiAdapter.OnNewsItemClick, GalInterfaceGuru.EditContextMenuItemListener {
 
   ArrayList<String> desc = new ArrayList<>();
   ArrayList<String> profits = new ArrayList<>();
@@ -229,5 +229,11 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHom
   public void saveFragmentState(ArrayList<GenericErrandClass> news, View view) {
     homeFragState = view;
     homeFragContent = news;
+  }
+
+  @Override
+  public void getErrandToBeEdited(int pos, GenericErrandClass errand) {
+    Toast.makeText(thisActivity, "I have gotten the errand at pos - "+ pos, Toast.LENGTH_SHORT).show();
+
   }
 }

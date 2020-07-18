@@ -3,13 +3,16 @@ package com.pongo.zembe;
 import android.content.Context;
 import android.content.Intent;
 import android.text.Layout;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -110,13 +113,14 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
 
 
   //........ TextCard
-  class TextViewHolder extends RecyclerView.ViewHolder {
+  class TextViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
     TextView description, cost, profit, date, has_specifics;
     LinearLayout container;
     OnNewsItemClick listener;
+    GalInterfaceGuru.EditContextMenuItemListener editMenuItemListener;
 
 
-    public TextViewHolder(@NonNull View itemView, final OnNewsItemClick listener) {
+    public TextViewHolder(@NonNull final View itemView, final OnNewsItemClick listener) {
       super(itemView);
       this.description = itemView.findViewById(R.id.text_errand_card_desc);
       this.cost = itemView.findViewById(R.id.text_errand_card_cost);
@@ -124,25 +128,58 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
       this.date = itemView.findViewById(R.id.text_errand_card_date);
       this.container = itemView.findViewById(R.id.container);
       this.listener = listener;
+      this.editMenuItemListener = (GalInterfaceGuru.EditContextMenuItemListener) listener;
+      itemView.setOnCreateContextMenuListener(this);
       itemView.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-          GenericErrandClass errand = news.get(getAdapterPosition());
+          GenericErrandClass errand = news.get(getAdapterPosition()); //news arr from main class
           listener.newsItemCallback(getAdapterPosition(), errand);
         }
       });
-
     }
+
+
+    @Override
+    public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+      MenuItem more = contextMenu.add("More");
+      more.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+        @Override
+        public boolean onMenuItemClick(MenuItem menuItem) {
+          GenericErrandClass errand = news.get(getAdapterPosition()); //news arr from main class
+          listener.newsItemCallback(getAdapterPosition(), errand);
+          return true;
+        }
+      });
+      MenuItem edit = contextMenu.add("Edit");
+      edit.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+        @Override
+        public boolean onMenuItemClick(MenuItem menuItem) {
+          GenericErrandClass errand = news.get(getAdapterPosition()); //news arr from main class
+          editMenuItemListener.getErrandToBeEdited(getAdapterPosition(), errand);
+          return true;
+        }
+      });
+      MenuItem delete = contextMenu.add("Delete & Refund");
+      delete.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+        @Override
+        public boolean onMenuItemClick(MenuItem menuItem) {
+          return false;
+        }
+      });
+    }
+
 
   }
 
 
   //......... ImageCard
-  class ImageViewHolder extends RecyclerView.ViewHolder {
+  class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
     TextView title, cost, profit, date, has_specifics;
     ImageView image;
     LinearLayout container;
     OnNewsItemClick listener;
+    GalInterfaceGuru.EditContextMenuItemListener editMenuItemListener;
 
     public ImageViewHolder(@NonNull View itemView, final OnNewsItemClick listener) {
       super(itemView);
@@ -153,11 +190,42 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
       this.image = itemView.findViewById(R.id.img_errand_card_image);
       this.container = itemView.findViewById(R.id.container);
       this.listener = listener;
+      this.editMenuItemListener = (GalInterfaceGuru.EditContextMenuItemListener) listener;
+      itemView.setOnCreateContextMenuListener(this);
       itemView.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
           GenericErrandClass errand = news.get(getAdapterPosition());
           listener.newsItemCallback(getAdapterPosition(), errand);
+        }
+      });
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+      MenuItem more = contextMenu.add("More");
+      more.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+        @Override
+        public boolean onMenuItemClick(MenuItem menuItem) {
+          GenericErrandClass errand = news.get(getAdapterPosition()); //news arr from main class
+          listener.newsItemCallback(getAdapterPosition(), errand);
+          return true;
+        }
+      });
+      MenuItem edit = contextMenu.add("Edit");
+      edit.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+        @Override
+        public boolean onMenuItemClick(MenuItem menuItem) {
+          GenericErrandClass errand = news.get(getAdapterPosition()); //news arr from main class
+          editMenuItemListener.getErrandToBeEdited(getAdapterPosition(), errand);
+          return true;
+        }
+      });
+      MenuItem delete = contextMenu.add("Delete & Refund");
+      delete.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+        @Override
+        public boolean onMenuItemClick(MenuItem menuItem) {
+          return false;
         }
       });
     }
