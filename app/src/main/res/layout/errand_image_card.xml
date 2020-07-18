@@ -166,6 +166,7 @@
 
 
     </RelativeLayout>
+    <include layout="@layout/news_location_status_bar" />
 
     <View
       android:layout_width="match_parent"
