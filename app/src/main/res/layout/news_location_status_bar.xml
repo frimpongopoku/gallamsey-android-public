@@ -5,7 +5,7 @@
   <RelativeLayout
     android:id="@+id/status_bar"
     android:padding="10dp"
-    android:background="@color/appColorLight_hollow"
+    android:background="@color/appColorLight_hollow_of_hollow"
     android:paddingStart="15dp"
     android:paddingEnd="15dp"
     android:layout_width="match_parent"

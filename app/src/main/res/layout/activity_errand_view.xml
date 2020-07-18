@@ -89,13 +89,12 @@
 
 
           <com.google.android.material.chip.ChipGroup
-            android:padding="10dp"
             android:id="@+id/errand_view_chipGroup"
             android:layout_width="match_parent"
-            android:layout_height="45dp">
+            android:layout_height="45dp"
+            android:padding="10dp">
 
           </com.google.android.material.chip.ChipGroup>
-
 
 
           <ImageView
@@ -109,21 +108,86 @@
 
 
           <LinearLayout
+            android:background="@drawable/green_rectangle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="10dp"
+            android:elevation="3dp"
             android:orientation="vertical">
 
             <TextView
+
+
+              android:paddingTop="10dp"
+              android:paddingBottom="10dp"
+              android:paddingStart="15dp"
+              android:paddingEnd="15dp"
               android:id="@+id/good_money_summary"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_marginTop="6dp"
               android:fontFamily="@font/google_sans_medium"
-              android:text="A total of 198 GHS will be transferred to your account on completing this errand"
-              android:textColor="@color/green"
+              android:text="A total of 198 GHS will be transferred to your account when you are done"
+              android:textColor="@android:color/white"
               android:textSize="14sp" />
 
           </LinearLayout>
+
+          <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+              android:id="@+id/summary_1"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+              <ImageView
+                android:id="@+id/drive_ico"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_drive_eta_black_24dp" />
+
+              <TextView
+                android:id="@+id/drive_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="4dp"
+                android:layout_toEndOf="@id/drive_ico"
+                android:text="You are a 3hr drive away from Akwesi"
+                android:textColor="@color/appColor" />
+            </RelativeLayout>
+            <RelativeLayout
+              android:paddingTop="10dp"
+              android:layout_below="@id/summary_1"
+              android:id="@+id/summary_2"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+              <ImageView
+                android:id="@+id/walk_ico"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_directions_walk_black_24dp" />
+
+              <TextView
+                android:id="@+id/walk_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="4dp"
+                android:layout_toEndOf="@id/walk_ico"
+                android:text="You are a 30min walk away from Akwesi"
+                android:textColor="@color/appColor" />
+            </RelativeLayout>
+
+          </RelativeLayout>
 
           <TextView
             android:id="@+id/details_title_box"
