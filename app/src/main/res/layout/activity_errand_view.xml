@@ -15,8 +15,7 @@
       android:layout_height="wrap_content"
       android:layout_above="@id/bottom_sheet_space">
 
-      <include layout="@layout/universal_title_bar"/>
-
+      <include layout="@layout/universal_title_bar" />
 
 
       <ScrollView
@@ -27,10 +26,10 @@
         android:scrollbars="none">
 
         <LinearLayout
-          android:layout_marginTop="10dp"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:layout_below="@+id/my_toolbar"
+          android:layout_marginTop="10dp"
           android:orientation="vertical"
           android:paddingLeft="20dp"
           android:paddingRight="20dp">
@@ -88,13 +87,24 @@
             android:text="I need someone to buy me waakye 3 cedis, Mcroni 10 cedis Fish 2 cedis, and Chicken 5 cedis"
             android:textSize="18sp" />
 
+
+          <com.google.android.material.chip.ChipGroup
+            android:padding="10dp"
+            android:id="@+id/errand_view_chipGroup"
+            android:layout_width="match_parent"
+            android:layout_height="45dp">
+
+          </com.google.android.material.chip.ChipGroup>
+
+
+
           <ImageView
             android:id="@+id/errand_img"
-            android:adjustViewBounds="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
+            android:adjustViewBounds="true"
             android:src="@drawable/galam_wakye" />
 
 

@@ -16,6 +16,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -98,6 +100,7 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
     holder.profit.setText(String.valueOf(newsItem.getAllowance()));
     holder.date.setText(newsItem.getCreatedAt());
     Picasso.get().load(newsItem.getImages().get(0)).into(holder.image);
+
   }
 
   @Override
@@ -111,6 +114,7 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
     TextView description, cost, profit, date, has_specifics;
     LinearLayout container;
     OnNewsItemClick listener;
+
 
     public TextViewHolder(@NonNull View itemView, final OnNewsItemClick listener) {
       super(itemView);

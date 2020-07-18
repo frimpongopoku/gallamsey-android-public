@@ -412,12 +412,18 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     @Override
     public void onClick(View view) {
       String tag = MyHelper.grabCleanText(autoCompleteBox);
-      if(tag.isEmpty()){
+      if (tag.isEmpty()) {
         autoCompleteBox.setError("If you want to add a tag, please write something. Eg. Food, Phone ");
         autoCompleteBox.requestFocus();
-      }else{
-        tagList.add(tag);
-        addChips(tag);
+      } else {
+        if (tagList.size() < 4) {
+          tagList.add(tag);
+          addChips(tag);
+        } else {
+          Toast.makeText(activity, "You are only allowed 4 labels", Toast.LENGTH_SHORT).show();
+        }
+
+
       }
     }
   };
@@ -450,29 +456,34 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
       String item = adapterView.getItemAtPosition(i).toString();
-      tagList.add(item);
-      addChips(item);
+      if (tagList.size() < 4) {
+        tagList.add(item);
+        addChips(item);
+      }else{
+        Toast.makeText(activity, "You are only allowed 4 labels", Toast.LENGTH_SHORT).show();
+      }
+
     }
   };
 
-  private void addNewTagsIfExist(){
+  private void addNewTagsIfExist() {
     String id = tagCollection.getDocumentID();
-    if(id.equals(Konstants.INIT_STRING)){
+    if (id.equals(Konstants.INIT_STRING)) {
       //it means there is nothing in the "TAGS" DB
       String newID = tagsDB.document().getId();
       tagCollection.setDocumentID(newID);
       tagCollection.setTags(tagList);
       tagsDB.document(newID).set(tagCollection);
-    }
-    else{
-      HashMap<String,Object> newArr = new HashMap<>();
-      newArr.put("tags",FieldValue.arrayUnion(tagList));
+    } else {
+      HashMap<String, Object> newArr = new HashMap<>();
+      newArr.put("tags", FieldValue.arrayUnion(tagList));
       //this will update taglist in DB if a user actually provided a new tag that does not exist,
       //else, nothing will be added
       tagsDB.document(tagCollection.getDocumentID()).update(newArr);
     }
   }
-  private void addChips(final String item){
+
+  private void addChips(final String item) {
     Chip newTag = MyHelper.createChip(activity, item, new GalInterfaceGuru.TagDialogChipActions() {
       @Override
       public void removeTag(View v) {
@@ -483,6 +494,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     chipGroup.addView(newTag);
     autoCompleteBox.setText("");
   }
+
   private View.OnClickListener quitCreating = new View.OnClickListener() {
     @Override
     public void onClick(View view) {

@@ -44,7 +44,7 @@
               android:layout_height="wrap_content"
               android:layout_marginLeft="5dp"
               android:layout_weight="4"
-              android:text="Here, quickly search our list to see if the items you need fall under any of our categories." />
+              android:text="Here, quickly search our list to see if the items you need fall under any of our categories (optional)" />
           </LinearLayout>
 
           <TextView
@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:paddingLeft="40dp"
-            android:text="NB: This makes it easier for riders to find your errands"
+            android:text="NB: This makes it easier for riders to find your errand (You can add up to 4 labels)"
             android:textColor="@color/green" />
 
           <com.google.android.material.chip.ChipGroup
@@ -73,6 +73,7 @@
             android:padding="10dp" />
 
           <Button
+            android:layout_marginTop="10dp"
             android:layout_marginStart="50dp"
             android:layout_marginEnd="50dp"
             android:layout_marginBottom="55dp"

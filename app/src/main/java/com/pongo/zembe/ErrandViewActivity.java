@@ -12,28 +12,34 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipDrawable;
+import com.google.android.material.chip.ChipGroup;
 import com.squareup.picasso.Picasso;
 
 public class ErrandViewActivity extends AppCompatActivity {
   Toolbar toolbar;
   MagicBoxes dialogCreator;
-  Button runErrandButton,readAbout;
+  Button runErrandButton, readAbout;
   GenericErrandClass errand;
-  TextView pageTitle,moneySummary,cost,allowance,dateText,userName,errandDescription,detailsText,detailsTitleBox;
+  TextView pageTitle, moneySummary, cost, allowance, dateText, userName, errandDescription, detailsText, detailsTitleBox;
   ImageView backBtn, errandImage;
+  ChipGroup tagGroup;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_errand_view);
     initializeActivity();
     errand = getIntent().getParcelableExtra(Konstants.PASS_ERRAND_AROUND);
-    if(errand != null){
+    if (errand != null) {
       populateWithInfo(errand);
     }
   }
 
 
-  public void initializeActivity(){
+  public void initializeActivity() {
+    tagGroup = findViewById(R.id.errand_view_chipGroup);
     detailsTitleBox = findViewById(R.id.details_title_box);
     detailsText = findViewById(R.id.details_text);
     userName = findViewById(R.id.user_name);
@@ -47,40 +53,55 @@ public class ErrandViewActivity extends AppCompatActivity {
     backBtn = findViewById(R.id.back_btn);
     toolbar = findViewById(R.id.my_toolbar);
     setSupportActionBar(toolbar);
-    dialogCreator  = new MagicBoxes(this);
+    dialogCreator = new MagicBoxes(this);
     runErrandButton = findViewById(R.id.run_errand);
     runErrandButton.setOnClickListener(runErrand);
     backBtn.setOnClickListener(goBack);
   }
 
 
-  private void populateWithInfo(GenericErrandClass errand){
+  private void populateWithInfo(GenericErrandClass errand) {
     errandDescription.setText(errand.getDescription());
     userName.setText(errand.getCreator().getUserName());
-    if(errand.getErrandType().equals(Konstants.IMAGE_ERRAND)){
+    if (errand.getErrandType().equals(Konstants.IMAGE_ERRAND)) {
       Picasso.get().load(errand.getImages().get(0)).into(errandImage);
-    }
-    else{
+    } else {
       errandImage.setVisibility(View.GONE);
     }
-    cost.setText("GHS "+errand.getCost());
-    allowance.setText("GHS "+ errand.getAllowance());
+    cost.setText("GHS " + errand.getCost());
+    allowance.setText("GHS " + errand.getAllowance());
     dateText.setText(errand.getCreatedAt());
     String total = String.valueOf(errand.getCost() + errand.getAllowance());
-    String summary = "A total of GHS "+total+" will be sent to your wallet on completing this errand";
+    String summary = "A total of GHS " + total + " will be sent to your wallet on completing this errand";
     moneySummary.setText(summary);
     pageTitle.setText(errand.getTitle());
     String details = MyHelper.mergeTextsFromArrayWithLines(errand.getDetails());
-    if(details.equals(Konstants.INIT_STRING)){
+    if (details.equals(Konstants.INIT_STRING)) {
       removeDetailsBox();
-    }else{
+    } else {
       detailsText.setText(details);
+    }
+
+    if (errand.getTags().size() != 0) {
+      for (int i = 0; i < errand.getTags().size(); i++) {
+        String item = errand.getTags().get(i);
+        Chip chip = MyHelper.createChipNoClose(this, item);
+        ChipDrawable chipDrawable = (ChipDrawable) chip.getChipDrawable();
+        chip.setBackgroundDrawable(chipDrawable);
+        chipDrawable.setChipBackgroundColorResource(R.color.appColorLight_hollow);
+        chip.setTextSize((float) 11);
+        chip.setPaddingRelative(5, 5, 5, 5);
+        chip.setTextColor(getColor(R.color.appColor));
+        tagGroup.addView(chip);
+
+    } }else{
+      tagGroup.setVisibility(View.GONE);
     }
 
 
   }
 
-  private void removeDetailsBox(){
+  private void removeDetailsBox() {
     detailsTitleBox.setVisibility(View.INVISIBLE);
     detailsText.setVisibility(View.INVISIBLE);
   }
@@ -89,7 +110,7 @@ public class ErrandViewActivity extends AppCompatActivity {
     @Override
     public void onClick(View view) {
       LayoutInflater inflater = getLayoutInflater();
-      View v = inflater.inflate(R.layout.start_errand_custom_dialog,null,false);
+      View v = inflater.inflate(R.layout.start_errand_custom_dialog, null, false);
       Dialog dialog = dialogCreator.constructCustomDialog("Confirmation", v, new MagicBoxCallables() {
         @Override
         public void negativeBtnCallable() {

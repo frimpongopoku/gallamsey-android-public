@@ -46,6 +46,10 @@ public class MyHelper {
       }
     });
     return chip;
+  }public static Chip createChipNoClose(Context context, final String name) {
+    Chip chip = new Chip(context);
+    chip.setText(name);
+    return chip;
   }
 
   public static String mergeTextsFromArray(ArrayList<String> arr) {
