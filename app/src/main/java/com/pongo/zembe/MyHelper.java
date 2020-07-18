@@ -20,7 +20,20 @@ import java.util.HashMap;
 public class MyHelper {
 
 
-
+  public static ArrayList<String> changeGallamseyPointToStringArray(ArrayList<GallamseyLocationComponent> array){
+    ArrayList<String> arr = new ArrayList<>();
+    for (GallamseyLocationComponent location : array) {
+      arr.add(location.getLocationName());
+    }
+    return arr;
+  }
+  public static HashMap<String, GallamseyLocationComponent> changeGallmseyPointToHash(ArrayList<GallamseyLocationComponent> array) {
+    HashMap<String, GallamseyLocationComponent> map = new HashMap<>();
+    for (GallamseyLocationComponent location : array) {
+      map.put(location.getLocationName(), location);
+    }
+    return map;
+  }
 
   public static String grabCleanText(EditText box) {
     return box.getText().toString().trim();
@@ -46,21 +59,25 @@ public class MyHelper {
       }
     });
     return chip;
-  }public static Chip createChipNoClose(Context context, final String name) {
+  }
+
+  public static Chip createChipNoClose(Context context, final String name) {
     Chip chip = new Chip(context);
     chip.setText(name);
     return chip;
   }
 
   public static String mergeTextsFromArray(ArrayList<String> arr) {
-    if(arr == null)  return "";
+    if (arr == null) return "";
     String finalR = "";
     for (int i = 0; i < arr.size(); i++) {
       finalR = finalR.equals("") ? arr.get(i) : finalR + ", " + arr.get(i);
     }
     return finalR;
-  }public static String mergeTextsFromArrayWithLines(ArrayList<String> arr) {
-    if(arr == null)  return "";
+  }
+
+  public static String mergeTextsFromArrayWithLines(ArrayList<String> arr) {
+    if (arr == null) return "";
     String finalR = "";
     for (int i = 0; i < arr.size(); i++) {
       finalR = finalR.equals("") ? arr.get(i) : finalR + "\n" + arr.get(i);

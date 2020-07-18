@@ -28,6 +28,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.util.ArrayUtils;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.chip.Chip;
@@ -59,7 +60,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
   EditText detailsBox, allowanceBox, estimatedCostBox, descriptionBox;
   AutoCompleteTextView autoCompleteBox;
   DetailsListAdapter recyclerAdapter;
-  String currentTabKey = Konstants.DESC_TAB, selectedLocation = Konstants.CHOOSE, expiryDurationSelected = Konstants.NOT_SET;
+  String currentTabKey = Konstants.DESC_TAB, expiryDurationSelected = Konstants.NOT_SET;
   byte[] userSelectedImage = null; //this is what is going to be uploaded
   Uri selectedImageURI; // image extension will be determined from this
   TextView locationText, durationText;
@@ -77,6 +78,8 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
   CollectionReference tagsDB = store.collection(Konstants.TAG_COLLECTION);
   TagCollection tagCollection = new TagCollection();
   Context context;
+  HashMap<String, GallamseyLocationComponent> stringToGallamseObj = new HashMap<>();
+  GallamseyLocationComponent selectedGallamseyLocation;
 
 
   @Override
@@ -89,6 +92,9 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     tagCollection = getIntent().getParcelableExtra(Konstants.PASS_TAGS);
     if (authenticatedUser != null) {
       makeSimpleUserFrom(authenticatedUser);
+      locationList.add(Konstants.CHOOSE);// I just want "CHOOSE" to be the first item
+      locationList.addAll(MyHelper.changeGallamseyPointToStringArray(authenticatedUser.getDeliveryLocations()));
+      stringToGallamseObj = MyHelper.changeGallmseyPointToHash(authenticatedUser.getDeliveryLocations());
     }
     initializeAutoCompleteLists();
     initializeActivity();
@@ -157,6 +163,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
       user.getProfilePictureURL(),
       Konstants.CREATOR)
     ;
+    creator.setPrimaryLocation(user.getGeoLocation());
   }
 
   private void getErrandForShipment(final GalInterfaceGuru.CollectErrandTrainFormShipment errandCallback) {
@@ -177,7 +184,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
         )
       )
     );
-    //    errand.setPickUpLocation(selectedLocation);
+    errand.setPickUpLocation(selectedGallamseyLocation);
 //    errand.setNotifiableRiders(fakeSelectedRiders);
     if (userSelectedImage == null) {
 
@@ -276,7 +283,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
       errorString = MyHelper.concactToWhat(errorString, count + ". You need to provide a value for how much you are willing to give");
       error.setStatus(Konstants.ERROR_FAILED);
     }
-    if (selectedLocation.equals(Konstants.CHOOSE)) {
+    if (selectedGallamseyLocation == null) {
       count++;
       errorForOptionalFields = MyHelper.concactToWhat(errorForOptionalFields, count + ". No destination to receive items was provided. You can change now, or just chat with your rider later");
       if (!error.getStatus().equals(Konstants.ERROR_FAILED))
@@ -372,10 +379,6 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     addTag.setOnClickListener(addTagToList);
 
 //  ----------------------------------------------------------
-    locationList.add(Konstants.CHOOSE);
-    locationList.add("Home");
-    locationList.add("School");
-    locationList.add("Club");
     locationDropdownAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, locationList);
     locationDropdownAdapter.setDropDownViewResource(android.R.layout.simple_list_item_1);
     locationDropdown.setAdapter(locationDropdownAdapter);
@@ -459,7 +462,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
       if (tagList.size() < 4) {
         tagList.add(item);
         addChips(item);
-      }else{
+      } else {
         Toast.makeText(activity, "You are only allowed 4 labels", Toast.LENGTH_SHORT).show();
       }
 
@@ -588,12 +591,11 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
       allowanceTabBtn.setImageResource(R.drawable.ic_card_giftcard_black_24dp);
     }
 
-    if (!selectedLocation.equals(Konstants.CHOOSE)) {
+    if (selectedGallamseyLocation != null) {
       locationTabBtn.setImageResource(R.drawable.ic_location_green);
     } else {
       locationTabBtn.setImageResource(R.drawable.location_vector_icon);
     }
-
 
     if (detailsList.size() != 0 && !expiryDurationSelected.equals(Konstants.NOT_SET)) {
       detailsTabBtn.setImageResource(R.drawable.ic_list_green);
@@ -616,9 +618,15 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
   private AdapterView.OnItemSelectedListener chooseLocation = new AdapterView.OnItemSelectedListener() {
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-      selectedLocation = adapterView.getItemAtPosition(i).toString();
-      String text = "Your items(s) will be delivered at '" + selectedLocation + "'";
+      String item = adapterView.getItemAtPosition(i).toString();
+      String text = "Your items(s) will be delivered at '" + item + "'";
+      if (text.equals(Konstants.CHOOSE)) {
+        selectedGallamseyLocation = null;
+      } else {
+        selectedGallamseyLocation = stringToGallamseObj.get(item);
+      }
       locationText.setText(text);
+
     }
 
     @Override
