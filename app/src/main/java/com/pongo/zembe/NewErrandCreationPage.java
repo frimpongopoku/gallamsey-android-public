@@ -8,12 +8,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -31,12 +33,16 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class NewErrandCreationPage extends AppCompatActivity implements OnDetailItemsClick, RiderForSelectionRecyclerAdapter.SelectRiderCallback {
   SimpleUser creator;
@@ -49,7 +55,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
   RecyclerView recyclerView, ridersRecyclerView;
   ImageView taggingTabBtn, quit, helpBtn, userSelectedImageHolder, addDetailsBtn, descriptionTabBtn, estimateTabBtn, allowanceTabBtn, locationTabBtn, detailsTabBtn;
   LinearLayout selectRidersTab, taggingTab, detailsTab, descriptionTab, estimationTab, allowanceTab, locationTab, pictureTab;
-  Button saveAsTemplateBtn, postBtn, addPictureTabBtn, removePictureBtn, selectRidersBtn;
+  Button saveAsTemplateBtn, postBtn, addPictureTabBtn, removePictureBtn, selectRidersBtn, addTag;
   EditText detailsBox, allowanceBox, estimatedCostBox, descriptionBox;
   AutoCompleteTextView autoCompleteBox;
   DetailsListAdapter recyclerAdapter;
@@ -68,6 +74,10 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
   MagicBoxes dialogCreator;
   GroundUser authenticatedUser;
   StorageReference storageReference;
+  CollectionReference tagsDB = store.collection(Konstants.TAG_COLLECTION);
+  TagCollection tagCollection = new TagCollection();
+  Context context;
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +86,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     activity = this;
     dialogCreator = new MagicBoxes(this);
     authenticatedUser = getIntent().getParcelableExtra(Konstants.AUTH_USER_KEY);
+    tagCollection = getIntent().getParcelableExtra(Konstants.PASS_TAGS);
     if (authenticatedUser != null) {
       makeSimpleUserFrom(authenticatedUser);
     }
@@ -116,6 +127,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     getErrandForShipment(new GalInterfaceGuru.CollectErrandTrainFormShipment() {
       @Override
       public void getErrandObject(final GenericErrandClass errand) {
+        addNewTagsIfExist();
         String id = errandDB.document().getId(); // get id before its saved, so we can save in the document itself
         errand.setErrandDocumentID(id);
         errandDB.document(id).set(errand).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -157,13 +169,13 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     errand.setDetails(detailsList);
     errand.setCreator(creator);
     errand.setExpiryDate(
-        DateHelper.getMilliSecondsFromDate(
-          DateHelper.jumpDateByHours(
-            date, DateHelper.getHoursValueFromDurationString(
-              expiryDurationSelected
-            )
+      DateHelper.getMilliSecondsFromDate(
+        DateHelper.jumpDateByHours(
+          date, DateHelper.getHoursValueFromDurationString(
+            expiryDurationSelected
           )
         )
+      )
     );
     //    errand.setPickUpLocation(selectedLocation);
 //    errand.setNotifiableRiders(fakeSelectedRiders);
@@ -300,6 +312,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
 
   private void initializeActivity() {
     //  -----------------------------------------------------------
+    addTag = findViewById(R.id.add_unavailable_tag);
     saveAsTemplateBtn = findViewById(R.id.template_btn);
     storageReference = FirebaseStorage.getInstance().getReference(Konstants.ERRAND_PICTURES_COLLECTION);
     imageHelper = new ImageUploadHelper(this);
@@ -310,7 +323,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     expiryDateAdapter.setDropDownViewResource(android.R.layout.simple_list_item_1);
     expiryDateDropDown.setAdapter(expiryDateAdapter);
     postBtn = findViewById(R.id.post_btn);
-    autoCompleteAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, autoCompleteList);
+    autoCompleteAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, tagCollection.getTags());
     quit = findViewById(R.id.quit);
     selectRidersBtn = findViewById(R.id.select_riders_btn);
     helpBtn = findViewById(R.id.help_btn);
@@ -356,6 +369,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     postBtn.setOnClickListener(postMyErrand);
     expiryDateDropDown.setOnItemSelectedListener(selectExpiryDate);
     saveAsTemplateBtn.setOnClickListener(saveAsTemplate);
+    addTag.setOnClickListener(addTagToList);
 
 //  ----------------------------------------------------------
     locationList.add(Konstants.CHOOSE);
@@ -394,6 +408,20 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
   }
 
 
+  private View.OnClickListener addTagToList = new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+      String tag = MyHelper.grabCleanText(autoCompleteBox);
+      if(tag.isEmpty()){
+        autoCompleteBox.setError("If you want to add a tag, please write something. Eg. Food, Phone ");
+        autoCompleteBox.requestFocus();
+      }else{
+        tagList.add(tag);
+        addChips(tag);
+      }
+    }
+  };
+
   private View.OnClickListener saveAsTemplate = new View.OnClickListener() {
     @Override
     public void onClick(View view) {
@@ -423,18 +451,38 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
       String item = adapterView.getItemAtPosition(i).toString();
       tagList.add(item);
-      Chip newTag = MyHelper.createChip(activity, item, new GalInterfaceGuru.TagDialogChipActions() {
-        @Override
-        public void removeTag(View v) {
-          chipGroup.removeView(v);
-          tagList.remove(i);
-        }
-      });
-      chipGroup.addView(newTag);
-      autoCompleteBox.setText("");
+      addChips(item);
     }
   };
 
+  private void addNewTagsIfExist(){
+    String id = tagCollection.getDocumentID();
+    if(id.equals(Konstants.INIT_STRING)){
+      //it means there is nothing in the "TAGS" DB
+      String newID = tagsDB.document().getId();
+      tagCollection.setDocumentID(newID);
+      tagCollection.setTags(tagList);
+      tagsDB.document(newID).set(tagCollection);
+    }
+    else{
+      HashMap<String,Object> newArr = new HashMap<>();
+      newArr.put("tags",FieldValue.arrayUnion(tagList));
+      //this will update taglist in DB if a user actually provided a new tag that does not exist,
+      //else, nothing will be added
+      tagsDB.document(tagCollection.getDocumentID()).update(newArr);
+    }
+  }
+  private void addChips(final String item){
+    Chip newTag = MyHelper.createChip(activity, item, new GalInterfaceGuru.TagDialogChipActions() {
+      @Override
+      public void removeTag(View v) {
+        chipGroup.removeView(v);
+        tagList.remove(item);
+      }
+    });
+    chipGroup.addView(newTag);
+    autoCompleteBox.setText("");
+  }
   private View.OnClickListener quitCreating = new View.OnClickListener() {
     @Override
     public void onClick(View view) {

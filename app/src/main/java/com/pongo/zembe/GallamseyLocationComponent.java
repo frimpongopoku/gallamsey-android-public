@@ -106,6 +106,7 @@ public class GallamseyLocationComponent implements Parcelable {
     this.latitude = latitude;
   }
 
+
   @Override
   public int describeContents() {
     return 0;
@@ -118,7 +119,13 @@ public class GallamseyLocationComponent implements Parcelable {
     dest.writeString(this.latitude);
     dest.writeString(this.endPointLong);
     dest.writeString(this.endPointLat);
-    dest.writeValue(this.radius);
+    dest.writeString(this.endPointLowerLat);
+    dest.writeString(this.endPointLowerLong);
+    dest.writeFloat(this.radius);
+    dest.writeFloatArray(this.radiusResult);
+    dest.writeParcelable(this.endPoint, flags);
+    dest.writeParcelable(this.endPointLowerTier, flags);
+    dest.writeParcelable(this.location, flags);
   }
 
   protected GallamseyLocationComponent(Parcel in) {
@@ -127,7 +134,13 @@ public class GallamseyLocationComponent implements Parcelable {
     this.latitude = in.readString();
     this.endPointLong = in.readString();
     this.endPointLat = in.readString();
-    this.radius = (Integer) in.readValue(Integer.class.getClassLoader());
+    this.endPointLowerLat = in.readString();
+    this.endPointLowerLong = in.readString();
+    this.radius = in.readFloat();
+    this.radiusResult = in.createFloatArray();
+    this.endPoint = in.readParcelable(Location.class.getClassLoader());
+    this.endPointLowerTier = in.readParcelable(Location.class.getClassLoader());
+    this.location = in.readParcelable(Location.class.getClassLoader());
   }
 
   public static final Creator<GallamseyLocationComponent> CREATOR = new Creator<GallamseyLocationComponent>() {

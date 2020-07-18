@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 public class Konstants {
 
+  public static final String PASS_TAGS = "TAGS";
   public static final String UPPER_TIER = "UPPER";
   public static final String LOWER_TIER = "LOWER";
   public static final String NEGATIVE = "NEGATIVE";
@@ -19,7 +20,7 @@ public class Konstants {
   public static final String NOT_SET = "NOT SET";
   public static final int SENDER_VIEW_TYPE = 172;
   public static final int RECEIPIENT_VIEW_TYPE = 169;
-//  public static final double sLat = 7.636029;
+  //  public static final double sLat = 7.636029;
 //  public static final double sLong = -0.4915028;
   public static final double sLat = 5.636029;
   public static final double sLong = -0.2915028;
@@ -28,9 +29,9 @@ public class Konstants {
 
   public static final double MAGIC_DECIMAL = 0.04; // this gives a distance that is approximately 12 mins
 
-//  USER STATUS
-  public static  final String  CREATOR = "CREATOR";
-  public static  final String  RIDER = "RIDER";
+  //  USER STATUS
+  public static final String CREATOR = "CREATOR";
+  public static final String RIDER = "RIDER";
 
   // ERRAND CREATION CONSTANTS
   //  --------------------------
@@ -138,6 +139,7 @@ public class Konstants {
 
   //FIREBASE COLLECTION SET CONSTANTS
   //--------------------------------
+  public static String TAG_COLLECTION = "TAGS";
   public static String USER_COLLECTION = "USERS";
   public static String ERRAND_COLLECTION = "ERRANDS";
   public static String COMMUNITIES_COLLECTION = "COMMUNITIES";

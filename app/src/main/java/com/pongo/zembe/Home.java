@@ -18,12 +18,15 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import android.os.Parcelable;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.json.JSONObject;
 
@@ -50,6 +53,8 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHom
   View homeFragState;
   Context thisActivity = this;
   Fragment currentFrag;
+  TagCollection tagCollection ;
+  CollectionReference tagsDB = firestore.collection(Konstants.TAG_COLLECTION);
 
 
   @Override
@@ -66,10 +71,11 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHom
   private void initializeActivity() {
     fillInTheBlankSpaces();
     //getAuthenticated User if they are coming from login | register
-    authenticatedUser = getIntent().getParcelableExtra("authUser");
+    authenticatedUser = getIntent().getParcelableExtra(Konstants.AUTH_USER_KEY);
     if (authenticatedUser != null) {
       userDocumentReference = userDB.document(authenticatedUser.getUserDocumentID());
     }
+    loadTags();
     userProfileImageOnToolbar = findViewById(R.id.toolbar_img);
     userProfileImageOnToolbar.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -95,6 +101,25 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHom
     addErrandBtn.setOnClickListener(addNewErrand);
   }
 
+  private  void loadTags(){
+    tagsDB.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+      @Override
+      public void onSuccess(QuerySnapshot documents) {
+        //this will usually just return one document
+        for (DocumentSnapshot document : documents) {
+          if (document.exists()) {
+            tagCollection = document.toObject(TagCollection.class);
+          }
+        }
+      }
+    }).addOnFailureListener(new OnFailureListener() {
+      @Override
+      public void onFailure(@NonNull Exception e) {
+        e.printStackTrace();
+      }
+    });
+  }
+
 
   private View.OnClickListener viewFavorites = new View.OnClickListener() {
     @Override
@@ -118,6 +143,7 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHom
     public void onClick(View view) {
       Intent createErrandPage = new Intent(getApplicationContext(), NewErrandCreationPage.class);
       createErrandPage.putExtra(Konstants.AUTH_USER_KEY, authenticatedUser);
+      createErrandPage.putExtra(Konstants.PASS_TAGS, tagCollection);
       startActivity(createErrandPage);
     }
   };
