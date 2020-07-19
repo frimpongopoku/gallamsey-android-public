@@ -4,11 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,8 +26,9 @@ public class ErrandViewActivity extends AppCompatActivity {
   Button runErrandButton, readAbout;
   GenericErrandClass errand;
   TextView pageTitle, moneySummary, cost, allowance, dateText, userName, errandDescription, detailsText, detailsTitleBox;
-  ImageView backBtn, errandImage;
+  ImageView backBtn, errandImage, options;
   ChipGroup tagGroup;
+  Context thisActivity = this;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +43,7 @@ public class ErrandViewActivity extends AppCompatActivity {
 
 
   public void initializeActivity() {
+    options = findViewById(R.id.options);
     tagGroup = findViewById(R.id.errand_view_chipGroup);
     detailsTitleBox = findViewById(R.id.details_title_box);
     detailsText = findViewById(R.id.details_text);
@@ -57,8 +62,37 @@ public class ErrandViewActivity extends AppCompatActivity {
     runErrandButton = findViewById(R.id.run_errand);
     runErrandButton.setOnClickListener(runErrand);
     backBtn.setOnClickListener(goBack);
+    options.setOnClickListener(openDropdown);
   }
 
+  private View.OnClickListener openDropdown = new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+      PopupMenu menu = new PopupMenu(thisActivity, view);
+      menu.inflate(R.menu.menu_for_errand_view);
+      menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+        @Override
+        public boolean onMenuItemClick(MenuItem menuItem) {
+          switch (menuItem.getItemId()) {
+            case R.id.edit: {
+              Toast.makeText(thisActivity, "You have clicked edit", Toast.LENGTH_SHORT).show();
+              break;
+            }
+            case R.id.delete: {
+              Toast.makeText(thisActivity, "You have clicked delete", Toast.LENGTH_SHORT).show();
+              break;
+            }
+            case R.id.back: {
+              Toast.makeText(thisActivity, "You have clicked back", Toast.LENGTH_SHORT).show();
+              break;
+            }
+          }
+          return true;
+        }
+      });
+      menu.show();
+    }
+  };
 
   private void populateWithInfo(GenericErrandClass errand) {
     errandDescription.setText(errand.getDescription());
@@ -94,7 +128,8 @@ public class ErrandViewActivity extends AppCompatActivity {
         chip.setTextColor(getColor(R.color.appColor));
         tagGroup.addView(chip);
 
-    } }else{
+      }
+    } else {
       tagGroup.setVisibility(View.GONE);
     }
 

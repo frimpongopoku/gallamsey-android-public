@@ -10,6 +10,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+      android:clickable="true"
+      android:id="@+id/options"
+      android:background="?attr/selectableItemBackgroundBorderless"
+      android:layout_marginEnd="15dp"
+      android:layout_marginTop="15dp"
+      android:elevation="50dp"
+      android:layout_alignParentEnd="true"
+      android:src="@drawable/option_icon"
+      android:layout_width="25dp"
+      android:layout_height="25dp" />
+
     <RelativeLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"

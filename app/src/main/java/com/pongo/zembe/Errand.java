@@ -42,7 +42,12 @@ public class Errand implements Parcelable {
   public String setTitle(String description) {
     String title = "";
     if (!description.trim().isEmpty()) {
-      title = description.substring(0, 30);
+      if (description.length() >= 30) {
+        title = description.substring(0, 30) + "...";
+      } else {
+        title = description;
+      }
+
     }
     return title;
   }
