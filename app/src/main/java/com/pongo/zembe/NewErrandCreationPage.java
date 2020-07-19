@@ -76,6 +76,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
   MagicBoxes dialogCreator;
   GroundUser authenticatedUser;
   StorageReference storageReference;
+  FirebaseStorage STORAGE = FirebaseStorage.getInstance();
   CollectionReference tagsDB = store.collection(Konstants.TAG_COLLECTION);
   TagCollection tagCollection = new TagCollection();
   Context context;
@@ -83,6 +84,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
   GallamseyLocationComponent selectedGallamseyLocation;
   GenericErrandClass toBeEdited;
   String MODE = Konstants.INIT_STRING;
+  boolean REMOVED_IMG_IN_EDITMODE = false;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -104,12 +106,17 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     if (MODE.equals(Konstants.EDIT_MODE)) {
       //means user wants to edit an existing errand, inflate the all fields with incoming errand
       toBeEdited = getIntent().getParcelableExtra(Konstants.PASS_ERRAND_AROUND);
+      inflateAllFieldsForEditing(toBeEdited);
     }
 
 
   }
 
-  private void inflateForEditing(GenericErrandClass errand) {
+  private void inflateAllFieldsForEditing(GenericErrandClass errand) {
+    if(errand == null) {
+      Toast.makeText(activity, "Oops, editing is not possible!", Toast.LENGTH_SHORT).show();
+      return;
+    }
     descriptionBox.setText(errand.getDescription());
     if (errand.getErrandType().equals(Konstants.IMAGE_ERRAND)) {
       Picasso.get().load(errand.getImages().get(0)).into(userSelectedImageHolder);
@@ -121,9 +128,29 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     allowanceBox.setText(String.valueOf(errand.getAllowance()));
     allowanceBox.setKeyListener(null);
     selectedGallamseyLocation = errand.getPickUpLocation();
-    // TODO: next is details, expiry, && tags && riders
+    inflateDetails(errand.getDetails());
+    inflateTags(errand.getTags());
+    //dont do anything to expiry date, user must choose a new expiry date everytime they edit
   }
 
+  private void inflateDetails(ArrayList<String> oldDetails) {
+    recyclerAdapter = new DetailsListAdapter(this, oldDetails, this);
+    recyclerView.setAdapter(recyclerAdapter);
+    detailsList = oldDetails;
+  }
+
+  private void inflateTags(ArrayList<String> tags) {
+    tagList = tags;
+    for (final String tag : tags) {
+      chipGroup.addView(MyHelper.createChip(this, tag, new GalInterfaceGuru.TagDialogChipActions() {
+        @Override
+        public void removeTag(View v) {
+          chipGroup.removeView(v);
+          tagList.remove(tag);
+        }
+      }));
+    }
+  }
 
 
   public void goToPaymentPage(GenericErrandClass errand) {
@@ -158,7 +185,14 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
       @Override
       public void getErrandObject(final GenericErrandClass errand) {
         addNewTagsIfExist();
-        String id = errandDB.document().getId(); // get id before its saved, so we can save in the document itself
+        String id = Konstants.INIT_STRING;
+        if (MODE.equals(Konstants.EDIT_MODE) && userSelectedImage != null) {
+          //means editing is happening, and user has selected a different image from before
+          id = toBeEdited.getErrandDocumentID();
+        } else {
+          errandDB.document().getId(); // get id before its saved, so we can save in the document itself
+        }
+
         errand.setErrandDocumentID(id);
         errandDB.document(id).set(errand).addOnSuccessListener(new OnSuccessListener<Void>() {
           @Override
@@ -209,30 +243,93 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
       )
     );
     errand.setPickUpLocation(selectedGallamseyLocation);
-//    errand.setNotifiableRiders(fakeSelectedRiders);
-    if (userSelectedImage == null) {
 
-      errand.setErrandType(Konstants.TEXT_ERRAND);
-      errandCallback.getErrandObject(errand);
-
-    } else {
-
-      errand.setErrandType(Konstants.IMAGE_ERRAND);
-      imageHelper.uploadImageToFirebase(
-        storageReference,
-        selectedImageURI,
-        Konstants.IMG_ERRAND_CONSTANT,
-        authenticatedUser.getUserDocumentID(),
-        userSelectedImage,
-        new ImageUploadHelper.CollectUploadedImageURI() {
-          @Override
-          public void getURI(Uri uri) {
-            ArrayList<String> imgs = new ArrayList<>();
-            imgs.add(uri.toString());
-            errand.setImages(imgs);
+    if (MODE.equals(Konstants.EDIT_MODE)) {
+      if (toBeEdited.getErrandType().equals(Konstants.TEXT_ERRAND)) {
+        //means errand came in as text.. is user keeping it as text ? or switching to an image?
+        if (userSelectedImage == null) {
+          //yes, user is still keeping as text
+          errand.setErrandType(toBeEdited.getErrandType());
+          errandCallback.getErrandObject(errand);
+        } else {
+          //user wants to change from raw text, and add an image
+          errand.setErrandType(Konstants.IMAGE_ERRAND);
+          imageHelper.uploadImageToFirebase(
+            storageReference,
+            selectedImageURI,
+            Konstants.IMG_ERRAND_CONSTANT,
+            authenticatedUser.getUserDocumentID(),
+            userSelectedImage,
+            new ImageUploadHelper.CollectUploadedImageURI() {
+              @Override
+              public void getURI(Uri uri) {
+                ArrayList<String> imgs = new ArrayList<>();
+                imgs.add(uri.toString());
+                errand.setImages(imgs);
+                errandCallback.getErrandObject(errand);
+              }
+            });
+        }
+      } else {
+        //means errand came in as an image-typed errand: is user sticking with already uploaded? is user changing image? or is user switching to text?
+        if (userSelectedImage == null) {
+          //I have not chosen anything new to be uploaded
+          if (REMOVED_IMG_IN_EDITMODE) {
+            //yes, I came in as an image type, but I have removed the image, I want to switch to a text errand now
+            errand.setErrandType(Konstants.TEXT_ERRAND);
+            errandCallback.getErrandObject(errand);
+          } else {
+            //I dont want to switch to text, keep the former image I uploaded (not changing anything 'img')
+            errand.setErrandType(toBeEdited.getErrandType());
             errandCallback.getErrandObject(errand);
           }
-        });
+        } else {
+          //I came in as an image errand and I want to change my image, so upload new image and delete the old one
+          //---- DELETE OLD IMAGE FROM STORAGE
+          StorageReference photRef = STORAGE.getReferenceFromUrl(toBeEdited.getImages().get(0));
+          photRef.delete();
+          //-----------------------------------
+          errand.setErrandType(Konstants.IMAGE_ERRAND);
+          imageHelper.uploadImageToFirebase(
+            storageReference,
+            selectedImageURI,
+            Konstants.IMG_ERRAND_CONSTANT,
+            authenticatedUser.getUserDocumentID(),
+            userSelectedImage,
+            new ImageUploadHelper.CollectUploadedImageURI() {
+              @Override
+              public void getURI(Uri uri) {
+                ArrayList<String> imgs = new ArrayList<>();
+                imgs.add(uri.toString());
+                errand.setImages(imgs);
+                errandCallback.getErrandObject(errand);
+              }
+            });
+        }
+      }
+    } else {
+      //---------------WE ARE NOT IN EDIT MODE------------------
+      if (userSelectedImage == null) {
+        errand.setErrandType(Konstants.TEXT_ERRAND);
+        errandCallback.getErrandObject(errand);
+      } else {
+        errand.setErrandType(Konstants.IMAGE_ERRAND);
+        imageHelper.uploadImageToFirebase(
+          storageReference,
+          selectedImageURI,
+          Konstants.IMG_ERRAND_CONSTANT,
+          authenticatedUser.getUserDocumentID(),
+          userSelectedImage,
+          new ImageUploadHelper.CollectUploadedImageURI() {
+            @Override
+            public void getURI(Uri uri) {
+              ArrayList<String> imgs = new ArrayList<>();
+              imgs.add(uri.toString());
+              errand.setImages(imgs);
+              errandCallback.getErrandObject(errand);
+            }
+          });
+      }
     }
 
 
@@ -547,6 +644,9 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
           public void getCompressedImage(byte[] compressedImage) {
             userSelectedImage = compressedImage;
             userSelectedImageHolder.setImageBitmap(ImageUploadHelper.changeBytesToBitmap(compressedImage));
+            if (MODE.equals(Konstants.EDIT_MODE)) {
+              REMOVED_IMG_IN_EDITMODE = false;
+            }
           }
         });
 
@@ -665,6 +765,9 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
       removePictureBtn.setVisibility(View.GONE);
       userSelectedImage = null;
       userSelectedImageHolder.setImageResource(R.drawable.galam_wakye);
+      if (MODE.equals(Konstants.EDIT_MODE)) {
+        REMOVED_IMG_IN_EDITMODE = true;
+      }
     }
   };
   private View.OnClickListener showImageDIv = new View.OnClickListener() {

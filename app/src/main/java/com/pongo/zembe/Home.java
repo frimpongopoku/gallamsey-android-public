@@ -144,6 +144,7 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHom
       Intent createErrandPage = new Intent(getApplicationContext(), NewErrandCreationPage.class);
       createErrandPage.putExtra(Konstants.AUTH_USER_KEY, authenticatedUser);
       createErrandPage.putExtra(Konstants.PASS_TAGS, tagCollection);
+      createErrandPage.putExtra(Konstants.EDIT_MODE,Konstants.INIT_STRING);//set it to an empty string, showing that its not edit mode
       startActivity(createErrandPage);
     }
   };
@@ -233,7 +234,10 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHom
 
   @Override
   public void getErrandToBeEdited(int pos, GenericErrandClass errand) {
-    Toast.makeText(thisActivity, "I have gotten the errand at pos - "+ pos, Toast.LENGTH_SHORT).show();
-
+    Intent page = new Intent(this,NewErrandCreationPage.class);
+    page.putExtra(Konstants.EDIT_MODE, Konstants.EDIT_MODE);
+    page.putExtra(Konstants.PASS_ERRAND_AROUND,errand);
+    page.putExtra(Konstants.PASS_TAGS, tagCollection);
+    startActivity(page);
   }
 }
