@@ -109,11 +109,10 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
       inflateAllFieldsForEditing(toBeEdited);
     }
 
-
   }
 
   private void inflateAllFieldsForEditing(GenericErrandClass errand) {
-    if(errand == null) {
+    if (errand == null) {
       Toast.makeText(activity, "Oops, editing is not possible!", Toast.LENGTH_SHORT).show();
       return;
     }
@@ -127,10 +126,18 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     estimatedCostBox.setKeyListener(null);
     allowanceBox.setText(String.valueOf(errand.getAllowance()));
     allowanceBox.setKeyListener(null);
-    selectedGallamseyLocation = errand.getPickUpLocation();
+    if (errand.getPickUpLocation() != null) {
+      GallamseyLocationComponent loc = errand.getPickUpLocation();
+      selectedGallamseyLocation = loc;
+      if (locationList.contains(loc.getLocationName())) {
+        int index = locationList.indexOf(loc.getLocationName());
+        locationDropdown.setSelection(index);
+      }
+    }
+
     inflateDetails(errand.getDetails());
     inflateTags(errand.getTags());
-    //dont do anything to expiry date, user must choose a new expiry date everytime they edit
+    //don't do anything to expiry date, user must choose a new expiry date every time they edit
   }
 
   private void inflateDetails(ArrayList<String> oldDetails) {
@@ -186,11 +193,10 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
       public void getErrandObject(final GenericErrandClass errand) {
         addNewTagsIfExist();
         String id = Konstants.INIT_STRING;
-        if (MODE.equals(Konstants.EDIT_MODE) && userSelectedImage != null) {
-          //means editing is happening, and user has selected a different image from before
+        if (MODE.equals(Konstants.EDIT_MODE)) {
           id = toBeEdited.getErrandDocumentID();
         } else {
-          errandDB.document().getId(); // get id before its saved, so we can save in the document itself
+          id = errandDB.document().getId(); // get id before its saved, so we can save in the document itself
         }
 
         errand.setErrandDocumentID(id);
@@ -599,11 +605,11 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
       tagCollection.setTags(tagList);
       tagsDB.document(newID).set(tagCollection);
     } else {
-      HashMap<String, Object> newArr = new HashMap<>();
-      newArr.put("tags", FieldValue.arrayUnion(tagList));
       //this will update taglist in DB if a user actually provided a new tag that does not exist,
       //else, nothing will be added
-      tagsDB.document(tagCollection.getDocumentID()).update(newArr);
+      for (String tag : tagList) {
+        tagsDB.document(tagCollection.getDocumentID()).update("tags", FieldValue.arrayUnion(tag));
+      }
     }
   }
 

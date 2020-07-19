@@ -235,6 +235,7 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHom
   @Override
   public void getErrandToBeEdited(int pos, GenericErrandClass errand) {
     Intent page = new Intent(this,NewErrandCreationPage.class);
+    page.putExtra(Konstants.AUTH_USER_KEY, authenticatedUser);
     page.putExtra(Konstants.EDIT_MODE, Konstants.EDIT_MODE);
     page.putExtra(Konstants.PASS_ERRAND_AROUND,errand);
     page.putExtra(Konstants.PASS_TAGS, tagCollection);
