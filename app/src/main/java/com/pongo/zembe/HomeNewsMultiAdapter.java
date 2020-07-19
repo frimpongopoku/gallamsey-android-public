@@ -102,8 +102,9 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
     holder.cost.setText(String.valueOf(newsItem.getCost()));
     holder.profit.setText(String.valueOf(newsItem.getAllowance()));
     holder.date.setText(newsItem.getCreatedAt());
-    Picasso.get().load(newsItem.getImages().get(0)).into(holder.image);
-
+    if(newsItem.getImages() !=null && newsItem.getImages().size() !=0){
+      Picasso.get().load(newsItem.getImages().get(0)).into(holder.image);
+    }
   }
 
   @Override

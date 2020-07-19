@@ -46,6 +46,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+
+// TODO: Untested edit case scenarios for 1. Switch from image to text 2. Switch from text to image
 public class NewErrandCreationPage extends AppCompatActivity implements OnDetailItemsClick, RiderForSelectionRecyclerAdapter.SelectRiderCallback {
   SimpleUser creator;
   ArrayList<String> fakeSelectedRiders = new ArrayList<>(), detailsList = new ArrayList<>(), tagList = new ArrayList<>(), autoCompleteList = new ArrayList<>();
@@ -118,8 +120,11 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     }
     descriptionBox.setText(errand.getDescription());
     if (errand.getErrandType().equals(Konstants.IMAGE_ERRAND)) {
-      Picasso.get().load(errand.getImages().get(0)).into(userSelectedImageHolder);
-      togglePictureTab();
+      if (errand.getImages() != null && errand.getImages().size() != 0) {
+        Picasso.get().load(errand.getImages().get(0)).into(userSelectedImageHolder);
+        togglePictureTab();
+      }
+
     }
     //make it impossible to change money value ( You cannot edit amount of money here, cos you have already  )
     estimatedCostBox.setText(String.valueOf(errand.getCost()));
@@ -282,18 +287,23 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
           //I have not chosen anything new to be uploaded
           if (REMOVED_IMG_IN_EDITMODE) {
             //yes, I came in as an image type, but I have removed the image, I want to switch to a text errand now
+            deleteImageFromStorage(errand.getImages().get(0));
             errand.setErrandType(Konstants.TEXT_ERRAND);
             errandCallback.getErrandObject(errand);
           } else {
-            //I dont want to switch to text, keep the former image I uploaded (not changing anything 'img')
+            //I don't want to switch to text, keep the former image I uploaded (not changing anything 'img')
+            errand.setImages(toBeEdited.getImages());
             errand.setErrandType(toBeEdited.getErrandType());
             errandCallback.getErrandObject(errand);
           }
         } else {
           //I came in as an image errand and I want to change my image, so upload new image and delete the old one
           //---- DELETE OLD IMAGE FROM STORAGE
-          StorageReference photRef = STORAGE.getReferenceFromUrl(toBeEdited.getImages().get(0));
-          photRef.delete();
+          if (toBeEdited.getImages().size() != 0) {
+            //just a null check to be safe
+            deleteImageFromStorage(toBeEdited.getImages().get(0));
+          }
+
           //-----------------------------------
           errand.setErrandType(Konstants.IMAGE_ERRAND);
           imageHelper.uploadImageToFirebase(
@@ -339,6 +349,11 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     }
 
 
+  }
+
+  private void deleteImageFromStorage(String url) {
+    StorageReference photRef = STORAGE.getReferenceFromUrl(url);
+    photRef.delete();
   }
 
   private View.OnClickListener postMyErrand = new View.OnClickListener() {
