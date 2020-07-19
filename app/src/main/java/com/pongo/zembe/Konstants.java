@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 public class Konstants {
 
+  public static final String EDIT_MODE = "EDITING";
   public static final String PASS_TAGS = "TAGS";
   public static final String UPPER_TIER = "UPPER";
   public static final String LOWER_TIER = "LOWER";

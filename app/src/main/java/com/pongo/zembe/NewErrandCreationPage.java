@@ -41,6 +41,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -80,13 +81,15 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
   Context context;
   HashMap<String, GallamseyLocationComponent> stringToGallamseObj = new HashMap<>();
   GallamseyLocationComponent selectedGallamseyLocation;
-
+  GenericErrandClass toBeEdited;
+  String MODE = Konstants.INIT_STRING;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_new_errand_creation_page);
     activity = this;
+    MODE = getIntent().getStringExtra(Konstants.EDIT_MODE);
     dialogCreator = new MagicBoxes(this);
     authenticatedUser = getIntent().getParcelableExtra(Konstants.AUTH_USER_KEY);
     tagCollection = getIntent().getParcelableExtra(Konstants.PASS_TAGS);
@@ -98,8 +101,29 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     }
     initializeAutoCompleteLists();
     initializeActivity();
+    if (MODE.equals(Konstants.EDIT_MODE)) {
+      //means user wants to edit an existing errand, inflate the all fields with incoming errand
+      toBeEdited = getIntent().getParcelableExtra(Konstants.PASS_ERRAND_AROUND);
+    }
+
 
   }
+
+  private void inflateForEditing(GenericErrandClass errand) {
+    descriptionBox.setText(errand.getDescription());
+    if (errand.getErrandType().equals(Konstants.IMAGE_ERRAND)) {
+      Picasso.get().load(errand.getImages().get(0)).into(userSelectedImageHolder);
+      togglePictureTab();
+    }
+    //make it impossible to change money value ( You cannot edit amount of money here, cos you have already  )
+    estimatedCostBox.setText(String.valueOf(errand.getCost()));
+    estimatedCostBox.setKeyListener(null);
+    allowanceBox.setText(String.valueOf(errand.getAllowance()));
+    allowanceBox.setKeyListener(null);
+    selectedGallamseyLocation = errand.getPickUpLocation();
+    // TODO: next is details, expiry, && tags && riders
+  }
+
 
 
   public void goToPaymentPage(GenericErrandClass errand) {
@@ -646,11 +670,15 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
   private View.OnClickListener showImageDIv = new View.OnClickListener() {
     @Override
     public void onClick(View view) {
-      addPictureTabBtn.setAlpha(1);
-      pictureTab.setVisibility(View.VISIBLE);
-      removePictureBtn.setVisibility(View.VISIBLE);
+      togglePictureTab();
     }
   };
+
+  private void togglePictureTab() {
+    addPictureTabBtn.setAlpha(1);
+    pictureTab.setVisibility(View.VISIBLE);
+    removePictureBtn.setVisibility(View.VISIBLE);
+  }
 
   private View.OnClickListener onTabClick(final String whichPage, final ImageView newPageBtn, final LinearLayout newPage) {
     return new View.OnClickListener() {
