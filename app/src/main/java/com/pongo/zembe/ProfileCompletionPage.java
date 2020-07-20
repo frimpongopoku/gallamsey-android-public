@@ -5,29 +5,27 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -39,6 +37,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileCompletionPage extends AppCompatActivity {
   CoordinatorLayout rootLayout;
@@ -52,18 +52,20 @@ public class ProfileCompletionPage extends AppCompatActivity {
   LinearLayout elementsDiv;
   LinearLayout profilePicture;
   ImageUploadHelper imageUploadHelper;
-  Uri selectedImageURI = null;
-  ImageView imageHolder;
+  byte[] selectedImageBytes = null;
+  CircleImageView imageHolder;
   StorageReference storageReference;
   String selectedImageExt;
   User recoveredUser; //Gallamsey User class
   ImageView roundCloseBtn;
+  Activity activity;
 
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_profile_completion_page);
+    activity = this;
     user = mAuth.getCurrentUser();
     spinner = findViewById(R.id.prof_spinner);
     //-----------------
@@ -116,7 +118,7 @@ public class ProfileCompletionPage extends AppCompatActivity {
 
           @Override
           public void positiveBtnCallable() {
-           deleteCurrentProfilePicture();
+            deleteCurrentProfilePicture();
           }
         });
         dialog.show();
@@ -145,7 +147,7 @@ public class ProfileCompletionPage extends AppCompatActivity {
           }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-              Toast.makeText(ProfileCompletionPage.this, "We could not remove your picture:: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+              Toast.makeText(ProfileCompletionPage.this, "We could not remove your picture:: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
           });
         }
@@ -153,12 +155,7 @@ public class ProfileCompletionPage extends AppCompatActivity {
   }
 
   private void startImageChooser() {
-    imageUploadHelper.openFileChooser(new ImageUploadHelper.FileChooserCallback() {
-      @Override
-      public void getBackChooserIntent(Intent intent) {
-        startActivityForResult(intent, Konstants.CHOOSE_IMAGE_REQUEST_CODE);
-      }
-    });
+    imageUploadHelper.openFileChooserWithCropper(activity, 4, 3);
   }
 
   private void goToLogin() {
@@ -216,7 +213,7 @@ public class ProfileCompletionPage extends AppCompatActivity {
         profilePicture.setBackgroundResource(R.drawable.profile_dummy_box_male);
       } else if (gallamseyUser.getGender().equals(Konstants.OTHER)) {
         profilePicture.setBackgroundResource(R.drawable.profile_dummy_box_other);
-      }else{
+      } else {
         profilePicture.setBackgroundResource(R.drawable.profile_dummy_box_female);
       }
     }
@@ -225,19 +222,37 @@ public class ProfileCompletionPage extends AppCompatActivity {
   @Override
   protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
-    if (requestCode == Konstants.CHOOSE_IMAGE_REQUEST_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {
-      selectedImageURI = data.getData();
-      selectedImageExt = imageUploadHelper.getFileExtension(selectedImageURI);
-      profilePicture.setVisibility(View.GONE);
-      imageHolder.setVisibility(View.VISIBLE);
-      Picasso.get().load(selectedImageURI).into(imageHolder);
-    }
+    imageUploadHelper.collectCroppedImage(requestCode, resultCode, data, new ImageUploadHelper.CroppingImageCallback() {
+      @Override
+      public void getCroppedImage(Uri uri) {
+        selectedImageExt = imageUploadHelper.getFileExtension(uri);
+        imageUploadHelper.compressImageToBytes(uri, new ImageUploadHelper.CompressedImageToBytesCallback() {
+          @Override
+          public void getCompressedImage(byte[] compressedImage) {
+            selectedImageBytes = compressedImage;
+            profilePicture.setVisibility(View.GONE);
+            imageHolder.setVisibility(View.VISIBLE);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(compressedImage, 0, compressedImage.length);
+            imageHolder.setImageBitmap(bitmap);
+
+          }
+        });
+
+      }
+
+      @Override
+      public void getCroppingError(Exception e) {
+        e.printStackTrace();
+        Toast.makeText(activity, e.getMessage(), Toast.LENGTH_SHORT).show();
+
+      }
+    });
   }
 
   public void uploadImage(final ImageUploadCallback imageUploadCallback) {
     String filename = user.getUid() + "_profile_" + System.currentTimeMillis() + "." + selectedImageExt;
     final StorageReference fileReference = storageReference.child(filename);
-    fileReference.putFile(selectedImageURI)
+    fileReference.putBytes(selectedImageBytes)
       .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
         @Override
         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -262,7 +277,7 @@ public class ProfileCompletionPage extends AppCompatActivity {
     dob = dobBox.getText().toString().trim();
     name = usernameBox.getText().toString().trim();
     number = whatsappNumberBox.getText().toString().trim();
-    HashMap<String, Object> dobValidation = RandomHelpersClass.validateDOB(dob);
+    HashMap<String, Object> dobValidation = MyHelper.validateDOB(dob);
     if (name.isEmpty()) {
       usernameBox.setError("Sorry, you cant leave this empty");
       usernameBox.requestFocus();
@@ -274,7 +289,7 @@ public class ProfileCompletionPage extends AppCompatActivity {
       return;
     }
     if (dobValidation.get("status").equals(false)) {
-      String intoOne = RandomHelpersClass.mergeTextsFromArray((ArrayList<String>) dobValidation.get("errors"));
+      String intoOne = MyHelper.mergeTextsFromArray((ArrayList<String>) dobValidation.get("errors"));
       dobBox.setError(intoOne);
       dobBox.requestFocus();
       return;
@@ -305,7 +320,7 @@ public class ProfileCompletionPage extends AppCompatActivity {
 
         // Upload Profile Picture if available, else : do normal user updates
         //------------------------------------
-        if (selectedImageURI != null) {
+        if (selectedImageBytes != null) {
           uploadImage(new ImageUploadCallback() {
             @Override
             public void getDownloadableURL(String URL) {

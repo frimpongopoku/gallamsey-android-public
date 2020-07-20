@@ -16,6 +16,7 @@
   <color name="appColorMediumRare">#BCA4F1</color>
   <color name="appColorLight">#CBE2FA</color>
   <color name="appColorMediumLight">#3787FF</color>
+  <color name="appColorLight_hollow_of_hollow">#EBF1FA</color>
   <color name="appColorLight_hollow">#DDEDFF</color>
   <color name="lightgreen">#EDFFEB</color>
   <color name="stroke_button_color">#CDE8FF</color>
@@ -31,6 +32,7 @@
   <color name="deep_orange">#FF9800</color>
   <color name="fav_black">#282828</color>
   <color name="green">#228B22</color>
+  <color name="shimmer_color">#dddddd</color>
 
   <!-- App color is goign to be changed to this = #004aad-->
 

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple android:color="@android:color/darker_gray" android:shape="rectangle" xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+  <!--<item android:id="@android:id/mask" android:drawable="@android:color/white"/>-->
+  <item>
+    <shape android:shape="rectangle">
+      <solid android:color="@android:color/white" />
+      <corners android:radius="1000dp" />
+    </shape>
+  </item>
+
+  <item
+    android:bottom="12dp"
+    android:drawable="@drawable/biker_logo_for_errand"
+    android:left="12dp"
+    android:right="12dp"
+    android:top="12dp"/>
+
+</ripple>

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/container"
   android:layout_width="match_parent"
+
   android:layout_height="wrap_content"
-  android:layout_marginTop="10dp"
   android:layout_marginBottom="10dp"
   android:background="?attr/selectableItemBackground"
   android:clickable="true"
@@ -14,6 +15,16 @@
     android:layout_height="wrap_content"
     android:minHeight="130dp"
     android:padding="10dp">
+
+    <!--<ImageView-->
+      <!--android:id="@+id/options"-->
+      <!--android:layout_marginTop="10dp"-->
+      <!--android:background="?attr/selectableItemBackgroundBorderless"-->
+      <!--android:layout_marginRight="15dp"-->
+      <!--android:layout_alignParentRight="true"-->
+      <!--android:src="@drawable/option_icon"-->
+      <!--android:layout_width="25dp"-->
+      <!--android:layout_height="25dp" />-->
 
     <LinearLayout
       android:id="@+id/user_details_div"
@@ -77,50 +88,79 @@
       android:text="I need someone to buy me waakye 3 cedis, Mcroni 10 cedis Fish 2 cedis, and Chicken 5 cedis"
       android:textSize="19sp" />
 
-    <LinearLayout
+    <RelativeLayout
+      android:paddingTop="5dp"
+      android:paddingStart="15dp"
+      android:paddingEnd="15dp"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_below="@id/text_errand_card_desc"
       android:orientation="horizontal"
-      android:padding="10dp">
+      >
 
-      <ImageView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginEnd="5dp"
-        android:src="@drawable/minus_sign" />
 
       <TextView
+        android:id="@+id/money_out"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="3dp"
+        android:fontFamily="@font/google_sans_medium"
+        android:text="GHS"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="15sp" />
 
+      <TextView
         android:id="@+id/text_errand_card_cost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/text_errand_card_desc"
+        android:layout_centerVertical="true"
         android:layout_marginEnd="5dp"
-        android:fontFamily="@font/nunito_bold"
-        android:text="25"
-        android:textColor="@color/cost_color"
+
+        android:layout_toEndOf="@id/money_out"
+        android:fontFamily="@font/google_sans_medium"
+        android:text="28"
+        android:textColor="@android:color/holo_red_dark"
         android:textSize="15sp" />
 
       <ImageView
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_marginEnd="5dp"
-        android:src="@drawable/galam_handshake" />
+        android:id="@+id/compare_arrow"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_toEndOf="@id/text_errand_card_cost"
+        android:src="@drawable/ic_compare_arrows_black_24dp" />
+
+      <TextView
+        android:id="@+id/money_in"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="3dp"
+        android:layout_toEndOf="@id/compare_arrow"
+        android:fontFamily="@font/google_sans_medium"
+        android:text="GHS"
+        android:textColor="@color/green"
+        android:textSize="15sp" />
 
       <TextView
         android:id="@+id/text_errand_card_allowance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/nunito_bold"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="2dp"
+        android:layout_toEndOf="@id/money_in"
+        android:fontFamily="@font/google_sans_medium"
         android:text="55"
         android:textColor="@color/green"
         android:textSize="15sp" />
-
-
-    </LinearLayout>
+    </RelativeLayout>
 
   </RelativeLayout>
+
+  <include layout="@layout/news_location_status_bar" />
 
 
   <View

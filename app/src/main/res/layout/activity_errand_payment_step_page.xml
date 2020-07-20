@@ -4,26 +4,22 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  tools:context=".errandPaymentStepPage">
+  tools:context=".ErrandPaymentStepPage">
 
   <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <include
-      android:id="@+id/titlebar"
-      layout="@layout/app_default_toolbar"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_alignParentTop="true"
-      android:layout_marginBottom="0dp" />
+      layout="@layout/universal_title_bar"
+      />
 
     <ScrollView
       android:scrollbars="none"
       android:layout_above="@id/bottom_sheet_space"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:layout_below="@+id/titlebar"
+      android:layout_below="@+id/title_bar"
      >
 
       <LinearLayout

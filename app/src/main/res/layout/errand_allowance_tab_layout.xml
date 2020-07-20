@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+  <LinearLayout
+    android:id="@+id/tab_for_allowance"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_above="@id/bottom_fake_nav"
+    android:layout_below="@id/top_controls"
+    android:orientation="vertical"
+    android:paddingLeft="20dp"
+    android:paddingTop="5dp"
+    android:paddingRight="20dp"
+    android:visibility="gone">
+
+    <ScrollView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:scrollbars="none">
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <!-- ............................- -->
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal">
+
+          <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/ic_card_giftcard" />
+
+          <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:orientation="vertical">
+
+            <TextView
+              android:id="@+id/currency_in_allowance_tab"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:text="How much are you willing to give?" />
+
+            <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:fontFamily="@font/quick_sand_bold"
+              android:text="Currency: GHS" />
+          </LinearLayout>
+        </LinearLayout>
+        <!-- ............................- -->
+
+        <EditText
+          android:id="@+id/allowance_box"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="15dp"
+          android:background="@android:color/white"
+          android:hint="0.00"
+          android:inputType="numberDecimal"
+          android:textColor="@color/green"
+          android:textSize="50sp" />
+
+        <RelativeLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:layout_marginTop="60dp">
+
+          <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_centerInParent="true"
+            android:alpha="0.2"
+            android:src="@drawable/galam_money_colored" />
+        </RelativeLayout>
+      </LinearLayout>
+
+
+    </ScrollView>
+
+  </LinearLayout>
+</merge>

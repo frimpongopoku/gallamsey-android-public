@@ -1,7 +1,15 @@
 package com.pongo.zembe;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
+
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -9,13 +17,70 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
-public class RandomHelpersClass {
+public class MyHelper {
 
+
+  public static ArrayList<String> changeGallamseyPointToStringArray(ArrayList<GallamseyLocationComponent> array){
+    ArrayList<String> arr = new ArrayList<>();
+    for (GallamseyLocationComponent location : array) {
+      arr.add(location.getLocationName());
+    }
+    return arr;
+  }
+  public static HashMap<String, GallamseyLocationComponent> changeGallmseyPointToHash(ArrayList<GallamseyLocationComponent> array) {
+    HashMap<String, GallamseyLocationComponent> map = new HashMap<>();
+    for (GallamseyLocationComponent location : array) {
+      map.put(location.getLocationName(), location);
+    }
+    return map;
+  }
+
+  public static String grabCleanText(EditText box) {
+    return box.getText().toString().trim();
+  }
+
+  public static String concactToWhat(String motherString, String tobeAttached) {
+    if (motherString.trim().equals("")) {
+      motherString = motherString + tobeAttached + " ";
+    } else {
+      motherString = motherString + "\n" + tobeAttached;
+    }
+
+    return motherString;
+  }
+
+  public static Chip createChip(Context context, final String name, final GalInterfaceGuru.TagDialogChipActions tagDialogChipActions) {
+    Chip chip = new Chip(context);
+    chip.setText(name);
+    chip.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        tagDialogChipActions.removeTag(view);
+      }
+    });
+    return chip;
+  }
+
+  public static Chip createChipNoClose(Context context, final String name) {
+    Chip chip = new Chip(context);
+    chip.setText(name);
+    return chip;
+  }
 
   public static String mergeTextsFromArray(ArrayList<String> arr) {
+    if (arr == null) return "";
     String finalR = "";
     for (int i = 0; i < arr.size(); i++) {
-      finalR = finalR == "" ? arr.get(i) : finalR + ", " + arr.get(i);
+      finalR = finalR.equals("") ? arr.get(i) : finalR + ", " + arr.get(i);
+    }
+    return finalR;
+  }
+
+  public static String mergeTextsFromArrayWithLines(ArrayList<String> arr) {
+    if (arr == null) return "";
+    String finalR = "";
+    for (int i = 0; i < arr.size(); i++) {
+      finalR = finalR.equals("") ? arr.get(i) : finalR + "\n" + arr.get(i);
     }
     return finalR;
   }
@@ -46,8 +111,8 @@ public class RandomHelpersClass {
   public static boolean validateYear(int year) {
     //the year should be in a full four digit code
     int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-      Log.w("Check yearhere:::", String.valueOf(countChar(String.valueOf(year))));
-    if ( year <= 0 || year >= currentYear - 12 || countChar(String.valueOf(year)) != 4) {
+    Log.w("Check yearhere:::", String.valueOf(countChar(String.valueOf(year))));
+    if (year <= 0 || year >= currentYear - 12 || countChar(String.valueOf(year)) != 4) {
       //No zero years, age limit = 13
       return false;
     }

@@ -9,6 +9,9 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -19,6 +22,8 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.hsalf.smilerating.SmileRating;
 import com.hsalf.smileyrating.SmileyRating;
 
@@ -74,6 +79,40 @@ public class MagicBoxes extends AppCompatDialogFragment {
 
   }
 
+  public Dialog constructErrandErrorDialog(String title, String fatal, String semiError, String negative, String positive, final MagicBoxCallables magicInterface) {
+    LayoutInflater inflater = LayoutInflater.from(context);
+    View view = inflater.inflate(R.layout.errand_error_dialog_layout, null, false);
+    TextView fatalHeader, fatalErr, semiErrHeader, semiErr;
+    fatalHeader = view.findViewById(R.id.fatal_error_header);
+    fatalErr = view.findViewById(R.id.fatal_error);
+    semiErrHeader = view.findViewById(R.id.semi_error_header);
+    semiErr = view.findViewById(R.id.semi_error);
+    if (fatal.isEmpty()) {
+      fatalHeader.setVisibility(View.GONE);
+      fatalErr.setVisibility(View.GONE);
+    }
+    fatalErr.setText(fatal);
+    semiErr.setText(semiError);
+    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+    builder.setView(view)
+      .setTitle(title)
+      .setPositiveButton(positive, new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialogInterface, int i) {
+          magicInterface.positiveBtnCallable();
+        }
+      })
+      .setNegativeButton(negative, new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialogInterface, int i) {
+          magicInterface.negativeBtnCallable();
+        }
+      });
+
+    return builder.create();
+
+  }
+
   public Dialog constructCustomDialogOneAction(String title, View v, String actionTitle, final MagicBoxCallables magicInterface) {
     AlertDialog.Builder builder = new AlertDialog.Builder(context);
     builder.setView(v)
@@ -106,51 +145,12 @@ public class MagicBoxes extends AppCompatDialogFragment {
   }
 
 
-//  public Dialog constructDialogForMobileNumberAddition(final ArrayList<PaymentContact> initialArray, final PhoneNumberDialogContentCallable callable) {
-//    final EditText addingBox, nameBox;
-//    Button addButton;
-//    RecyclerView recyclerView ;
-//    AlertDialog.Builder builder = new AlertDialog.Builder(context);
-//    View v = LayoutInflater.from(context).inflate(R.layout.add_mobile_number_custom_view_for_dialog, null, false);
-//    addingBox = v.findViewById(R.id.adding_textbox);
-//    nameBox = v.findViewById(R.id.name_textbox);
-//    addButton = v.findViewById(R.id.add_btn);
-//    recyclerView = v.findViewById(R.id.phone_numbers_recycler);
-//    final PhoneNumberRecyclerAdapter recyclerAdapter = new PhoneNumberRecyclerAdapter(context,initialArray);
-//    LinearLayoutManager manager = new LinearLayoutManager(context);
-//    recyclerView.setLayoutManager(manager);
-//    recyclerView.setAdapter(recyclerAdapter);
-//    addButton.setOnClickListener(new View.OnClickListener() {
-//      @Override
-//      public void onClick(View view) {
-//        String name, phone;
-//        name = nameBox.getText().toString().trim();
-//        phone = addingBox.getText().toString().trim();
-//        if(!name.isEmpty() && !phone.isEmpty()){
-//          initialArray.add(new PaymentContact(name,phone));
-//          recyclerAdapter.notifyDataSetChanged();
-//          addingBox.setText("");
-//          nameBox.setText("");
-//          nameBox.requestFocus();
-//        }
-//        else{
-//          Toast.makeText(context, "Make sure you have put in name and a phone number", Toast.LENGTH_SHORT).show();
-//        }
-//      }
-//    });
-//    builder.setView(v)
-//      .setTitle("Add Payment Mobile Number")
-//      .setPositiveButton("Finish", new DialogInterface.OnClickListener() {
-//        @Override
-//        public void onClick(DialogInterface dialogInterface, int i) {
-//          callable.getContent(initialArray);
-//
-//        }
-//      });
-//    return builder.create();
-//  }
+//  ----------------------- END OF THE LINE FOR THIS CLASS -------------------------
+}
 
 
+interface TagDialogContentCallable {
+  void getContent(ArrayList<String> tags);
 }
 
 interface PhoneNumberDialogContentCallable {

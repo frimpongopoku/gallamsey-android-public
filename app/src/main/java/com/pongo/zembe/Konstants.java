@@ -7,15 +7,39 @@ import java.util.HashMap;
 
 public class Konstants {
 
-
+  public static final String EDIT_MODE = "EDITING";
+  public static final String PASS_TAGS = "TAGS";
+  public static final String UPPER_TIER = "UPPER";
+  public static final String LOWER_TIER = "LOWER";
+  public static final String NEGATIVE = "NEGATIVE";
+  public static final String POSITIVE = "POSITIVE";
+  public static final String DO = "DO";
+  public static final String UNDO = "UNDO";
+  public static final String INIT_STRING = "";
+  public static final String AUTH_USER_KEY = "authUser";
+  public static final String PASS_ERRAND_AROUND = "ERRAND";
+  public static final String NOT_SET = "NOT SET";
   public static final int SENDER_VIEW_TYPE = 172;
   public static final int RECEIPIENT_VIEW_TYPE = 169;
+  //  public static final double sLat = 7.636029;
+//  public static final double sLong = -0.4915028;
   public static final double sLat = 5.636029;
   public static final double sLong = -0.2915028;
 
+//   LOCATION POINTS STUFF
+
+  public static final double MAGIC_DECIMAL = 0.04; // this gives a distance that is approximately 12 mins
+
+  //  USER STATUS
+  public static final String CREATOR = "CREATOR";
+  public static final String RIDER = "RIDER";
+
   // ERRAND CREATION CONSTANTS
   //  --------------------------
-
+  public static final String ERRAND_PICTURES_COLLECTION = "ERRAND_PICS";
+  public static final String IMG_ERRAND_CONSTANT = "_errand_img_";
+  public static final String TEXT_ERRAND = ":jyon@2203:x:text:x:znump:";
+  public static final String IMAGE_ERRAND = "jyon@2203:x:img:x:znump:";
   public static final String USER_TEMPLATES_TAB = "ERRAND_TEMPLATES";
   public static final String FAVORITE_RIDERS_TAB = "FAVORITE_RIDERS";
   public static final String TASKS_GIGS_TAB = "GIGS";
@@ -29,6 +53,8 @@ public class Konstants {
   public static final String ESTIMATION_TAB = "ESTIMATION_TAB";
   public static final String LOCATION_TAB = "LOCATION_TAB";
   public static final String DETAILS_TAB = "DETAILS_TAB";
+  public static final String TAGGING_TAB = "TAGGING_TAB";
+  public static final String SELECT_RIDERS_TAB = "SELECT_RIDERS_TAB";
 
   //ARRAYS
   //-----------------------------
@@ -100,9 +126,23 @@ public class Konstants {
   public static String PREMIUM_USER = "xx-pong-:premium:-num--x";
 
 
+  //   ERRAND STAGE VALUES
+  public static String ERRAND_IS_IN_MOTION = "MOTION";
+  public static String ERRAND_HAS_NOT_STARTED = "HAS_NOT_STARTED";
+  public static String ERRAND_IS_COMPLETE = "IS_COMPLETE";
+  public static String ERRAND_READY_FOR_PAYMENT_TRANSACTION = "PAYMENT_TRANSACTION";
+
+  //ERRAND ERROR VALUES
+  //-----------------------------------------------
+  public static String ERROR_FAILED = "ERROR FAILED";
+  public static String ERROR_PASSED = "ERROR PASSED";
+  public static String ERROR_SEMI_PASSED = "ERROR SEMI PASSED";
+
   //FIREBASE COLLECTION SET CONSTANTS
   //--------------------------------
+  public static String TAG_COLLECTION = "TAGS";
   public static String USER_COLLECTION = "USERS";
+  public static String ERRAND_COLLECTION = "ERRANDS";
   public static String COMMUNITIES_COLLECTION = "COMMUNITIES";
   public static String PROFILE_PICTURES_COLLECTION = "PROFILE PICTURES";
 }
