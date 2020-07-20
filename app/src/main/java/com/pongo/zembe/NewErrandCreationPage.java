@@ -91,6 +91,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
   boolean REMOVED_IMG_IN_EDITMODE = false;
   CircleImageView userProfileImg;
 
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);

@@ -100,7 +100,7 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
     holder.description.setText(newsItem.getDescription());
     holder.cost.setText(String.valueOf(newsItem.getCost()));
     holder.profit.setText(String.valueOf(newsItem.getAllowance()));
-    holder.date.setText(newsItem.getCreatedAt());
+    holder.date.setText(DateHelper.getTimeAgo(newsItem.getCreatedAt()));
     if (!user.getProfilePicture().equals(Konstants.INIT_STRING)) {
       Picasso.get().load(user.getProfilePicture()).into(holder.creatorPic);
     } else {
@@ -124,7 +124,7 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
     holder.title.setText(newsItem.getDescription());
     holder.cost.setText(String.valueOf(newsItem.getCost()));
     holder.profit.setText(String.valueOf(newsItem.getAllowance()));
-    holder.date.setText(newsItem.getCreatedAt());
+    holder.date.setText(DateHelper.getTimeAgo(newsItem.getCreatedAt()));
     if (newsItem.getImages() != null && newsItem.getImages().size() != 0) {
       Picasso.get().load(newsItem.getImages().get(0)).into(holder.image);
     }
