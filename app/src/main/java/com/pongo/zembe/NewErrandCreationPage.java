@@ -287,7 +287,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
           //I have not chosen anything new to be uploaded
           if (REMOVED_IMG_IN_EDITMODE) {
             //yes, I came in as an image type, but I have removed the image, I want to switch to a text errand now
-            deleteImageFromStorage(errand.getImages().get(0));
+            deleteImageFromStorage(toBeEdited.getImages().get(0));
             errand.setErrandType(Konstants.TEXT_ERRAND);
             errandCallback.getErrandObject(errand);
           } else {
