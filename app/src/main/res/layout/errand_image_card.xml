@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/container"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
   android:background="?attr/selectableItemBackground"
   android:clickable="true"
   android:elevation="5dp"
   android:orientation="vertical"
-  android:id="@+id/container"
   android:translationZ="10dp"
 
   >
@@ -18,25 +18,32 @@
     android:paddingStart="10dp"
     android:paddingEnd="10dp">
 
-    <LinearLayout
+    <RelativeLayout
       android:id="@+id/user_details_div"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginLeft="10dp"
       android:layout_marginRight="10dp">
 
-      <ImageView
+      <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/creator_pic"
         android:layout_width="30dp"
         android:layout_height="30dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
         android:src="@drawable/w_p" />
 
       <LinearLayout
+        android:id="@+id/name_box"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="5dp"
+        android:layout_toEndOf="@id/creator_pic"
         android:orientation="vertical"
-        android:paddingTop="5dp">
+        >
 
         <TextView
           android:layout_width="wrap_content"
@@ -59,13 +66,14 @@
       </LinearLayout>
 
       <ImageView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_centerVertical="true"
         android:layout_marginStart="5dp"
-        android:layout_marginTop="7dp"
+        android:layout_toEndOf="@id/name_box"
         android:src="@drawable/galam_gold_medal" />
 
-    </LinearLayout>
+    </RelativeLayout>
   </RelativeLayout>
 
   <LinearLayout
@@ -86,12 +94,12 @@
       android:textSize="18sp" />
 
     <ImageView
-      android:adjustViewBounds="true"
       android:id="@+id/img_errand_card_image"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginTop="5dp"
       android:layout_marginBottom="6dp"
+      android:adjustViewBounds="true"
       android:src="@drawable/galam_shoe_dummy" />
 
     <RelativeLayout
@@ -129,22 +137,22 @@
         android:textSize="15sp" />
 
       <ImageView
+        android:id="@+id/compare_arrow"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_marginStart="4dp"
         android:layout_marginEnd="4dp"
         android:layout_toEndOf="@id/img_errand_card_cost"
-        android:id="@+id/compare_arrow"
-        android:src="@drawable/ic_compare_arrows_black_24dp"
-        android:layout_width="20dp"
-        android:layout_height="20dp" />
+        android:src="@drawable/ic_compare_arrows_black_24dp" />
 
 
       <TextView
-        android:layout_marginEnd="3dp"
         android:id="@+id/money_in"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginTop="2dp"
+        android:layout_marginEnd="3dp"
         android:layout_toEndOf="@id/compare_arrow"
         android:fontFamily="@font/google_sans_medium"
         android:text="GHS"
@@ -166,6 +174,7 @@
 
 
     </RelativeLayout>
+
     <include layout="@layout/news_location_status_bar" />
 
     <View

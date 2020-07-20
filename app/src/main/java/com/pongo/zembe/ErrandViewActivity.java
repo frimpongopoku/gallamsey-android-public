@@ -25,6 +25,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ErrandViewActivity extends AppCompatActivity {
   Toolbar toolbar;
   MagicBoxes dialogCreator;
@@ -38,6 +40,7 @@ public class ErrandViewActivity extends AppCompatActivity {
   GroundUser authenticatedUser;
   GalFirebaseHelper firebaseHelper = new GalFirebaseHelper();
   CollectionReference errandDB = FirebaseFirestore.getInstance().collection(Konstants.ERRAND_COLLECTION);
+  CircleImageView errandOwnerProfile;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +62,7 @@ public class ErrandViewActivity extends AppCompatActivity {
   }
 
   public void initializeActivity() {
+    errandOwnerProfile = findViewById(R.id.profile_img);
     options = findViewById(R.id.options);
     tagGroup = findViewById(R.id.errand_view_chipGroup);
     detailsTitleBox = findViewById(R.id.details_title_box);
@@ -149,7 +153,24 @@ public class ErrandViewActivity extends AppCompatActivity {
     });
   }
 
+  private void setProfilePicture(SimpleUser creator) {
+    if (!creator.getProfilePicture().equals(Konstants.INIT_STRING)) {
+      //means user has a custom profile
+      Picasso.get().load(creator.getProfilePicture()).into(errandOwnerProfile);
+    } else {
+      //check user gender and use to determine which default profile photo to use
+      if (creator.getGender().equals(Konstants.MALE)) {
+        errandOwnerProfile.setImageResource(R.drawable.african_avatar_male);
+      } else if (authenticatedUser.getGender().equals(Konstants.FEMALE)) {
+        errandOwnerProfile.setImageResource(R.drawable.african_avatar_female);
+      } else {
+        errandOwnerProfile.setImageResource(R.drawable.profile_dummy_box_other);
+      }
+    }
+  }
+
   private void populateWithInfo(GenericErrandClass errand) {
+    setProfilePicture(errand.getCreator());
     errandDescription.setText(errand.getDescription());
     userName.setText(errand.getCreator().getUserName());
     if (errand.getErrandType().equals(Konstants.IMAGE_ERRAND)) {

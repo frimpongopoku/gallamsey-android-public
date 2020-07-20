@@ -46,6 +46,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 
 // TODO: Untested edit case scenarios for 1. Switch from image to text 2. Switch from text to image
 public class NewErrandCreationPage extends AppCompatActivity implements OnDetailItemsClick, RiderForSelectionRecyclerAdapter.SelectRiderCallback {
@@ -87,6 +89,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
   GenericErrandClass toBeEdited;
   String MODE = Konstants.INIT_STRING;
   boolean REMOVED_IMG_IN_EDITMODE = false;
+  CircleImageView userProfileImg;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -102,8 +105,8 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
       locationList.add(Konstants.CHOOSE);// I just want "CHOOSE" to be the first item
       locationList.addAll(MyHelper.changeGallamseyPointToStringArray(authenticatedUser.getDeliveryLocations()));
       stringToGallamseObj = MyHelper.changeGallmseyPointToHash(authenticatedUser.getDeliveryLocations());
+      setProfilePicture();
     }
-    initializeAutoCompleteLists();
     initializeActivity();
     if (MODE.equals(Konstants.EDIT_MODE)) {
       //means user wants to edit an existing errand, inflate the all fields with incoming errand
@@ -187,8 +190,6 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
       card.setVisibility(View.GONE);
       selectRidersBtn.setVisibility(View.VISIBLE);
     }
-
-
   }
 
   public void publishErrand() {
@@ -233,6 +234,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
       Konstants.CREATOR)
     ;
     creator.setPrimaryLocation(user.getGeoLocation());
+    creator.setGender(user.getGender());
   }
 
   private void getErrandForShipment(final GalInterfaceGuru.CollectErrandTrainFormShipment errandCallback) {
@@ -459,8 +461,27 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     return error;
   }
 
+  private void setProfilePicture() {
+    userProfileImg = findViewById(R.id.user_profile_img_in_description);
+    if (!authenticatedUser.getProfilePictureURL().equals(Konstants.INIT_STRING)) {
+      //means user has a custom profile
+      Picasso.get().load(authenticatedUser.getProfilePictureURL()).into(userProfileImg);
+    } else {
+      //check user gender and use to determine which default profile photo to use
+      if (authenticatedUser.getGender().equals(Konstants.MALE)) {
+        userProfileImg.setImageResource(R.drawable.african_avatar_male);
+      } else if (authenticatedUser.getGender().equals(Konstants.FEMALE)) {
+        userProfileImg.setImageResource(R.drawable.african_avatar_female);
+      } else {
+        userProfileImg.setImageResource(R.drawable.profile_dummy_box_other);
+      }
+    }
+  }
+
   private void initializeActivity() {
+
     //  -----------------------------------------------------------
+
     addTag = findViewById(R.id.add_unavailable_tag);
     saveAsTemplateBtn = findViewById(R.id.template_btn);
     storageReference = FirebaseStorage.getInstance().getReference(Konstants.ERRAND_PICTURES_COLLECTION);
@@ -541,17 +562,6 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     locationDropdown.setOnItemSelectedListener(chooseLocation);
     startInvigilatingInfinitely();
   }
-
-  private void initializeAutoCompleteLists() {
-    autoCompleteList.add("January");
-    autoCompleteList.add("February");
-    autoCompleteList.add("March");
-    autoCompleteList.add("April");
-    autoCompleteList.add("May");
-    autoCompleteList.add("June");
-    autoCompleteList.add("July");
-  }
-
 
   private View.OnClickListener addTagToList = new View.OnClickListener() {
     @Override
@@ -697,7 +707,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
         // restart the whole process again
         startInvigilatingInfinitely();
       }
-    }, 2000);
+    }, 1000);
 
   }
 

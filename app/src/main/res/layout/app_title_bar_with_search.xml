@@ -12,7 +12,7 @@
   android:paddingEnd="10dp"
   android:weightSum="6">
 
-  <ImageView
+  <de.hdodenhof.circleimageview.CircleImageView
     android:id="@+id/toolbar_img"
     android:layout_width="25dp"
     android:layout_height="25dp"
