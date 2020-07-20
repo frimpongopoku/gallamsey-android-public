@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -50,6 +52,8 @@ public class FavoriteFragmentGenerator extends Fragment {
   }
 
   private View initializeTemplatesTab(View v) {
+    RelativeLayout narratorBox = v.findViewById(R.id.narrator_box);
+    TextView text = v.findViewById(R.id.salutation);
     if (getContext() != null) {
       allSavedTemplates = (TemplateTrainForErrands) MyHelper.getFromSharedPreferences(getContext(), Konstants.SAVE_ERRANDS_AS_TEMPLATE, TemplateTrainForErrands.class);
     }
@@ -57,6 +61,12 @@ public class FavoriteFragmentGenerator extends Fragment {
       allSavedTemplates = new TemplateTrainForErrands();
     }
     RecyclerView recycler = v.findViewById(R.id.templates_recycler);
+    if(allSavedTemplates.getErrands().size() == 0){
+      String msg = "Hello there, it doesn't look like you have any templates yet. All your templates will appear here...";
+      text.setText(msg);
+      recycler.setVisibility(View.GONE);
+      narratorBox.setVisibility(View.VISIBLE);
+    }
     templatesAdapter = new TemplatesRecyclerAdapter(getContext(), allSavedTemplates.getErrands(), (TemplatesRecyclerAdapter.TemplateItemClick) getContext());
     LinearLayoutManager manager = new LinearLayoutManager(getContext());
     recycler.setLayoutManager(manager);

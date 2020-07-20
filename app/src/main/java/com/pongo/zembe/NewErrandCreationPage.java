@@ -235,12 +235,12 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
   private void prepareAndSaveErrandAsTemplate() {
     String description = MyHelper.grabCleanText(descriptionBox), estimated = MyHelper.grabCleanText(estimatedCostBox), allowance = MyHelper.grabCleanText(allowanceBox);
     if (description.isEmpty()) {
-        dialogCreator.constructSimpleOneActionDialog("Not yet", "You must provide a description at least, before you can save this as a template", "Okay, Cool", new OneAction() {
-          @Override
-          public void callback() {
+      dialogCreator.constructSimpleOneActionDialog("Not yet", "You must provide a description at least, before you can save this as a template", "Okay, Cool", new OneAction() {
+        @Override
+        public void callback() {
 
-          }
-        }).show();
+        }
+      }).show();
       return;
     }
     final GenericErrandClass errand = new GenericErrandClass(Konstants.INIT_STRING, description);

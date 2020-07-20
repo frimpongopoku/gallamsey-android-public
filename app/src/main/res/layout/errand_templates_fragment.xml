@@ -9,6 +9,7 @@
     android:id="@+id/templates_recycler"
     android:layout_width="match_parent"
     android:layout_height="match_parent"/>
+  <include layout="@layout/narrator_layout"/>
 
   <!--<include layout="@layout/template_recyclable_item"/>-->
   <!--<include layout="@layout/template_recyclable_item"/>-->
