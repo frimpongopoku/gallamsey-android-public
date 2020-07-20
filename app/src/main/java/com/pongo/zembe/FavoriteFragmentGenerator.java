@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -15,10 +17,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class FavoriteFragmentGenerator extends Fragment implements TemplatesRecyclerAdapter.TemplateItemClick, FavoriteRidersRecyclerAdapter.RidersItemClick {
+public class FavoriteFragmentGenerator extends Fragment {
 
 
   private static String WHICH_FRAGMENT = "FRAGMENT_NAME";
+  TemplateTrainForErrands allSavedTemplates;
+  FavoriteRidersRecyclerAdapter adapter;
+  TemplatesRecyclerAdapter templatesAdapter;
 
   public static FavoriteFragmentGenerator newInstance(String whichFragment) {
     FavoriteFragmentGenerator fragment = new FavoriteFragmentGenerator();
@@ -47,18 +52,32 @@ public class FavoriteFragmentGenerator extends Fragment implements TemplatesRecy
   }
 
   private View initializeTemplatesTab(View v) {
+    RelativeLayout narratorBox = v.findViewById(R.id.narrator_box);
+    TextView text = v.findViewById(R.id.salutation);
+    if (getContext() != null) {
+      allSavedTemplates = (TemplateTrainForErrands) MyHelper.getFromSharedPreferences(getContext(), Konstants.SAVE_ERRANDS_AS_TEMPLATE, TemplateTrainForErrands.class);
+    }
+    if (allSavedTemplates == null) {
+      allSavedTemplates = new TemplateTrainForErrands();
+    }
     RecyclerView recycler = v.findViewById(R.id.templates_recycler);
-    TemplatesRecyclerAdapter adapter = new TemplatesRecyclerAdapter(getContext(), new ArrayList<Errand>(), this);
+    if(allSavedTemplates.getErrands().size() == 0){
+      String msg = "Hello there, it doesn't look like you have any templates yet. All your templates will appear here...";
+      text.setText(msg);
+      recycler.setVisibility(View.GONE);
+      narratorBox.setVisibility(View.VISIBLE);
+    }
+    templatesAdapter = new TemplatesRecyclerAdapter(getContext(), allSavedTemplates.getErrands(), (TemplatesRecyclerAdapter.TemplateItemClick) getContext());
     LinearLayoutManager manager = new LinearLayoutManager(getContext());
     recycler.setLayoutManager(manager);
     new ItemTouchHelper(templateSwipeFunctionality).attachToRecyclerView(recycler);
-    recycler.setAdapter(adapter);
+    recycler.setAdapter(templatesAdapter);
     return v;
   }
 
   private View initializeFavoritesTab(View v) {
     RecyclerView recycler = v.findViewById(R.id.fav_riders_recycler);
-    FavoriteRidersRecyclerAdapter adapter = new FavoriteRidersRecyclerAdapter(getContext(), new ArrayList<SimpleUser>(), this);
+    adapter = new FavoriteRidersRecyclerAdapter(getContext(), new ArrayList<SimpleUser>(), (FavoriteRidersRecyclerAdapter.RidersItemClick) getContext());
     LinearLayoutManager manager = new LinearLayoutManager(getContext());
     recycler.setLayoutManager(manager);
     new ItemTouchHelper(favRiderSwipeFunctionality).attachToRecyclerView(recycler);
@@ -74,8 +93,19 @@ public class FavoriteFragmentGenerator extends Fragment implements TemplatesRecy
 
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-      Toast.makeText(getContext(), "Item removed - " + viewHolder.getAdapterPosition(), Toast.LENGTH_SHORT).show();
-
+      int pos = viewHolder.getAdapterPosition();
+      GenericErrandClass errand = allSavedTemplates.getErrands().get(pos);
+      templatesAdapter.notifyItemRemoved(pos);
+      allSavedTemplates.removeFromArray(errand);
+      if (getContext() != null) {
+        //treating data as immutable
+        MyHelper.removeFromSharedPreference(getContext(), Konstants.SAVE_ERRANDS_AS_TEMPLATE); //removed old stuff
+        if (allSavedTemplates.getErrands().size() > 0) {
+          //dont save anything if this is the last item
+          MyHelper.saveToSharedPreferences(getContext(), allSavedTemplates, Konstants.SAVE_ERRANDS_AS_TEMPLATE);
+        }
+        Toast.makeText(getContext(), errand.getTitle() + " is removed from your list", Toast.LENGTH_SHORT).show();
+      }
     }
   };
   private ItemTouchHelper.SimpleCallback favRiderSwipeFunctionality = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
@@ -91,14 +121,5 @@ public class FavoriteFragmentGenerator extends Fragment implements TemplatesRecy
     }
   };
 
-  @Override
-  public void onRiderClick(int position) {
-    Toast.makeText(getContext(), "Rider Clicked + " + position, Toast.LENGTH_SHORT).show();
 
-  }
-
-  @Override
-  public void onClick(int position) {
-    Toast.makeText(getContext(), "Clicked + " + position, Toast.LENGTH_SHORT).show();
-  }
 }

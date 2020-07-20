@@ -1,6 +1,7 @@
 package com.pongo.zembe;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
@@ -10,7 +11,10 @@ import android.widget.Toast;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -19,6 +23,30 @@ import java.util.HashMap;
 
 public class MyHelper {
 
+
+
+  public static void saveToSharedPreferences(Context context,Object customValToSave,String IDENTIFIER){
+    SharedPreferences sharedPreferences = context.getSharedPreferences("Gallamsey Storage",Context.MODE_PRIVATE);
+    SharedPreferences.Editor editor = sharedPreferences.edit();
+    Gson gson = new Gson();
+    String jsonString = gson.toJson(customValToSave);
+    editor.putString(IDENTIFIER,jsonString);
+    editor.apply();
+
+  }
+  public static  Object getFromSharedPreferences(Context context, String IDENTIFIER, Type type){
+    SharedPreferences sharedPreferences = context.getSharedPreferences("Gallamsey Storage",Context.MODE_PRIVATE);
+    String savedJsonString = sharedPreferences.getString(IDENTIFIER,null);
+    Gson gson = new Gson();
+    return gson.fromJson(savedJsonString,type);
+  }
+
+  public static void removeFromSharedPreference(Context context, String IDENTIFIER){
+    SharedPreferences sharedPreferences = context.getSharedPreferences("Gallamsey Storage",Context.MODE_PRIVATE);
+    SharedPreferences.Editor editor = sharedPreferences.edit();
+    editor.remove(IDENTIFIER);
+    editor.apply();
+  }
 
   public static ArrayList<String> changeGallamseyPointToStringArray(ArrayList<GallamseyLocationComponent> array){
     ArrayList<String> arr = new ArrayList<>();

@@ -20,7 +20,7 @@ import java.util.HashMap;
  */
 public class User implements Parcelable {
 
-  private String region, country, profilePictureURL, gender, preferredName, uniqueUserName, email, dob, phoneNumber, whatsappNumber, uniqueID, userDocumentID;
+  private String region, country, profilePictureURL=Konstants.INIT_STRING, gender, preferredName, uniqueUserName, email, dob, phoneNumber, whatsappNumber, uniqueID, userDocumentID;
   private Date ts = new Timestamp(DateHelper.getMilliSecondsFromDate(DateHelper.getDateInMyTimezone()));
   private String createdAt = DateHelper.getDateInMyTimezone();
   private ArrayList<PaymentContact> mobileNumbersForPayment = new ArrayList<>() ;

@@ -27,12 +27,15 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHomeFragmentState, HomeNewsMultiAdapter.OnNewsItemClick, GalInterfaceGuru.EditContextMenuItemListener {
@@ -41,7 +44,8 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHom
   ArrayList<String> profits = new ArrayList<>();
   ArrayList<String> costs = new ArrayList<>();
   ArrayList<String> dates = new ArrayList<>();
-  ImageView userProfileImageOnToolbar, favBtn, optionsBtn;
+  ImageView favBtn, optionsBtn;
+  CircleImageView userProfileImageOnToolbar;
   FirebaseAuth mAuth = FirebaseAuth.getInstance();
   GroundUser authenticatedUser;
   Button addErrandBtn, favoritesBtn;
@@ -53,7 +57,7 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHom
   View homeFragState;
   Context thisActivity = this;
   Fragment currentFrag;
-  TagCollection tagCollection ;
+  TagCollection tagCollection;
   CollectionReference tagsDB = firestore.collection(Konstants.TAG_COLLECTION);
 
 
@@ -68,24 +72,23 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHom
     initializeActivity();
   }
 
+
   private void initializeActivity() {
+    userProfileImageOnToolbar = findViewById(R.id.toolbar_img);
+    userProfileImageOnToolbar.setOnClickListener(goToProfile);
     fillInTheBlankSpaces();
     //getAuthenticated User if they are coming from login | register
     authenticatedUser = getIntent().getParcelableExtra(Konstants.AUTH_USER_KEY);
     if (authenticatedUser != null) {
       userDocumentReference = userDB.document(authenticatedUser.getUserDocumentID());
+      setProfilePicture();
+      MyHelper.removeFromSharedPreference(this,"auth_user_test");
     }
     loadTags();
-    userProfileImageOnToolbar = findViewById(R.id.toolbar_img);
-    userProfileImageOnToolbar.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        goToProfileViewPage(view);
-      }
-    });
+
 
 //   ----Set default home fragment: HomePage
-    Fragment default_fragment = new HomeFragment(homeFragContent,homeFragState,this);
+    Fragment default_fragment = new HomeFragment(homeFragContent, homeFragState, this);
     ((HomeFragment) default_fragment).setAuthenticatedUser(authenticatedUser);
     getSupportFragmentManager().beginTransaction().replace(R.id.app_frame_layout, default_fragment).commit();
 
@@ -102,7 +105,30 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHom
     addErrandBtn.setOnClickListener(addNewErrand);
   }
 
-  private  void loadTags(){
+  private View.OnClickListener goToProfile = new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+      goToProfileViewPage(view);
+    }
+  };
+
+  private void setProfilePicture() {
+    if (!authenticatedUser.getProfilePictureURL().equals(Konstants.INIT_STRING)) {
+      //means user has a custom profile
+      Picasso.get().load(authenticatedUser.getProfilePictureURL()).into(userProfileImageOnToolbar);
+    } else {
+      //check user gender and use to determine which default profile photo to use
+      if (authenticatedUser.getGender().equals(Konstants.MALE)) {
+        userProfileImageOnToolbar.setImageResource(R.drawable.african_avatar_male);
+      } else if (authenticatedUser.getGender().equals(Konstants.FEMALE)) {
+        userProfileImageOnToolbar.setImageResource(R.drawable.african_avatar_female);
+      }else{
+        userProfileImageOnToolbar.setImageResource(R.drawable.profile_dummy_box_other);
+      }
+    }
+  }
+
+  private void loadTags() {
     tagsDB.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
       @Override
       public void onSuccess(QuerySnapshot documents) {
@@ -127,6 +153,8 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHom
     public void onClick(View view) {
       favoritesBtn.setAlpha(1);
       Intent fav = new Intent(getApplicationContext(), FavoritesActivity.class);
+      fav.putExtra(Konstants.AUTH_USER_KEY,authenticatedUser);
+      fav.putExtra(Konstants.PASS_TAGS,tagCollection);
       startActivity(fav);
     }
   };
@@ -145,7 +173,7 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHom
       Intent createErrandPage = new Intent(getApplicationContext(), NewErrandCreationPage.class);
       createErrandPage.putExtra(Konstants.AUTH_USER_KEY, authenticatedUser);
       createErrandPage.putExtra(Konstants.PASS_TAGS, tagCollection);
-      createErrandPage.putExtra(Konstants.EDIT_MODE,Konstants.INIT_STRING);//set it to an empty string, showing that its not edit mode
+      createErrandPage.putExtra(Konstants.MODE, Konstants.INIT_STRING);//set it to an empty string, showing that its not edit mode
       startActivity(createErrandPage);
     }
   };
@@ -166,7 +194,7 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHom
       Fragment destinationPage = null;
       switch (menuItem.getItemId()) {
         case R.id.nav_home:
-          destinationPage = new HomeFragment(homeFragContent, homeFragState,(GalInterfaceGuru.TrackHomeFragmentState) thisActivity);
+          destinationPage = new HomeFragment(homeFragContent, homeFragState, (GalInterfaceGuru.TrackHomeFragmentState) thisActivity);
           ((HomeFragment) destinationPage).setAuthenticatedUser(authenticatedUser);
           break;
         case R.id.nav_notification:
@@ -223,9 +251,9 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHom
 
   @Override
   public void newsItemCallback(int pos, GenericErrandClass selectedErrand) {
-    Intent page = new Intent(this,ErrandViewActivity.class);
+    Intent page = new Intent(this, ErrandViewActivity.class);
     page.putExtra(Konstants.AUTH_USER_KEY, authenticatedUser);
-    page.putExtra(Konstants.PASS_ERRAND_AROUND,selectedErrand);
+    page.putExtra(Konstants.PASS_ERRAND_AROUND, selectedErrand);
     page.putExtra(Konstants.PASS_TAGS, tagCollection);
     startActivity(page);
   }
@@ -238,10 +266,10 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHom
 
   @Override
   public void getErrandToBeEdited(int pos, GenericErrandClass errand) {
-    Intent page = new Intent(this,NewErrandCreationPage.class);
+    Intent page = new Intent(this, NewErrandCreationPage.class);
     page.putExtra(Konstants.AUTH_USER_KEY, authenticatedUser);
-    page.putExtra(Konstants.EDIT_MODE, Konstants.EDIT_MODE);
-    page.putExtra(Konstants.PASS_ERRAND_AROUND,errand);
+    page.putExtra(Konstants.MODE, Konstants.EDIT_MODE);
+    page.putExtra(Konstants.PASS_ERRAND_AROUND, errand);
     page.putExtra(Konstants.PASS_TAGS, tagCollection);
     startActivity(page);
   }

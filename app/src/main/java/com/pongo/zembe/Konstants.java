@@ -7,6 +7,9 @@ import java.util.HashMap;
 
 public class Konstants {
 
+
+  public static final String MODE ="MODE";
+  public static final String FROM_TEMPLATE_MODE = "FROM_TEMPLATE";
   public static final String EDIT_MODE = "EDITING";
   public static final String PASS_TAGS = "TAGS";
   public static final String UPPER_TIER = "UPPER";
@@ -36,6 +39,7 @@ public class Konstants {
 
   // ERRAND CREATION CONSTANTS
   //  --------------------------
+  public static final String SAVE_ERRANDS_AS_TEMPLATE = "SAVE_ERRANDS_AS_TEMPLATE";
   public static final String ERRAND_PICTURES_COLLECTION = "ERRAND_PICS";
   public static final String IMG_ERRAND_CONSTANT = "_errand_img_";
   public static final String TEXT_ERRAND = ":jyon@2203:x:text:x:znump:";

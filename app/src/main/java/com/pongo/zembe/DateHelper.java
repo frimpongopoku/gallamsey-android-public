@@ -1,5 +1,6 @@
 package com.pongo.zembe;
 
+import android.text.format.DateUtils;
 import android.util.Log;
 
 import java.text.ParseException;
@@ -11,6 +12,12 @@ import java.util.TimeZone;
 public class DateHelper {
 
   public static SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yy HH:mm:SS");
+
+  public static String getTimeAgo(String date) {
+    Date dateTo = convertStringToDate(date);
+    Date now = convertStringToDate(getDateInMyTimezone());
+    return (String) DateUtils.getRelativeTimeSpanString(dateTo.getTime(), now.getTime(), DateUtils.MINUTE_IN_MILLIS);
+  }
 
   public static String getTimezone() {
     Calendar cal = Calendar.getInstance();

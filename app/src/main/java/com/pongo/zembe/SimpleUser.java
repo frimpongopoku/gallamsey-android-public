@@ -25,6 +25,7 @@ public class SimpleUser implements Parcelable {
   private String profilePicture;
   private String userStatus;
   private GallamseyLocationComponent primaryLocation;
+  private String gender;
 
 
   private int rating;
@@ -39,6 +40,14 @@ public class SimpleUser implements Parcelable {
     this.userPlatformType = userPlatformType;
     this.profilePicture = profilePicture;
     this.userStatus = userStatus;
+  }
+
+  public String getGender() {
+    return gender;
+  }
+
+  public void setGender(String gender) {
+    this.gender = gender;
   }
 
   public GallamseyLocationComponent getPrimaryLocation() {
@@ -119,6 +128,7 @@ public class SimpleUser implements Parcelable {
     dest.writeString(this.profilePicture);
     dest.writeString(this.userStatus);
     dest.writeParcelable(this.primaryLocation, flags);
+    dest.writeString(this.gender);
     dest.writeInt(this.rating);
   }
 
@@ -130,6 +140,7 @@ public class SimpleUser implements Parcelable {
     this.profilePicture = in.readString();
     this.userStatus = in.readString();
     this.primaryLocation = in.readParcelable(GallamseyLocationComponent.class.getClassLoader());
+    this.gender = in.readString();
     this.rating = in.readInt();
   }
 
@@ -144,4 +155,19 @@ public class SimpleUser implements Parcelable {
       return new SimpleUser[size];
     }
   };
+
+  @Override
+  public String toString() {
+    return "SimpleUser{" +
+      "userPlatformID='" + userPlatformID + '\'' +
+      ", userName='" + userName + '\'' +
+      ", phoneNumber='" + phoneNumber + '\'' +
+      ", userPlatformType='" + userPlatformType + '\'' +
+      ", profilePicture='" + profilePicture + '\'' +
+      ", userStatus='" + userStatus + '\'' +
+      ", primaryLocation=" + primaryLocation +
+      ", gender='" + gender + '\'' +
+      ", rating=" + rating +
+      '}';
+  }
 }

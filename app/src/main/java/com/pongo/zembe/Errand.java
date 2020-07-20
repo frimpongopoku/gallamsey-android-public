@@ -255,4 +255,29 @@ public class Errand implements Parcelable {
       return new Errand[size];
     }
   };
+
+  @Override
+  public String toString() {
+    return "Errand{" +
+      "title='" + title + '\'' +
+      ", errandType='" + errandType + '\'' +
+      ", description='" + description + '\'' +
+      ", createdAt='" + createdAt + '\'' +
+      ", details=" + details +
+      ", tags=" + tags +
+      ", errandComplete=" + errandComplete +
+      ", creatorHasPaidAmount=" + creatorHasPaidAmount +
+      ", creatorPaymentTransactionCode='" + creatorPaymentTransactionCode + '\'' +
+      ", allowance=" + allowance +
+      ", cost=" + cost +
+      ", status='" + status + '\'' +
+      ", creator=" + creator +
+      ", runner=" + runner +
+      ", notifiableRiders=" + notifiableRiders +
+      ", pickUpLocation=" + pickUpLocation +
+      ", images=" + images +
+      ", errandDocumentID='" + errandDocumentID + '\'' +
+      ", expiryDate=" + expiryDate +
+      '}';
+  }
 }

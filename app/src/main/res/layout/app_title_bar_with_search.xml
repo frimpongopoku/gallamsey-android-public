@@ -6,15 +6,15 @@
   android:layout_height="wrap_content"
   android:background="@android:color/white"
   android:orientation="horizontal"
-  android:paddingTop="10dp"
-  android:paddingBottom="10dp"
   android:paddingStart="10dp"
+  android:paddingTop="10dp"
   android:paddingEnd="10dp"
+  android:paddingBottom="10dp"
   android:weightSum="6">
 
-  <ImageView
+  <de.hdodenhof.circleimageview.CircleImageView
     android:id="@+id/toolbar_img"
-    android:layout_width="25dp"
+    android:layout_width="0dp"
     android:layout_height="25dp"
     android:layout_marginTop="5dp"
     android:layout_weight="1"
@@ -23,9 +23,8 @@
     android:src="@drawable/african_avatar_male" />
 
   <EditText
-    android:textSize="14sp"
     android:id="@+id/search_box"
-    android:layout_width="wrap_content"
+    android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_marginTop="2dp"
     android:layout_marginEnd="10dp"
@@ -33,7 +32,9 @@
     android:background="@android:color/white"
     android:hint="Search"
     android:padding="8dp"
-    android:paddingStart="15dp" />
+    android:paddingStart="15dp"
+    android:singleLine="true"
+    android:textSize="14sp" />
 
   <ImageView
     android:id="@+id/favorites"

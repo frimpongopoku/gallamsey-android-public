@@ -27,6 +27,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
 
   int IMAGE_CODE = 6;
@@ -93,24 +95,53 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
   public void setTextContent(@NonNull RecyclerView.ViewHolder _holder, int pos) {
     TextViewHolder holder = (TextViewHolder) _holder;
     GenericErrandClass newsItem = news.get(pos);
+    SimpleUser user = newsItem.getCreator();
     holder.container.setAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_in_recycler));
     holder.description.setText(newsItem.getDescription());
     holder.cost.setText(String.valueOf(newsItem.getCost()));
     holder.profit.setText(String.valueOf(newsItem.getAllowance()));
-    holder.date.setText(newsItem.getCreatedAt());
+    holder.date.setText(DateHelper.getTimeAgo(newsItem.getCreatedAt()));
+    if (!user.getProfilePicture().equals(Konstants.INIT_STRING)) {
+      Picasso.get().load(user.getProfilePicture()).into(holder.creatorPic);
+    } else {
+      //user does not have a custom profile, so use their gender to give a default one
+      if (!user.getGender().equals(Konstants.INIT_STRING) && user.getGender().equals(Konstants.MALE)) {
+        holder.creatorPic.setImageResource(R.drawable.african_avatar_male);
+      } else if (!user.getGender().equals(Konstants.INIT_STRING) && user.getGender().equals(Konstants.FEMALE)) {
+        holder.creatorPic.setImageResource(R.drawable.african_avatar_female);
+      } else {
+        holder.creatorPic.setImageResource(R.drawable.profile_dummy_box_other);
+      }
+
+    }
   }
 
   public void setImageContent(@NonNull RecyclerView.ViewHolder _holder, int pos) {
     ImageViewHolder holder = (ImageViewHolder) _holder;
     GenericErrandClass newsItem = news.get(pos);
+    SimpleUser user = newsItem.getCreator();
     holder.container.setAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_in_recycler));
     holder.title.setText(newsItem.getDescription());
     holder.cost.setText(String.valueOf(newsItem.getCost()));
     holder.profit.setText(String.valueOf(newsItem.getAllowance()));
-    holder.date.setText(newsItem.getCreatedAt());
+    holder.date.setText(DateHelper.getTimeAgo(newsItem.getCreatedAt()));
     if (newsItem.getImages() != null && newsItem.getImages().size() != 0) {
       Picasso.get().load(newsItem.getImages().get(0)).into(holder.image);
     }
+    if (!user.getProfilePicture().equals(Konstants.INIT_STRING)) {
+      Picasso.get().load(user.getProfilePicture()).into(holder.creatorPic);
+    } else {
+      //user does not have a custom profile, so use their gender to give a default one
+      if (!user.getGender().equals(Konstants.INIT_STRING) && user.getGender().equals(Konstants.MALE)) {
+        holder.creatorPic.setImageResource(R.drawable.african_avatar_male);
+      } else if (!user.getGender().equals(Konstants.INIT_STRING) && user.getGender().equals(Konstants.FEMALE)) {
+        holder.creatorPic.setImageResource(R.drawable.african_avatar_female);
+      } else {
+        holder.creatorPic.setImageResource(R.drawable.profile_dummy_box_other);
+      }
+
+    }
+
   }
 
   @Override
@@ -125,6 +156,7 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
     LinearLayout container;
     OnNewsItemClick listener;
     GalInterfaceGuru.EditContextMenuItemListener editMenuItemListener;
+    CircleImageView creatorPic;
 
 
     public TextViewHolder(@NonNull final View itemView, final OnNewsItemClick listener) {
@@ -135,6 +167,7 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
       this.date = itemView.findViewById(R.id.text_errand_card_date);
       this.container = itemView.findViewById(R.id.container);
       this.listener = listener;
+      this.creatorPic = itemView.findViewById(R.id.creator_pic);
       this.editMenuItemListener = (GalInterfaceGuru.EditContextMenuItemListener) listener;
       itemView.setOnCreateContextMenuListener(this);
       itemView.setOnClickListener(new View.OnClickListener() {
@@ -199,6 +232,7 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
     LinearLayout container;
     OnNewsItemClick listener;
     GalInterfaceGuru.EditContextMenuItemListener editMenuItemListener;
+    CircleImageView creatorPic;
 
     public ImageViewHolder(@NonNull View itemView, final OnNewsItemClick listener) {
       super(itemView);
@@ -209,6 +243,7 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
       this.image = itemView.findViewById(R.id.img_errand_card_image);
       this.container = itemView.findViewById(R.id.container);
       this.listener = listener;
+      this.creatorPic = itemView.findViewById(R.id.creator_pic);
       this.editMenuItemListener = (GalInterfaceGuru.EditContextMenuItemListener) listener;
       itemView.setOnCreateContextMenuListener(this);
       itemView.setOnClickListener(new View.OnClickListener() {
