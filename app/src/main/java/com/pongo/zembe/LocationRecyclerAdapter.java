@@ -4,9 +4,12 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -15,6 +18,7 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
   Context context;
   ArrayList<GallamseyLocationComponent> locations;
   LocationItemClicked itemClickedCallback ;
+  private GroundUser authenticatedUser;
 
   public LocationRecyclerAdapter(Context context, ArrayList<GallamseyLocationComponent> locations, LocationItemClicked itemClickedCallback) {
     this.context = context;
@@ -31,7 +35,21 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
 
   @Override
   public void onBindViewHolder(@NonNull LocationRecyclerViewHolder holder, int position) {
-    holder.locationName.setText(locations.get(position).getLocationName());
+    GallamseyLocationComponent location = locations.get(position);
+    if(location.getLocationName().equals(authenticatedUser.getGeoLocation().getLocationName())){
+
+      holder.locationIcon.setImageDrawable(context.getDrawable(R.drawable.location_home));
+      holder.locationName.setText(locations.get(position).getLocationName()+ " - Primary Location");
+    }
+    else{
+      holder.locationName.setText(locations.get(position).getLocationName());
+    }
+
+
+  }
+
+  public void setAuthenticatedUser(GroundUser authenticatedUser) {
+    this.authenticatedUser = authenticatedUser;
   }
 
   @Override
@@ -40,12 +58,14 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
   }
 
   public class LocationRecyclerViewHolder extends RecyclerView.ViewHolder {
+    ImageView locationIcon;
     TextView locationName;
     LocationItemClicked locationItemClicked;
     public LocationRecyclerViewHolder(@NonNull View itemView, final LocationItemClicked locationItemClicked) {
       super(itemView);
       this.locationItemClicked = locationItemClicked;
       this.locationName = itemView.findViewById(R.id.location_list_item_name);
+      this.locationIcon = itemView.findViewById(R.id.location_icon);
 
       locationName.setOnClickListener(new View.OnClickListener() {
         @Override
@@ -55,6 +75,8 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
       });
     }
   }
+
+
 }
 interface LocationItemClicked{
   void locationItemCallback(int position);

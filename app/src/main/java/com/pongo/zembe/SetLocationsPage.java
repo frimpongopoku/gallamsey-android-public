@@ -44,6 +44,10 @@ import java.util.HashMap;
 
 public class SetLocationsPage extends AppCompatActivity {
 
+/**
+ * THIS IS ONE OF FIRST THINGS THAT WERE CREATED, so its behind on all the cool things "locationProtocol" can do,
+ * Will change later
+ * */
   LocationProtocol locationsProtocol;
   FusedLocationProviderClient locationProviderClient;
   Location deviceLocation;
@@ -87,6 +91,7 @@ public class SetLocationsPage extends AppCompatActivity {
 
       }
     });
+
   }
 
 
@@ -137,6 +142,7 @@ public class SetLocationsPage extends AppCompatActivity {
       return;
     }
     locationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
     locationListener = new LocationListener() {
       @Override
       public void onLocationChanged(Location location) {
@@ -164,8 +170,8 @@ public class SetLocationsPage extends AppCompatActivity {
 
       }
     };
+    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1, locationListener);
     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, locationListener);
-
   }
 
   /**

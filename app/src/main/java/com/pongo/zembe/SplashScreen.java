@@ -25,7 +25,7 @@ public class SplashScreen extends AppCompatActivity {
   FirebaseFirestore firestore = FirebaseFirestore.getInstance();
   FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
   CollectionReference userDB = firestore.collection(Konstants.USER_COLLECTION);
-  public static int SPLASH_TIME = 1000;
+  public static int SPLASH_TIME = 500;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {

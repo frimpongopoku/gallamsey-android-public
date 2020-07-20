@@ -21,18 +21,20 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class errandPaymentStepPage extends AppCompatActivity {
+public class ErrandPaymentStepPage extends AppCompatActivity {
   Spinner countryDropdown, networkDropdown, contactListDropdown;
   ImageView countryFlag, networkFlag;
-  TextView countryNameView, networkNameView;
+  TextView countryNameView, networkNameView,titleBarText;
   EditText chosenPaymentNumber;
-  Button floatingBtn;
+  Button floatingBtn, titleBarBack;
   MagicBoxes magicBoxes;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_errand_payment_step_page);
+    titleBarText = findViewById(R.id.page_name);
+    titleBarText.setText("Make Payment");
     magicBoxes = new MagicBoxes(this);
     floatingBtn = findViewById(R.id.payment_info);
     chosenPaymentNumber = findViewById(R.id.chosen_payment_number);

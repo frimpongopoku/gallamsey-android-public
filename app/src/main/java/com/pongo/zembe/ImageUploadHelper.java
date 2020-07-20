@@ -12,9 +12,15 @@ import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -39,6 +45,33 @@ public class ImageUploadHelper {
     return mime.getExtensionFromMimeType(cr.getType(uri));
   }
 
+  public void uploadImageToFirebase(StorageReference firebaseStorageRef, Uri imageUri, String tinyDesc, String uniqueString, byte[] imageInBytes, final CollectUploadedImageURI imageCallback) {
+//    String ext = getFileExtension(imageUri);
+    String filename = uniqueString + tinyDesc + System.currentTimeMillis()  ;
+    final StorageReference fileReference = firebaseStorageRef.child(filename);
+    fileReference.putBytes(imageInBytes)
+      .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        @Override
+        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+          fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+              imageCallback.getURI(uri);
+            }
+          });
+        }
+      }).addOnFailureListener(new OnFailureListener() {
+      @Override
+      public void onFailure(@NonNull Exception e) {
+        Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+      }
+    });
+  }
+
+  public static Bitmap changeBytesToBitmap(byte[] compressedImage) {
+    Bitmap bitmap = BitmapFactory.decodeByteArray(compressedImage, 0, compressedImage.length);
+    return bitmap;
+  }
 
   public void openFileChooserWithCropper(Activity activity, int aspectRationX, int aspectRatioY) {
     CropImage.activity()
@@ -85,6 +118,10 @@ public class ImageUploadHelper {
     intent.setType("image/*");
     intent.setAction(Intent.ACTION_GET_CONTENT);
     fileChooserCallback.getBackChooserIntent(intent);
+  }
+
+  public interface CollectUploadedImageURI {
+    void getURI(Uri uri);
   }
 
   public interface CroppingImageCallback {

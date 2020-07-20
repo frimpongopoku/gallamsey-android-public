@@ -18,7 +18,7 @@
 
     <include
       android:id="@+id/title_bar"
-      layout="@layout/app_default_toolbar"
+      layout="@layout/universal_title_bar"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_alignParentTop="true" />

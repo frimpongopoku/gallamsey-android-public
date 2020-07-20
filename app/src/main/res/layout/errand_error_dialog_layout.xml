@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical"
+  android:paddingLeft="20dp"
+  android:paddingRight="20dp">
+
+  <TextView
+    android:id="@+id/fatal_error_header"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fontFamily="@font/nunito_bold"
+    android:text="Important"
+    android:textColor="@android:color/holo_red_dark"
+    android:textSize="14sp" />
+
+  <TextView
+    android:id="@+id/fatal_error"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="This is where all the important things start"
+    android:textColor="@android:color/holo_red_dark"
+    android:textSize="13sp" />
+
+  <TextView
+    android:id="@+id/semi_error_header"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fontFamily="@font/nunito_bold"
+    android:text="Some other things you missed (optional)"
+    android:textColor="@android:color/holo_blue_dark"
+    android:textSize="14sp" />
+
+  <TextView
+    android:id="@+id/semi_error"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Some Other things you missed"
+    android:textColor="@android:color/holo_blue_dark"
+    android:textSize="13sp" />
+
+</LinearLayout>

@@ -3,9 +3,7 @@ package com.pongo.zembe;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,7 +26,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,7 +33,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 public class Register extends AppCompatActivity {
@@ -231,13 +227,13 @@ public class Register extends AppCompatActivity {
 
     //validate date of birth (DOB) only if the user typed something
     //-----------------------------
-    if (!dob.isEmpty() && RandomHelpersClass.validateDOB(dob).get("status").equals(false)) {
+    if (!dob.isEmpty() && MyHelper.validateDOB(dob).get("status").equals(false)) {
       ArrayList<String> dobErrors = new ArrayList<>();
-      Object obj = RandomHelpersClass.validateDOB(dob).get("errors");
+      Object obj = MyHelper.validateDOB(dob).get("errors");
       if (obj instanceof ArrayList) {
         dobErrors = (ArrayList<String>) obj;
       }
-      dobBox.setError(RandomHelpersClass.mergeTextsFromArray(dobErrors));
+      dobBox.setError(MyHelper.mergeTextsFromArray(dobErrors));
       dobBox.requestFocus();
       return;
     }

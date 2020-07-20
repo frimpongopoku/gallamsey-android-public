@@ -23,6 +23,12 @@
 
     <activity android:name=".TestActivity">
 
+      <!--<intent-filter>-->
+      <!--<action android:name="android.intent.action.MAIN" />-->
+
+      <!--<category android:name="android.intent.category.LAUNCHER" />-->
+      <!--</intent-filter>-->
+
     </activity>
     <activity android:name=".TasksActivity" />
     <activity android:name=".OfficialSettingsPage" />
@@ -34,14 +40,27 @@
       android:name=".NewErrandCreationPage"
       android:windowSoftInputMode="adjustResize">
 
+      <!--<intent-filter>-->
+      <!--<action android:name="android.intent.action.MAIN" />-->
+
+      <!--<category android:name="android.intent.category.LAUNCHER" />-->
+      <!--</intent-filter>-->
+
     </activity>
     <activity
       android:name=".AddMobilePaymentNumberPage"
       android:windowSoftInputMode="adjustPan" />
     <activity android:name=".AddMoreLocations" />
     <activity
-      android:name=".errandPaymentStepPage"
-      android:windowSoftInputMode="adjustPan" />
+      android:name=".ErrandPaymentStepPage"
+      android:windowSoftInputMode="adjustPan">
+      <!--<intent-filter>-->
+        <!--<action android:name="android.intent.action.MAIN" />-->
+
+        <!--<category android:name="android.intent.category.LAUNCHER" />-->
+      <!--</intent-filter>-->
+
+    </activity>
     <activity android:name=".TeachMeHowToCreateAnErrand" />
     <activity android:name=".ImageErrandView" />
     <activity

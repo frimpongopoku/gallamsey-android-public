@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+  <LinearLayout
+    android:id="@+id/tab_for_selecting_riders"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_above="@id/bottom_fake_nav"
+    android:layout_below="@id/top_controls"
+    android:orientation="vertical"
+    android:paddingLeft="20dp"
+    android:paddingTop="5dp"
+    android:paddingRight="20dp"
+    android:visibility="gone">
+
+    <ScrollView
+      android:scrollbars="none"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:weightSum="5">
+
+          <!--<ImageView-->
+          <!--android:id="@+id/r_sel_ico"-->
+          <!--android:layout_width="40dp"-->
+          <!--android:layout_height="40dp"-->
+          <!--android:layout_alignParentLeft="true"-->
+          <!--android:layout_centerVertical="true"-->
+          <!--android:src="@drawable/gallam_rider_select_ico" />-->
+
+          <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="4"
+            android:text="Select riders from your list of favourites.\nYou can select as many riders as possible, they will all be notified. Whoever responds first will have it." />
+        </RelativeLayout>
+
+        <com.google.android.material.chip.ChipGroup
+          android:id="@+id/select_rider_chip_group"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_margin="10dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+          android:id="@+id/select_rider_recycler"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent" />
+      </LinearLayout>
+
+    </ScrollView>
+  </LinearLayout>
+
+</merge>
