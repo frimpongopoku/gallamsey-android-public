@@ -152,6 +152,8 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHom
     public void onClick(View view) {
       favoritesBtn.setAlpha(1);
       Intent fav = new Intent(getApplicationContext(), FavoritesActivity.class);
+      fav.putExtra(Konstants.AUTH_USER_KEY,authenticatedUser);
+      fav.putExtra(Konstants.PASS_TAGS,tagCollection);
       startActivity(fav);
     }
   };
@@ -170,7 +172,7 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHom
       Intent createErrandPage = new Intent(getApplicationContext(), NewErrandCreationPage.class);
       createErrandPage.putExtra(Konstants.AUTH_USER_KEY, authenticatedUser);
       createErrandPage.putExtra(Konstants.PASS_TAGS, tagCollection);
-      createErrandPage.putExtra(Konstants.EDIT_MODE, Konstants.INIT_STRING);//set it to an empty string, showing that its not edit mode
+      createErrandPage.putExtra(Konstants.MODE, Konstants.INIT_STRING);//set it to an empty string, showing that its not edit mode
       startActivity(createErrandPage);
     }
   };
@@ -265,7 +267,7 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHom
   public void getErrandToBeEdited(int pos, GenericErrandClass errand) {
     Intent page = new Intent(this, NewErrandCreationPage.class);
     page.putExtra(Konstants.AUTH_USER_KEY, authenticatedUser);
-    page.putExtra(Konstants.EDIT_MODE, Konstants.EDIT_MODE);
+    page.putExtra(Konstants.MODE, Konstants.EDIT_MODE);
     page.putExtra(Konstants.PASS_ERRAND_AROUND, errand);
     page.putExtra(Konstants.PASS_TAGS, tagCollection);
     startActivity(page);

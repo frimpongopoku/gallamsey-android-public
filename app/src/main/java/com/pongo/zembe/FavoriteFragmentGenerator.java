@@ -15,10 +15,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class FavoriteFragmentGenerator extends Fragment implements TemplatesRecyclerAdapter.TemplateItemClick, FavoriteRidersRecyclerAdapter.RidersItemClick {
+public class FavoriteFragmentGenerator extends Fragment {
 
 
   private static String WHICH_FRAGMENT = "FRAGMENT_NAME";
+  TemplateTrainForErrands allSavedTemplates;
 
   public static FavoriteFragmentGenerator newInstance(String whichFragment) {
     FavoriteFragmentGenerator fragment = new FavoriteFragmentGenerator();
@@ -47,8 +48,14 @@ public class FavoriteFragmentGenerator extends Fragment implements TemplatesRecy
   }
 
   private View initializeTemplatesTab(View v) {
+    if (getContext() != null) {
+      allSavedTemplates = (TemplateTrainForErrands) MyHelper.getFromSharedPreferences(getContext(), Konstants.SAVE_ERRANDS_AS_TEMPLATE, TemplateTrainForErrands.class);
+    }
+    if (allSavedTemplates == null) {
+      allSavedTemplates = new TemplateTrainForErrands();
+    }
     RecyclerView recycler = v.findViewById(R.id.templates_recycler);
-    TemplatesRecyclerAdapter adapter = new TemplatesRecyclerAdapter(getContext(), new ArrayList<Errand>(), this);
+    TemplatesRecyclerAdapter adapter = new TemplatesRecyclerAdapter(getContext(), allSavedTemplates.getErrands(), (TemplatesRecyclerAdapter.TemplateItemClick) getContext());
     LinearLayoutManager manager = new LinearLayoutManager(getContext());
     recycler.setLayoutManager(manager);
     new ItemTouchHelper(templateSwipeFunctionality).attachToRecyclerView(recycler);
@@ -58,7 +65,7 @@ public class FavoriteFragmentGenerator extends Fragment implements TemplatesRecy
 
   private View initializeFavoritesTab(View v) {
     RecyclerView recycler = v.findViewById(R.id.fav_riders_recycler);
-    FavoriteRidersRecyclerAdapter adapter = new FavoriteRidersRecyclerAdapter(getContext(), new ArrayList<SimpleUser>(), this);
+    FavoriteRidersRecyclerAdapter adapter = new FavoriteRidersRecyclerAdapter(getContext(), new ArrayList<SimpleUser>(), (FavoriteRidersRecyclerAdapter.RidersItemClick) getContext());
     LinearLayoutManager manager = new LinearLayoutManager(getContext());
     recycler.setLayoutManager(manager);
     new ItemTouchHelper(favRiderSwipeFunctionality).attachToRecyclerView(recycler);
@@ -91,14 +98,5 @@ public class FavoriteFragmentGenerator extends Fragment implements TemplatesRecy
     }
   };
 
-  @Override
-  public void onRiderClick(int position) {
-    Toast.makeText(getContext(), "Rider Clicked + " + position, Toast.LENGTH_SHORT).show();
 
-  }
-
-  @Override
-  public void onClick(int position) {
-    Toast.makeText(getContext(), "Clicked + " + position, Toast.LENGTH_SHORT).show();
-  }
 }

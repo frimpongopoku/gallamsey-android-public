@@ -97,7 +97,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_new_errand_creation_page);
     activity = this;
-    MODE = getIntent().getStringExtra(Konstants.EDIT_MODE);
+    MODE = getIntent().getStringExtra(Konstants.MODE);
     dialogCreator = new MagicBoxes(this);
     authenticatedUser = getIntent().getParcelableExtra(Konstants.AUTH_USER_KEY);
     tagCollection = getIntent().getParcelableExtra(Konstants.PASS_TAGS);
@@ -111,6 +111,9 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     initializeActivity();
     if (MODE.equals(Konstants.EDIT_MODE)) {
       //means user wants to edit an existing errand, inflate the all fields with incoming errand
+      toBeEdited = getIntent().getParcelableExtra(Konstants.PASS_ERRAND_AROUND);
+      inflateAllFieldsForEditing(toBeEdited);
+    } else if (MODE.equals(Konstants.FROM_TEMPLATE_MODE)) {
       toBeEdited = getIntent().getParcelableExtra(Konstants.PASS_ERRAND_AROUND);
       inflateAllFieldsForEditing(toBeEdited);
     }
@@ -132,9 +135,13 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     }
     //make it impossible to change money value ( You cannot edit amount of money here, cos you have already  )
     estimatedCostBox.setText(String.valueOf(errand.getCost()));
-    estimatedCostBox.setKeyListener(null);
     allowanceBox.setText(String.valueOf(errand.getAllowance()));
-    allowanceBox.setKeyListener(null);
+    if (MODE.equals(Konstants.EDIT_MODE)) {
+      //disable these editTexts only in edit Mode
+      estimatedCostBox.setKeyListener(null);
+      allowanceBox.setKeyListener(null);
+    }
+
     if (errand.getPickUpLocation() != null) {
       GallamseyLocationComponent loc = errand.getPickUpLocation();
       selectedGallamseyLocation = loc;

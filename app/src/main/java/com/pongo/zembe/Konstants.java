@@ -8,6 +8,8 @@ import java.util.HashMap;
 public class Konstants {
 
 
+  public static final String MODE ="MODE";
+  public static final String FROM_TEMPLATE_MODE = "FROM_TEMPLATE";
   public static final String EDIT_MODE = "EDITING";
   public static final String PASS_TAGS = "TAGS";
   public static final String UPPER_TIER = "UPPER";

@@ -88,7 +88,7 @@ public class ErrandViewActivity extends AppCompatActivity {
   private void goToEditPage() {
     Intent page = new Intent(this, NewErrandCreationPage.class);
     page.putExtra(Konstants.AUTH_USER_KEY, authenticatedUser);
-    page.putExtra(Konstants.EDIT_MODE, Konstants.EDIT_MODE);
+    page.putExtra(Konstants.MODE, Konstants.EDIT_MODE);
     page.putExtra(Konstants.PASS_ERRAND_AROUND, errand);
     page.putExtra(Konstants.PASS_TAGS, tagCollection);
     startActivity(page);
@@ -193,6 +193,7 @@ public class ErrandViewActivity extends AppCompatActivity {
     }
 
     if (errand.getTags().size() != 0) {
+      tagGroup.removeAllViews();//clear all views before remaking chips
       for (int i = 0; i < errand.getTags().size(); i++) {
         String item = errand.getTags().get(i);
         Chip chip = MyHelper.createChipNoClose(this, item);
