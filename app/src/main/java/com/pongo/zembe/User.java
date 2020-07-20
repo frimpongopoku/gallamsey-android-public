@@ -13,10 +13,10 @@ import java.util.Date;
 import java.util.HashMap;
 
 /**
- * <p>Abstract user class that all kinds of users in the application will extend from
+ * <p> user class that all kinds of users in the application will extend from
  * Implements serializable because we want to be able to move this user obj in between activities
  * for that to happen, the obj is going to be serialized before sending and unserialized when its being retrieved
- * hence, cant do without "Serializable" </p>
+ * hence, cant do without "Parcelable" </p>
  */
 public class User implements Parcelable {
 
@@ -26,6 +26,7 @@ public class User implements Parcelable {
   private ArrayList<PaymentContact> mobileNumbersForPayment = new ArrayList<>() ;
   private ArrayList<GallamseyLocationComponent> deliveryLocations = new ArrayList<>();
   private GallamseyLocationComponent geoLocation;
+  private Wallet wallet = new Wallet();
 
   public User() {
   } //no-arg constructor because of Firebase
@@ -79,6 +80,14 @@ public class User implements Parcelable {
 
   public void setMobileNumbersForPayment(ArrayList<PaymentContact> mobileNumbersForPayment) {
     this.mobileNumbersForPayment = mobileNumbersForPayment;
+  }
+
+  public Wallet getWallet() {
+    return wallet;
+  }
+
+  public void setWallet(Wallet wallet) {
+    this.wallet = wallet;
   }
 
   public String getProfilePictureURL() {
@@ -190,6 +199,7 @@ public class User implements Parcelable {
       ", mobileNumbersForPayment=" + mobileNumbersForPayment +
       ", deliveryLocations=" + deliveryLocations +
       ", geoLocation=" + geoLocation +
+      ", wallet=" + wallet +
       '}';
   }
 
@@ -217,6 +227,7 @@ public class User implements Parcelable {
     dest.writeTypedList(this.mobileNumbersForPayment);
     dest.writeTypedList(this.deliveryLocations);
     dest.writeParcelable(this.geoLocation, flags);
+    dest.writeParcelable(this.wallet, flags);
   }
 
   protected User(Parcel in) {
@@ -238,6 +249,7 @@ public class User implements Parcelable {
     this.mobileNumbersForPayment = in.createTypedArrayList(PaymentContact.CREATOR);
     this.deliveryLocations = in.createTypedArrayList(GallamseyLocationComponent.CREATOR);
     this.geoLocation = in.readParcelable(GallamseyLocationComponent.class.getClassLoader());
+    this.wallet = in.readParcelable(Wallet.class.getClassLoader());
   }
 
   public static final Creator<User> CREATOR = new Creator<User>() {
