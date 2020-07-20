@@ -113,7 +113,21 @@ public class MagicBoxes extends AppCompatDialogFragment {
 
   }
 
-  public Dialog constructCustomDialogOneAction(String title, View v, String actionTitle, final MagicBoxCallables magicInterface) {
+  public Dialog constructSimpleOneActionDialog(String title, String msg, String actionTitle, final OneAction action) {
+    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+    builder
+      .setTitle(title)
+      .setMessage(msg)
+      .setPositiveButton(actionTitle, new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialogInterface, int i) {
+          action.callback();
+        }
+      });
+
+    return builder.create();
+
+  }public Dialog constructCustomDialogOneAction(String title, View v, String actionTitle, final MagicBoxCallables magicInterface) {
     AlertDialog.Builder builder = new AlertDialog.Builder(context);
     builder.setView(v)
       .setTitle(title)
@@ -159,6 +173,9 @@ interface PhoneNumberDialogContentCallable {
 
 interface RatingButtonActions {
   void onFinish(int rating);
+}
+interface  OneAction{
+  void callback();
 }
 
 interface MagicBoxCallables {

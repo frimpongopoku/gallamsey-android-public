@@ -72,6 +72,7 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHom
     initializeActivity();
   }
 
+
   private void initializeActivity() {
     userProfileImageOnToolbar = findViewById(R.id.toolbar_img);
     userProfileImageOnToolbar.setOnClickListener(goToProfile);

@@ -20,6 +20,8 @@ public class FavoriteFragmentGenerator extends Fragment {
 
   private static String WHICH_FRAGMENT = "FRAGMENT_NAME";
   TemplateTrainForErrands allSavedTemplates;
+  FavoriteRidersRecyclerAdapter adapter;
+  TemplatesRecyclerAdapter templatesAdapter;
 
   public static FavoriteFragmentGenerator newInstance(String whichFragment) {
     FavoriteFragmentGenerator fragment = new FavoriteFragmentGenerator();
@@ -55,17 +57,17 @@ public class FavoriteFragmentGenerator extends Fragment {
       allSavedTemplates = new TemplateTrainForErrands();
     }
     RecyclerView recycler = v.findViewById(R.id.templates_recycler);
-    TemplatesRecyclerAdapter adapter = new TemplatesRecyclerAdapter(getContext(), allSavedTemplates.getErrands(), (TemplatesRecyclerAdapter.TemplateItemClick) getContext());
+    templatesAdapter = new TemplatesRecyclerAdapter(getContext(), allSavedTemplates.getErrands(), (TemplatesRecyclerAdapter.TemplateItemClick) getContext());
     LinearLayoutManager manager = new LinearLayoutManager(getContext());
     recycler.setLayoutManager(manager);
     new ItemTouchHelper(templateSwipeFunctionality).attachToRecyclerView(recycler);
-    recycler.setAdapter(adapter);
+    recycler.setAdapter(templatesAdapter);
     return v;
   }
 
   private View initializeFavoritesTab(View v) {
     RecyclerView recycler = v.findViewById(R.id.fav_riders_recycler);
-    FavoriteRidersRecyclerAdapter adapter = new FavoriteRidersRecyclerAdapter(getContext(), new ArrayList<SimpleUser>(), (FavoriteRidersRecyclerAdapter.RidersItemClick) getContext());
+    adapter = new FavoriteRidersRecyclerAdapter(getContext(), new ArrayList<SimpleUser>(), (FavoriteRidersRecyclerAdapter.RidersItemClick) getContext());
     LinearLayoutManager manager = new LinearLayoutManager(getContext());
     recycler.setLayoutManager(manager);
     new ItemTouchHelper(favRiderSwipeFunctionality).attachToRecyclerView(recycler);
@@ -81,8 +83,19 @@ public class FavoriteFragmentGenerator extends Fragment {
 
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-      Toast.makeText(getContext(), "Item removed - " + viewHolder.getAdapterPosition(), Toast.LENGTH_SHORT).show();
-
+      int pos = viewHolder.getAdapterPosition();
+      GenericErrandClass errand = allSavedTemplates.getErrands().get(pos);
+      templatesAdapter.notifyItemRemoved(pos);
+      allSavedTemplates.removeFromArray(errand);
+      if (getContext() != null) {
+        //treating data as immutable
+        MyHelper.removeFromSharedPreference(getContext(), Konstants.SAVE_ERRANDS_AS_TEMPLATE); //removed old stuff
+        if (allSavedTemplates.getErrands().size() > 0) {
+          //dont save anything if this is the last item
+          MyHelper.saveToSharedPreferences(getContext(), allSavedTemplates, Konstants.SAVE_ERRANDS_AS_TEMPLATE);
+        }
+        Toast.makeText(getContext(), errand.getTitle() + " is removed from your list", Toast.LENGTH_SHORT).show();
+      }
     }
   };
   private ItemTouchHelper.SimpleCallback favRiderSwipeFunctionality = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {

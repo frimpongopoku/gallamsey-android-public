@@ -155,4 +155,19 @@ public class SimpleUser implements Parcelable {
       return new SimpleUser[size];
     }
   };
+
+  @Override
+  public String toString() {
+    return "SimpleUser{" +
+      "userPlatformID='" + userPlatformID + '\'' +
+      ", userName='" + userName + '\'' +
+      ", phoneNumber='" + phoneNumber + '\'' +
+      ", userPlatformType='" + userPlatformType + '\'' +
+      ", profilePicture='" + profilePicture + '\'' +
+      ", userStatus='" + userStatus + '\'' +
+      ", primaryLocation=" + primaryLocation +
+      ", gender='" + gender + '\'' +
+      ", rating=" + rating +
+      '}';
+  }
 }
