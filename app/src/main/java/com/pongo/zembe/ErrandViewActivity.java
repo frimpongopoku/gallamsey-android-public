@@ -5,6 +5,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -18,6 +19,10 @@ import android.widget.Toast;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipDrawable;
 import com.google.android.material.chip.ChipGroup;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
 public class ErrandViewActivity extends AppCompatActivity {
@@ -29,6 +34,10 @@ public class ErrandViewActivity extends AppCompatActivity {
   ImageView backBtn, errandImage, options;
   ChipGroup tagGroup;
   Context thisActivity = this;
+  TagCollection tagCollection;
+  GroundUser authenticatedUser;
+  GalFirebaseHelper firebaseHelper = new GalFirebaseHelper();
+  CollectionReference errandDB = FirebaseFirestore.getInstance().collection(Konstants.ERRAND_COLLECTION);
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -36,11 +45,18 @@ public class ErrandViewActivity extends AppCompatActivity {
     setContentView(R.layout.activity_errand_view);
     initializeActivity();
     errand = getIntent().getParcelableExtra(Konstants.PASS_ERRAND_AROUND);
+    tagCollection = getIntent().getParcelableExtra(Konstants.PASS_TAGS);
+    authenticatedUser = getIntent().getParcelableExtra(Konstants.AUTH_USER_KEY);
     if (errand != null) {
       populateWithInfo(errand);
     }
   }
 
+  @Override
+  protected void onResume() {
+    super.onResume();
+    listenForChangesInDocument();
+  }
 
   public void initializeActivity() {
     options = findViewById(R.id.options);
@@ -65,25 +81,52 @@ public class ErrandViewActivity extends AppCompatActivity {
     options.setOnClickListener(openDropdown);
   }
 
+  private void goToEditPage() {
+    Intent page = new Intent(this, NewErrandCreationPage.class);
+    page.putExtra(Konstants.AUTH_USER_KEY, authenticatedUser);
+    page.putExtra(Konstants.EDIT_MODE, Konstants.EDIT_MODE);
+    page.putExtra(Konstants.PASS_ERRAND_AROUND, errand);
+    page.putExtra(Konstants.PASS_TAGS, tagCollection);
+    startActivity(page);
+  }
+
   private View.OnClickListener openDropdown = new View.OnClickListener() {
     @Override
     public void onClick(View view) {
       PopupMenu menu = new PopupMenu(thisActivity, view);
-      menu.inflate(R.menu.menu_for_errand_view);
+      if (authenticatedUser != null && authenticatedUser.getUserDocumentID().equals(errand.getCreator().getUserPlatformID())) {
+        //just check if the current signed in user is the one that created the errand show them the edit & delete menu
+        menu.inflate(R.menu.menu_for_errand_view);
+      } else {
+        menu.inflate(R.menu.no_auth_menu_for_errand_view);
+      }
+
       menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
         @Override
         public boolean onMenuItemClick(MenuItem menuItem) {
           switch (menuItem.getItemId()) {
             case R.id.edit: {
-              Toast.makeText(thisActivity, "You have clicked edit", Toast.LENGTH_SHORT).show();
+              goToEditPage();
               break;
             }
             case R.id.delete: {
               Toast.makeText(thisActivity, "You have clicked delete", Toast.LENGTH_SHORT).show();
               break;
             }
+            case R.id.share: {
+              Toast.makeText(thisActivity, "You have clicked share", Toast.LENGTH_SHORT).show();
+              break;
+            }
+            case R.id.report: {
+              Toast.makeText(thisActivity, "You have clicked report", Toast.LENGTH_SHORT).show();
+              break;
+            }
+            case R.id.run: {
+              Toast.makeText(thisActivity, "You have clicked run", Toast.LENGTH_SHORT).show();
+              break;
+            }
             case R.id.back: {
-              Toast.makeText(thisActivity, "You have clicked back", Toast.LENGTH_SHORT).show();
+              finish();
               break;
             }
           }
@@ -93,6 +136,18 @@ public class ErrandViewActivity extends AppCompatActivity {
       menu.show();
     }
   };
+
+  private void listenForChangesInDocument() {
+    firebaseHelper.setSnapshotListenerOnDocument(errandDB.document(errand.getErrandDocumentID()), new GalInterfaceGuru.SnapshotTakerInterface() {
+      @Override
+      public void callback(DocumentSnapshot document) {
+        if (document.exists()) {
+          GenericErrandClass errand = document.toObject(GenericErrandClass.class);
+          populateWithInfo(errand);
+        }
+      }
+    });
+  }
 
   private void populateWithInfo(GenericErrandClass errand) {
     errandDescription.setText(errand.getDescription());

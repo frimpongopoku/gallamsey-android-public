@@ -9,6 +9,18 @@
     android:background="@android:color/white">
 
     <ImageView
+      android:layout_centerVertical="true"
+      android:clickable="true"
+      android:id="@+id/options"
+      android:background="?attr/selectableItemBackgroundBorderless"
+      android:layout_marginEnd="15dp"
+      android:elevation="50dp"
+      android:layout_alignParentEnd="true"
+      android:src="@drawable/option_icon"
+      android:layout_width="25dp"
+      android:layout_height="25dp" />
+
+    <ImageView
       android:id="@+id/back_btn"
       android:layout_width="30dp"
       android:layout_height="30dp"

@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.text.Layout;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,10 +32,10 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
   int IMAGE_CODE = 6;
   int TEXT_CODE = 2;
   String TAG = "Adapter has started...";
-
   ArrayList<GenericErrandClass> news = new ArrayList<>();
   Context context;
   OnNewsItemClick listener;
+  GroundUser authenticatedUser;
 
   public HomeNewsMultiAdapter(Context context, ArrayList<GenericErrandClass> news, OnNewsItemClick listener) {
     this.listener = listener;
@@ -56,6 +58,10 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
     }
 
     return null;
+  }
+
+  public void setAuthenticatedUser(GroundUser authenticatedUser) {
+    this.authenticatedUser = authenticatedUser;
   }
 
   public void setNews(ArrayList<GenericErrandClass> news) {
@@ -102,7 +108,7 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
     holder.cost.setText(String.valueOf(newsItem.getCost()));
     holder.profit.setText(String.valueOf(newsItem.getAllowance()));
     holder.date.setText(newsItem.getCreatedAt());
-    if(newsItem.getImages() !=null && newsItem.getImages().size() !=0){
+    if (newsItem.getImages() != null && newsItem.getImages().size() != 0) {
       Picasso.get().load(newsItem.getImages().get(0)).into(holder.image);
     }
   }
@@ -143,6 +149,7 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+      GenericErrandClass errand = news.get(getAdapterPosition());
       MenuItem more = contextMenu.add("More");
       more.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
         @Override
@@ -152,22 +159,33 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
           return true;
         }
       });
-      MenuItem edit = contextMenu.add("Edit");
-      edit.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-        @Override
-        public boolean onMenuItemClick(MenuItem menuItem) {
-          GenericErrandClass errand = news.get(getAdapterPosition()); //news arr from main class
-          editMenuItemListener.getErrandToBeEdited(getAdapterPosition(), errand);
-          return true;
-        }
-      });
-      MenuItem delete = contextMenu.add("Delete & Refund");
-      delete.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-        @Override
-        public boolean onMenuItemClick(MenuItem menuItem) {
-          return false;
-        }
-      });
+      if (authenticatedUser != null && authenticatedUser.getUserDocumentID().equals(errand.getCreator().getUserPlatformID())) {
+        MenuItem edit = contextMenu.add("Edit");
+        edit.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+          @Override
+          public boolean onMenuItemClick(MenuItem menuItem) {
+            GenericErrandClass errand = news.get(getAdapterPosition()); //news arr from main class
+            editMenuItemListener.getErrandToBeEdited(getAdapterPosition(), errand);
+            return true;
+          }
+        });
+        MenuItem delete = contextMenu.add("Delete & Refund");
+        delete.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+          @Override
+          public boolean onMenuItemClick(MenuItem menuItem) {
+            return false;
+          }
+        });
+      } else {
+        MenuItem report = contextMenu.add("Report");
+        report.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+          @Override
+          public boolean onMenuItemClick(MenuItem menuItem) {
+            return false;
+          }
+        });
+      }
+
     }
 
 
@@ -204,6 +222,8 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+      GenericErrandClass errand = news.get(getAdapterPosition());
+
       MenuItem more = contextMenu.add("More");
       more.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
         @Override
@@ -213,22 +233,35 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
           return true;
         }
       });
-      MenuItem edit = contextMenu.add("Edit");
-      edit.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-        @Override
-        public boolean onMenuItemClick(MenuItem menuItem) {
-          GenericErrandClass errand = news.get(getAdapterPosition()); //news arr from main class
-          editMenuItemListener.getErrandToBeEdited(getAdapterPosition(), errand);
-          return true;
-        }
-      });
-      MenuItem delete = contextMenu.add("Delete & Refund");
-      delete.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-        @Override
-        public boolean onMenuItemClick(MenuItem menuItem) {
-          return false;
-        }
-      });
+
+      if (authenticatedUser != null && authenticatedUser.getUserDocumentID().equals(errand.getCreator().getUserPlatformID())) {
+
+        MenuItem edit = contextMenu.add("Edit");
+        edit.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+          @Override
+          public boolean onMenuItemClick(MenuItem menuItem) {
+            GenericErrandClass errand = news.get(getAdapterPosition()); //news arr from main class
+            editMenuItemListener.getErrandToBeEdited(getAdapterPosition(), errand);
+            return true;
+          }
+        });
+        MenuItem delete = contextMenu.add("Delete & Refund");
+        delete.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+          @Override
+          public boolean onMenuItemClick(MenuItem menuItem) {
+            return false;
+          }
+        });
+
+      } else {
+        MenuItem report = contextMenu.add("Report");
+        report.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+          @Override
+          public boolean onMenuItemClick(MenuItem menuItem) {
+            return false;
+          }
+        });
+      }
     }
   }
 

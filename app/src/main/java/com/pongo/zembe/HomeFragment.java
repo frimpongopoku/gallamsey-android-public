@@ -48,6 +48,7 @@ public class HomeFragment extends Fragment {
   RecyclerView recyclerView;
   ShimmerFrameLayout skeleton;
   GalFirebaseHelper firebaseHelper = new GalFirebaseHelper();
+  GroundUser authenticatedUser;
 
 
   public HomeFragment(ArrayList<GenericErrandClass> news, View oldViewState, GalInterfaceGuru.TrackHomeFragmentState fragmentStateListener) {
@@ -55,6 +56,10 @@ public class HomeFragment extends Fragment {
     this.currentState = oldViewState;
     this.fragmentStateListener = fragmentStateListener;
 
+  }
+
+  public void setAuthenticatedUser(GroundUser authenticatedUser) {
+    this.authenticatedUser = authenticatedUser;
   }
 
   public void setCurrentState(View currentState) {
@@ -104,6 +109,7 @@ public class HomeFragment extends Fragment {
     recyclerView = view.findViewById(R.id.home_news_recycler);
     skeleton = view.findViewById(R.id.news_skeleton_view);
     this.adapter = new HomeNewsMultiAdapter(getContext(), news, (HomeNewsMultiAdapter.OnNewsItemClick) getContext());
+    this.adapter.setAuthenticatedUser(authenticatedUser);
     RecyclerView.LayoutManager manager = new LinearLayoutManager(getContext());
     recyclerView.setLayoutManager(manager);
     recyclerView.setAdapter(adapter);

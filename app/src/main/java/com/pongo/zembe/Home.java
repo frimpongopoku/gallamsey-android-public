@@ -86,6 +86,7 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHom
 
 //   ----Set default home fragment: HomePage
     Fragment default_fragment = new HomeFragment(homeFragContent,homeFragState,this);
+    ((HomeFragment) default_fragment).setAuthenticatedUser(authenticatedUser);
     getSupportFragmentManager().beginTransaction().replace(R.id.app_frame_layout, default_fragment).commit();
 
 //    Set Fragment Listener to switch pages
@@ -166,6 +167,7 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHom
       switch (menuItem.getItemId()) {
         case R.id.nav_home:
           destinationPage = new HomeFragment(homeFragContent, homeFragState,(GalInterfaceGuru.TrackHomeFragmentState) thisActivity);
+          ((HomeFragment) destinationPage).setAuthenticatedUser(authenticatedUser);
           break;
         case R.id.nav_notification:
           destinationPage = new NotificationFragment();
@@ -222,7 +224,9 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHom
   @Override
   public void newsItemCallback(int pos, GenericErrandClass selectedErrand) {
     Intent page = new Intent(this,ErrandViewActivity.class);
+    page.putExtra(Konstants.AUTH_USER_KEY, authenticatedUser);
     page.putExtra(Konstants.PASS_ERRAND_AROUND,selectedErrand);
+    page.putExtra(Konstants.PASS_TAGS, tagCollection);
     startActivity(page);
   }
 
