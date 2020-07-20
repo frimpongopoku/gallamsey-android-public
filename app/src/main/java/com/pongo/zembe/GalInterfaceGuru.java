@@ -14,6 +14,9 @@ public class GalInterfaceGuru {
     void callback(DocumentSnapshot document);
   }
 
+  interface  TemplatingLimitExceededError{
+    void callback(String error);
+  }
   interface PaymentContactAdapterClickable {
     void callback(int position);
   }

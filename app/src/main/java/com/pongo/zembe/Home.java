@@ -81,6 +81,7 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHom
     if (authenticatedUser != null) {
       userDocumentReference = userDB.document(authenticatedUser.getUserDocumentID());
       setProfilePicture();
+      MyHelper.removeFromSharedPreference(this,"auth_user_test");
     }
     loadTags();
 

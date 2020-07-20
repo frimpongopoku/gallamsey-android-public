@@ -225,6 +225,61 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     });
   }
 
+  private void prepareAndSaveErrandAsTemplate() {
+    String description = MyHelper.grabCleanText(descriptionBox), estimated = MyHelper.grabCleanText(estimatedCostBox), allowance = MyHelper.grabCleanText(allowanceBox);
+    final GenericErrandClass errand = new GenericErrandClass(Konstants.INIT_STRING, description);
+    errand.setTags(tagList);
+    errand.setCost(Float.valueOf(estimated));
+    errand.setAllowance(Float.valueOf(allowance));
+    errand.setDetails(detailsList);
+    errand.setCreator(creator);
+    errand.setPickUpLocation(selectedGallamseyLocation);
+    if (userSelectedImage != null) {
+      errand.setErrandType(Konstants.IMAGE_ERRAND);
+    } else {
+      errand.setErrandType(Konstants.TEXT_ERRAND);
+    }
+
+
+    String templateMsg = "After this is saved, you can easily pickup where you left off by choosing from your list when you go to your 'Favorites Page'\nNB: Your image & expiry will not be saved";
+    dialogCreator.constructASimpleDialog("Save This As A Template", templateMsg, new MagicBoxCallables() {
+      @Override
+      public void negativeBtnCallable() {
+        //do nothing
+      }
+
+      @Override
+      public void positiveBtnCallable() {
+        saveErrandTemplate(errand);
+      }
+    }).show();
+  }
+
+  public void saveErrandTemplate(GenericErrandClass errand) {
+    TemplateTrainForErrands templateTrain = (TemplateTrainForErrands) MyHelper.getFromSharedPreferences(this, Konstants.SAVE_ERRANDS_AS_TEMPLATE, TemplateTrainForErrands.class);
+    if (templateTrain == null) {
+      //then nothing has been saved yet, so save
+      templateTrain = new TemplateTrainForErrands();
+      templateTrain.addToArray(errand, new GalInterfaceGuru.TemplatingLimitExceededError() {
+        @Override
+        public void callback(String error) {
+          Toast.makeText(activity, error, Toast.LENGTH_LONG).show();
+        }
+      });
+    } else {
+      templateTrain.addToArray(errand, new GalInterfaceGuru.TemplatingLimitExceededError() {
+        @Override
+        public void callback(String error) {
+          Toast.makeText(activity, error, Toast.LENGTH_LONG).show();
+        }
+      });
+    }
+    if (templateTrain.getErrands().size() <= 15) {
+      MyHelper.saveToSharedPreferences(this, templateTrain, Konstants.SAVE_ERRANDS_AS_TEMPLATE);
+      Toast.makeText(activity, errand.getTitle() + " is saved as a template", Toast.LENGTH_SHORT).show();
+    }
+  }
+
   private void makeSimpleUserFrom(GroundUser user) {
     creator = new SimpleUser(
       user.getUserDocumentID(),
@@ -587,7 +642,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
   private View.OnClickListener saveAsTemplate = new View.OnClickListener() {
     @Override
     public void onClick(View view) {
-      goToPaymentPage(null);
+      prepareAndSaveErrandAsTemplate();
     }
   };
   private AdapterView.OnItemSelectedListener selectExpiryDate = new AdapterView.OnItemSelectedListener() {
