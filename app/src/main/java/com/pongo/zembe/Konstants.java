@@ -9,6 +9,7 @@ public class Konstants {
 
 
 
+  public static final int DEFAULT_WALLET_BALANCE_GH =1;
   public static final int DEFAULT_WALLET_PIN =1111;
   public static final String MODE ="MODE";
   public static final String FROM_TEMPLATE_MODE = "FROM_TEMPLATE";
