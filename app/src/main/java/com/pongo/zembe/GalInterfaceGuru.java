@@ -41,7 +41,7 @@ public class GalInterfaceGuru {
   }
 
   interface TrackWalletFragmentState {
-    void saveFragmentState(View view);
+    void saveWalletState(ArrayList<Object>transactions,View view);
   }
 
   interface  EditContextMenuItemListener{

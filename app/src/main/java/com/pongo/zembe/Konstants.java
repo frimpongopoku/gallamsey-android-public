@@ -9,6 +9,7 @@ public class Konstants {
 
 
 
+  public static final String GH_CURRENCY =" GHS";
   public static final int DEFAULT_WALLET_BALANCE_GH =1;
   public static final int DEFAULT_WALLET_PIN =1111;
   public static final String MODE ="MODE";
@@ -42,6 +43,8 @@ public class Konstants {
 
   // ERRAND CREATION CONSTANTS
   //  --------------------------
+  public static final int TEXT_PAYMENT_NOTIFICATION = 443;
+  public static final int IMAGE_PAYMENT_NOTIFICATION = 664;
   public static final String SAVE_ERRANDS_AS_TEMPLATE = "SAVE_ERRANDS_AS_TEMPLATE";
   public static final String ERRAND_PICTURES_COLLECTION = "ERRAND_PICS";
   public static final String IMG_ERRAND_CONSTANT = "_errand_img_";

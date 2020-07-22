@@ -19,9 +19,8 @@
 
       <include
         layout="@layout/ground_zembe_card"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="220dp"
-        android:layout_below="@+id/default_toolbar"
         android:layout_margin="10dp" />
 
 
@@ -29,40 +28,19 @@
 
       <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:orientation="vertical">
 
-        <include
-          layout="@layout/notfication_card_type_2"
+        <androidx.recyclerview.widget.RecyclerView
+          android:id="@+id/transactions_recycler"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-           />
+      />
 
-        <include
-          layout="@layout/notfication_card_type_1"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-        />
-
-        <include
-          layout="@layout/notfication_card_type_1"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-           />
-
-        <include
-          layout="@layout/notfication_card_type_2"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-           />
-
-        <include
-          layout="@layout/notfication_card_type_1"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-           />
+        <include layout="@layout/narrator_layout" />
       </LinearLayout>
+
 
       <!-- End Notifications div-->
 

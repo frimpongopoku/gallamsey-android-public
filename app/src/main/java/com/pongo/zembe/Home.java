@@ -38,7 +38,7 @@ import java.util.HashMap;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHomeFragmentState, HomeNewsMultiAdapter.OnNewsItemClick, GalInterfaceGuru.EditContextMenuItemListener {
+public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHomeFragmentState, HomeNewsMultiAdapter.OnNewsItemClick, GalInterfaceGuru.EditContextMenuItemListener, GalInterfaceGuru.TrackWalletFragmentState {
 
   ArrayList<String> desc = new ArrayList<>();
   ArrayList<String> profits = new ArrayList<>();
@@ -54,11 +54,12 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHom
   CollectionReference userDB = firestore.collection(Konstants.USER_COLLECTION);
   DocumentReference userDocumentReference;
   ArrayList<GenericErrandClass> homeFragContent;
-  View homeFragState;
+  View homeFragState, walletFrag;
   Context thisActivity = this;
   Fragment currentFrag;
   TagCollection tagCollection;
   CollectionReference tagsDB = firestore.collection(Konstants.TAG_COLLECTION);
+  ArrayList<Object> walletFragContent;
 
 
   @Override
@@ -82,7 +83,6 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHom
     if (authenticatedUser != null) {
       userDocumentReference = userDB.document(authenticatedUser.getUserDocumentID());
       setProfilePicture();
-      MyHelper.removeFromSharedPreference(this,"auth_user_test");
     }
     loadTags();
 
@@ -122,7 +122,7 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHom
         userProfileImageOnToolbar.setImageResource(R.drawable.african_avatar_male);
       } else if (authenticatedUser.getGender().equals(Konstants.FEMALE)) {
         userProfileImageOnToolbar.setImageResource(R.drawable.african_avatar_female);
-      }else{
+      } else {
         userProfileImageOnToolbar.setImageResource(R.drawable.profile_dummy_box_other);
       }
     }
@@ -153,8 +153,8 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHom
     public void onClick(View view) {
       favoritesBtn.setAlpha(1);
       Intent fav = new Intent(getApplicationContext(), FavoritesActivity.class);
-      fav.putExtra(Konstants.AUTH_USER_KEY,authenticatedUser);
-      fav.putExtra(Konstants.PASS_TAGS,tagCollection);
+      fav.putExtra(Konstants.AUTH_USER_KEY, authenticatedUser);
+      fav.putExtra(Konstants.PASS_TAGS, tagCollection);
       startActivity(fav);
     }
   };
@@ -173,7 +173,7 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHom
       Intent createErrandPage = new Intent(getApplicationContext(), NewErrandCreationPage.class);
       createErrandPage.putExtra(Konstants.AUTH_USER_KEY, authenticatedUser);
       createErrandPage.putExtra(Konstants.PASS_TAGS, tagCollection);
-      createErrandPage.putExtra(Konstants.MODE, Konstants.INIT_STRING);//set it to an empty string, showing that its not edit mode
+      createErrandPage.putExtra(Konstants.MODE, Konstants.INIT_STRING); //set it to an empty string, showing that its not edit mode
       startActivity(createErrandPage);
     }
   };
@@ -204,7 +204,9 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHom
           destinationPage = new MessagesFragment();
           break;
         case R.id.earnings:
-          destinationPage = new UserEarningsFragment();
+          destinationPage = new UserEarningsFragment(thisActivity);
+          ((UserEarningsFragment) destinationPage).setAuthenticatedUser(authenticatedUser);
+          ((UserEarningsFragment) destinationPage).setOldState(walletFragContent, walletFrag);
           break;
       }
 
@@ -272,5 +274,12 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHom
     page.putExtra(Konstants.PASS_ERRAND_AROUND, errand);
     page.putExtra(Konstants.PASS_TAGS, tagCollection);
     startActivity(page);
+  }
+
+
+  @Override
+  public void saveWalletState(ArrayList<Object> transactions, View view) {
+    walletFrag = view;
+    walletFragContent = transactions;
   }
 }

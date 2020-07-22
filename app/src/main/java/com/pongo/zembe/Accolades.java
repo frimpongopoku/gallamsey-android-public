@@ -11,8 +11,8 @@ public class Accolades implements Parcelable {
   private int oneStarCount;
   private int numberOfReports;
   private int numberOfPoints;
-  private int errandCount;// number of errands a user HAS EVER created before, doesnt matter if they shut it down later
-
+  private int errandCount = 0;// number of errands a user HAS EVER created before, doesnt matter if they shut it down later
+  private int gigsCount = 0;
   public Accolades() {
   }
 
@@ -28,6 +28,13 @@ public class Accolades implements Parcelable {
 
   }
 
+  public int getGigsCount() {
+    return gigsCount;
+  }
+
+  public void setGigsCount(int gigsCount) {
+    this.gigsCount = gigsCount;
+  }
 
   public int getErrandCount() {
     return errandCount;
@@ -94,6 +101,21 @@ public class Accolades implements Parcelable {
   }
 
   @Override
+  public String toString() {
+    return "Accolades{" +
+      "fiveStarCount=" + fiveStarCount +
+      ", fourStarCount=" + fourStarCount +
+      ", threeStarCount=" + threeStarCount +
+      ", twoStarCount=" + twoStarCount +
+      ", oneStarCount=" + oneStarCount +
+      ", numberOfReports=" + numberOfReports +
+      ", numberOfPoints=" + numberOfPoints +
+      ", errandCount=" + errandCount +
+      ", gigsCount=" + gigsCount +
+      '}';
+  }
+
+  @Override
   public int describeContents() {
     return 0;
   }
@@ -108,6 +130,7 @@ public class Accolades implements Parcelable {
     dest.writeInt(this.numberOfReports);
     dest.writeInt(this.numberOfPoints);
     dest.writeInt(this.errandCount);
+    dest.writeInt(this.gigsCount);
   }
 
   protected Accolades(Parcel in) {
@@ -119,6 +142,7 @@ public class Accolades implements Parcelable {
     this.numberOfReports = in.readInt();
     this.numberOfPoints = in.readInt();
     this.errandCount = in.readInt();
+    this.gigsCount = in.readInt();
   }
 
   public static final Creator<Accolades> CREATOR = new Creator<Accolades>() {
@@ -132,18 +156,4 @@ public class Accolades implements Parcelable {
       return new Accolades[size];
     }
   };
-
-  @Override
-  public String toString() {
-    return "Accolades{" +
-      "fiveStarCount=" + fiveStarCount +
-      ", fourStarCount=" + fourStarCount +
-      ", threeStarCount=" + threeStarCount +
-      ", twoStarCount=" + twoStarCount +
-      ", oneStarCount=" + oneStarCount +
-      ", numberOfReports=" + numberOfReports +
-      ", numberOfPoints=" + numberOfPoints +
-      ", errandCount=" + errandCount +
-      '}';
-  }
 }

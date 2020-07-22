@@ -4,7 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Wallet implements Parcelable {
-  private int currentBalance = Konstants.DEFAULT_WALLET_BALANCE_GH;
+  private float currentBalance = Konstants.DEFAULT_WALLET_BALANCE_GH;
   private int pin = Konstants.DEFAULT_WALLET_PIN;
   private String walletOwnerID = Konstants.INIT_STRING;
 
@@ -17,11 +17,11 @@ public class Wallet implements Parcelable {
     this.setWalletOwnerID(wallet.getWalletOwnerID());
   }
 
-  public int getCurrentBalance() {
+  public float getCurrentBalance() {
     return currentBalance;
   }
 
-  public void setCurrentBalance(int currentBalance) {
+  public void setCurrentBalance(float currentBalance) {
     this.currentBalance = currentBalance;
   }
 
@@ -56,13 +56,13 @@ public class Wallet implements Parcelable {
 
   @Override
   public void writeToParcel(Parcel dest, int flags) {
-    dest.writeInt(this.currentBalance);
+    dest.writeFloat(this.currentBalance);
     dest.writeInt(this.pin);
     dest.writeString(this.walletOwnerID);
   }
 
   protected Wallet(Parcel in) {
-    this.currentBalance = in.readInt();
+    this.currentBalance = in.readFloat();
     this.pin = in.readInt();
     this.walletOwnerID = in.readString();
   }
