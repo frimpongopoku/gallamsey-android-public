@@ -8,11 +8,15 @@ import java.util.HashMap;
 public class Konstants {
 
 
-
-  public static final String GH_CURRENCY =" GHS";
-  public static final int DEFAULT_WALLET_BALANCE_GH =1;
-  public static final int DEFAULT_WALLET_PIN =1111;
-  public static final String MODE ="MODE";
+  public static final String GH_CURRENCY = " GHS";
+  public static final String SEARCH_ANYTHING = "ANYTHING";
+  public static final String SEARCH_RIDERS = "RIDERS";
+  public static final String SEARCH_ERRANDS = "ERRANDS";
+  public static final String SEARCH_PROFIT = "PROFIT";
+  public static final String SEARCH_COST = "COSTS";
+  public static final int DEFAULT_WALLET_BALANCE_GH = 1;
+  public static final int DEFAULT_WALLET_PIN = 1111;
+  public static final String MODE = "MODE";
   public static final String FROM_TEMPLATE_MODE = "FROM_TEMPLATE";
   public static final String EDIT_MODE = "EDITING";
   public static final String PASS_TAGS = "TAGS";
@@ -23,6 +27,7 @@ public class Konstants {
   public static final String DO = "DO";
   public static final String UNDO = "UNDO";
   public static final String INIT_STRING = "";
+  public static final String EMPTY = "";
   public static final String AUTH_USER_KEY = "authUser";
   public static final String PASS_ERRAND_AROUND = "ERRAND";
   public static final String NOT_SET = "NOT SET";
@@ -81,6 +86,7 @@ public class Konstants {
   public static ArrayList<String> SEARCH_SPINNER_ELEMENTS = new ArrayList<>();
 
   static {
+    SEARCH_SPINNER_ELEMENTS.add(NOT_SET);
     SEARCH_SPINNER_ELEMENTS.add(GREATER);
     SEARCH_SPINNER_ELEMENTS.add(LESS_THAN);
     SEARCH_SPINNER_ELEMENTS.add(EQUAL_TO);
