@@ -65,6 +65,9 @@ public class Konstants {
   public static final String DETAILS_TAB = "DETAILS_TAB";
   public static final String TAGGING_TAB = "TAGGING_TAB";
   public static final String SELECT_RIDERS_TAB = "SELECT_RIDERS_TAB";
+  public static final String GREATER = "GREATER THAN";
+  public static final String LESS_THAN = "LESS THAN";
+  public static final String EQUAL_TO = "EQUAL TO";
 
   //ARRAYS
   //-----------------------------
@@ -75,8 +78,13 @@ public class Konstants {
   public static ArrayList<String> GH_NETWORKS = new ArrayList<>();
   public static ArrayList<String> KE_NETWORKS = new ArrayList<>();
   public static ArrayList<PaymentContact> DUMMY_PAYMENT_CONTACT = new ArrayList<>();
+  public static ArrayList<String> SEARCH_SPINNER_ELEMENTS = new ArrayList<>();
 
   static {
+    SEARCH_SPINNER_ELEMENTS.add(GREATER);
+    SEARCH_SPINNER_ELEMENTS.add(LESS_THAN);
+    SEARCH_SPINNER_ELEMENTS.add(EQUAL_TO);
+
     DUMMY_PAYMENT_CONTACT.add(new PaymentContact("Mummy", "243983364"));
     DUMMY_PAYMENT_CONTACT.add(new PaymentContact("Pongo", "202386709"));
     DEFAULT_SPINNER_ARRAY.add("CHOOSE");
