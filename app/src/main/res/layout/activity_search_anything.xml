@@ -3,39 +3,112 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
-  android:background="@android:color/white"
   android:layout_height="match_parent"
+  android:background="@android:color/white"
   tools:context=".SearchAnythingActivity">
 
   <RelativeLayout
+    android:id="@+id/title_bar"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true">
+
     <ImageView
-      android:clickable="true"
-      android:background="?attr/selectableItemBackgroundBorderless"
-      android:layout_marginStart="20dp"
-      android:layout_centerVertical="true"
       android:id="@+id/back_btn"
-      android:src="@drawable/go_left"
       android:layout_width="30dp"
-      android:layout_height="30dp" />
+      android:layout_height="30dp"
+      android:layout_centerVertical="true"
+      android:layout_marginStart="20dp"
+      android:background="?attr/selectableItemBackgroundBorderless"
+      android:clickable="true"
+      android:src="@drawable/go_left" />
+
     <EditText
       android:id="@+id/search_box"
-      android:height="53dp"
-      android:paddingStart="20dp"
-      android:hint="Search"
-      android:background="@android:color/white"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
       android:layout_centerVertical="true"
       android:layout_toRightOf="@id/back_btn"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content" />
+      android:height="53dp"
+      android:background="@android:color/white"
+      android:hint="Search"
+      android:paddingStart="20dp" />
+
     <View
-      android:layout_below="@id/search_box"
-      android:background="@color/lightest_grey"
       android:layout_width="match_parent"
-      android:layout_height="1dp"/>
+      android:layout_height="1dp"
+      android:layout_below="@id/search_box"
+      android:background="@color/lightest_grey" />
 
   </RelativeLayout>
+
+  <ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@id/title_bar">
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:orientation="vertical">
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RadioGroup
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:padding="10dp"
+          android:paddingStart="20dp"
+          android:paddingEnd="20dp"
+          android:weightSum="3">
+
+          <RadioButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Any"
+            android:textAlignment="center" />
+
+          <RadioButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Riders"
+            android:textAlignment="center" />
+
+          <RadioButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Errands"
+            android:textAlignment="center" />
+
+        </RadioGroup>
+
+        <View
+          android:layout_width="match_parent"
+          android:layout_height="2dp"
+          android:background="@color/lightest_grey" />
+
+      </LinearLayout>
+      <!-- ==================    SHIMMER AND RECYCLER HERE ======== -->
+      <include layout="@layout/search_shimmer_layout"/>
+    </LinearLayout>
+
+  </ScrollView>
+
+  <ImageView
+    android:visibility="gone"
+    android:id="@+id/toy"
+    android:alpha=".3"
+    android:src="@drawable/toy_with_magnifier"
+    android:layout_centerInParent="true"
+    android:layout_width="120dp"
+    android:layout_height="120dp" />
 
 
 </RelativeLayout>
