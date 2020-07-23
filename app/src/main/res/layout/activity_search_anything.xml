@@ -29,15 +29,17 @@
       android:layout_height="wrap_content"
       android:layout_centerVertical="true"
       android:layout_toRightOf="@id/back_btn"
-      android:height="53dp"
       android:background="@android:color/white"
       android:hint="Search"
+      android:maxLines="1"
+      android:minHeight="35dp"
       android:paddingStart="20dp" />
 
     <View
       android:layout_width="match_parent"
       android:layout_height="1dp"
       android:layout_below="@id/search_box"
+      android:layout_marginTop="20dp"
       android:background="@color/lightest_grey" />
 
   </RelativeLayout>
@@ -94,21 +96,32 @@
           android:layout_height="2dp"
           android:background="@color/lightest_grey" />
 
+        <LinearLayout
+          android:orientation="vertical"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
+
+          <!--<include layout="@layout/search_shimmer_layout" />-->
+          <include layout="@layout/search_item_for_rider" />
+          <include layout="@layout/search_item_for_errand" />
+        </LinearLayout>
+
       </LinearLayout>
       <!-- ==================    SHIMMER AND RECYCLER HERE ======== -->
-      <include layout="@layout/search_shimmer_layout"/>
+
     </LinearLayout>
+
 
   </ScrollView>
 
   <ImageView
-    android:visibility="gone"
     android:id="@+id/toy"
+    android:layout_width="120dp"
+    android:layout_height="120dp"
+    android:layout_centerInParent="true"
     android:alpha=".3"
     android:src="@drawable/toy_with_magnifier"
-    android:layout_centerInParent="true"
-    android:layout_width="120dp"
-    android:layout_height="120dp" />
+    android:visibility="gone" />
 
 
 </RelativeLayout>
