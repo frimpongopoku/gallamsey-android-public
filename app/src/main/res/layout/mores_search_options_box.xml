@@ -16,19 +16,22 @@
       android:weightSum="2">
 
       <RadioButton
+        android:textSize="12sp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="Profit should be" />
 
       <RadioButton
+        android:textSize="12sp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Cost of Errand" />
+        android:text="Cost of entire Errand" />
       <Button
+        android:textSize="11sp"
         android:id="@+id/clear"
-        android:layout_marginEnd="15dp"
+
         android:textColor="@android:color/holo_red_dark"
         android:backgroundTint="@color/almost_white"
         android:background="?attr/selectableItemBackground"
