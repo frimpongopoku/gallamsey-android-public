@@ -124,5 +124,17 @@
     android:src="@drawable/toy_with_magnifier"
     android:visibility="gone" />
 
+  <Button
+    android:layout_alignParentBottom="true"
+    android:id="@+id/add_errand_button"
+    android:layout_width="45dp"
+    android:layout_height="45dp"
+    android:layout_above="@+id/bottom_nav"
+    android:layout_alignParentEnd="true"
+    android:layout_marginEnd="20dp"
+    android:layout_marginBottom="10dp"
+    android:background="@drawable/search_button"
+    android:elevation="20dp" />
+
 
 </RelativeLayout>
