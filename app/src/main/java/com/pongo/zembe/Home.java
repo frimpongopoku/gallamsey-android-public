@@ -3,6 +3,7 @@ package com.pongo.zembe;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,12 +15,15 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 import android.os.Parcelable;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -27,6 +31,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
@@ -38,12 +44,8 @@ import java.util.HashMap;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHomeFragmentState, HomeNewsMultiAdapter.OnNewsItemClick, GalInterfaceGuru.EditContextMenuItemListener {
+public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHomeFragmentState, HomeNewsMultiAdapter.OnNewsItemClick, GalInterfaceGuru.EditContextMenuItemListener, GalInterfaceGuru.TrackWalletFragmentState {
 
-  ArrayList<String> desc = new ArrayList<>();
-  ArrayList<String> profits = new ArrayList<>();
-  ArrayList<String> costs = new ArrayList<>();
-  ArrayList<String> dates = new ArrayList<>();
   ImageView favBtn, optionsBtn;
   CircleImageView userProfileImageOnToolbar;
   FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -54,11 +56,14 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHom
   CollectionReference userDB = firestore.collection(Konstants.USER_COLLECTION);
   DocumentReference userDocumentReference;
   ArrayList<GenericErrandClass> homeFragContent;
-  View homeFragState;
+  View homeFragState, walletFrag;
   Context thisActivity = this;
   Fragment currentFrag;
   TagCollection tagCollection;
   CollectionReference tagsDB = firestore.collection(Konstants.TAG_COLLECTION);
+  ArrayList<Object> walletFragContent;
+  EditText searchBox;
+
 
 
   @Override
@@ -72,17 +77,24 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHom
     initializeActivity();
   }
 
+  private View.OnClickListener goToSearchActivity = new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+      Intent page = new Intent(thisActivity, SearchAnythingActivity.class);
+      startActivity(page);
+    }
+  };
 
   private void initializeActivity() {
+    searchBox = findViewById(R.id.search_box);
+    searchBox.setOnClickListener(goToSearchActivity);
     userProfileImageOnToolbar = findViewById(R.id.toolbar_img);
     userProfileImageOnToolbar.setOnClickListener(goToProfile);
-    fillInTheBlankSpaces();
     //getAuthenticated User if they are coming from login | register
     authenticatedUser = getIntent().getParcelableExtra(Konstants.AUTH_USER_KEY);
     if (authenticatedUser != null) {
       userDocumentReference = userDB.document(authenticatedUser.getUserDocumentID());
       setProfilePicture();
-      MyHelper.removeFromSharedPreference(this,"auth_user_test");
     }
     loadTags();
 
@@ -122,7 +134,7 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHom
         userProfileImageOnToolbar.setImageResource(R.drawable.african_avatar_male);
       } else if (authenticatedUser.getGender().equals(Konstants.FEMALE)) {
         userProfileImageOnToolbar.setImageResource(R.drawable.african_avatar_female);
-      }else{
+      } else {
         userProfileImageOnToolbar.setImageResource(R.drawable.profile_dummy_box_other);
       }
     }
@@ -153,8 +165,8 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHom
     public void onClick(View view) {
       favoritesBtn.setAlpha(1);
       Intent fav = new Intent(getApplicationContext(), FavoritesActivity.class);
-      fav.putExtra(Konstants.AUTH_USER_KEY,authenticatedUser);
-      fav.putExtra(Konstants.PASS_TAGS,tagCollection);
+      fav.putExtra(Konstants.AUTH_USER_KEY, authenticatedUser);
+      fav.putExtra(Konstants.PASS_TAGS, tagCollection);
       startActivity(fav);
     }
   };
@@ -173,7 +185,7 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHom
       Intent createErrandPage = new Intent(getApplicationContext(), NewErrandCreationPage.class);
       createErrandPage.putExtra(Konstants.AUTH_USER_KEY, authenticatedUser);
       createErrandPage.putExtra(Konstants.PASS_TAGS, tagCollection);
-      createErrandPage.putExtra(Konstants.MODE, Konstants.INIT_STRING);//set it to an empty string, showing that its not edit mode
+      createErrandPage.putExtra(Konstants.MODE, Konstants.INIT_STRING); //set it to an empty string, showing that its not edit mode
       startActivity(createErrandPage);
     }
   };
@@ -204,7 +216,9 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHom
           destinationPage = new MessagesFragment();
           break;
         case R.id.earnings:
-          destinationPage = new UserEarningsFragment();
+          destinationPage = new UserEarningsFragment(thisActivity);
+          ((UserEarningsFragment) destinationPage).setAuthenticatedUser(authenticatedUser);
+          ((UserEarningsFragment) destinationPage).setOldState(walletFragContent, walletFrag);
           break;
       }
 
@@ -214,28 +228,6 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHom
     }
   };
 
-  private void fillInTheBlankSpaces() {
-    desc.add("I need someone to buy me waakye 3 cedis, Mcroni 10 cedis Fish 2 cedis, and Chicken 5 cedis");
-    desc.add("I need someone to buy me waakye 3 cedis, Mcroni 10 cedis Fish 2 cedis, and Chicken 5 cedis ");
-    desc.add("I need someone to buy me waakye 3 cedis, Mcroni 10 cedis Fish 2 cedis, and Chicken 5 cedis");
-    desc.add("I need someone to buy me waakye 3 cedis, Mcroni 10 cedis Fish 2 cedis, and Chicken 5 cedis");
-    desc.add("I need someone to buy me waakye 3 cedis, Mcroni 10 cedis Fish 2 cedis, and Chicken 5 cedis");
-    profits.add("40");
-    profits.add("20");
-    profits.add("10");
-    profits.add("50");
-    profits.add("25");
-    costs.add("4");
-    costs.add("2");
-    costs.add("1");
-    costs.add("7");
-    costs.add("9");
-    dates.add(" 22nd march 1998");
-    dates.add(" 2nd January 2998");
-    dates.add(" 22nd April 2098");
-    dates.add(" 22nd June 2098");
-    dates.add(" 22nd December 2098");
-  }
 
   private void goToLogin() {
     Intent login = new Intent(this, Login.class);
@@ -272,5 +264,12 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHom
     page.putExtra(Konstants.PASS_ERRAND_AROUND, errand);
     page.putExtra(Konstants.PASS_TAGS, tagCollection);
     startActivity(page);
+  }
+
+
+  @Override
+  public void saveWalletState(ArrayList<Object> transactions, View view) {
+    walletFrag = view;
+    walletFragContent = transactions;
   }
 }

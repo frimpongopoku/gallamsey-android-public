@@ -3,7 +3,7 @@
 
   <RelativeLayout
     android:alpha=".8"
-    android:visibility="visible"
+    android:visibility="gone"
     android:id="@+id/narrator_box"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@android:color/white"
+  tools:context=".SearchAnythingActivity">
+
+  <RelativeLayout
+    android:id="@+id/title_bar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true">
+
+    <ImageView
+      android:id="@+id/back_btn"
+      android:layout_width="30dp"
+      android:layout_height="30dp"
+      android:layout_centerVertical="true"
+      android:layout_marginStart="20dp"
+      android:background="?attr/selectableItemBackgroundBorderless"
+      android:clickable="true"
+      android:src="@drawable/go_left" />
+
+    <EditText
+      android:id="@+id/search_box"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_centerVertical="true"
+      android:layout_toRightOf="@id/back_btn"
+      android:background="@android:color/white"
+      android:hint="Search"
+      android:maxLines="1"
+      android:minHeight="35dp"
+      android:paddingStart="20dp" />
+
+    <View
+      android:layout_width="match_parent"
+      android:layout_height="1dp"
+      android:layout_below="@id/search_box"
+      android:layout_marginTop="20dp"
+      android:background="@color/lightest_grey" />
+
+  </RelativeLayout>
+
+  <ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@id/title_bar">
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:orientation="vertical">
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RadioGroup
+          android:id="@+id/search_category"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:padding="10dp"
+          android:paddingStart="20dp"
+          android:paddingEnd="20dp"
+          android:weightSum="3">
+
+          <RadioButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Any"
+            android:textAlignment="center" />
+
+          <RadioButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Riders"
+            android:textAlignment="center" />
+
+          <RadioButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Errands"
+            android:textAlignment="center" />
+
+        </RadioGroup>
+
+        <View
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:background="@color/lightest_grey" />
+
+        <include layout="@layout/mores_search_options_box" />
+
+        <LinearLayout
+          android:layout_marginTop="10dp"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          android:paddingStart="5dp"
+          android:paddingEnd="5dp">
+
+          <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/search_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+          <!--<include layout="@layout/search_shimmer_layout" />-->
+          <!--<include layout="@layout/search_item_for_rider" />-->
+          <!--<include layout="@layout/search_item_for_errand" />-->
+        </LinearLayout>
+
+      </LinearLayout>
+      <!-- ==================    SHIMMER AND RECYCLER HERE ======== -->
+
+    </LinearLayout>
+
+
+  </ScrollView>
+
+  <ImageView
+    android:id="@+id/toy"
+    android:layout_width="120dp"
+    android:layout_height="120dp"
+    android:layout_centerInParent="true"
+    android:alpha=".3"
+    android:src="@drawable/toy_with_magnifier"
+    android:visibility="gone" />
+
+  <Button
+    android:id="@+id/add_errand_button"
+    android:layout_width="45dp"
+    android:layout_height="45dp"
+    android:layout_above="@+id/bottom_nav"
+    android:layout_alignParentEnd="true"
+    android:layout_alignParentBottom="true"
+    android:layout_marginEnd="20dp"
+    android:layout_marginBottom="10dp"
+    android:background="@drawable/search_button"
+    android:elevation="20dp" />
+
+
+</RelativeLayout>

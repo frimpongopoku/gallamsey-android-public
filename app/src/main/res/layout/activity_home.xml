@@ -4,13 +4,16 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
+  android:id="@+id/mother_container"
   android:paddingTop="0dp"
   tools:context=".Home">
+
 
   <RelativeLayout
     android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
 
     <include
       android:id="@+id/titlebar"
@@ -19,6 +22,7 @@
       android:layout_height="wrap_content"
       android:layout_alignParentTop="true"
       android:layout_marginBottom="0dp" />
+    
 
     <View
       android:id="@+id/underline"
@@ -83,6 +87,7 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
 
       android:id="@+id/bottom_nav"
+      style="@style/BottomNavigationView"
       android:layout_width="match_parent"
       android:layout_height="60dp"
       android:layout_alignParentBottom="true"
@@ -90,7 +95,6 @@
       app:itemIconTint="@drawable/bottom_nav_selector"
       app:itemTextColor="@drawable/bottom_nav_selector"
       app:labelVisibilityMode="labeled"
-      style="@style/BottomNavigationView"
       app:menu="@menu/app_navigation">
 
     </com.google.android.material.bottomnavigation.BottomNavigationView>

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:id="@+id/main_container"
+  android:clickable="true"
+  android:background="?attr/selectableItemBackground"
+  android:orientation="vertical">
+
+  <ImageView
+    android:id="@+id/pin_icon"
+    android:layout_width="30dp"
+    android:layout_height="30dp"
+    android:layout_alignParentStart="true"
+   android:layout_marginTop="20dp"
+    android:layout_marginStart="10dp"
+    android:src="@drawable/galam_new_rider_colored" />
+
+  <LinearLayout
+
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:layout_marginStart="10dp"
+    android:layout_toEndOf="@id/pin_icon"
+    android:orientation="vertical">
+
+    <TextView
+      android:id="@+id/errand_title"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="There is a light, a certain kind of light that never"
+      android:textColor="@android:color/black" />
+
+    <TextView
+      android:id="@+id/date"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="22nd march 1998"
+      android:textSize="12sp" />
+
+    <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+
+      <TextView
+        android:id="@+id/estimated_cost_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/google_sans_bold"
+        android:text="305"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="14sp" />
+      <ImageView
+        android:layout_marginStart="5dp"
+        android:layout_toEndOf="@id/estimated_cost_text"
+        android:id="@+id/compare_arrow"
+        android:src="@drawable/ic_compare_arrows_black_24dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp" />
+
+      <TextView
+        android:id="@+id/allowance_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_toEndOf="@id/compare_arrow"
+        android:fontFamily="@font/google_sans_bold"
+        android:text="75"
+        android:textColor="@color/green"
+        android:textSize="14sp" />
+
+    </RelativeLayout>
+
+
+  </LinearLayout>
+  <RelativeLayout
+    android:id="@+id/distance_desc"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/container"
+    android:layout_marginTop="5dp"
+    android:background="@drawable/orange_location_status"
+    android:orientation="horizontal"
+    android:padding="5dp"
+    android:paddingStart="20dp">
+
+    <TextView
+      android:id="@+id/initial_desc"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentLeft="true"
+      android:layout_centerVertical="true"
+      android:layout_marginEnd="2dp"
+      android:text="Akwesi is"
+      android:textColor="@android:color/holo_orange_dark" />
+
+    <ImageView
+      android:tint="@android:color/holo_orange_dark"
+      android:id="@+id/walk_ico"
+      android:layout_width="15dp"
+      android:layout_height="15dp"
+      android:layout_centerVertical="true"
+      android:layout_toEndOf="@id/initial_desc"
+      android:src="@drawable/ic_directions_walk_black_24dp" />
+
+    <TextView
+      android:id="@+id/walk_desc"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerVertical="true"
+      android:layout_marginEnd="2dp"
+      android:layout_toEndOf="@id/walk_ico"
+      android:text="30 mins"
+      android:textColor="@android:color/holo_orange_dark" />
+
+    <ImageView
+      android:tint="@android:color/holo_orange_dark"
+      android:id="@+id/drive_ico"
+      android:layout_width="15dp"
+      android:layout_height="15dp"
+      android:layout_centerVertical="true"
+      android:layout_toEndOf="@id/walk_desc"
+      android:src="@drawable/ic_drive_eta_black_24dp" />
+
+    <TextView
+      android:id="@+id/drive_desc"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerVertical="true"
+      android:layout_marginEnd="2dp"
+      android:layout_toEndOf="@id/drive_ico"
+      android:text=" 5 hrs"
+      android:textColor="@android:color/holo_orange_dark" />
+
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerVertical="true"
+      android:layout_marginEnd="2dp"
+      android:layout_toEndOf="@id/drive_desc"
+      android:text=" away from you"
+      android:textColor="@android:color/holo_orange_dark" />
+
+  </RelativeLayout>
+
+  <View
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:layout_below="@id/distance_desc"
+
+    android:background="@android:color/holo_orange_dark" />
+
+</RelativeLayout>
