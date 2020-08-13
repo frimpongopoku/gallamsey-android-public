@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <com.facebook.shimmer.ShimmerFrameLayout
+    android:id="@+id/search_shimmer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:shimmer_auto_start="true">
+
+    <LinearLayout
+      android:paddingTop="5dp"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical">
+
+      <include layout="@layout/search_item_shimmer" />
+
+      <include layout="@layout/search_item_shimmer" />
+
+      <include layout="@layout/search_item_shimmer" />
+
+      <include layout="@layout/search_item_shimmer" />
+
+      <include layout="@layout/search_item_shimmer" />
+    </LinearLayout>
+  </com.facebook.shimmer.ShimmerFrameLayout>
+</merge>

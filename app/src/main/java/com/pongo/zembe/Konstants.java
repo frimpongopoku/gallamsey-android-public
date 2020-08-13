@@ -7,6 +7,17 @@ import java.util.HashMap;
 
 public class Konstants {
 
+
+  public static final String GH_CURRENCY = " GHS";
+  public static final String SEARCH_ANYTHING = "ANYTHING";
+  public static final String SEARCH_RIDERS = "RIDERS";
+  public static final String SEARCH_ERRANDS = "ERRANDS";
+  public static final String SEARCH_PROFIT = "PROFIT";
+  public static final String SEARCH_COST = "COSTS";
+  public static final int DEFAULT_WALLET_BALANCE_GH = 1;
+  public static final int DEFAULT_WALLET_PIN = 1111;
+  public static final String MODE = "MODE";
+  public static final String FROM_TEMPLATE_MODE = "FROM_TEMPLATE";
   public static final String EDIT_MODE = "EDITING";
   public static final String PASS_TAGS = "TAGS";
   public static final String UPPER_TIER = "UPPER";
@@ -16,6 +27,7 @@ public class Konstants {
   public static final String DO = "DO";
   public static final String UNDO = "UNDO";
   public static final String INIT_STRING = "";
+  public static final String EMPTY = "";
   public static final String AUTH_USER_KEY = "authUser";
   public static final String PASS_ERRAND_AROUND = "ERRAND";
   public static final String NOT_SET = "NOT SET";
@@ -36,6 +48,9 @@ public class Konstants {
 
   // ERRAND CREATION CONSTANTS
   //  --------------------------
+  public static final int TEXT_PAYMENT_NOTIFICATION = 443;
+  public static final int IMAGE_PAYMENT_NOTIFICATION = 664;
+  public static final String SAVE_ERRANDS_AS_TEMPLATE = "SAVE_ERRANDS_AS_TEMPLATE";
   public static final String ERRAND_PICTURES_COLLECTION = "ERRAND_PICS";
   public static final String IMG_ERRAND_CONSTANT = "_errand_img_";
   public static final String TEXT_ERRAND = ":jyon@2203:x:text:x:znump:";
@@ -55,6 +70,9 @@ public class Konstants {
   public static final String DETAILS_TAB = "DETAILS_TAB";
   public static final String TAGGING_TAB = "TAGGING_TAB";
   public static final String SELECT_RIDERS_TAB = "SELECT_RIDERS_TAB";
+  public static final String GREATER = "MORE THAN";
+  public static final String LESS_THAN = "LESS THAN";
+  public static final String EQUAL_TO = "EQUAL TO";
 
   //ARRAYS
   //-----------------------------
@@ -65,8 +83,14 @@ public class Konstants {
   public static ArrayList<String> GH_NETWORKS = new ArrayList<>();
   public static ArrayList<String> KE_NETWORKS = new ArrayList<>();
   public static ArrayList<PaymentContact> DUMMY_PAYMENT_CONTACT = new ArrayList<>();
+  public static ArrayList<String> SEARCH_SPINNER_ELEMENTS = new ArrayList<>();
 
   static {
+    SEARCH_SPINNER_ELEMENTS.add(NOT_SET);
+    SEARCH_SPINNER_ELEMENTS.add(GREATER);
+    SEARCH_SPINNER_ELEMENTS.add(LESS_THAN);
+    SEARCH_SPINNER_ELEMENTS.add(EQUAL_TO);
+
     DUMMY_PAYMENT_CONTACT.add(new PaymentContact("Mummy", "243983364"));
     DUMMY_PAYMENT_CONTACT.add(new PaymentContact("Pongo", "202386709"));
     DEFAULT_SPINNER_ARRAY.add("CHOOSE");

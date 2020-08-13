@@ -25,6 +25,10 @@ public class SimpleUser implements Parcelable {
   private String profilePicture;
   private String userStatus;
   private GallamseyLocationComponent primaryLocation;
+  private String gender;
+  private String country;
+  private String region;
+
 
 
   private int rating;
@@ -39,6 +43,31 @@ public class SimpleUser implements Parcelable {
     this.userPlatformType = userPlatformType;
     this.profilePicture = profilePicture;
     this.userStatus = userStatus;
+  }
+
+
+
+  public String getCountry() {
+    return country;
+  }
+
+  public void setCountry(String country) {
+    this.country = country;
+  }
+
+  public String getRegion() {
+    return region;
+  }
+
+  public void setRegion(String region) {
+    this.region = region;
+  }
+  public String getGender() {
+    return gender;
+  }
+
+  public void setGender(String gender) {
+    this.gender = gender;
   }
 
   public GallamseyLocationComponent getPrimaryLocation() {
@@ -106,6 +135,21 @@ public class SimpleUser implements Parcelable {
   }
 
   @Override
+  public String toString() {
+    return "SimpleUser{" +
+      "userPlatformID='" + userPlatformID + '\'' +
+      ", userName='" + userName + '\'' +
+      ", phoneNumber='" + phoneNumber + '\'' +
+      ", userPlatformType='" + userPlatformType + '\'' +
+      ", profilePicture='" + profilePicture + '\'' +
+      ", userStatus='" + userStatus + '\'' +
+      ", primaryLocation=" + primaryLocation +
+      ", gender='" + gender + '\'' +
+      ", rating=" + rating +
+      '}';
+  }
+
+  @Override
   public int describeContents() {
     return 0;
   }
@@ -119,6 +163,9 @@ public class SimpleUser implements Parcelable {
     dest.writeString(this.profilePicture);
     dest.writeString(this.userStatus);
     dest.writeParcelable(this.primaryLocation, flags);
+    dest.writeString(this.gender);
+    dest.writeString(this.country);
+    dest.writeString(this.region);
     dest.writeInt(this.rating);
   }
 
@@ -130,6 +177,9 @@ public class SimpleUser implements Parcelable {
     this.profilePicture = in.readString();
     this.userStatus = in.readString();
     this.primaryLocation = in.readParcelable(GallamseyLocationComponent.class.getClassLoader());
+    this.gender = in.readString();
+    this.country = in.readString();
+    this.region = in.readString();
     this.rating = in.readInt();
   }
 

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <RelativeLayout
+    android:alpha=".8"
+    android:visibility="gone"
+    android:id="@+id/narrator_box"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+
+    <ImageView
+      android:id="@+id/pongo_the_narrator"
+      android:layout_width="100dp"
+      android:layout_height="100dp"
+      android:layout_alignParentLeft="true"
+      android:layout_centerVertical="true"
+      android:src="@drawable/gallam_narator_big" />
+
+    <TextView
+      android:id="@+id/salutation"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerVertical="true"
+      android:layout_marginLeft="10dp"
+      android:layout_toEndOf="@id/pongo_the_narrator"
+      android:text="Hello Frimpong, I am here to deliver a message and it looks like I am killing it"
+      android:textSize="17sp" />
+  </RelativeLayout>
+</merge>

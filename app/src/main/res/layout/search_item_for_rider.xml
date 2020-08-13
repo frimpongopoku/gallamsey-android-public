@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:orientation="vertical"
+  android:id="@+id/main_container"
+  android:clickable="true"
+  android:background="?attr/selectableItemBackground"
+  android:paddingTop="10dp">
+
+  <de.hdodenhof.circleimageview.CircleImageView
+    android:layout_marginTop="6dp"
+    android:id="@+id/pin_icon"
+    android:layout_width="35dp"
+    android:layout_height="35dp"
+    android:layout_alignParentStart="true"
+    android:layout_marginStart="10dp"
+    android:src="@drawable/african_avatar_male" />
+
+  <LinearLayout
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="10dp"
+    android:layout_toEndOf="@id/pin_icon"
+    android:orientation="vertical">
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="Akwesi Jordan"
+      android:textColor="@android:color/black" />
+
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal">
+
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Verified - "
+        android:textSize="12sp" />
+
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/nunito_bold"
+        android:text="Premium Rider"
+        android:textColor="@color/green"
+        android:textSize="12sp" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+
+      <ImageView
+        android:id="@+id/love_icon"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/love_icon" />
+
+      <TextView
+        android:id="@+id/number_of_favs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="2dp"
+        android:layout_toEndOf="@id/love_icon"
+        android:fontFamily="@font/google_sans_bold"
+        android:text="17"
+        android:textColor="@color/green"
+        android:textSize="14sp" />
+
+      <ImageView
+        android:id="@+id/medal"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="5dp"
+        android:layout_toEndOf="@id/number_of_favs"
+        android:src="@drawable/gallam_gold_medal_2" />
+
+      <TextView
+        android:id="@+id/medal_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="2dp"
+        android:layout_toEndOf="@id/medal"
+        android:fontFamily="@font/google_sans_bold"
+        android:text="5"
+        android:textColor="@android:color/holo_orange_dark"
+        android:textSize="14sp" />
+
+      <ImageView
+        android:id="@+id/junk_cup"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="5dp"
+        android:layout_toEndOf="@id/medal_count"
+        android:src="@drawable/gallam_junk_cup" />
+
+      <TextView
+        android:id="@+id/junk_cup_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="2dp"
+        android:layout_toEndOf="@id/junk_cup"
+        android:fontFamily="@font/google_sans_bold"
+        android:text="3"
+        android:textColor="@android:color/black"
+        android:textSize="14sp" />
+
+    </RelativeLayout>
+
+
+  </LinearLayout>
+
+  <RelativeLayout
+    android:id="@+id/distance_desc"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/container"
+    android:layout_marginTop="5dp"
+    android:background="@drawable/details_item_background"
+    android:orientation="horizontal"
+    android:padding="5dp"
+    android:paddingStart="20dp">
+
+    <TextView
+      android:id="@+id/initial_desc"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentLeft="true"
+      android:layout_centerVertical="true"
+      android:layout_marginEnd="2dp"
+      android:text="Akwesi is"
+      android:textColor="@color/appColor" />
+
+    <ImageView
+      android:id="@+id/walk_ico"
+      android:layout_width="15dp"
+      android:layout_height="15dp"
+      android:layout_centerVertical="true"
+      android:layout_toEndOf="@id/initial_desc"
+      android:src="@drawable/ic_directions_walk_black_24dp" />
+
+    <TextView
+      android:id="@+id/walk_desc"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerVertical="true"
+      android:layout_marginEnd="2dp"
+      android:layout_toEndOf="@id/walk_ico"
+      android:text="30 mins"
+      android:textColor="@color/appColor" />
+
+    <ImageView
+      android:id="@+id/drive_ico"
+      android:layout_width="15dp"
+      android:layout_height="15dp"
+      android:layout_centerVertical="true"
+      android:layout_toEndOf="@id/walk_desc"
+      android:src="@drawable/ic_drive_eta_black_24dp" />
+
+    <TextView
+      android:id="@+id/drive_desc"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerVertical="true"
+      android:layout_marginEnd="2dp"
+      android:layout_toEndOf="@id/drive_ico"
+      android:text=" 5 hrs"
+      android:textColor="@color/appColor" />
+
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerVertical="true"
+      android:layout_marginEnd="2dp"
+      android:layout_toEndOf="@id/drive_desc"
+      android:text=" away from you"
+      android:textColor="@color/appColor" />
+
+  </RelativeLayout>
+
+  <View
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:layout_below="@id/distance_desc"
+
+    android:background="@color/appColorMediumLight" />
+
+</RelativeLayout>

@@ -3,9 +3,7 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   android:id="@+id/container"
   android:layout_width="match_parent"
-
   android:layout_height="wrap_content"
-  android:layout_marginBottom="10dp"
   android:background="?attr/selectableItemBackground"
   android:clickable="true"
   android:orientation="vertical">
@@ -16,35 +14,33 @@
     android:minHeight="130dp"
     android:padding="10dp">
 
-    <!--<ImageView-->
-      <!--android:id="@+id/options"-->
-      <!--android:layout_marginTop="10dp"-->
-      <!--android:background="?attr/selectableItemBackgroundBorderless"-->
-      <!--android:layout_marginRight="15dp"-->
-      <!--android:layout_alignParentRight="true"-->
-      <!--android:src="@drawable/option_icon"-->
-      <!--android:layout_width="25dp"-->
-      <!--android:layout_height="25dp" />-->
 
-    <LinearLayout
+    <RelativeLayout
       android:id="@+id/user_details_div"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:paddingStart="10dp"
       android:paddingEnd="10dp">
 
-      <ImageView
+      <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/creator_pic"
         android:layout_width="30dp"
         android:layout_height="30dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
         android:layout_marginTop="7dp"
         android:layout_marginRight="10dp"
         android:src="@drawable/w_p" />
 
       <LinearLayout
+        android:id="@+id/name_box"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="3dp"
+        android:layout_toEndOf="@id/creator_pic"
         android:orientation="vertical"
-        android:paddingTop="5dp">
+       >
 
 
         <TextView
@@ -68,14 +64,15 @@
       </LinearLayout>
 
       <ImageView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="7dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="3dp"
+        android:layout_toEndOf="@id/name_box"
         android:src="@drawable/galam_gold_medal" />
 
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <TextView
       android:id="@+id/text_errand_card_desc"
@@ -89,14 +86,13 @@
       android:textSize="19sp" />
 
     <RelativeLayout
-      android:paddingTop="5dp"
-      android:paddingStart="15dp"
-      android:paddingEnd="15dp"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_below="@id/text_errand_card_desc"
       android:orientation="horizontal"
-      >
+      android:paddingStart="15dp"
+      android:paddingTop="5dp"
+      android:paddingEnd="15dp">
 
 
       <TextView

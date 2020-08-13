@@ -4,6 +4,8 @@ import android.location.Location;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.Arrays;
+
 public class GallamseyLocationComponent implements Parcelable {
   private String locationName, longitude, latitude, endPointLong, endPointLat, endPointLowerLat, endPointLowerLong;
   private float radius;
@@ -154,4 +156,22 @@ public class GallamseyLocationComponent implements Parcelable {
       return new GallamseyLocationComponent[size];
     }
   };
+
+  @Override
+  public String toString() {
+    return "GallamseyLocationComponent{" +
+      "locationName='" + locationName + '\'' +
+      ", longitude='" + longitude + '\'' +
+      ", latitude='" + latitude + '\'' +
+      ", endPointLong='" + endPointLong + '\'' +
+      ", endPointLat='" + endPointLat + '\'' +
+      ", endPointLowerLat='" + endPointLowerLat + '\'' +
+      ", endPointLowerLong='" + endPointLowerLong + '\'' +
+      ", radius=" + radius +
+      ", radiusResult=" + Arrays.toString(radiusResult) +
+      ", endPoint=" + endPoint +
+      ", endPointLowerTier=" + endPointLowerTier +
+      ", location=" + location +
+      '}';
+  }
 }

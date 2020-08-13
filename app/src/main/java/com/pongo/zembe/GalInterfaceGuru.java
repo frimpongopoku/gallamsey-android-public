@@ -14,6 +14,9 @@ public class GalInterfaceGuru {
     void callback(DocumentSnapshot document);
   }
 
+  interface  TemplatingLimitExceededError{
+    void callback(String error);
+  }
   interface PaymentContactAdapterClickable {
     void callback(int position);
   }
@@ -38,7 +41,7 @@ public class GalInterfaceGuru {
   }
 
   interface TrackWalletFragmentState {
-    void saveFragmentState(View view);
+    void saveWalletState(ArrayList<Object>transactions,View view);
   }
 
   interface  EditContextMenuItemListener{

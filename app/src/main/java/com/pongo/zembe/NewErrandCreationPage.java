@@ -46,6 +46,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 
 // TODO: Untested edit case scenarios for 1. Switch from image to text 2. Switch from text to image
 public class NewErrandCreationPage extends AppCompatActivity implements OnDetailItemsClick, RiderForSelectionRecyclerAdapter.SelectRiderCallback {
@@ -87,13 +89,15 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
   GenericErrandClass toBeEdited;
   String MODE = Konstants.INIT_STRING;
   boolean REMOVED_IMG_IN_EDITMODE = false;
+  CircleImageView userProfileImg;
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_new_errand_creation_page);
     activity = this;
-    MODE = getIntent().getStringExtra(Konstants.EDIT_MODE);
+    MODE = getIntent().getStringExtra(Konstants.MODE);
     dialogCreator = new MagicBoxes(this);
     authenticatedUser = getIntent().getParcelableExtra(Konstants.AUTH_USER_KEY);
     tagCollection = getIntent().getParcelableExtra(Konstants.PASS_TAGS);
@@ -102,11 +106,14 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
       locationList.add(Konstants.CHOOSE);// I just want "CHOOSE" to be the first item
       locationList.addAll(MyHelper.changeGallamseyPointToStringArray(authenticatedUser.getDeliveryLocations()));
       stringToGallamseObj = MyHelper.changeGallmseyPointToHash(authenticatedUser.getDeliveryLocations());
+      setProfilePicture();
     }
-    initializeAutoCompleteLists();
     initializeActivity();
     if (MODE.equals(Konstants.EDIT_MODE)) {
       //means user wants to edit an existing errand, inflate the all fields with incoming errand
+      toBeEdited = getIntent().getParcelableExtra(Konstants.PASS_ERRAND_AROUND);
+      inflateAllFieldsForEditing(toBeEdited);
+    } else if (MODE.equals(Konstants.FROM_TEMPLATE_MODE)) {
       toBeEdited = getIntent().getParcelableExtra(Konstants.PASS_ERRAND_AROUND);
       inflateAllFieldsForEditing(toBeEdited);
     }
@@ -128,9 +135,13 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     }
     //make it impossible to change money value ( You cannot edit amount of money here, cos you have already  )
     estimatedCostBox.setText(String.valueOf(errand.getCost()));
-    estimatedCostBox.setKeyListener(null);
     allowanceBox.setText(String.valueOf(errand.getAllowance()));
-    allowanceBox.setKeyListener(null);
+    if (MODE.equals(Konstants.EDIT_MODE)) {
+      //disable these editTexts only in edit Mode
+      estimatedCostBox.setKeyListener(null);
+      allowanceBox.setKeyListener(null);
+    }
+
     if (errand.getPickUpLocation() != null) {
       GallamseyLocationComponent loc = errand.getPickUpLocation();
       selectedGallamseyLocation = loc;
@@ -187,8 +198,6 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
       card.setVisibility(View.GONE);
       selectRidersBtn.setVisibility(View.VISIBLE);
     }
-
-
   }
 
   public void publishErrand() {
@@ -223,6 +232,70 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     });
   }
 
+  private void prepareAndSaveErrandAsTemplate() {
+    String description = MyHelper.grabCleanText(descriptionBox), estimated = MyHelper.grabCleanText(estimatedCostBox), allowance = MyHelper.grabCleanText(allowanceBox);
+    if (description.isEmpty()) {
+      dialogCreator.constructSimpleOneActionDialog("Not yet", "You must provide a description at least, before you can save this as a template", "Okay, Cool", new OneAction() {
+        @Override
+        public void callback() {
+
+        }
+      }).show();
+      return;
+    }
+    final GenericErrandClass errand = new GenericErrandClass(Konstants.INIT_STRING, description);
+    errand.setTags(tagList);
+    errand.setCost(Float.valueOf(estimated));
+    errand.setAllowance(Float.valueOf(allowance));
+    errand.setDetails(detailsList);
+    errand.setCreator(creator);
+    errand.setPickUpLocation(selectedGallamseyLocation);
+    if (userSelectedImage != null) {
+      errand.setErrandType(Konstants.IMAGE_ERRAND);
+    } else {
+      errand.setErrandType(Konstants.TEXT_ERRAND);
+    }
+
+
+    String templateMsg = "After this is saved, you can easily pickup where you left off by choosing from your list when you go to your 'Favorites Page'\nNB: Your image & expiry will not be saved";
+    dialogCreator.constructASimpleDialog("Save This As A Template", templateMsg, new MagicBoxCallables() {
+      @Override
+      public void negativeBtnCallable() {
+        //do nothing
+      }
+
+      @Override
+      public void positiveBtnCallable() {
+        saveErrandTemplate(errand);
+      }
+    }).show();
+  }
+
+  public void saveErrandTemplate(GenericErrandClass errand) {
+    TemplateTrainForErrands templateTrain = (TemplateTrainForErrands) MyHelper.getFromSharedPreferences(this, Konstants.SAVE_ERRANDS_AS_TEMPLATE, TemplateTrainForErrands.class);
+    if (templateTrain == null) {
+      //then nothing has been saved yet, so save
+      templateTrain = new TemplateTrainForErrands();
+      templateTrain.addToArray(errand, new GalInterfaceGuru.TemplatingLimitExceededError() {
+        @Override
+        public void callback(String error) {
+          Toast.makeText(activity, error, Toast.LENGTH_LONG).show();
+        }
+      });
+    } else {
+      templateTrain.addToArray(errand, new GalInterfaceGuru.TemplatingLimitExceededError() {
+        @Override
+        public void callback(String error) {
+          Toast.makeText(activity, error, Toast.LENGTH_LONG).show();
+        }
+      });
+    }
+    if (templateTrain.getErrands().size() <= 15) {
+      MyHelper.saveToSharedPreferences(this, templateTrain, Konstants.SAVE_ERRANDS_AS_TEMPLATE);
+      Toast.makeText(activity, errand.getTitle() + " is saved as a template", Toast.LENGTH_SHORT).show();
+    }
+  }
+
   private void makeSimpleUserFrom(GroundUser user) {
     creator = new SimpleUser(
       user.getUserDocumentID(),
@@ -233,6 +306,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
       Konstants.CREATOR)
     ;
     creator.setPrimaryLocation(user.getGeoLocation());
+    creator.setGender(user.getGender());
   }
 
   private void getErrandForShipment(final GalInterfaceGuru.CollectErrandTrainFormShipment errandCallback) {
@@ -459,8 +533,27 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     return error;
   }
 
+  private void setProfilePicture() {
+    userProfileImg = findViewById(R.id.user_profile_img_in_description);
+    if (!authenticatedUser.getProfilePictureURL().equals(Konstants.INIT_STRING)) {
+      //means user has a custom profile
+      Picasso.get().load(authenticatedUser.getProfilePictureURL()).into(userProfileImg);
+    } else {
+      //check user gender and use to determine which default profile photo to use
+      if (authenticatedUser.getGender().equals(Konstants.MALE)) {
+        userProfileImg.setImageResource(R.drawable.african_avatar_male);
+      } else if (authenticatedUser.getGender().equals(Konstants.FEMALE)) {
+        userProfileImg.setImageResource(R.drawable.african_avatar_female);
+      } else {
+        userProfileImg.setImageResource(R.drawable.profile_dummy_box_other);
+      }
+    }
+  }
+
   private void initializeActivity() {
+
     //  -----------------------------------------------------------
+
     addTag = findViewById(R.id.add_unavailable_tag);
     saveAsTemplateBtn = findViewById(R.id.template_btn);
     storageReference = FirebaseStorage.getInstance().getReference(Konstants.ERRAND_PICTURES_COLLECTION);
@@ -542,17 +635,6 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     startInvigilatingInfinitely();
   }
 
-  private void initializeAutoCompleteLists() {
-    autoCompleteList.add("January");
-    autoCompleteList.add("February");
-    autoCompleteList.add("March");
-    autoCompleteList.add("April");
-    autoCompleteList.add("May");
-    autoCompleteList.add("June");
-    autoCompleteList.add("July");
-  }
-
-
   private View.OnClickListener addTagToList = new View.OnClickListener() {
     @Override
     public void onClick(View view) {
@@ -576,7 +658,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
   private View.OnClickListener saveAsTemplate = new View.OnClickListener() {
     @Override
     public void onClick(View view) {
-      goToPaymentPage(null);
+      prepareAndSaveErrandAsTemplate();
     }
   };
   private AdapterView.OnItemSelectedListener selectExpiryDate = new AdapterView.OnItemSelectedListener() {
@@ -697,7 +779,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
         // restart the whole process again
         startInvigilatingInfinitely();
       }
-    }, 2000);
+    }, 1000);
 
   }
 

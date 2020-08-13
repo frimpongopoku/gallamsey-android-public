@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp">
+
+    <ImageView
+      android:id="@+id/grey_ball"
+      android:layout_width="40dp"
+      android:layout_height="40dp"
+      android:layout_alignParentLeft="true"
+      android:layout_centerVertical="true"
+      android:src="@drawable/grey_ball" />
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="10dp"
+      android:layout_toEndOf="@id/grey_ball"
+      android:orientation="vertical">
+
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/shimmer_color"
+        android:padding="3dp" />
+
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="2dp"
+        android:background="@color/shimmer_color"
+        android:padding="1dp" />
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+          android:layout_width="20dp"
+          android:layout_height="20dp"
+          android:layout_margin="1dp"
+          android:background="@color/shimmer_color" />
+
+        <TextView
+          android:layout_width="20dp"
+          android:layout_height="20dp"
+          android:layout_margin="1dp"
+          android:background="@color/shimmer_color" />
+
+        <TextView
+          android:layout_width="80dp"
+          android:layout_height="20dp"
+          android:layout_margin="1dp"
+          android:background="@color/shimmer_color" />
+      </LinearLayout>
+
+    </LinearLayout>
+
+  </RelativeLayout>
+</merge>

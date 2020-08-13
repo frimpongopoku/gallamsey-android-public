@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <LinearLayout
+    android:id="@+id/more_options_box"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:visibility="gone">
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:padding="10dp"
+      android:paddingStart="20dp">
+
+
+      <RadioGroup
+        android:id="@+id/errand_search_category"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="5">
+
+        <RadioButton
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:text="Any"
+          android:textSize="12sp" />
+        <RadioButton
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="2"
+          android:text="Profit should be"
+          android:textSize="12sp" />
+
+        <RadioButton
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="2"
+          android:text="Cost of entire Errand"
+          android:textSize="12sp" />
+
+
+      </RadioGroup>
+
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="4"
+        android:orientation="vertical">
+
+
+        <Spinner
+          android:id="@+id/spinner"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="10dp"
+          android:layout_marginTop="4dp"
+          android:layout_marginEnd="25dp"
+          android:background="@drawable/stroke_textbox_b"
+          android:backgroundTint="@color/almost_white" />
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:weightSum="5">
+
+          <EditText
+            android:id="@+id/cash_limit_box"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_weight="4"
+            android:background="@android:color/white"
+            android:fontFamily="@font/google_sans_medium"
+            android:hint="GHS 0.0 "
+            android:inputType="numberDecimal"
+            android:lines="1"
+            android:padding="5dp"
+            android:paddingStart="10dp"
+            android:textColor="@color/green"
+            android:textSize="25sp" />
+
+          <Button
+            android:layout_marginTop="5dp"
+            android:id="@+id/clear"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
+            android:backgroundTint="@color/almost_white"
+            android:fontFamily="@font/nunito_bold"
+            android:text="Clear"
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="11sp" />
+
+        </LinearLayout>
+
+
+      </LinearLayout>
+    </LinearLayout>
+
+    <View
+      android:layout_width="match_parent"
+      android:layout_height="1dp"
+      android:background="@color/lightest_grey" />
+  </LinearLayout>
+</merge>
