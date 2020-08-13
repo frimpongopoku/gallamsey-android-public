@@ -4,11 +4,10 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:background="@drawable/chat_wallpaper"
   tools:context=".ChattingPage">
 
   <include
-    layout="@layout/app_back_with_pic_toolbar"
+    layout="@layout/universal_title_bar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_alignParentTop="true" />
@@ -28,30 +27,34 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_alignParentBottom="true"
-    android:background="@color/appColorDark"
-    android:elevation="3dp"
+    android:background="@android:color/white"
     android:orientation="horizontal"
-    android:padding="10dp"
-    android:weightSum="3">
+    android:paddingTop="10dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingBottom="10dp"
+    android:weightSum="5">
 
     <EditText
-      android:layout_width="wrap_content"
-      android:layout_height="40dp"
-      android:layout_weight="2"
+      android:padding="13dp"
+      android:paddingStart="20dp"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="4"
       android:background="@drawable/messaging_text_box"
       android:hint="Send a message"
-      android:paddingLeft="40dp"
-      android:textColor="@android:color/white"
-      android:textColorHint="@color/lightest_grey"
-      android:textSize="13dp" />
+      android:paddingLeft="15dp"
+      android:textSize="14dp" />
 
     <ImageView
+      android:padding="3dp"
+      android:elevation="2dp"
       android:layout_width="0dp"
-      android:layout_height="40dp"
+      android:layout_height="45dp"
       android:layout_weight="1"
-      android:background="@drawable/app_color_ripple_borderless"
+      android:background="@drawable/orange_ripple_boderless"
       android:clickable="true"
-      android:src="@drawable/send_icon" />
+      android:src="@drawable/round_send_chat_button" />
 
   </LinearLayout>
 </RelativeLayout>

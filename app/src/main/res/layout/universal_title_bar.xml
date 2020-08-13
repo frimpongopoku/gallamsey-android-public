@@ -19,6 +19,18 @@
       android:src="@drawable/option_icon"
       android:layout_width="25dp"
       android:layout_height="25dp" />
+    <ImageView
+      android:visibility="gone"
+      android:layout_centerVertical="true"
+      android:clickable="true"
+      android:id="@+id/profile_icon"
+      android:background="?attr/selectableItemBackgroundBorderless"
+      android:layout_marginEnd="15dp"
+      android:elevation="50dp"
+      android:layout_toLeftOf="@id/options"
+      android:src="@drawable/african_avatar_male"
+      android:layout_width="25dp"
+      android:layout_height="25dp" />
 
     <ImageView
       android:id="@+id/back_btn"
@@ -26,7 +38,7 @@
       android:layout_height="30dp"
       android:layout_alignParentStart="true"
       android:layout_centerVertical="true"
-      android:layout_marginStart="30dp"
+      android:layout_marginStart="10dp"
       android:background="?attr/selectableItemBackgroundBorderless"
       android:clickable="true"
       android:elevation="10dp"
@@ -41,7 +53,7 @@
       android:layout_toEndOf="@id/back_btn"
       android:text="Page Name"
       android:textColor="@color/appColorDark"
-      android:textSize="18sp" />
+      android:textSize="15sp" />
 
     <View
       android:layout_width="match_parent"
