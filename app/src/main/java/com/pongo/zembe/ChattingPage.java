@@ -90,6 +90,7 @@ public class ChattingPage extends AppCompatActivity {
   public void findPeerConversationStream(final CollectConversationStream streamDocumentListener) {
     if (authenticatedUser == null || userOnTheOtherEnd == null) {
       streamDocumentListener.getStream(null);
+
     }
     //search mongodb, and find the id of the conversation stream,
     //then bring the chat document (all because firestore does not allow the query we need here)
