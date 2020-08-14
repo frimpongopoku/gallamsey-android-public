@@ -44,7 +44,7 @@ import java.util.HashMap;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHomeFragmentState, HomeNewsMultiAdapter.OnNewsItemClick, GalInterfaceGuru.EditContextMenuItemListener, GalInterfaceGuru.TrackWalletFragmentState {
+public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHomeFragmentState, HomeNewsMultiAdapter.OnNewsItemClick, GalInterfaceGuru.EditContextMenuItemListener, GalInterfaceGuru.TrackWalletFragmentState, GalInterfaceGuru.MessageCreatorContextMenuItemListener {
 
   ImageView favBtn, optionsBtn;
   CircleImageView userProfileImageOnToolbar;
@@ -271,5 +271,13 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHom
   public void saveWalletState(ArrayList<Object> transactions, View view) {
     walletFrag = view;
     walletFragContent = transactions;
+  }
+
+  @Override
+  public void talkToCreatorAboutErrand(int pos, GenericErrandClass errand) {
+    Intent page = new Intent(this, ChattingPage.class);
+    page.putExtra(Konstants.AUTH_USER_KEY,authenticatedUser);
+    page.putExtra(Konstants.PASS_ERRAND_AROUND,errand);
+    startActivity(page);
   }
 }

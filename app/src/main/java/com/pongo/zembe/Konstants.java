@@ -45,6 +45,13 @@ public class Konstants {
   //  USER STATUS
   public static final String CREATOR = "CREATOR";
   public static final String RIDER = "RIDER";
+//   CHAT CONSTANTS
+
+  public static final String ABOUT_AN_ERRAND = "ABOUT_AN_ERRAND";
+  public static final String PEER_TO_PEER = "PEER_TO_PEER";
+  public static final String CHAT_COLLECTION = "CHATS";
+  public static final String CHAT_LIST_COLLECTION = "CHATLIST";
+  public static final String USER_ON_THE_OTHER_END = "USER_ON_THE_OTHER_END";
 
   // ERRAND CREATION CONSTANTS
   //  --------------------------

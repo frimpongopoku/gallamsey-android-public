@@ -13,11 +13,29 @@ public class ConversationStream implements Parcelable {
   private PersonInChat otherPerson = new PersonInChat();
   private ArrayList<OneChatMessage> messages = new ArrayList<>();
   private Errand relatedErrand;
+  private ArrayList<String> involvedParties = new ArrayList<>();
   private String createdAt = DateHelper.getDateInMyTimezone();
+  private String conversationContext;
 
   public ConversationStream() {
   }
 
+
+  public String getConversationContext() {
+    return conversationContext;
+  }
+
+  public void setConversationContext(String conversationContext) {
+    this.conversationContext = conversationContext;
+  }
+
+  public ArrayList<String> getInvolvedParties() {
+    return involvedParties;
+  }
+
+  public void setInvolvedParties(ArrayList<String> involvedParties) {
+    this.involvedParties = involvedParties;
+  }
 
   public Errand getRelatedErrand() {
     return relatedErrand;
@@ -77,6 +95,9 @@ public class ConversationStream implements Parcelable {
     dest.writeParcelable(this.otherPerson, flags);
     dest.writeTypedList(this.messages);
     dest.writeParcelable(this.relatedErrand, flags);
+    dest.writeStringList(this.involvedParties);
+    dest.writeString(this.createdAt);
+    dest.writeString(this.conversationContext);
   }
 
   protected ConversationStream(Parcel in) {
@@ -85,6 +106,9 @@ public class ConversationStream implements Parcelable {
     this.otherPerson = in.readParcelable(PersonInChat.class.getClassLoader());
     this.messages = in.createTypedArrayList(OneChatMessage.CREATOR);
     this.relatedErrand = in.readParcelable(Errand.class.getClassLoader());
+    this.involvedParties = in.createStringArrayList();
+    this.createdAt = in.readString();
+    this.conversationContext = in.readString();
   }
 
   public static final Creator<ConversationStream> CREATOR = new Creator<ConversationStream>() {

@@ -157,6 +157,7 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
     OnNewsItemClick listener;
     GalInterfaceGuru.EditContextMenuItemListener editMenuItemListener;
     CircleImageView creatorPic;
+    GalInterfaceGuru.MessageCreatorContextMenuItemListener messengerListener;
 
 
     public TextViewHolder(@NonNull final View itemView, final OnNewsItemClick listener) {
@@ -169,6 +170,7 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
       this.listener = listener;
       this.creatorPic = itemView.findViewById(R.id.creator_pic);
       this.editMenuItemListener = (GalInterfaceGuru.EditContextMenuItemListener) listener;
+      this.messengerListener = (GalInterfaceGuru.MessageCreatorContextMenuItemListener) listener;
       itemView.setOnCreateContextMenuListener(this);
       itemView.setOnClickListener(new View.OnClickListener() {
         @Override
@@ -184,6 +186,7 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
     public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
       GenericErrandClass errand = news.get(getAdapterPosition());
       SimpleUser creator = errand != null ? errand.getCreator() : null;
+      //------------------MORE MENU ITEM ------------------------------------
       MenuItem more = contextMenu.add("More");
       more.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
         @Override
@@ -194,6 +197,7 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
         }
       });
       if (authenticatedUser != null && authenticatedUser.getUserDocumentID().equals(errand.getCreator().getUserPlatformID())) {
+       // ------------------------ EDIT MENU ITEM -----------------------------
         MenuItem edit = contextMenu.add("Edit");
         edit.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
           @Override
@@ -203,6 +207,7 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
             return true;
           }
         });
+        //--------------------------DELETE MENU ITEM -------------------------
         MenuItem delete = contextMenu.add("Delete & Refund");
         delete.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
           @Override
@@ -211,6 +216,7 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
           }
         });
       } else {
+        //-------------------------- MESSAGE MENU ITEM ----------------------
         String userName = creator != null ? creator.getUserName() : "";
         MenuItem message = contextMenu.add("Message " + userName);
         message.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
@@ -219,6 +225,7 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
             return false;
           }
         });
+        //--------------------------- REPORT MENU ITEM -----------------------
         MenuItem report = contextMenu.add("Report");
         report.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
           @Override
@@ -242,6 +249,7 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
     OnNewsItemClick listener;
     GalInterfaceGuru.EditContextMenuItemListener editMenuItemListener;
     CircleImageView creatorPic;
+    GalInterfaceGuru.MessageCreatorContextMenuItemListener messengerListener;
 
     public ImageViewHolder(@NonNull View itemView, final OnNewsItemClick listener) {
       super(itemView);
@@ -253,7 +261,8 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
       this.container = itemView.findViewById(R.id.container);
       this.listener = listener;
       this.creatorPic = itemView.findViewById(R.id.creator_pic);
-      this.editMenuItemListener = (GalInterfaceGuru.EditContextMenuItemListener) listener;
+      this.editMenuItemListener = (GalInterfaceGuru.EditContextMenuItemListener) listener; // THe activity listener can be cast into this interface because it is implementing it as well
+      this.messengerListener = (GalInterfaceGuru.MessageCreatorContextMenuItemListener) listener;
       itemView.setOnCreateContextMenuListener(this);
       itemView.setOnClickListener(new View.OnClickListener() {
         @Override
@@ -268,6 +277,7 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
     public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
       GenericErrandClass errand = news.get(getAdapterPosition());
       SimpleUser creator = errand != null ? errand.getCreator() : null;
+      //--------------------MORE MENU ITEM -----------------------------------
       MenuItem more = contextMenu.add("More");
       more.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
         @Override
@@ -279,7 +289,7 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
       });
 
       if (authenticatedUser != null && authenticatedUser.getUserDocumentID().equals(errand.getCreator().getUserPlatformID())) {
-
+        //--------------------- EDIT MENU ITEM ------------------------------
         MenuItem edit = contextMenu.add("Edit");
         edit.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
           @Override
@@ -289,23 +299,30 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
             return true;
           }
         });
+        // -------------------- DELETE MENU ITEM ----------------------------
         MenuItem delete = contextMenu.add("Delete & Refund");
         delete.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
           @Override
           public boolean onMenuItemClick(MenuItem menuItem) {
-            return false;
+            GenericErrandClass errand = news.get(getAdapterPosition());
+            messengerListener.talkToCreatorAboutErrand(getAdapterPosition(),errand);
+            return true;
           }
         });
 
       } else {
+        //---------------- MESSAGE MENU ITEM -----------------------------
         String userName = creator != null ? creator.getUserName() : "";
         MenuItem message = contextMenu.add("Message " + userName);
         message.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
           @Override
           public boolean onMenuItemClick(MenuItem menuItem) {
-            return false;
+            GenericErrandClass errand = news.get(getAdapterPosition());
+            messengerListener.talkToCreatorAboutErrand(getAdapterPosition(),errand);
+            return true;
           }
         });
+        //-------------------- REPORT MENU ITEM ----------------------------
         MenuItem report = contextMenu.add("Report");
         report.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
           @Override

@@ -5,14 +5,48 @@ import android.os.Parcelable;
 
 import java.util.ArrayList;
 
+/**
+ * This is class is essentially the same as "ConversationStream" except, it comes without all the messages
+ * in the chat, so it is lighter
+ */
 public class ConversationListItem implements Parcelable {
   private String conversationStreamID ;
+  private PersonInChat author = new PersonInChat();
+  private PersonInChat otherPerson = new PersonInChat();
   private ArrayList<String> involvedParties = new ArrayList<>();
+  private String conversationContext ;
   private Errand relatedErrand;
   private String createdAt;
 
 
   public ConversationListItem() {
+  }
+
+
+  public PersonInChat getAuthor() {
+    return author;
+  }
+
+  public void setAuthor(PersonInChat author) {
+    this.author = author;
+  }
+
+  public PersonInChat getOtherPerson() {
+    return otherPerson;
+  }
+
+  public void setOtherPerson(PersonInChat otherPerson) {
+    this.otherPerson = otherPerson;
+  }
+
+  public String getConversationContext() {
+    return conversationContext;
+  }
+
+
+
+  public void setConversationContext(String conversationContext) {
+    this.conversationContext = conversationContext;
   }
 
   public String getConversationStreamID() {
@@ -56,14 +90,20 @@ public class ConversationListItem implements Parcelable {
   @Override
   public void writeToParcel(Parcel dest, int flags) {
     dest.writeString(this.conversationStreamID);
+    dest.writeParcelable(this.author, flags);
+    dest.writeParcelable(this.otherPerson, flags);
     dest.writeStringList(this.involvedParties);
+    dest.writeString(this.conversationContext);
     dest.writeParcelable(this.relatedErrand, flags);
     dest.writeString(this.createdAt);
   }
 
   protected ConversationListItem(Parcel in) {
     this.conversationStreamID = in.readString();
+    this.author = in.readParcelable(PersonInChat.class.getClassLoader());
+    this.otherPerson = in.readParcelable(PersonInChat.class.getClassLoader());
     this.involvedParties = in.createStringArrayList();
+    this.conversationContext = in.readString();
     this.relatedErrand = in.readParcelable(Errand.class.getClassLoader());
     this.createdAt = in.readString();
   }

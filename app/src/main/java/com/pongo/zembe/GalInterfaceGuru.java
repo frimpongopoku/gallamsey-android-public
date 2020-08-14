@@ -47,4 +47,8 @@ public class GalInterfaceGuru {
   interface  EditContextMenuItemListener{
     void getErrandToBeEdited(int pos, GenericErrandClass errand);
   }
+
+  interface  MessageCreatorContextMenuItemListener{
+    void talkToCreatorAboutErrand(int pos, GenericErrandClass errand);
+  }
 }
