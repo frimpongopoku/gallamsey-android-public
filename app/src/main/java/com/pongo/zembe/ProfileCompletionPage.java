@@ -69,10 +69,10 @@ public class ProfileCompletionPage extends AppCompatActivity {
     user = mAuth.getCurrentUser();
     spinner = findViewById(R.id.prof_spinner);
     //-----------------
-    FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
-      .setTimestampsInSnapshotsEnabled(true)
-      .build();
-    db.setFirestoreSettings(settings);
+//    FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+//      .setTimestampsInSnapshotsEnabled(true)
+//      .build();
+//    db.setFirestoreSettings(settings);
     if (user == null) {
       goToLogin();
     } else {

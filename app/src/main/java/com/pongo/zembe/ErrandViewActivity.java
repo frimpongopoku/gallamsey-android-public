@@ -154,6 +154,10 @@ public class ErrandViewActivity extends AppCompatActivity {
   }
 
   private void setProfilePicture(SimpleUser creator) {
+    if(creator ==null){
+      errandOwnerProfile.setImageResource(R.drawable.profile_dummy_box_other);
+      return;
+    }
     if (!creator.getProfilePicture().equals(Konstants.INIT_STRING)) {
       //means user has a custom profile
       Picasso.get().load(creator.getProfilePicture()).into(errandOwnerProfile);
@@ -172,7 +176,12 @@ public class ErrandViewActivity extends AppCompatActivity {
   private void populateWithInfo(GenericErrandClass errand) {
     setProfilePicture(errand.getCreator());
     errandDescription.setText(errand.getDescription());
-    userName.setText(errand.getCreator().getUserName());
+    if(errand.getCreator() !=null ){
+      userName.setText(errand.getCreator().getUserName());
+    }else{
+      userName.setText("...");
+    }
+
     if (errand.getErrandType().equals(Konstants.IMAGE_ERRAND)) {
       Picasso.get().load(errand.getImages().get(0)).into(errandImage);
     } else {

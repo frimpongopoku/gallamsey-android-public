@@ -36,6 +36,7 @@
     android:weightSum="5">
 
     <EditText
+      android:id="@+id/textbox"
       android:padding="13dp"
       android:paddingStart="20dp"
       android:layout_width="0dp"
@@ -47,6 +48,7 @@
       android:textSize="14dp" />
 
     <ImageView
+      android:id="@+id/send_btn"
       android:padding="3dp"
       android:elevation="2dp"
       android:layout_width="0dp"

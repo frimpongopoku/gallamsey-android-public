@@ -101,13 +101,13 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
     holder.cost.setText(String.valueOf(newsItem.getCost()));
     holder.profit.setText(String.valueOf(newsItem.getAllowance()));
     holder.date.setText(DateHelper.getTimeAgo(newsItem.getCreatedAt()));
-    if (!user.getProfilePicture().equals(Konstants.INIT_STRING)) {
+    if (user != null && !user.getProfilePicture().equals(Konstants.INIT_STRING)) {
       Picasso.get().load(user.getProfilePicture()).into(holder.creatorPic);
     } else {
       //user does not have a custom profile, so use their gender to give a default one
-      if (!user.getGender().equals(Konstants.INIT_STRING) && user.getGender().equals(Konstants.MALE)) {
+      if (user != null && !user.getGender().equals(Konstants.INIT_STRING) && user.getGender().equals(Konstants.MALE)) {
         holder.creatorPic.setImageResource(R.drawable.african_avatar_male);
-      } else if (!user.getGender().equals(Konstants.INIT_STRING) && user.getGender().equals(Konstants.FEMALE)) {
+      } else if (user != null && !user.getGender().equals(Konstants.INIT_STRING) && user.getGender().equals(Konstants.FEMALE)) {
         holder.creatorPic.setImageResource(R.drawable.african_avatar_female);
       } else {
         holder.creatorPic.setImageResource(R.drawable.profile_dummy_box_other);

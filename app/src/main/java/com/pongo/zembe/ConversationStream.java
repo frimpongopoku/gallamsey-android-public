@@ -4,23 +4,43 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
-
+/**
+ * Class that will represent all messages and conversation information between any two indiv... in Gallamsey
+ * */
 public class ConversationStream implements Parcelable {
   private String conversationID;
-  private PersonInChat personOne = new PersonInChat();
-  private PersonInChat personTwo = new PersonInChat();
+  private PersonInChat author = new PersonInChat();
+  private PersonInChat otherPerson = new PersonInChat();
   private ArrayList<OneChatMessage> messages = new ArrayList<>();
+  private Errand relatedErrand;
+  private String createdAt = DateHelper.getDateInMyTimezone();
 
   public ConversationStream() {
   }
 
-  public PersonInChat getPersonOne() {
-    return personOne;
+
+  public Errand getRelatedErrand() {
+    return relatedErrand;
   }
 
+  public void setRelatedErrand(Errand relatedErrand) {
+    this.relatedErrand = relatedErrand;
+  }
 
-  public void setPersonOne(PersonInChat personOne) {
-    this.personOne = personOne;
+  public PersonInChat getAuthor() {
+    return author;
+  }
+
+  public void setAuthor(PersonInChat author) {
+    this.author = author;
+  }
+
+  public PersonInChat getOtherPerson() {
+    return otherPerson;
+  }
+
+  public void setOtherPerson(PersonInChat otherPerson) {
+    this.otherPerson = otherPerson;
   }
 
   public String getConversationID() {
@@ -35,13 +55,6 @@ public class ConversationStream implements Parcelable {
     return CREATOR;
   }
 
-  public PersonInChat getPersonTwo() {
-    return personTwo;
-  }
-
-  public void setPersonTwo(PersonInChat personTwo) {
-    this.personTwo = personTwo;
-  }
 
   public ArrayList<OneChatMessage> getMessages() {
     return messages;
@@ -51,6 +64,7 @@ public class ConversationStream implements Parcelable {
     this.messages = messages;
   }
 
+
   @Override
   public int describeContents() {
     return 0;
@@ -58,16 +72,19 @@ public class ConversationStream implements Parcelable {
 
   @Override
   public void writeToParcel(Parcel dest, int flags) {
-    dest.writeParcelable(this.personOne, flags);
-    dest.writeParcelable(this.personTwo, flags);
+    dest.writeString(this.conversationID);
+    dest.writeParcelable(this.author, flags);
+    dest.writeParcelable(this.otherPerson, flags);
     dest.writeTypedList(this.messages);
+    dest.writeParcelable(this.relatedErrand, flags);
   }
 
-
   protected ConversationStream(Parcel in) {
-    this.personOne = in.readParcelable(PersonInChat.class.getClassLoader());
-    this.personTwo = in.readParcelable(PersonInChat.class.getClassLoader());
+    this.conversationID = in.readString();
+    this.author = in.readParcelable(PersonInChat.class.getClassLoader());
+    this.otherPerson = in.readParcelable(PersonInChat.class.getClassLoader());
     this.messages = in.createTypedArrayList(OneChatMessage.CREATOR);
+    this.relatedErrand = in.readParcelable(Errand.class.getClassLoader());
   }
 
   public static final Creator<ConversationStream> CREATOR = new Creator<ConversationStream>() {

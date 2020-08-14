@@ -97,7 +97,7 @@ public class HomeFragment extends Fragment {
         adapter.notifyDataSetChanged();
         skeleton.setVisibility(View.GONE);
         recyclerView.setVisibility(View.VISIBLE);
-        setNews(errands);
+        recyclerView.setHasFixedSize(true);
       }
     });
     setCurrentState(view);
