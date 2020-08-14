@@ -97,6 +97,7 @@ public class ErrandViewActivity extends AppCompatActivity {
   private View.OnClickListener openDropdown = new View.OnClickListener() {
     @Override
     public void onClick(View view) {
+      SimpleUser creator = errand != null ? errand.getCreator() : null;
       PopupMenu menu = new PopupMenu(thisActivity, view);
       if (authenticatedUser != null && authenticatedUser.getUserDocumentID().equals(errand.getCreator().getUserPlatformID())) {
         //just check if the current signed in user is the one that created the errand show them the edit & delete menu
@@ -154,7 +155,7 @@ public class ErrandViewActivity extends AppCompatActivity {
   }
 
   private void setProfilePicture(SimpleUser creator) {
-    if(creator ==null){
+    if (creator == null) {
       errandOwnerProfile.setImageResource(R.drawable.profile_dummy_box_other);
       return;
     }
@@ -176,9 +177,9 @@ public class ErrandViewActivity extends AppCompatActivity {
   private void populateWithInfo(GenericErrandClass errand) {
     setProfilePicture(errand.getCreator());
     errandDescription.setText(errand.getDescription());
-    if(errand.getCreator() !=null ){
+    if (errand.getCreator() != null) {
       userName.setText(errand.getCreator().getUserName());
-    }else{
+    } else {
       userName.setText("...");
     }
 

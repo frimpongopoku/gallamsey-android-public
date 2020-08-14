@@ -183,6 +183,7 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
     @Override
     public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
       GenericErrandClass errand = news.get(getAdapterPosition());
+      SimpleUser creator = errand != null ? errand.getCreator() : null;
       MenuItem more = contextMenu.add("More");
       more.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
         @Override
@@ -210,6 +211,14 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
           }
         });
       } else {
+        String userName = creator != null ? creator.getUserName() : "";
+        MenuItem message = contextMenu.add("Message " + userName);
+        message.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+          @Override
+          public boolean onMenuItemClick(MenuItem menuItem) {
+            return false;
+          }
+        });
         MenuItem report = contextMenu.add("Report");
         report.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
           @Override
@@ -258,7 +267,7 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
     @Override
     public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
       GenericErrandClass errand = news.get(getAdapterPosition());
-
+      SimpleUser creator = errand != null ? errand.getCreator() : null;
       MenuItem more = contextMenu.add("More");
       more.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
         @Override
@@ -289,6 +298,14 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
         });
 
       } else {
+        String userName = creator != null ? creator.getUserName() : "";
+        MenuItem message = contextMenu.add("Message " + userName);
+        message.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+          @Override
+          public boolean onMenuItemClick(MenuItem menuItem) {
+            return false;
+          }
+        });
         MenuItem report = contextMenu.add("Report");
         report.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
           @Override
