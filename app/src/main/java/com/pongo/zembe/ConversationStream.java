@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * Class that will represent all messages and conversation information between any two indiv... in Gallamsey
  * */
 public class ConversationStream implements Parcelable {
-  private String conversationID;
+  private String conversationID; // Firebase's document id saved in this field  tooo
   private PersonInChat author = new PersonInChat();
   private PersonInChat otherPerson = new PersonInChat();
   private ArrayList<OneChatMessage> messages = new ArrayList<>();
