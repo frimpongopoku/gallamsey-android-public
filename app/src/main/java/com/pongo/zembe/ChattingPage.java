@@ -33,6 +33,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import org.json.JSONObject;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 
 public class ChattingPage extends AppCompatActivity {
 
@@ -40,14 +41,17 @@ public class ChattingPage extends AppCompatActivity {
   ImageView receipientImg, sendBtn;
   EditText textbox;
   RecyclerView recyclerView;
-  GroundUser authenticatedUser, userOnTheOtherEnd;
+  GroundUser authenticatedUser, userOnTheOtherEnd ;
   Errand relatedErrand;
   String chatContext = Konstants.EMPTY;
-  SimpleUser creator;
+  SimpleUser creator = new SimpleUser();
   PersonInChat author, otherPerson;
   FirebaseFirestore db = FirebaseFirestore.getInstance();
   CollectionReference chatsDB = db.collection(Konstants.CHAT_COLLECTION);
   RequestQueue volley;
+  ConversationStream conversationStream;
+  LinearLayoutManager manager;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -55,29 +59,13 @@ public class ChattingPage extends AppCompatActivity {
     volley = Volley.newRequestQueue(this);
     getContentFromIntent();
     initializeActivity();
-    urlTestDrive();
   }
 
-
-  public void urlTestDrive() {
-    JsonObjectRequest peerRequest = new JsonObjectRequest(Request.Method.POST, GallamseyURLS.TEST_URL, null, new Response.Listener<JSONObject>() {
-      @Override
-      public void onResponse(JSONObject response) {
-        Log.d("FROMSERVER:",response.toString());
-      }
-    }, new Response.ErrorListener() {
-      @Override
-      public void onErrorResponse(VolleyError error) {
-        Log.d("FROMSERVERERROR:",error.getMessage());
-      }
-    });
-  volley.add(peerRequest);
-
-  }
 
   public void getContentFromIntent() {
     authenticatedUser = getIntent().getParcelableExtra(Konstants.AUTH_USER_KEY);
     if (authenticatedUser == null) {
+      authenticatedUser = new GroundUser();
       // will probably never happen, but still worth checking
 //      goToLogin();
     }
@@ -109,6 +97,7 @@ public class ChattingPage extends AppCompatActivity {
               streamDocumentListener.getStream(convo);
             }
           }
+          streamDocumentListener.getStream(null);
         }
       })
       .addOnFailureListener(new OnFailureListener() {
@@ -145,14 +134,55 @@ public class ChattingPage extends AppCompatActivity {
     sendBtn = findViewById(R.id.send_btn);
     sendBtn.setOnClickListener(sendMessage);
     recyclerView = findViewById(R.id.chatting_recycler);
-    ChattingAdapter adapter = new ChattingAdapter();
-    LinearLayoutManager manager = new LinearLayoutManager(this);
+    ChattingAdapter adapter = new ChattingAdapter(this, new ArrayList<OneChatMessage>());
+    manager = new LinearLayoutManager(this);
     manager.setStackFromEnd(true);
     recyclerView.setLayoutManager(manager);
     recyclerView.setAdapter(adapter);
     recyclerView.setHasFixedSize(true);
+    checkAndSeeIfConversationExists(new CollectConversationStream() {
+      @Override
+      public void getStream(ConversationStream conversation) {
+        if (conversation != null) {
+          conversationStream = conversation;
+        } else {
+          //create new chat stream
+          conversationStream = new ConversationStream();
+          conversationStream.setAuthor(createChatPersonFromGround(authenticatedUser));
+          conversationStream.setOtherPerson(createChatPersonFromGround(creator));
+          conversationStream.setRelatedErrand(relatedErrand);
+          conversationStream.setConversationContext(chatContext);
+        }
+      }
+      // setup recycler based on just retrieved messages
 
+    });
+  }
 
+  private void prepareAndSendMsg(){
+    //validate textbox content, but dont show any errors
+    String msg = MyHelper.grabCleanText(textbox);
+    if(msg.isEmpty()){
+      return;
+    }
+    Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+  }
+  private PersonInChat createChatPersonFromGround(GroundUser user) {
+    PersonInChat person = new PersonInChat();
+    person.setProfilePictureURL(user.getProfilePictureURL());
+    person.setUserName(user.getPreferredName());
+    person.setUserPlatformID(user.getUniqueID());
+    person.setLastSeen(DateHelper.getDateInMyTimezone());
+    return person;
+  }
+
+  private PersonInChat createChatPersonFromGround(SimpleUser user) {
+    PersonInChat person = new PersonInChat();
+    person.setProfilePictureURL(user.getProfilePicture());
+    person.setUserName(user.getUserName());
+    person.setUserPlatformID(user.getUserPlatformID());
+    person.setLastSeen(DateHelper.getDateInMyTimezone());
+    return person;
   }
 
 
@@ -165,11 +195,26 @@ public class ChattingPage extends AppCompatActivity {
   private View.OnClickListener sendMessage = new View.OnClickListener() {
     @Override
     public void onClick(View view) {
-      String msg = textbox.getText().toString();
-      textbox.setText("");
-      Toast.makeText(ChattingPage.this, msg, Toast.LENGTH_SHORT).show();
+      prepareAndSendMsg();
     }
   };
+
+
+  public void urlTestDrive() {
+    JsonObjectRequest peerRequest = new JsonObjectRequest(Request.Method.POST, GallamseyURLS.TEST_URL, null, new Response.Listener<JSONObject>() {
+      @Override
+      public void onResponse(JSONObject response) {
+        Log.d("FROMSERVER:", response.toString());
+      }
+    }, new Response.ErrorListener() {
+      @Override
+      public void onErrorResponse(VolleyError error) {
+        Log.d("FROMSERVERERROR:", error.getMessage());
+      }
+    });
+    volley.add(peerRequest);
+
+  }
 
   interface CollectConversationStream {
     void getStream(ConversationStream conversation);

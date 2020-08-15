@@ -1,5 +1,6 @@
 package com.pongo.zembe;
 
+import android.content.Context;
 import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +10,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+
 public class ChattingAdapter extends RecyclerView.Adapter {
+
+  private Context context;
+  private ArrayList<OneChatMessage> messages = new ArrayList<>();
+
+  public ChattingAdapter(Context context, ArrayList<OneChatMessage> messages) {
+    this.context = context;
+    this.messages = messages;
+  }
 
   @NonNull
   @Override
@@ -43,7 +54,7 @@ public class ChattingAdapter extends RecyclerView.Adapter {
 
   @Override
   public int getItemCount() {
-    return 9;
+    return messages.size();
   }
 
 

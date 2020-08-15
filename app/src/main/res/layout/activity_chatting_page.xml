@@ -20,6 +20,27 @@
     android:layout_height="match_parent">
   </androidx.recyclerview.widget.RecyclerView>
 
+
+  <!-- DUMMY PICTURE IF THERE ARE NO MESSAGES-->
+  <RelativeLayout
+    android:id="@+id/first_timer_box"
+    android:layout_centerInParent="true"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <ImageView
+      android:id="@+id/dummy_img"
+      android:alpha="0.4"
+      android:src="@drawable/gallam_messaging"
+      android:layout_width="250dp"
+      android:layout_height="250dp" />
+      <TextView
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/dummy_img"
+        android:text="Send Akwesi a message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+  </RelativeLayout>
+
   <!-- TEXTING BOX -->
 
   <LinearLayout
