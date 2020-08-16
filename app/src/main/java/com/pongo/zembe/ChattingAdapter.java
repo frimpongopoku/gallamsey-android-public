@@ -15,11 +15,20 @@ import java.util.ArrayList;
 public class ChattingAdapter extends RecyclerView.Adapter {
 
   private Context context;
-  private ArrayList<OneChatMessage> messages = new ArrayList<>();
+  private ConversationStream conversation = new ConversationStream();
+  private GroundUser authenticatedUser;
 
-  public ChattingAdapter(Context context, ArrayList<OneChatMessage> messages) {
+  public ChattingAdapter(Context context, ConversationStream conversation) {
     this.context = context;
-    this.messages = messages;
+    this.conversation = conversation;
+  }
+
+  public GroundUser getAuthenticatedUser() {
+    return authenticatedUser;
+  }
+
+  public void setAuthenticatedUser(GroundUser authenticatedUser) {
+    this.authenticatedUser = authenticatedUser;
   }
 
   @NonNull
@@ -33,33 +42,58 @@ public class ChattingAdapter extends RecyclerView.Adapter {
       return holder;
     } else {
       view = inflater.inflate(R.layout.one_msg_item_receipient, parent, false);
-      ReceipientViewHolder holder = new ReceipientViewHolder(view);
+      RecipientViewHolder holder = new RecipientViewHolder(view);
       return holder;
     }
   }
 
   @Override
   public int getItemViewType(int position) {
-    if (position % 2 == 0) {
-      return Konstants.RECEIPIENT_VIEW_TYPE;
-    } else {
+    OneChatMessage msg = conversation.getMessages().get(position);
+    if (msg.getUserPlatformID().equals(authenticatedUser.getUniqueID())) {
       return Konstants.SENDER_VIEW_TYPE;
+
+    } else {
+      return Konstants.RECEIPIENT_VIEW_TYPE;
     }
   }
 
   @Override
   public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    OneChatMessage msg = conversation.getMessages().get(position);
+    if (msg.getUserPlatformID().equals(authenticatedUser.getUniqueID())) {
+      setSenderContent(holder, position);
+    } else {
+      setRecipientContent(holder, position);
+    }
+
+  }
+
+  public void setSenderContent(@NonNull RecyclerView.ViewHolder _holder, int position) {
+    OneChatMessage msg = conversation.getMessages().get(position);
+    SenderViewHolder holder = (SenderViewHolder) _holder;
+    holder.msg.setText(msg.getMessage());
+    holder.date.setText(DateHelper.getTimeAgo(msg.getTimeStamp()));
+
+  }
+
+  public void setRecipientContent(@NonNull RecyclerView.ViewHolder _holder, int position) {
+    OneChatMessage msg = conversation.getMessages().get(position);
+    SenderViewHolder holder = (SenderViewHolder) _holder;
+    holder.msg.setText(msg.getMessage());
+    holder.date.setText(DateHelper.getTimeAgo(msg.getTimeStamp()));
 
   }
 
   @Override
   public int getItemCount() {
-    return messages.size();
+    return conversation.getMessages().size();
   }
 
 
   public class SenderViewHolder extends RecyclerView.ViewHolder {
     TextView date, msg;
+
     public SenderViewHolder(@NonNull View itemView) {
       super(itemView);
       date = itemView.findViewById(R.id.date);
@@ -67,9 +101,10 @@ public class ChattingAdapter extends RecyclerView.Adapter {
     }
   }
 
-  public class ReceipientViewHolder extends RecyclerView.ViewHolder {
+  public class RecipientViewHolder extends RecyclerView.ViewHolder {
     TextView date, msg;
-    public ReceipientViewHolder(@NonNull View itemView) {
+
+    public RecipientViewHolder(@NonNull View itemView) {
       super(itemView);
       date = itemView.findViewById(R.id.date);
       msg = itemView.findViewById(R.id.msg_content);

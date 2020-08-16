@@ -17,9 +17,19 @@ public class ConversationStream implements Parcelable {
   private String createdAt = DateHelper.getDateInMyTimezone();
   private String conversationContext;
 
+
+
   public ConversationStream() {
   }
 
+
+  public String getCreatedAt() {
+    return createdAt;
+  }
+
+  public void setCreatedAt(String createdAt) {
+    this.createdAt = createdAt;
+  }
 
   public String getConversationContext() {
     return conversationContext;
@@ -37,6 +47,9 @@ public class ConversationStream implements Parcelable {
     this.involvedParties = involvedParties;
   }
 
+  public void addMessage(OneChatMessage msg){
+    this.messages.add(msg);
+  }
   public Errand getRelatedErrand() {
     return relatedErrand;
   }
@@ -69,6 +82,8 @@ public class ConversationStream implements Parcelable {
     this.conversationID = conversationID;
   }
 
+
+
   public static Creator<ConversationStream> getCREATOR() {
     return CREATOR;
   }
@@ -82,6 +97,20 @@ public class ConversationStream implements Parcelable {
     this.messages = messages;
   }
 
+
+  @Override
+  public String toString() {
+    return "ConversationStream{" +
+      "conversationID='" + conversationID + '\'' +
+      ", author=" + author +
+      ", otherPerson=" + otherPerson +
+      ", messages=" + messages +
+      ", relatedErrand=" + relatedErrand +
+      ", involvedParties=" + involvedParties +
+      ", createdAt='" + createdAt + '\'' +
+      ", conversationContext='" + conversationContext + '\'' +
+      '}';
+  }
 
   @Override
   public int describeContents() {

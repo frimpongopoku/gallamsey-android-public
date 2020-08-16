@@ -216,13 +216,15 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
           }
         });
       } else {
-        //-------------------------- MESSAGE MENU ITEM ----------------------
+        //---------------- MESSAGE MENU ITEM -----------------------------
         String userName = creator != null ? creator.getUserName() : "";
         MenuItem message = contextMenu.add("Message " + userName);
         message.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
           @Override
           public boolean onMenuItemClick(MenuItem menuItem) {
-            return false;
+            GenericErrandClass errand = news.get(getAdapterPosition());
+            messengerListener.talkToCreatorAboutErrand(getAdapterPosition(),errand);
+            return true;
           }
         });
         //--------------------------- REPORT MENU ITEM -----------------------

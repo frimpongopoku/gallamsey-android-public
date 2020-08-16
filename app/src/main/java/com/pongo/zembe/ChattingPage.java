@@ -1,6 +1,7 @@
 package com.pongo.zembe;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,24 +16,25 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.android.volley.Cache;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Transaction;
 
 import org.json.JSONObject;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 public class ChattingPage extends AppCompatActivity {
@@ -41,7 +43,7 @@ public class ChattingPage extends AppCompatActivity {
   ImageView receipientImg, sendBtn;
   EditText textbox;
   RecyclerView recyclerView;
-  GroundUser authenticatedUser, userOnTheOtherEnd ;
+  GroundUser authenticatedUser, userOnTheOtherEnd;
   Errand relatedErrand;
   String chatContext = Konstants.EMPTY;
   SimpleUser creator = new SimpleUser();
@@ -133,18 +135,13 @@ public class ChattingPage extends AppCompatActivity {
     textbox = findViewById(R.id.textbox);
     sendBtn = findViewById(R.id.send_btn);
     sendBtn.setOnClickListener(sendMessage);
-    recyclerView = findViewById(R.id.chatting_recycler);
-    ChattingAdapter adapter = new ChattingAdapter(this, new ArrayList<OneChatMessage>());
-    manager = new LinearLayoutManager(this);
-    manager.setStackFromEnd(true);
-    recyclerView.setLayoutManager(manager);
-    recyclerView.setAdapter(adapter);
-    recyclerView.setHasFixedSize(true);
+    inflateRecyclerWithData(new ConversationStream());
     checkAndSeeIfConversationExists(new CollectConversationStream() {
       @Override
       public void getStream(ConversationStream conversation) {
         if (conversation != null) {
           conversationStream = conversation;
+          inflateRecyclerWithData(conversation);
         } else {
           //create new chat stream
           conversationStream = new ConversationStream();
@@ -152,6 +149,10 @@ public class ChattingPage extends AppCompatActivity {
           conversationStream.setOtherPerson(createChatPersonFromGround(creator));
           conversationStream.setRelatedErrand(relatedErrand);
           conversationStream.setConversationContext(chatContext);
+          ArrayList<String> involvedParties = new ArrayList<>();
+          involvedParties.add(authenticatedUser.getUniqueID());
+          involvedParties.add(creator.getUserPlatformID());
+          conversationStream.setInvolvedParties(involvedParties);
         }
       }
       // setup recycler based on just retrieved messages
@@ -159,14 +160,88 @@ public class ChattingPage extends AppCompatActivity {
     });
   }
 
-  private void prepareAndSendMsg(){
-    //validate textbox content, but dont show any errors
+  private OneChatMessage createMsgFromText(String text){
+    OneChatMessage msg = new OneChatMessage();
+    msg.setMessage(text);
+    msg.setUserPlatformID(authenticatedUser.getUniqueID());
+    msg.setTimeStamp(DateHelper.getDateInMyTimezone());
+    return msg;
+  }
+
+
+  private void prepareAndSendMsg() {
+    // validate textbox content, but dont show any errors
     String msg = MyHelper.grabCleanText(textbox);
-    if(msg.isEmpty()){
+    if (msg.isEmpty()) {
       return;
     }
-    Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    OneChatMessage chatMsg = createMsgFromText(msg);
+    // add message to conversation stream locally
+    conversationStream.addMessage(chatMsg);
+    Log.d("LEMESSAGE",conversationStream.toString());
+    // add updated conversation stream to recycler items
+    inflateRecyclerWithData(conversationStream);
+    // update the Firestore document that represents this stream, so the other user can see
+    updateMessagingStreamInFirestore(chatMsg);
+
+
   }
+  private void removeFirstTimerBox(){
+    RelativeLayout welcomeBox = findViewById(R.id.first_timer_box);
+    welcomeBox.setVisibility(View.GONE);
+  }
+  private  void cleanup(){
+    textbox.setText("");
+  }
+  private void updateMessagingStreamInFirestore(final OneChatMessage message){
+    removeFirstTimerBox();
+    cleanup();
+   db.runTransaction(new Transaction.Function<Void>() {
+     @Nullable
+     @Override
+     public Void apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
+       String id = conversationStream.getConversationID();
+       Log.d("LEMESSAGE", id);
+       if(id == null){
+         Log.d("LEMESSAGE", "I CAM EHERE AGAIN BRO");
+
+         //means this is the first time so create stream instead
+          DocumentReference streamRef = chatsDB.document();
+          String conversationID = streamRef.getId();
+          conversationStream.setConversationID(conversationID);
+          streamRef.set(conversationStream);
+          // create snapshot listener for just created stream
+
+         return null;
+       }
+       // create ref to firestore reference to current chat document
+       DocumentReference chatRef = chatsDB.document(id);
+       // read latest version of chat stream
+       DocumentSnapshot chatSnap = transaction.get(chatRef);
+       // convert snapshot to our conversation stream obj and get all messages that are available at the time
+       ConversationStream stream = chatSnap.toObject(ConversationStream.class);
+       ArrayList<OneChatMessage> allMsgs = stream.getMessages();
+       allMsgs.add(message);
+       //update with the new message the user wants to send
+       transaction.update(chatRef,"messages",allMsgs);
+       return null;
+     }
+   });
+  }
+
+  private void inflateRecyclerWithData(ConversationStream newConvo) {
+    recyclerView = null;
+    manager = null;
+    recyclerView = findViewById(R.id.chatting_recycler);
+    ChattingAdapter adapter = new ChattingAdapter(this,newConvo);
+    adapter.setAuthenticatedUser(authenticatedUser);
+    manager = new LinearLayoutManager(this);
+    manager.setStackFromEnd(true);
+    recyclerView.setLayoutManager(manager);
+    recyclerView.setAdapter(adapter);
+    recyclerView.setHasFixedSize(true);
+  }
+
   private PersonInChat createChatPersonFromGround(GroundUser user) {
     PersonInChat person = new PersonInChat();
     person.setProfilePictureURL(user.getProfilePictureURL());

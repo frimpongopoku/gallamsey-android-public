@@ -90,4 +90,15 @@ public class PersonInChat implements Parcelable {
       return new PersonInChat[size];
     }
   };
+
+  @Override
+  public String toString() {
+    return "PersonInChat{" +
+      "userPlatformID='" + userPlatformID + '\'' +
+      ", userName='" + userName + '\'' +
+      ", profilePictureURL='" + profilePictureURL + '\'' +
+      ", lastSeen='" + lastSeen + '\'' +
+      ", lastSeenInMilli=" + lastSeenInMilli +
+      '}';
+  }
 }

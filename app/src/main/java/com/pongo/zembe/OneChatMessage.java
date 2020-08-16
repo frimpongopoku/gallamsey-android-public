@@ -8,7 +8,7 @@ public class OneChatMessage implements Parcelable {
   private long timeStampInMilli;
   private String userPlatformID;
   private String message;
-  private boolean seanStatus = false;
+  private boolean seenStatus = false;
 
   public OneChatMessage() {
   }
@@ -49,12 +49,12 @@ public class OneChatMessage implements Parcelable {
     this.message = message;
   }
 
-  public boolean isSeanStatus() {
-    return seanStatus;
+  public boolean isSeenStatus() {
+    return seenStatus;
   }
 
-  public void setSeanStatus(boolean seanStatus) {
-    this.seanStatus = seanStatus;
+  public void setSeenStatus(boolean seanStatus) {
+    this.seenStatus = seanStatus;
   }
 
 
@@ -69,7 +69,7 @@ public class OneChatMessage implements Parcelable {
     dest.writeLong(this.timeStampInMilli);
     dest.writeString(this.userPlatformID);
     dest.writeString(this.message);
-    dest.writeByte(this.seanStatus ? (byte) 1 : (byte) 0);
+    dest.writeByte(this.seenStatus ? (byte) 1 : (byte) 0);
   }
 
   protected OneChatMessage(Parcel in) {
@@ -77,7 +77,7 @@ public class OneChatMessage implements Parcelable {
     this.timeStampInMilli = in.readLong();
     this.userPlatformID = in.readString();
     this.message = in.readString();
-    this.seanStatus = in.readByte() != 0;
+    this.seenStatus = in.readByte() != 0;
   }
 
   public static final Creator<OneChatMessage> CREATOR = new Creator<OneChatMessage>() {
@@ -91,4 +91,15 @@ public class OneChatMessage implements Parcelable {
       return new OneChatMessage[size];
     }
   };
+
+  @Override
+  public String toString() {
+    return "OneChatMessage{" +
+      "timeStamp='" + timeStamp + '\'' +
+      ", timeStampInMilli=" + timeStampInMilli +
+      ", userPlatformID='" + userPlatformID + '\'' +
+      ", message='" + message + '\'' +
+      ", seenStatus=" + seenStatus +
+      '}';
+  }
 }
