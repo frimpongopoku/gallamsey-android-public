@@ -63,8 +63,6 @@ public class CreateNewErrand extends AppCompatActivity implements OnDetailItemsC
         String value = adapterView.getItemAtPosition(i).toString();
         double hours = DateHelper.getHoursValueFromDurationString(value);
         expiryInMilliSeconds = DateHelper.jumpDateByHours(DateHelper.getDateInMyTimezone(),hours);
-        Log.w("getJumpedDate:",DateHelper.getDateInMyTimezone());
-        Log.w("getJumpedDate:",expiryInMilliSeconds);
         expiryDateDropDown.requestFocus();
       }
 

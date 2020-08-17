@@ -53,7 +53,7 @@ public class ChattingPage extends AppCompatActivity {
   RequestQueue volley;
   ConversationStream conversationStream;
   LinearLayoutManager manager;
-
+  String TAG = "LEMESSAGE";
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -97,6 +97,7 @@ public class ChattingPage extends AppCompatActivity {
             if (document.exists()) {
               ConversationStream convo = document.toObject(ConversationStream.class);
               streamDocumentListener.getStream(convo);
+              return;
             }
           }
           streamDocumentListener.getStream(null);
@@ -125,8 +126,10 @@ public class ChattingPage extends AppCompatActivity {
   public void checkAndSeeIfConversationExists(CollectConversationStream streamDocumentListener) {
     if (chatContext.equals(Konstants.ABOUT_AN_ERRAND)) {
       findErrandRelatedStream(streamDocumentListener);
+
+    }else{
+      findPeerConversationStream(streamDocumentListener);
     }
-    findPeerConversationStream(streamDocumentListener);
   }
 
   public void initializeActivity() {
@@ -140,10 +143,14 @@ public class ChattingPage extends AppCompatActivity {
       @Override
       public void getStream(ConversationStream conversation) {
         if (conversation != null) {
+          Log.d(TAG,"Found an erranad with your stuff");
+          Toast.makeText(ChattingPage.this, "Found your errand", Toast.LENGTH_SHORT).show();
           conversationStream = conversation;
+          Log.d(TAG,conversationStream.toString());
           inflateRecyclerWithData(conversation);
         } else {
           //create new chat stream
+          Log.d(TAG,"Just checking how youa re doing....");
           conversationStream = new ConversationStream();
           conversationStream.setAuthor(createChatPersonFromGround(authenticatedUser));
           conversationStream.setOtherPerson(createChatPersonFromGround(creator));
@@ -160,7 +167,7 @@ public class ChattingPage extends AppCompatActivity {
     });
   }
 
-  private OneChatMessage createMsgFromText(String text){
+  private OneChatMessage createMsgFromText(String text) {
     OneChatMessage msg = new OneChatMessage();
     msg.setMessage(text);
     msg.setUserPlatformID(authenticatedUser.getUniqueID());
@@ -170,70 +177,73 @@ public class ChattingPage extends AppCompatActivity {
 
 
   private void prepareAndSendMsg() {
-    // validate textbox content, but dont show any errors
+    // validate text box content, but don't show any errors
     String msg = MyHelper.grabCleanText(textbox);
     if (msg.isEmpty()) {
       return;
     }
     OneChatMessage chatMsg = createMsgFromText(msg);
     // add message to conversation stream locally
+
     conversationStream.addMessage(chatMsg);
-    Log.d("LEMESSAGE",conversationStream.toString());
-    // add updated conversation stream to recycler items
-    inflateRecyclerWithData(conversationStream);
+    Log.d(TAG, conversationStream.toString());
     // update the Firestore document that represents this stream, so the other user can see
     updateMessagingStreamInFirestore(chatMsg);
+    // add updated conversation stream to recycler items
+    inflateRecyclerWithData(conversationStream);
 
 
   }
-  private void removeFirstTimerBox(){
+
+  private void removeFirstTimerBox() {
     RelativeLayout welcomeBox = findViewById(R.id.first_timer_box);
     welcomeBox.setVisibility(View.GONE);
   }
-  private  void cleanup(){
+
+  private void cleanup() {
     textbox.setText("");
   }
-  private void updateMessagingStreamInFirestore(final OneChatMessage message){
-    removeFirstTimerBox();
-    cleanup();
-   db.runTransaction(new Transaction.Function<Void>() {
-     @Nullable
-     @Override
-     public Void apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
-       String id = conversationStream.getConversationID();
-       Log.d("LEMESSAGE", id);
-       if(id == null){
-         Log.d("LEMESSAGE", "I CAM EHERE AGAIN BRO");
 
-         //means this is the first time so create stream instead
+  private void updateMessagingStreamInFirestore(final OneChatMessage message) {
+    removeFirstTimerBox();
+
+    db.runTransaction(new Transaction.Function<Void>() {
+      @Nullable
+      @Override
+      public Void apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
+        String id = conversationStream.getConversationID();
+        Log.d(TAG,conversationStream.toString());
+        if (id == null) {
+          //means this is the first time so create stream instead
           DocumentReference streamRef = chatsDB.document();
           String conversationID = streamRef.getId();
           conversationStream.setConversationID(conversationID);
           streamRef.set(conversationStream);
           // create snapshot listener for just created stream
 
-         return null;
-       }
-       // create ref to firestore reference to current chat document
-       DocumentReference chatRef = chatsDB.document(id);
-       // read latest version of chat stream
-       DocumentSnapshot chatSnap = transaction.get(chatRef);
-       // convert snapshot to our conversation stream obj and get all messages that are available at the time
-       ConversationStream stream = chatSnap.toObject(ConversationStream.class);
-       ArrayList<OneChatMessage> allMsgs = stream.getMessages();
-       allMsgs.add(message);
-       //update with the new message the user wants to send
-       transaction.update(chatRef,"messages",allMsgs);
-       return null;
-     }
-   });
+          return null;
+        }
+        // create ref to firestore reference to current chat document
+        DocumentReference chatRef = chatsDB.document(id);
+        // read latest version of chat stream
+        DocumentSnapshot chatSnap = transaction.get(chatRef);
+        // convert snapshot to our conversation stream obj and get all messages that are available at the time
+        ConversationStream stream = chatSnap.toObject(ConversationStream.class);
+        ArrayList<OneChatMessage> allMsgs = stream.getMessages();
+        allMsgs.add(message);
+        stream.setMessages(allMsgs);
+        //update with the new message the user wants to send
+       transaction.set(chatRef,stream);
+        return null;
+      }
+    });
   }
 
   private void inflateRecyclerWithData(ConversationStream newConvo) {
     recyclerView = null;
     manager = null;
     recyclerView = findViewById(R.id.chatting_recycler);
-    ChattingAdapter adapter = new ChattingAdapter(this,newConvo);
+    ChattingAdapter adapter = new ChattingAdapter(this, newConvo);
     adapter.setAuthenticatedUser(authenticatedUser);
     manager = new LinearLayoutManager(this);
     manager.setStackFromEnd(true);
@@ -270,6 +280,8 @@ public class ChattingPage extends AppCompatActivity {
   private View.OnClickListener sendMessage = new View.OnClickListener() {
     @Override
     public void onClick(View view) {
+      Log.d(TAG, "Before it begun....");
+      Log.d(TAG, conversationStream.toString());
       prepareAndSendMsg();
     }
   };

@@ -73,7 +73,7 @@ public class ChattingAdapter extends RecyclerView.Adapter {
     OneChatMessage msg = conversation.getMessages().get(position);
     SenderViewHolder holder = (SenderViewHolder) _holder;
     holder.msg.setText(msg.getMessage());
-    holder.date.setText(DateHelper.getTimeAgo(msg.getTimeStamp()));
+    holder.date.setText(DateHelper.getOnlyHoursAndMinutesFromDate(msg.getTimeStamp()));
 
   }
 
@@ -81,7 +81,7 @@ public class ChattingAdapter extends RecyclerView.Adapter {
     OneChatMessage msg = conversation.getMessages().get(position);
     SenderViewHolder holder = (SenderViewHolder) _holder;
     holder.msg.setText(msg.getMessage());
-    holder.date.setText(DateHelper.getTimeAgo(msg.getTimeStamp()));
+    holder.date.setText(DateHelper.getOnlyHoursAndMinutesFromDate(msg.getTimeStamp()));
 
   }
 

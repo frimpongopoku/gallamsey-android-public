@@ -28,6 +28,7 @@ public class User implements Parcelable {
   private GallamseyLocationComponent geoLocation;
   private Wallet wallet = new Wallet();
   private Accolades accolades = new Accolades();
+  private String appInstanceToken;
 
   public User() {
   } //no-arg constructor because of Firebase
@@ -45,6 +46,13 @@ public class User implements Parcelable {
     this.gender = gender;
   }
 
+  public String getAppInstanceToken() {
+    return appInstanceToken;
+  }
+
+  public void setAppInstanceToken(String appInstanceToken) {
+    this.appInstanceToken = appInstanceToken;
+  }
 
   public String getUserDocumentID() {
     return userDocumentID;
@@ -240,6 +248,7 @@ public class User implements Parcelable {
     dest.writeParcelable(this.geoLocation, flags);
     dest.writeParcelable(this.wallet, flags);
     dest.writeParcelable(this.accolades, flags);
+    dest.writeString(this.appInstanceToken);
   }
 
   protected User(Parcel in) {
@@ -263,6 +272,7 @@ public class User implements Parcelable {
     this.geoLocation = in.readParcelable(GallamseyLocationComponent.class.getClassLoader());
     this.wallet = in.readParcelable(Wallet.class.getClassLoader());
     this.accolades = in.readParcelable(Accolades.class.getClassLoader());
+    this.appInstanceToken = in.readString();
   }
 
   public static final Creator<User> CREATOR = new Creator<User>() {

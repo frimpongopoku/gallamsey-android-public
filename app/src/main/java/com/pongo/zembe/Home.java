@@ -63,14 +63,13 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHom
   CollectionReference tagsDB = firestore.collection(Konstants.TAG_COLLECTION);
   ArrayList<Object> walletFragContent;
   EditText searchBox;
-
+  private static final String TAG = "HOME";
 
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    if (mAuth.getCurrentUser() != null) {
-    } else {
+    if (mAuth.getCurrentUser() == null) {
       goToLogin();
     }
     setContentView(R.layout.activity_home);
@@ -94,6 +93,8 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHom
     authenticatedUser = getIntent().getParcelableExtra(Konstants.AUTH_USER_KEY);
     if (authenticatedUser != null) {
       userDocumentReference = userDB.document(authenticatedUser.getUserDocumentID());
+      GallamseyAppInstanceChecker appInstanceChecker = new GallamseyAppInstanceChecker(authenticatedUser.getAppInstanceToken(),authenticatedUser.getUserDocumentID());
+      appInstanceChecker.checkAndUpdateInstanceTokenOnServer();
       setProfilePicture();
     }
     loadTags();
@@ -276,8 +277,8 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHom
   @Override
   public void talkToCreatorAboutErrand(int pos, GenericErrandClass errand) {
     Intent page = new Intent(this, ChattingPage.class);
-    page.putExtra(Konstants.AUTH_USER_KEY,authenticatedUser);
-    page.putExtra(Konstants.PASS_ERRAND_AROUND,errand);
+    page.putExtra(Konstants.AUTH_USER_KEY, authenticatedUser);
+    page.putExtra(Konstants.PASS_ERRAND_AROUND, errand);
     startActivity(page);
   }
 }

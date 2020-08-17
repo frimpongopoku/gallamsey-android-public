@@ -4,9 +4,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
+
 /**
  * Class that will represent all messages and conversation information between any two indiv... in Gallamsey
- * */
+ */
 public class ConversationStream implements Parcelable {
   private String conversationID; // Firebase's document id saved in this field  tooo
   private PersonInChat author = new PersonInChat();
@@ -16,12 +17,21 @@ public class ConversationStream implements Parcelable {
   private ArrayList<String> involvedParties = new ArrayList<>();
   private String createdAt = DateHelper.getDateInMyTimezone();
   private String conversationContext;
-
+  private int numberOfMessages = 0;
 
 
   public ConversationStream() {
   }
 
+
+  public int getNumberOfMessages() {
+    return numberOfMessages;
+  }
+
+
+  public void setNumberOfMessages(int numberOfMessages) {
+    this.numberOfMessages = numberOfMessages;
+  }
 
   public String getCreatedAt() {
     return createdAt;
@@ -47,9 +57,12 @@ public class ConversationStream implements Parcelable {
     this.involvedParties = involvedParties;
   }
 
-  public void addMessage(OneChatMessage msg){
+  public void addMessage(OneChatMessage msg) {
     this.messages.add(msg);
+    int n = getNumberOfMessages();
+    setNumberOfMessages(n + 1);
   }
+
   public Errand getRelatedErrand() {
     return relatedErrand;
   }
@@ -83,7 +96,6 @@ public class ConversationStream implements Parcelable {
   }
 
 
-
   public static Creator<ConversationStream> getCREATOR() {
     return CREATOR;
   }
@@ -95,13 +107,14 @@ public class ConversationStream implements Parcelable {
 
   public void setMessages(ArrayList<OneChatMessage> messages) {
     this.messages = messages;
+    setNumberOfMessages(messages.size());
   }
-
 
   @Override
   public String toString() {
     return "ConversationStream{" +
-      "conversationID='" + conversationID + '\'' +
+      "numberOfMessages=" + numberOfMessages +
+      ", conversationID='" + conversationID + '\'' +
       ", author=" + author +
       ", otherPerson=" + otherPerson +
       ", messages=" + messages +
@@ -127,6 +140,7 @@ public class ConversationStream implements Parcelable {
     dest.writeStringList(this.involvedParties);
     dest.writeString(this.createdAt);
     dest.writeString(this.conversationContext);
+    dest.writeInt(this.numberOfMessages);
   }
 
   protected ConversationStream(Parcel in) {
@@ -138,6 +152,7 @@ public class ConversationStream implements Parcelable {
     this.involvedParties = in.createStringArrayList();
     this.createdAt = in.readString();
     this.conversationContext = in.readString();
+    this.numberOfMessages = in.readInt();
   }
 
   public static final Creator<ConversationStream> CREATOR = new Creator<ConversationStream>() {
