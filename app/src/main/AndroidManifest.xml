@@ -16,6 +16,14 @@
     android:supportsRtl="true"
     android:theme="@style/AppTheme"
     tools:ignore="GoogleAppIndexingWarning">
+    <meta-data
+      android:name="com.google.firebase.messaging.default_notification_icon"
+      android:resource="@drawable/gallamsey_notify_good" />
+
+    <meta-data
+      android:name="com.google.firebase.messaging.default_notification_color"
+      android:resource="@color/appColor" />
+
     <!-- Disable instance id regeneration, will do that manually!-->
     <!-- [START fcm_disable_auto_init] -->
     <meta-data
