@@ -143,10 +143,11 @@ public class ChattingPage extends AppCompatActivity {
       @Override
       public void getStream(ConversationStream conversation) {
         if (conversation != null) {
-          Log.d(TAG,"Found an erranad with your stuff");
+          Log.d(TAG,"Found an errand with your stuff");
           Toast.makeText(ChattingPage.this, "Found your errand", Toast.LENGTH_SHORT).show();
           conversationStream = conversation;
           Log.d(TAG,conversationStream.toString());
+          toggleFirstTimerBox(false);
           inflateRecyclerWithData(conversation);
         } else {
           //create new chat stream
@@ -195,8 +196,13 @@ public class ChattingPage extends AppCompatActivity {
 
   }
 
-  private void removeFirstTimerBox() {
+  private void toggleFirstTimerBox(Boolean state) {
     RelativeLayout welcomeBox = findViewById(R.id.first_timer_box);
+    if(state){
+      welcomeBox.setVisibility(View.VISIBLE);
+      return;
+    }
+
     welcomeBox.setVisibility(View.GONE);
   }
 
@@ -205,8 +211,8 @@ public class ChattingPage extends AppCompatActivity {
   }
 
   private void updateMessagingStreamInFirestore(final OneChatMessage message) {
-    removeFirstTimerBox();
-
+    toggleFirstTimerBox(false);
+    cleanup();
     db.runTransaction(new Transaction.Function<Void>() {
       @Nullable
       @Override
@@ -233,6 +239,7 @@ public class ChattingPage extends AppCompatActivity {
         allMsgs.add(message);
         stream.setMessages(allMsgs);
         //update with the new message the user wants to send
+//       transaction.update(chatRef,"messages",allMsgs);
        transaction.set(chatRef,stream);
         return null;
       }
