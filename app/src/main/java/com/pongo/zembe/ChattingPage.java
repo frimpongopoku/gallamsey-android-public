@@ -87,7 +87,7 @@ public class ChattingPage extends AppCompatActivity {
   public void findErrandRelatedStream(final CollectConversationStream streamDocumentListener) {
     chatsDB
       .whereEqualTo("relatedErrand.errandDocumentID", relatedErrand.getErrandDocumentID())
-      .whereArrayContains("involvedParties", authenticatedUser.getUniqueID())
+      .whereArrayContains("involvedParties", authenticatedUser.getUserDocumentID())
       .get()
       .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
         @Override
@@ -158,7 +158,7 @@ public class ChattingPage extends AppCompatActivity {
           conversationStream.setRelatedErrand(relatedErrand);
           conversationStream.setConversationContext(chatContext);
           ArrayList<String> involvedParties = new ArrayList<>();
-          involvedParties.add(authenticatedUser.getUniqueID());
+          involvedParties.add(authenticatedUser.getUserDocumentID());
           involvedParties.add(creator.getUserPlatformID());
           conversationStream.setInvolvedParties(involvedParties);
         }
@@ -171,7 +171,7 @@ public class ChattingPage extends AppCompatActivity {
   private OneChatMessage createMsgFromText(String text) {
     OneChatMessage msg = new OneChatMessage();
     msg.setMessage(text);
-    msg.setUserPlatformID(authenticatedUser.getUniqueID());
+    msg.setUserPlatformID(authenticatedUser.getUserDocumentID());
     msg.setTimeStamp(DateHelper.getDateInMyTimezone());
     return msg;
   }
@@ -263,7 +263,7 @@ public class ChattingPage extends AppCompatActivity {
     PersonInChat person = new PersonInChat();
     person.setProfilePictureURL(user.getProfilePictureURL());
     person.setUserName(user.getPreferredName());
-    person.setUserPlatformID(user.getUniqueID());
+    person.setUserPlatformID(user.getUserDocumentID());
     person.setLastSeen(DateHelper.getDateInMyTimezone());
     return person;
   }

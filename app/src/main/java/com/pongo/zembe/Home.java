@@ -26,6 +26,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -63,12 +64,18 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHom
   CollectionReference tagsDB = firestore.collection(Konstants.TAG_COLLECTION);
   ArrayList<Object> walletFragContent;
   EditText searchBox;
+  BottomNavigationView bottomNav;
   private static final String TAG = "HOME";
-
+  GalFirebaseHelper myFirebaseHelper = new GalFirebaseHelper();
+  FirebaseUser authUser = FirebaseAuth.getInstance().getCurrentUser();
+  FirebaseFirestore db = FirebaseFirestore.getInstance();
+  CollectionReference userCollectionRef = db.collection(Konstants.USER_COLLECTION);
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    NotificationChannelSetup notifyMe = new NotificationChannelSetup(this);
+    notifyMe.createChannels();
     if (mAuth.getCurrentUser() == null) {
       goToLogin();
     }
@@ -84,6 +91,7 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHom
     }
   };
 
+
   private void initializeActivity() {
     searchBox = findViewById(R.id.search_box);
     searchBox.setOnClickListener(goToSearchActivity);
@@ -93,21 +101,24 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHom
     authenticatedUser = getIntent().getParcelableExtra(Konstants.AUTH_USER_KEY);
     if (authenticatedUser != null) {
       userDocumentReference = userDB.document(authenticatedUser.getUserDocumentID());
-      GallamseyAppInstanceChecker appInstanceChecker = new GallamseyAppInstanceChecker(authenticatedUser.getAppInstanceToken(),authenticatedUser.getUserDocumentID());
+      GallamseyAppInstanceChecker appInstanceChecker = new GallamseyAppInstanceChecker(authenticatedUser.getAppInstanceToken(), authenticatedUser.getUserDocumentID());
       appInstanceChecker.checkAndUpdateInstanceTokenOnServer();
       setProfilePicture();
     }
     loadTags();
-
-
-//   ----Set default home fragment: HomePage
-    Fragment default_fragment = new HomeFragment(homeFragContent, homeFragState, this);
-    ((HomeFragment) default_fragment).setAuthenticatedUser(authenticatedUser);
-    getSupportFragmentManager().beginTransaction().replace(R.id.app_frame_layout, default_fragment).commit();
-
-//    Set Fragment Listener to switch pages
-    BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
+    //----------------------  Set Fragment Listener to switch pages -----------
+    bottomNav = findViewById(R.id.bottom_nav);
     bottomNav.setOnNavigationItemSelectedListener(navListener);
+    String defaultTab = getIntent().getStringExtra(Konstants.DEFAULT_PAGE);
+    if (defaultTab != null) {
+      //means homepage is being opened from notification
+      // this fxn is only needed so the user's info can be collected even if they open the homepage from a notification
+      //normally the user's info collection wld have been done in either login|register|or splash page and passed into this page as an argument to prevent unnecessary firestore reads
+      getUserDocumentAndSetToAuth();
+    }
+    startFromSpecificFragment(defaultTab);
+    Log.d(TAG, "initializeActivity: " + defaultTab);
+    //-----------------------------------------------------------------------
     favBtn = findViewById(R.id.favorites);
     favBtn.setOnClickListener(viewFavorites);
     optionsBtn = findViewById(R.id.options);
@@ -124,6 +135,31 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackHom
       goToProfileViewPage(view);
     }
   };
+
+  private void getUserDocumentAndSetToAuth() {
+    myFirebaseHelper.getDocumentWithField(Konstants.DB_QUERY_FIELD_UNIQUE_ID, authUser.getUid(), userCollectionRef, new GalInterfaceGuru.SnapshotTakerInterface() {
+      @Override
+      public void callback(DocumentSnapshot document) {
+        authenticatedUser = document.toObject(GroundUser.class);
+      }
+    });
+  }
+
+  private void startFromSpecificFragment(String which) {
+    Fragment default_fragment;
+    if (which != null && which.equals(Konstants.CHAT_LIST_PAGE)) {
+      default_fragment = new MessagesFragment();
+      getSupportFragmentManager().beginTransaction().replace(R.id.app_frame_layout, default_fragment).commit();
+      if (bottomNav != null) {
+        bottomNav.setSelectedItemId(R.id.nav_message);
+      }
+      return;
+    }
+    //   ----Set default home fragment: HomePage if nothing is set
+    default_fragment = new HomeFragment(homeFragContent, homeFragState, this);
+    ((HomeFragment) default_fragment).setAuthenticatedUser(authenticatedUser);
+    getSupportFragmentManager().beginTransaction().replace(R.id.app_frame_layout, default_fragment).commit();
+  }
 
   private void setProfilePicture() {
     if (!authenticatedUser.getProfilePictureURL().equals(Konstants.INIT_STRING)) {

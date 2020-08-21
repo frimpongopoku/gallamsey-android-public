@@ -50,7 +50,7 @@ public class ChattingAdapter extends RecyclerView.Adapter {
   @Override
   public int getItemViewType(int position) {
     OneChatMessage msg = conversation.getMessages().get(position);
-    if (msg.getUserPlatformID().equals(authenticatedUser.getUniqueID())) {
+    if (msg.getUserPlatformID().equals(authenticatedUser.getUserDocumentID())) {
       return Konstants.SENDER_VIEW_TYPE;
 
     } else {
@@ -61,7 +61,7 @@ public class ChattingAdapter extends RecyclerView.Adapter {
   @Override
   public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
     OneChatMessage msg = conversation.getMessages().get(position);
-    if (msg.getUserPlatformID().equals(authenticatedUser.getUniqueID())) {
+    if (msg.getUserPlatformID().equals(authenticatedUser.getUserDocumentID())) {
       setSenderContent(holder, position);
     } else {
       setRecipientContent(holder, position);

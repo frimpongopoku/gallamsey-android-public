@@ -8,6 +8,10 @@ import java.util.HashMap;
 public class Konstants {
 
 
+public static final String DB_QUERY_FIELD_UNIQUE_ID = "uniqueID";
+  public static final String FIREBASE_UID = "FIREBASE_UID";
+  public static final String DEFAULT_PAGE = "DEFAULT_PAGE";
+  public static final String CHAT_LIST_PAGE = "CHAT_LIST";
   public static final String GH_CURRENCY = " GHS";
   public static final String SEARCH_ANYTHING = "ANYTHING";
   public static final String SEARCH_RIDERS = "RIDERS";
