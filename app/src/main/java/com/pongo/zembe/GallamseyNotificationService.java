@@ -33,7 +33,8 @@ public class GallamseyNotificationService extends FirebaseMessagingService {
     switch (channelId) {
       case NotificationChannelSetup.MESSAGING_CHANNEL_ID: {
         buildAndDeployNotification(notificationID, title, body,
-          R.color.deep_orange, R.drawable.gallamsey_msg_notifcation_icon,
+          R.color.appColor,
+          R.drawable.gallamsey_msg_notifcation_icon,
           channelId, getChatListPendingIntent());
         break;
       }

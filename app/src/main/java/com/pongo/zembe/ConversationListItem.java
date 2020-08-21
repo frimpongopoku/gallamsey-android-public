@@ -17,11 +17,21 @@ public class ConversationListItem implements Parcelable {
   private String conversationContext ;
   private Errand relatedErrand;
   private String createdAt;
+  private int unReadMsgs = 0;
 
 
   public ConversationListItem() {
   }
 
+
+  public int getUnReadMsgs() {
+    return unReadMsgs;
+  }
+
+
+  public void setUnReadMsgs(int unReadMsgs) {
+    this.unReadMsgs = unReadMsgs;
+  }
 
   public PersonInChat getAuthor() {
     return author;
@@ -96,6 +106,7 @@ public class ConversationListItem implements Parcelable {
     dest.writeString(this.conversationContext);
     dest.writeParcelable(this.relatedErrand, flags);
     dest.writeString(this.createdAt);
+    dest.writeInt(this.unReadMsgs);
   }
 
   protected ConversationListItem(Parcel in) {
@@ -106,6 +117,7 @@ public class ConversationListItem implements Parcelable {
     this.conversationContext = in.readString();
     this.relatedErrand = in.readParcelable(Errand.class.getClassLoader());
     this.createdAt = in.readString();
+    this.unReadMsgs = in.readInt();
   }
 
   public static final Creator<ConversationListItem> CREATOR = new Creator<ConversationListItem>() {
