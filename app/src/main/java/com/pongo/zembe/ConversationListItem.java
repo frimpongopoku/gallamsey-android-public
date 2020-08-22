@@ -18,6 +18,7 @@ public class ConversationListItem implements Parcelable {
   private Errand relatedErrand;
   private String createdAt;
   private int unReadMsgs = 0;
+  private String documentID;
 
 
   public ConversationListItem() {
@@ -28,6 +29,13 @@ public class ConversationListItem implements Parcelable {
     return unReadMsgs;
   }
 
+  public String getDocumentID() {
+    return documentID;
+  }
+
+  public void setDocumentID(String documentID) {
+    this.documentID = documentID;
+  }
 
   public void setUnReadMsgs(int unReadMsgs) {
     this.unReadMsgs = unReadMsgs;
@@ -107,6 +115,7 @@ public class ConversationListItem implements Parcelable {
     dest.writeParcelable(this.relatedErrand, flags);
     dest.writeString(this.createdAt);
     dest.writeInt(this.unReadMsgs);
+    dest.writeString(this.documentID);
   }
 
   protected ConversationListItem(Parcel in) {
@@ -118,6 +127,7 @@ public class ConversationListItem implements Parcelable {
     this.relatedErrand = in.readParcelable(Errand.class.getClassLoader());
     this.createdAt = in.readString();
     this.unReadMsgs = in.readInt();
+    this.documentID = in.readString();
   }
 
   public static final Creator<ConversationListItem> CREATOR = new Creator<ConversationListItem>() {

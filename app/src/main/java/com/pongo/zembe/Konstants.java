@@ -8,7 +8,9 @@ import java.util.HashMap;
 public class Konstants {
 
 
-public static final String DB_QUERY_FIELD_UNIQUE_ID = "uniqueID";
+
+  public static final String MSG_NOTIFICATION_COLLECTION = "MESSAGE NOTIFICATION TRACKERS";
+  public static final String DB_QUERY_FIELD_UNIQUE_ID = "uniqueID";
   public static final String FIREBASE_UID = "FIREBASE_UID";
   public static final String DEFAULT_PAGE = "DEFAULT_PAGE";
   public static final String CHAT_LIST_PAGE = "CHAT_LIST";
