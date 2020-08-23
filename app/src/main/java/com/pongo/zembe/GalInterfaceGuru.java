@@ -51,4 +51,8 @@ public class GalInterfaceGuru {
   interface  MessageCreatorContextMenuItemListener{
     void talkToCreatorAboutErrand(int pos, GenericErrandClass errand);
   }
+
+  interface TrackConversationListPage{
+    void saveConversationListState(ArrayList<ConversationWithNotificationItem> chats, View state);
+  }
 }

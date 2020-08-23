@@ -12,11 +12,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-  <ImageView
+  <de.hdodenhof.circleimageview.CircleImageView
     android:layout_centerVertical="true"
-    android:id="@+id/receipient_img"
-    android:layout_width="60dp"
-    android:layout_height="60dp"
+    android:id="@+id/other_persons_img"
+    android:layout_width="40dp"
+    android:layout_height="40dp"
     android:src="@drawable/african_avatar_male" />
 
   <LinearLayout
@@ -24,22 +24,24 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
    android:layout_marginLeft="20dp"
-    android:layout_toRightOf="@+id/receipient_img"
+    android:layout_toRightOf="@+id/other_persons_img"
     android:orientation="vertical">
 
     <TextView
+      android:id="@+id/other_persons_name"
       android:textColor="@android:color/black"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:fontFamily="@font/nunito_bold"
+      android:fontFamily="@font/google_sans_light"
       android:text="Akwesi Poison" />
 
     <TextView
-
+      android:id="@+id/chat_description"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="Its hard to remember and after all the ups and downs bluh.." />
     <TextView
+      android:id="@+id/date"
       android:textSize="11sp"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"

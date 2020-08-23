@@ -53,7 +53,7 @@ public class ChattingPage extends AppCompatActivity {
   RequestQueue volley;
   ConversationStream conversationStream;
   LinearLayoutManager manager;
-  String TAG = "LEMESSAGE";
+  String TAG = "LE-MESSAGE";
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
