@@ -10,23 +10,67 @@ import java.util.ArrayList;
  * in the chat, so it is lighter
  */
 public class ConversationListItem implements Parcelable {
-  private String conversationStreamID ;
+  public static final Creator<ConversationListItem> CREATOR = new Creator<ConversationListItem>() {
+    @Override
+    public ConversationListItem createFromParcel(Parcel source) {
+      return new ConversationListItem(source);
+    }
+
+    @Override
+    public ConversationListItem[] newArray(int size) {
+      return new ConversationListItem[size];
+    }
+  };
+  private String conversationStreamID;
   private PersonInChat author = new PersonInChat();
-  private PersonInChat otherPerson = new PersonInChat();
   private ArrayList<String> involvedParties = new ArrayList<>();
-  private String conversationContext ;
+  private String conversationContext;
   private Errand relatedErrand;
-  private String createdAt;
+  private String createdAt = DateHelper.getDateInMyTimezone();
   private int unReadMsgs = 0;
   private String documentID;
+  private Boolean isOpen;
+  private String timestamp;
 
 
   public ConversationListItem() {
   }
 
+  protected ConversationListItem(Parcel in) {
+    this.conversationStreamID = in.readString();
+    this.author = in.readParcelable(PersonInChat.class.getClassLoader());
+    this.involvedParties = in.createStringArrayList();
+    this.conversationContext = in.readString();
+    this.relatedErrand = in.readParcelable(Errand.class.getClassLoader());
+    this.createdAt = in.readString();
+    this.unReadMsgs = in.readInt();
+    this.documentID = in.readString();
+    this.isOpen = (Boolean) in.readValue(Boolean.class.getClassLoader());
+    this.timestamp = in.readString();
+  }
+
+  public String getTimestamp() {
+    return timestamp;
+  }
+
+  public void setTimestamp(String timestamp) {
+    this.timestamp = timestamp;
+  }
+
+  public Boolean getOpen() {
+    return isOpen;
+  }
+
+  public void setOpen(Boolean open) {
+    isOpen = open;
+  }
 
   public int getUnReadMsgs() {
     return unReadMsgs;
+  }
+
+  public void setUnReadMsgs(int unReadMsgs) {
+    this.unReadMsgs = unReadMsgs;
   }
 
   public String getDocumentID() {
@@ -37,10 +81,6 @@ public class ConversationListItem implements Parcelable {
     this.documentID = documentID;
   }
 
-  public void setUnReadMsgs(int unReadMsgs) {
-    this.unReadMsgs = unReadMsgs;
-  }
-
   public PersonInChat getAuthor() {
     return author;
   }
@@ -49,19 +89,9 @@ public class ConversationListItem implements Parcelable {
     this.author = author;
   }
 
-  public PersonInChat getOtherPerson() {
-    return otherPerson;
-  }
-
-  public void setOtherPerson(PersonInChat otherPerson) {
-    this.otherPerson = otherPerson;
-  }
-
   public String getConversationContext() {
     return conversationContext;
   }
-
-
 
   public void setConversationContext(String conversationContext) {
     this.conversationContext = conversationContext;
@@ -99,7 +129,6 @@ public class ConversationListItem implements Parcelable {
     this.createdAt = createdAt;
   }
 
-
   @Override
   public int describeContents() {
     return 0;
@@ -109,36 +138,13 @@ public class ConversationListItem implements Parcelable {
   public void writeToParcel(Parcel dest, int flags) {
     dest.writeString(this.conversationStreamID);
     dest.writeParcelable(this.author, flags);
-    dest.writeParcelable(this.otherPerson, flags);
     dest.writeStringList(this.involvedParties);
     dest.writeString(this.conversationContext);
     dest.writeParcelable(this.relatedErrand, flags);
     dest.writeString(this.createdAt);
     dest.writeInt(this.unReadMsgs);
     dest.writeString(this.documentID);
+    dest.writeValue(this.isOpen);
+    dest.writeString(this.timestamp);
   }
-
-  protected ConversationListItem(Parcel in) {
-    this.conversationStreamID = in.readString();
-    this.author = in.readParcelable(PersonInChat.class.getClassLoader());
-    this.otherPerson = in.readParcelable(PersonInChat.class.getClassLoader());
-    this.involvedParties = in.createStringArrayList();
-    this.conversationContext = in.readString();
-    this.relatedErrand = in.readParcelable(Errand.class.getClassLoader());
-    this.createdAt = in.readString();
-    this.unReadMsgs = in.readInt();
-    this.documentID = in.readString();
-  }
-
-  public static final Creator<ConversationListItem> CREATOR = new Creator<ConversationListItem>() {
-    @Override
-    public ConversationListItem createFromParcel(Parcel source) {
-      return new ConversationListItem(source);
-    }
-
-    @Override
-    public ConversationListItem[] newArray(int size) {
-      return new ConversationListItem[size];
-    }
-  };
 }

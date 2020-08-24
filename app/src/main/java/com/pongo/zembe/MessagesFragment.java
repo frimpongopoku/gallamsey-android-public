@@ -37,7 +37,7 @@ public class MessagesFragment extends Fragment {
   private View state;
   private Context context;
   private GalInterfaceGuru.TrackConversationListPage stateTracker;
-  private ArrayList<ConversationWithNotificationItem> chatList = new ArrayList<>();
+  private ArrayList<ConversationListItem> chatList = new ArrayList<>();
 
   public MessagesFragment() {
   }
@@ -71,7 +71,7 @@ public class MessagesFragment extends Fragment {
     return v;
   }
 
-  private void inflateRecycler(ArrayList<ConversationWithNotificationItem> chats) {
+  private void inflateRecycler(ArrayList<ConversationListItem> chats) {
     recyclerView = null;
     recyclerView = state.findViewById(R.id.conversation_list_recycler);
     LinearLayoutManager manager = new LinearLayoutManager(context);

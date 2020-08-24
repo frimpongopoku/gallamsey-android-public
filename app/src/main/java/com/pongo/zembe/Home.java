@@ -56,7 +56,7 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackCon
   FirebaseUser authUser = FirebaseAuth.getInstance().getCurrentUser();
   FirebaseFirestore db = FirebaseFirestore.getInstance();
   CollectionReference userCollectionRef = db.collection(Konstants.USER_COLLECTION);
-  ArrayList<ConversationWithNotificationItem> messageFragItems;
+  ArrayList<ConversationListItem> messageFragItems;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -306,12 +306,12 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackCon
   }
 
   @Override
-  public void onConversationListItemClicked(int position, ConversationWithNotificationItem item) {
+  public void onConversationListItemClicked(int position, ConversationListItem item) {
 
   }
 
   @Override
-  public void saveConversationListState(ArrayList<ConversationWithNotificationItem> chats, View state) {
+  public void saveConversationListState(ArrayList<ConversationListItem> chats, View state) {
     messageFragItems = chats;
     messageFragState = state;
   }

@@ -15,9 +15,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ConversationListRecyclerAdapter extends RecyclerView.Adapter<ConversationListRecyclerAdapter.ConversationListViewHolder> {
   private Context context;
-  private ArrayList<ConversationWithNotificationItem> chats = new ArrayList<>();
+  private ArrayList<ConversationListItem> chats = new ArrayList<>();
 
-  public ConversationListRecyclerAdapter(Context context, ArrayList<ConversationWithNotificationItem> chats) {
+  public ConversationListRecyclerAdapter(Context context, ArrayList<ConversationListItem> chats) {
     this.context = context;
     this.chats = chats;
   }
@@ -33,7 +33,7 @@ public class ConversationListRecyclerAdapter extends RecyclerView.Adapter<Conver
 
   @Override
   public void onBindViewHolder(@NonNull ConversationListViewHolder holder, int position) {
-    ConversationWithNotificationItem item = chats.get(position);
+    ConversationListItem item = chats.get(position);
 
   }
 
@@ -44,7 +44,7 @@ public class ConversationListRecyclerAdapter extends RecyclerView.Adapter<Conver
 
 
   interface ConversationListItemClicked {
-    void onConversationListItemClicked(int position, ConversationWithNotificationItem item);
+    void onConversationListItemClicked(int position, ConversationListItem item);
   }
 
   class ConversationListViewHolder extends RecyclerView.ViewHolder {
@@ -60,7 +60,7 @@ public class ConversationListRecyclerAdapter extends RecyclerView.Adapter<Conver
       chatDesc = itemView.findViewById(R.id.chat_description);
       date = itemView.findViewById(R.id.date);
       position = getAdapterPosition();
-      ConversationWithNotificationItem item = chats.get(position);
+      ConversationListItem item = chats.get(position);
       listener.onConversationListItemClicked(position, item);
     }
   }

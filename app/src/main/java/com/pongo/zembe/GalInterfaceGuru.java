@@ -53,6 +53,6 @@ public class GalInterfaceGuru {
   }
 
   interface TrackConversationListPage{
-    void saveConversationListState(ArrayList<ConversationWithNotificationItem> chats, View state);
+    void saveConversationListState(ArrayList<ConversationListItem> chats, View state);
   }
 }
