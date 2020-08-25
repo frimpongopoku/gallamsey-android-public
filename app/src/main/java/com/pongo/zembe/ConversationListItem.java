@@ -10,17 +10,6 @@ import java.util.ArrayList;
  * in the chat, so it is lighter
  */
 public class ConversationListItem implements Parcelable {
-  public static final Creator<ConversationListItem> CREATOR = new Creator<ConversationListItem>() {
-    @Override
-    public ConversationListItem createFromParcel(Parcel source) {
-      return new ConversationListItem(source);
-    }
-
-    @Override
-    public ConversationListItem[] newArray(int size) {
-      return new ConversationListItem[size];
-    }
-  };
   private String conversationStreamID;
   private PersonInChat author = new PersonInChat();
   private ArrayList<String> involvedParties = new ArrayList<>();
@@ -31,22 +20,19 @@ public class ConversationListItem implements Parcelable {
   private String documentID;
   private Boolean isOpen;
   private String timestamp;
+  private PersonInChat otherPerson = new PersonInChat();
 
 
   public ConversationListItem() {
   }
 
-  protected ConversationListItem(Parcel in) {
-    this.conversationStreamID = in.readString();
-    this.author = in.readParcelable(PersonInChat.class.getClassLoader());
-    this.involvedParties = in.createStringArrayList();
-    this.conversationContext = in.readString();
-    this.relatedErrand = in.readParcelable(Errand.class.getClassLoader());
-    this.createdAt = in.readString();
-    this.unReadMsgs = in.readInt();
-    this.documentID = in.readString();
-    this.isOpen = (Boolean) in.readValue(Boolean.class.getClassLoader());
-    this.timestamp = in.readString();
+
+  public PersonInChat getOtherPerson() {
+    return otherPerson;
+  }
+
+  public void setOtherPerson(PersonInChat otherPerson) {
+    this.otherPerson = otherPerson;
   }
 
   public String getTimestamp() {
@@ -130,6 +116,23 @@ public class ConversationListItem implements Parcelable {
   }
 
   @Override
+  public String toString() {
+    return "ConversationListItem{" +
+      "conversationStreamID='" + conversationStreamID + '\'' +
+      ", author=" + author +
+      ", involvedParties=" + involvedParties +
+      ", conversationContext='" + conversationContext + '\'' +
+      ", relatedErrand=" + relatedErrand +
+      ", createdAt='" + createdAt + '\'' +
+      ", unReadMsgs=" + unReadMsgs +
+      ", documentID='" + documentID + '\'' +
+      ", isOpen=" + isOpen +
+      ", timestamp='" + timestamp + '\'' +
+      ", otherPerson=" + otherPerson +
+      '}';
+  }
+
+  @Override
   public int describeContents() {
     return 0;
   }
@@ -146,5 +149,32 @@ public class ConversationListItem implements Parcelable {
     dest.writeString(this.documentID);
     dest.writeValue(this.isOpen);
     dest.writeString(this.timestamp);
+    dest.writeParcelable(this.otherPerson, flags);
   }
+
+  protected ConversationListItem(Parcel in) {
+    this.conversationStreamID = in.readString();
+    this.author = in.readParcelable(PersonInChat.class.getClassLoader());
+    this.involvedParties = in.createStringArrayList();
+    this.conversationContext = in.readString();
+    this.relatedErrand = in.readParcelable(Errand.class.getClassLoader());
+    this.createdAt = in.readString();
+    this.unReadMsgs = in.readInt();
+    this.documentID = in.readString();
+    this.isOpen = (Boolean) in.readValue(Boolean.class.getClassLoader());
+    this.timestamp = in.readString();
+    this.otherPerson = in.readParcelable(PersonInChat.class.getClassLoader());
+  }
+
+  public static final Creator<ConversationListItem> CREATOR = new Creator<ConversationListItem>() {
+    @Override
+    public ConversationListItem createFromParcel(Parcel source) {
+      return new ConversationListItem(source);
+    }
+
+    @Override
+    public ConversationListItem[] newArray(int size) {
+      return new ConversationListItem[size];
+    }
+  };
 }

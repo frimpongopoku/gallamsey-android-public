@@ -1,9 +1,11 @@
 package com.pongo.zembe;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,9 +15,11 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.pongo.zembe.MessagesFragment.TAG;
+
 public class ConversationListRecyclerAdapter extends RecyclerView.Adapter<ConversationListRecyclerAdapter.ConversationListViewHolder> {
   private Context context;
-  private ArrayList<ConversationListItem> chats = new ArrayList<>();
+  private ArrayList<ConversationListItem> chats;
 
   public ConversationListRecyclerAdapter(Context context, ArrayList<ConversationListItem> chats) {
     this.context = context;
@@ -42,26 +46,35 @@ public class ConversationListRecyclerAdapter extends RecyclerView.Adapter<Conver
     return chats.size();
   }
 
-
   interface ConversationListItemClicked {
     void onConversationListItemClicked(int position, ConversationListItem item);
   }
 
   class ConversationListViewHolder extends RecyclerView.ViewHolder {
+    LinearLayout container;
     CircleImageView image;
     TextView personName, chatDesc, date;
     ConversationListItemClicked listener;
-    int position;
 
-    public ConversationListViewHolder(@NonNull View itemView, ConversationListItemClicked listener) {
+
+    public ConversationListViewHolder(@NonNull View itemView, final ConversationListItemClicked listener) {
       super(itemView);
-      image = itemView.findViewById(R.id.other_persons_img);
-      personName = itemView.findViewById(R.id.other_persons_name);
-      chatDesc = itemView.findViewById(R.id.chat_description);
-      date = itemView.findViewById(R.id.date);
-      position = getAdapterPosition();
-      ConversationListItem item = chats.get(position);
-      listener.onConversationListItemClicked(position, item);
+      this.image = itemView.findViewById(R.id.other_persons_img);
+      this.personName = itemView.findViewById(R.id.other_persons_name);
+      this.chatDesc = itemView.findViewById(R.id.chat_description);
+      this.date = itemView.findViewById(R.id.date);
+
+      this.container = itemView.findViewById(R.id.container);
+      container.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+          int position = getAdapterPosition();
+          ConversationListItem item = chats.get(position);
+          listener.onConversationListItemClicked(position, item);
+        }
+      });
+
     }
   }
 }
+

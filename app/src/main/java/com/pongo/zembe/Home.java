@@ -135,7 +135,7 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackCon
   private void startFromSpecificFragment(String which) {
     Fragment default_fragment;
     if (which != null && which.equals(Konstants.CHAT_LIST_PAGE)) {
-      default_fragment = new MessagesFragment();
+      default_fragment = new MessagesFragment(this);
       getSupportFragmentManager().beginTransaction().replace(R.id.app_frame_layout, default_fragment).commit();
       if (bottomNav != null) {
         bottomNav.setSelectedItemId(R.id.nav_message);
@@ -237,7 +237,9 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackCon
           destinationPage = new NotificationFragment();
           break;
         case R.id.nav_message:
-          destinationPage = new MessagesFragment();
+          destinationPage = new MessagesFragment(thisActivity);
+          ((MessagesFragment) destinationPage).setAuthenticatedUser(authenticatedUser);
+          ((MessagesFragment) destinationPage).setOldState(messageFragState,messageFragItems);
           break;
         case R.id.earnings:
           destinationPage = new UserEarningsFragment(thisActivity);

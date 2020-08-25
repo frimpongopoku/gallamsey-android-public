@@ -7,4 +7,6 @@ public class GallamseyURLS {
   public static String FIND_PEER_TO_PEER_CONVERSATION = VERSION_ONE + "/find.my.convo";
   public static String FIND_PEER_TO_PEER_CONVERSATION_LOCAL = LOCAL_VERSION_ONE + "/find.my.convo";
   public static String TEST_URL = HOST + "test";
+
+  public static final String FIND_ALL_CONVERSATIONS = HOST +"/conversation-finder/mine.get.all";
 }
