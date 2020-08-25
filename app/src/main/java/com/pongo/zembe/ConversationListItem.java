@@ -3,6 +3,8 @@ package com.pongo.zembe;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 
 /**
@@ -21,9 +23,19 @@ public class ConversationListItem implements Parcelable {
   private Boolean isOpen;
   private String timestamp;
   private PersonInChat otherPerson = new PersonInChat();
+  private OneChatMessage lastMessage = new OneChatMessage();
 
 
   public ConversationListItem() {
+  }
+
+
+  public OneChatMessage getLastMessage() {
+    return lastMessage;
+  }
+
+  public void setLastMessage(OneChatMessage lastMessage) {
+    this.lastMessage = lastMessage;
   }
 
 
@@ -47,10 +59,12 @@ public class ConversationListItem implements Parcelable {
     return isOpen;
   }
 
+  @SerializedName("unreadMsgs")
   public void setOpen(Boolean open) {
     isOpen = open;
   }
 
+  @SerializedName("unreadMsgs")
   public int getUnReadMsgs() {
     return unReadMsgs;
   }
@@ -150,6 +164,7 @@ public class ConversationListItem implements Parcelable {
     dest.writeValue(this.isOpen);
     dest.writeString(this.timestamp);
     dest.writeParcelable(this.otherPerson, flags);
+    dest.writeParcelable(this.lastMessage, flags);
   }
 
   protected ConversationListItem(Parcel in) {
@@ -164,6 +179,7 @@ public class ConversationListItem implements Parcelable {
     this.isOpen = (Boolean) in.readValue(Boolean.class.getClassLoader());
     this.timestamp = in.readString();
     this.otherPerson = in.readParcelable(PersonInChat.class.getClassLoader());
+    this.lastMessage = in.readParcelable(OneChatMessage.class.getClassLoader());
   }
 
   public static final Creator<ConversationListItem> CREATOR = new Creator<ConversationListItem>() {

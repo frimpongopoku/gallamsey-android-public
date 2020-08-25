@@ -8,8 +8,27 @@
     android:id="@+id/conversation_list_recycler"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="15dp"
     android:visibility="gone" />
+
+  <RelativeLayout
+    android:visibility="gone"
+    android:id="@+id/no_chat_content"
+    android:layout_centerInParent="true"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <ImageView
+      android:id="@+id/no_chat_img"
+      android:src="@drawable/gallamsey_no_chat_list_good"
+      android:layout_width="300dp"
+      android:layout_height="300dp" />
+    <TextView
+      android:layout_centerHorizontal="true"
+      android:layout_below="@id/no_chat_img"
+      android:text="Oops! No Messages Yet"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content" />
+  </RelativeLayout>
 
   <ProgressBar
     android:id="@+id/spinner"

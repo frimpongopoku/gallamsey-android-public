@@ -1,5 +1,6 @@
 package com.pongo.zembe;
 
+import android.app.Person;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,19 +12,27 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.pongo.zembe.MessagesFragment.TAG;
 
+
 public class ConversationListRecyclerAdapter extends RecyclerView.Adapter<ConversationListRecyclerAdapter.ConversationListViewHolder> {
+  GroundUser authenticatedUser;
   private Context context;
   private ArrayList<ConversationListItem> chats;
 
   public ConversationListRecyclerAdapter(Context context, ArrayList<ConversationListItem> chats) {
     this.context = context;
     this.chats = chats;
+  }
+
+  public void setAuthenticatedUser(GroundUser authenticatedUser) {
+    this.authenticatedUser = authenticatedUser;
   }
 
   @NonNull
@@ -38,6 +47,18 @@ public class ConversationListRecyclerAdapter extends RecyclerView.Adapter<Conver
   @Override
   public void onBindViewHolder(@NonNull ConversationListViewHolder holder, int position) {
     ConversationListItem item = chats.get(position);
+    PersonInChat conversationPartner = new PersonInChat();
+    if (item.getAuthor().getUserPlatformID().equals(authenticatedUser.getUserDocumentID())) {
+      conversationPartner = item.getOtherPerson();
+    } else {
+      conversationPartner = item.getAuthor();
+    }
+    String profileURL = conversationPartner.getProfilePictureURL();
+    if(conversationPartner.getProfilePictureURL() != null){
+      Picasso.get().load(profileURL).into(holder.image);
+    }else{
+      holder.image.setImageResource(R.drawable.gallamsey_photo_for_other);
+    }
 
   }
 

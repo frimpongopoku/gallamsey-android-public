@@ -15,8 +15,8 @@
   <de.hdodenhof.circleimageview.CircleImageView
     android:layout_centerVertical="true"
     android:id="@+id/other_persons_img"
-    android:layout_width="40dp"
-    android:layout_height="40dp"
+    android:layout_width="60dp"
+    android:layout_height="60dp"
     android:src="@drawable/african_avatar_male" />
 
   <LinearLayout

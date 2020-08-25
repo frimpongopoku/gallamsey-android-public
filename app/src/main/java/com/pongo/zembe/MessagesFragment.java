@@ -62,6 +62,7 @@ public class MessagesFragment extends Fragment {
   private RequestQueue myReq;
   public static final String TAG = "MESSAGING-FRAGMENT";
   private ProgressBar spinner ;
+  RelativeLayout relativeLayout;
 
   public MessagesFragment() {
   }
@@ -99,6 +100,7 @@ public class MessagesFragment extends Fragment {
   private View initialize(View v) {
     recyclerView = v.findViewById(R.id.conversation_list_recycler);
     spinner = v.findViewById(R.id.spinner);
+    relativeLayout = v.findViewById(R.id.no_chat_content);
     return v;
   }
 
@@ -107,6 +109,7 @@ public class MessagesFragment extends Fragment {
     recyclerView = this.state.findViewById(R.id.conversation_list_recycler);
     LinearLayoutManager manager = new LinearLayoutManager(context);
     adapter = new ConversationListRecyclerAdapter(context, chats);
+    adapter.setAuthenticatedUser(authenticatedUser);
     recyclerView.setLayoutManager(manager);
     recyclerView.setAdapter(adapter);
     recyclerView.setHasFixedSize(true);
@@ -127,7 +130,12 @@ public class MessagesFragment extends Fragment {
         ArrayList<ConversationListItem> conversations = processResponseData(response);
         spinner.setVisibility(View.GONE);
         Log.d(TAG, "onResponse: "+conversations.size());
-        inflateRecycler(conversations);
+        if(conversations.size() == 0){
+          toggleNoChatContent(true);
+        }else{
+          toggleNoChatContent(false);
+          inflateRecycler(conversations);
+        }
       }
     }, new Response.ErrorListener() {
       @Override
@@ -159,6 +167,15 @@ public class MessagesFragment extends Fragment {
     return conversations;
   }
   private void subscribeToListeners() {
+
+  }
+
+  private void toggleNoChatContent(Boolean state){
+    if(state){
+      relativeLayout.setVisibility(View.VISIBLE);
+    }else{
+      relativeLayout.setVisibility(View.GONE);
+    }
 
   }
 
