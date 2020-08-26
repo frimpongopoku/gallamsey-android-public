@@ -310,7 +310,11 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackCon
 
   @Override
   public void onConversationListItemClicked(int position, ConversationListItem item) {
-    Toast.makeText(thisActivity, "Charle nana I have been clicked oo "+ position, Toast.LENGTH_SHORT).show();
+   Intent page = new Intent(this,ChattingPage.class);
+   page.putExtra(Konstants.EXISTING_CONVERSATION,true);
+   page.putExtra(Konstants.EXISTING_CONVERSATION_ID,item.getConversationStreamID());
+    page.putExtra(Konstants.AUTH_USER_KEY, authenticatedUser);
+   startActivity(page);
   }
 
   @Override

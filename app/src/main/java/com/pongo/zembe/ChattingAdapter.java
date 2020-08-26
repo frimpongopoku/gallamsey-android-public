@@ -2,6 +2,7 @@ package com.pongo.zembe;
 
 import android.content.Context;
 import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+
+import static com.pongo.zembe.MessagesFragment.TAG;
 
 public class ChattingAdapter extends RecyclerView.Adapter {
 
@@ -79,7 +82,7 @@ public class ChattingAdapter extends RecyclerView.Adapter {
 
   public void setRecipientContent(@NonNull RecyclerView.ViewHolder _holder, int position) {
     OneChatMessage msg = conversation.getMessages().get(position);
-    SenderViewHolder holder = (SenderViewHolder) _holder;
+    RecipientViewHolder holder = (RecipientViewHolder) _holder;
     holder.msg.setText(msg.getMessage());
     holder.date.setText(DateHelper.getOnlyHoursAndMinutesFromDate(msg.getTimeStamp()));
 

@@ -84,8 +84,10 @@ public class MessagesFragment extends Fragment {
   @Nullable
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    // means the old content of the last conversation list load was saved before user left the fragment
+    // collect and show the same thing again, before looking for new conversations behind the scenes
     if (state != null) {
-      subscribeToListeners();
+      inflateRecycler(chatList);
       return state;
     }
 
@@ -128,6 +130,7 @@ public class MessagesFragment extends Fragment {
       @Override
       public void onResponse(JSONObject response) {
         ArrayList<ConversationListItem> conversations = processResponseData(response);
+        chatList = conversations;
         spinner.setVisibility(View.GONE);
         Log.d(TAG, "onResponse: "+conversations.size());
         if(conversations.size() == 0){
@@ -180,4 +183,9 @@ public class MessagesFragment extends Fragment {
   }
 
 
+  @Override
+  public void onDestroy() {
+    stateTracker.saveConversationListState(this.chatList,this.state);
+    super.onDestroy();
+  }
 }

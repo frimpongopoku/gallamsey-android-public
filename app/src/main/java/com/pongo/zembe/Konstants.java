@@ -9,9 +9,12 @@ public class Konstants {
 
 
 
+  public static final String EXISTING_CONVERSATION = "COMING_FROM_CONVERSATION_PAGE";
+  public static final String EXISTING_CONVERSATION_ID = "EXISTING_CONVERSATION_ID";
   public static final String DEFAULT_PROFILE = "https://firebasestorage.googleapis.com/v0/b/gallamsey.appspot.com/o/DEFAULTS%2Fgallamsey_photo_for_other%20copy.png?alt=media&token=58a74a27-7613-40a2-b3cc-408871ccd2f9";
   public static final String MSG_NOTIFICATION_COLLECTION = "MESSAGE NOTIFICATION TRACKERS";
   public static final String DB_QUERY_FIELD_UNIQUE_ID = "uniqueID";
+  public static final String DB_QUERY_FIELD_CONVERSATION_ID = "conversationID";
   public static final String FIREBASE_UID = "FIREBASE_UID";
   public static final String DEFAULT_PAGE = "DEFAULT_PAGE";
   public static final String CHAT_LIST_PAGE = "CHAT_LIST";

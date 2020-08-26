@@ -114,7 +114,7 @@
         android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/quick_sand_bold"
+        android:fontFamily="@font/nunito_regular"
         android:text="22nd March 1998"
         android:textSize="11sp" />
     </LinearLayout>

@@ -13,7 +13,10 @@
     android:layout_height="wrap_content"
     android:layout_alignParentTop="true" />
 
+  <include layout="@layout/dist_progress_bar" />
+
   <androidx.recyclerview.widget.RecyclerView
+    android:visibility="gone"
     android:layout_above="@+id/textbox_for_chatting"
     android:layout_marginTop="55dp"
     android:id="@+id/chatting_recycler"
@@ -24,6 +27,7 @@
 
   <!-- DUMMY PICTURE IF THERE ARE NO MESSAGES-->
   <RelativeLayout
+    android:visibility="gone"
     android:id="@+id/first_timer_box"
     android:layout_centerInParent="true"
     android:layout_width="wrap_content"

@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -53,7 +54,19 @@ public class ChattingPage extends AppCompatActivity {
   RequestQueue volley;
   ConversationStream conversationStream;
   LinearLayoutManager manager;
-  String TAG = "LE-MESSAGE";
+  String TAG = "LE-MESSAGING-PAGE";
+  GalFirebaseHelper firebaseHelper = new GalFirebaseHelper();
+  Boolean conversationIdExists = false;
+  ProgressBar progressSpinner;
+  private View.OnClickListener sendMessage = new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+      Log.d(TAG, "Before it begun....");
+      Log.d(TAG, conversationStream.toString());
+      prepareAndSendMsg();
+    }
+  };
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -63,6 +76,23 @@ public class ChattingPage extends AppCompatActivity {
     initializeActivity();
   }
 
+  /**
+   * ------------------- IMPORTANT SCENARIOS AND HOW THEY ARE APPROACHED ON THIS PAGE ---------------
+   * There are a few cases that can lead a user into this page, and all of the cases are handled quick differently
+   * onStart, but fit into the same process in the end
+   * Scene 1 : A user randomly chooses a rider and and decides to message them directly to talk about anything
+   * at all.
+   * To determine the scene, "relatedErrand" has to be null, and "userOnOtherENd" has to have a valid user object
+   * passed from the activity the user is from ...
+   * <p>
+   * Scene 2: A user tries to message a creator about an errand....
+   * To determine this scene, "relatedErrand" has to be a valid Errand ....
+   * <p>
+   * Scene 3: A user comes to the chatting page by choosing a conversation list item from the conversation page
+   * ...
+   * THis case is different and easier, we always have to check for "EXISTING_CONVERSATION" and get the id of the
+   * conversation stream, and just move on from there ...
+   */
 
   public void getContentFromIntent() {
     authenticatedUser = getIntent().getParcelableExtra(Konstants.AUTH_USER_KEY);
@@ -70,6 +100,21 @@ public class ChattingPage extends AppCompatActivity {
       authenticatedUser = new GroundUser();
       // will probably never happen, but still worth checking
 //      goToLogin();
+    }
+    // ---- Is user coming from conversation fragment ? They probably have a conversation ready for you, dont go with the rest
+    conversationIdExists = getIntent().getBooleanExtra(Konstants.EXISTING_CONVERSATION, false);
+    String streamID = getIntent().getStringExtra(Konstants.EXISTING_CONVERSATION_ID);
+    if (conversationIdExists) {
+      firebaseHelper.getDocumentWithField(Konstants.DB_QUERY_FIELD_CONVERSATION_ID, streamID, chatsDB, new GalInterfaceGuru.SnapshotTakerInterface() {
+        @Override
+        public void callback(DocumentSnapshot document) {
+          toggleSpinner(false);
+          conversationStream = document.toObject(ConversationStream.class);
+          inflateRecyclerWithData(conversationStream);
+        }
+      });
+
+      return;
     }
     relatedErrand = getIntent().getParcelableExtra(Konstants.PASS_ERRAND_AROUND);
     if (relatedErrand != null) {
@@ -127,31 +172,37 @@ public class ChattingPage extends AppCompatActivity {
     if (chatContext.equals(Konstants.ABOUT_AN_ERRAND)) {
       findErrandRelatedStream(streamDocumentListener);
 
-    }else{
+    } else {
       findPeerConversationStream(streamDocumentListener);
     }
   }
 
   public void initializeActivity() {
+    progressSpinner = findViewById(R.id.progress_spinner);
     receipientImg = findViewById(R.id.profile_icon);
     receipientImg.setVisibility(View.VISIBLE);
     textbox = findViewById(R.id.textbox);
     sendBtn = findViewById(R.id.send_btn);
     sendBtn.setOnClickListener(sendMessage);
     inflateRecyclerWithData(new ConversationStream());
+    //---------------------------------------------------------------------------------------------
+    // if conversation ID exists, skip the rest of the checks, there is no need for the other steps
+    if (conversationIdExists) return;
+    //----------------------------------------------------------------------------------------------
     checkAndSeeIfConversationExists(new CollectConversationStream() {
       @Override
       public void getStream(ConversationStream conversation) {
         if (conversation != null) {
-          Log.d(TAG,"Found an errand with your stuff");
+          Log.d(TAG, "Found an errand with your stuff");
           Toast.makeText(ChattingPage.this, "Found your errand", Toast.LENGTH_SHORT).show();
           conversationStream = conversation;
-          Log.d(TAG,conversationStream.toString());
+          toggleSpinner(false);
           toggleFirstTimerBox(false);
           inflateRecyclerWithData(conversation);
         } else {
+          toggleSpinner(false);
+          toggleFirstTimerBox(true);
           //create new chat stream
-          Log.d(TAG,"Just checking how youa re doing....");
           conversationStream = new ConversationStream();
           conversationStream.setAuthor(createChatPersonFromGround(authenticatedUser));
           conversationStream.setOtherPerson(createChatPersonFromGround(creator));
@@ -176,7 +227,6 @@ public class ChattingPage extends AppCompatActivity {
     return msg;
   }
 
-
   private void prepareAndSendMsg() {
     // validate text box content, but don't show any errors
     String msg = MyHelper.grabCleanText(textbox);
@@ -198,12 +248,20 @@ public class ChattingPage extends AppCompatActivity {
 
   private void toggleFirstTimerBox(Boolean state) {
     RelativeLayout welcomeBox = findViewById(R.id.first_timer_box);
-    if(state){
+    if (state) {
       welcomeBox.setVisibility(View.VISIBLE);
       return;
     }
 
     welcomeBox.setVisibility(View.GONE);
+  }
+
+  private void toggleSpinner(Boolean state) {
+    if (state) {
+      progressSpinner.setVisibility(View.VISIBLE);
+    } else {
+      progressSpinner.setVisibility(View.GONE);
+    }
   }
 
   private void cleanup() {
@@ -218,7 +276,7 @@ public class ChattingPage extends AppCompatActivity {
       @Override
       public Void apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
         String id = conversationStream.getConversationID();
-        Log.d(TAG,conversationStream.toString());
+        Log.d(TAG, conversationStream.toString());
         if (id == null) {
           //means this is the first time so create stream instead
           DocumentReference streamRef = chatsDB.document();
@@ -242,7 +300,7 @@ public class ChattingPage extends AppCompatActivity {
         stream.setTimestamp(DateHelper.getDateInMyTimezone());
         //update with the new message the user wants to send
 //       transaction.update(chatRef,"messages",allMsgs);
-       transaction.set(chatRef,stream);
+        transaction.set(chatRef, stream);
         return null;
       }
     });
@@ -259,6 +317,7 @@ public class ChattingPage extends AppCompatActivity {
     recyclerView.setLayoutManager(manager);
     recyclerView.setAdapter(adapter);
     recyclerView.setHasFixedSize(true);
+    recyclerView.setVisibility(View.VISIBLE);
   }
 
   private PersonInChat createChatPersonFromGround(GroundUser user) {
@@ -279,22 +338,11 @@ public class ChattingPage extends AppCompatActivity {
     return person;
   }
 
-
   private void goToLogin() {
     Intent page = new Intent(this, Login.class);
     startActivity(page);
     finish();
   }
-
-  private View.OnClickListener sendMessage = new View.OnClickListener() {
-    @Override
-    public void onClick(View view) {
-      Log.d(TAG, "Before it begun....");
-      Log.d(TAG, conversationStream.toString());
-      prepareAndSendMsg();
-    }
-  };
-
 
   public void urlTestDrive() {
     JsonObjectRequest peerRequest = new JsonObjectRequest(Request.Method.POST, GallamseyURLS.TEST_URL, null, new Response.Listener<JSONObject>() {
