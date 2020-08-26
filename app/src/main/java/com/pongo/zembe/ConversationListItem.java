@@ -18,6 +18,8 @@ public class ConversationListItem implements Parcelable {
   private String conversationContext;
   private Errand relatedErrand;
   private String createdAt = DateHelper.getDateInMyTimezone();
+
+  @SerializedName("unreadMsgs")
   private int unReadMsgs = 0;
   private String documentID;
   private Boolean isOpen;
@@ -59,12 +61,10 @@ public class ConversationListItem implements Parcelable {
     return isOpen;
   }
 
-  @SerializedName("unreadMsgs")
   public void setOpen(Boolean open) {
     isOpen = open;
   }
 
-  @SerializedName("unreadMsgs")
   public int getUnReadMsgs() {
     return unReadMsgs;
   }

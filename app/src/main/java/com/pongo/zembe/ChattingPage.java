@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Person;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,8 +15,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -33,22 +37,25 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Transaction;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ChattingPage extends AppCompatActivity {
 
   LinearLayout layout;
-  ImageView receipientImg, sendBtn;
+  CircleImageView receipientImg;
+  ImageView sendBtn, options;
   EditText textbox;
   RecyclerView recyclerView;
   GroundUser authenticatedUser, userOnTheOtherEnd;
   Errand relatedErrand;
   String chatContext = Konstants.EMPTY;
   SimpleUser creator = new SimpleUser();
-  PersonInChat author, otherPerson;
   FirebaseFirestore db = FirebaseFirestore.getInstance();
   CollectionReference chatsDB = db.collection(Konstants.CHAT_COLLECTION);
   RequestQueue volley;
@@ -58,10 +65,11 @@ public class ChattingPage extends AppCompatActivity {
   GalFirebaseHelper firebaseHelper = new GalFirebaseHelper();
   Boolean conversationIdExists = false;
   ProgressBar progressSpinner;
+  TextView pageName;
+  Context thisActivity;
   private View.OnClickListener sendMessage = new View.OnClickListener() {
     @Override
     public void onClick(View view) {
-      Log.d(TAG, "Before it begun....");
       Log.d(TAG, conversationStream.toString());
       prepareAndSendMsg();
     }
@@ -70,8 +78,11 @@ public class ChattingPage extends AppCompatActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    thisActivity = this;
     setContentView(R.layout.activity_chatting_page);
     volley = Volley.newRequestQueue(this);
+    pageName = findViewById(R.id.page_name);
+    receipientImg = findViewById(R.id.profile_icon);
     getContentFromIntent();
     initializeActivity();
   }
@@ -101,19 +112,13 @@ public class ChattingPage extends AppCompatActivity {
       // will probably never happen, but still worth checking
 //      goToLogin();
     }
-    // ---- Is user coming from conversation fragment ? They probably have a conversation ready for you, dont go with the rest
+    // ---- Is user coming from conversation fragment ? They will have a conversation id ready, don't go with the rest
     conversationIdExists = getIntent().getBooleanExtra(Konstants.EXISTING_CONVERSATION, false);
-    String streamID = getIntent().getStringExtra(Konstants.EXISTING_CONVERSATION_ID);
+    final String streamID = getIntent().getStringExtra(Konstants.EXISTING_CONVERSATION_ID);
     if (conversationIdExists) {
-      firebaseHelper.getDocumentWithField(Konstants.DB_QUERY_FIELD_CONVERSATION_ID, streamID, chatsDB, new GalInterfaceGuru.SnapshotTakerInterface() {
-        @Override
-        public void callback(DocumentSnapshot document) {
-          toggleSpinner(false);
-          conversationStream = document.toObject(ConversationStream.class);
-          inflateRecyclerWithData(conversationStream);
-        }
-      });
-
+      PersonInChat otherPerson = getIntent().getParcelableExtra(Konstants.USER_ON_THE_OTHER_END);
+      putEndUserInformationOnPage(otherPerson);
+      findAndFillStreamOnStart(streamID);
       return;
     }
     relatedErrand = getIntent().getParcelableExtra(Konstants.PASS_ERRAND_AROUND);
@@ -127,6 +132,47 @@ public class ChattingPage extends AppCompatActivity {
       userOnTheOtherEnd = getIntent().getParcelableExtra(Konstants.USER_ON_THE_OTHER_END);
 
     }
+  }
+
+  public void putEndUserInformationOnPage(Object user) {
+    if (user == null) return;
+    if (user instanceof GroundUser) {
+      Toast.makeText(this, "Yeaah, madafaka is a ground user", Toast.LENGTH_SHORT).show();
+    } else if (user instanceof SimpleUser) {
+      Toast.makeText(this, "Motherfucker is a simple user bro!", Toast.LENGTH_SHORT).show();
+    } else if (user instanceof PersonInChat) {
+      PersonInChat person = (PersonInChat) user;
+      pageName.setText(person.getUserName());
+      if (person.getProfilePictureURL() != null && !person.getProfilePictureURL().isEmpty()) {
+        Picasso.get().load(person.getProfilePictureURL()).into(receipientImg);
+      } else {
+        Picasso.get().load(R.drawable.gallamsey_photo_for_other).into(receipientImg);
+      }
+    }
+  }
+
+  public void findAndFillStreamOnStart(final String streamID) {
+    firebaseHelper.getDocumentWithField(Konstants.DB_QUERY_FIELD_CONVERSATION_ID, streamID, chatsDB, new GalInterfaceGuru.SnapshotTakerInterface() {
+      @Override
+      public void callback(DocumentSnapshot document) {
+        toggleSpinner(false);
+        conversationStream = document.toObject(ConversationStream.class);
+        inflateRecyclerWithData(conversationStream);
+        //---- set snapshot listener now to update the stream every time while user is on the page
+        trackLiveMessagingUpdates(streamID);
+      }
+    });
+
+  }
+
+  public void trackLiveMessagingUpdates(String streamID) {
+    firebaseHelper.setSnapshotListenerOnDocument(chatsDB.document(streamID), new GalInterfaceGuru.SnapshotTakerInterface() {
+      @Override
+      public void callback(DocumentSnapshot document) {
+        ConversationStream updatedStream = document.toObject(ConversationStream.class);
+        inflateRecyclerWithData(updatedStream);
+      }
+    });
   }
 
   public void findErrandRelatedStream(final CollectConversationStream streamDocumentListener) {
@@ -178,8 +224,8 @@ public class ChattingPage extends AppCompatActivity {
   }
 
   public void initializeActivity() {
+    options = findViewById(R.id.options);
     progressSpinner = findViewById(R.id.progress_spinner);
-    receipientImg = findViewById(R.id.profile_icon);
     receipientImg.setVisibility(View.VISIBLE);
     textbox = findViewById(R.id.textbox);
     sendBtn = findViewById(R.id.send_btn);
@@ -199,6 +245,8 @@ public class ChattingPage extends AppCompatActivity {
           toggleSpinner(false);
           toggleFirstTimerBox(false);
           inflateRecyclerWithData(conversation);
+          // -------- update chats automatically if more come in ---------
+          trackLiveMessagingUpdates(conversation.getConversationID());
         } else {
           toggleSpinner(false);
           toggleFirstTimerBox(true);
@@ -226,6 +274,16 @@ public class ChattingPage extends AppCompatActivity {
     msg.setTimeStamp(DateHelper.getDateInMyTimezone());
     return msg;
   }
+
+  private View.OnClickListener openDropDoown = new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+      PopupMenu menu = new PopupMenu(thisActivity,view);
+      if(relatedErrand == null){
+
+      }
+    }
+  };
 
   private void prepareAndSendMsg() {
     // validate text box content, but don't show any errors
@@ -262,6 +320,12 @@ public class ChattingPage extends AppCompatActivity {
     } else {
       progressSpinner.setVisibility(View.GONE);
     }
+  }
+
+  @Override
+  protected void onDestroy() {
+    Toast.makeText(this, "Are you tryna destroy me bro?", Toast.LENGTH_SHORT).show();
+    super.onDestroy();
   }
 
   private void cleanup() {

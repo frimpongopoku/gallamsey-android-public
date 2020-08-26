@@ -32,8 +32,9 @@ import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackConversationListPage,ConversationListRecyclerAdapter.ConversationListItemClicked, GalInterfaceGuru.TrackHomeFragmentState, HomeNewsMultiAdapter.OnNewsItemClick, GalInterfaceGuru.EditContextMenuItemListener, GalInterfaceGuru.TrackWalletFragmentState, GalInterfaceGuru.MessageCreatorContextMenuItemListener {
+public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackConversationListPage, ConversationListRecyclerAdapter.ConversationListItemClicked, GalInterfaceGuru.TrackHomeFragmentState, HomeNewsMultiAdapter.OnNewsItemClick, GalInterfaceGuru.EditContextMenuItemListener, GalInterfaceGuru.TrackWalletFragmentState, GalInterfaceGuru.MessageCreatorContextMenuItemListener {
 
+  private static final String TAG = "HOME";
   ImageView favBtn, optionsBtn;
   CircleImageView userProfileImageOnToolbar;
   FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -44,7 +45,7 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackCon
   CollectionReference userDB = firestore.collection(Konstants.USER_COLLECTION);
   DocumentReference userDocumentReference;
   ArrayList<GenericErrandClass> homeFragContent;
-  View homeFragState, walletFrag,messageFragState;
+  View homeFragState, walletFrag, messageFragState;
   Context thisActivity = this;
   Fragment currentFrag;
   TagCollection tagCollection;
@@ -52,12 +53,85 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackCon
   ArrayList<Object> walletFragContent;
   EditText searchBox;
   BottomNavigationView bottomNav;
-  private static final String TAG = "HOME";
   GalFirebaseHelper myFirebaseHelper = new GalFirebaseHelper();
   FirebaseUser authUser = FirebaseAuth.getInstance().getCurrentUser();
   FirebaseFirestore db = FirebaseFirestore.getInstance();
   CollectionReference userCollectionRef = db.collection(Konstants.USER_COLLECTION);
   ArrayList<ConversationListItem> messageFragItems;
+  private View.OnClickListener goToSearchActivity = new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+      Intent page = new Intent(thisActivity, SearchAnythingActivity.class);
+      startActivity(page);
+    }
+  };
+  private View.OnClickListener goToProfile = new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+      goToProfileViewPage(view);
+    }
+  };
+  private View.OnClickListener viewFavorites = new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+      favoritesBtn.setAlpha(1);
+      Intent fav = new Intent(getApplicationContext(), FavoritesActivity.class);
+      fav.putExtra(Konstants.AUTH_USER_KEY, authenticatedUser);
+      fav.putExtra(Konstants.PASS_TAGS, tagCollection);
+      startActivity(fav);
+    }
+  };
+  private View.OnClickListener goToSettings = new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+      Intent settings = new Intent(getApplicationContext(), OfficialSettingsPage.class);
+      settings.putExtra(Konstants.AUTH_USER_KEY, authenticatedUser);
+      startActivity(settings);
+    }
+  };
+  private View.OnClickListener addNewErrand = new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+      Intent createErrandPage = new Intent(getApplicationContext(), NewErrandCreationPage.class);
+      createErrandPage.putExtra(Konstants.AUTH_USER_KEY, authenticatedUser);
+      createErrandPage.putExtra(Konstants.PASS_TAGS, tagCollection);
+      createErrandPage.putExtra(Konstants.MODE, Konstants.INIT_STRING); //set it to an empty string, showing that its not edit mode
+      startActivity(createErrandPage);
+    }
+  };
+  private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+      if (menuItem.getItemId() == R.id.tasks) {
+        goToTasksPage();
+        return false;
+      }
+      Fragment destinationPage = null;
+      switch (menuItem.getItemId()) {
+        case R.id.nav_home:
+          destinationPage = new HomeFragment(homeFragContent, homeFragState, (GalInterfaceGuru.TrackHomeFragmentState) thisActivity);
+          ((HomeFragment) destinationPage).setAuthenticatedUser(authenticatedUser);
+          break;
+        case R.id.nav_notification:
+          destinationPage = new NotificationFragment();
+          break;
+        case R.id.nav_message:
+          destinationPage = new MessagesFragment(thisActivity);
+          ((MessagesFragment) destinationPage).setAuthenticatedUser(authenticatedUser);
+          ((MessagesFragment) destinationPage).setOldState(messageFragState, messageFragItems);
+          break;
+        case R.id.earnings:
+          destinationPage = new UserEarningsFragment(thisActivity);
+          ((UserEarningsFragment) destinationPage).setAuthenticatedUser(authenticatedUser);
+          ((UserEarningsFragment) destinationPage).setOldState(walletFragContent, walletFrag);
+          break;
+      }
+
+      getSupportFragmentManager().beginTransaction().replace(R.id.app_frame_layout, destinationPage).commit();
+      currentFrag = destinationPage;
+      return true;
+    }
+  };
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -70,15 +144,6 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackCon
     setContentView(R.layout.activity_home);
     initializeActivity();
   }
-
-  private View.OnClickListener goToSearchActivity = new View.OnClickListener() {
-    @Override
-    public void onClick(View view) {
-      Intent page = new Intent(thisActivity, SearchAnythingActivity.class);
-      startActivity(page);
-    }
-  };
-
 
   private void initializeActivity() {
     searchBox = findViewById(R.id.search_box);
@@ -102,9 +167,11 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackCon
       //means homepage is being opened from notification
       // this fxn is only needed so the user's info can be collected even if they open the homepage from a notification
       //normally the user's info collection wld have been done in either login|register|or splash page and passed into this page as an argument to prevent unnecessary firestore reads
-      getUserDocumentAndSetToAuth();
+      getUserDocumentAndSetToAuth(defaultTab);
+    } else {
+      startFromSpecificFragment(defaultTab);
+
     }
-    startFromSpecificFragment(defaultTab);
     Log.d(TAG, "initializeActivity: " + defaultTab);
     //-----------------------------------------------------------------------
     favBtn = findViewById(R.id.favorites);
@@ -117,18 +184,12 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackCon
     addErrandBtn.setOnClickListener(addNewErrand);
   }
 
-  private View.OnClickListener goToProfile = new View.OnClickListener() {
-    @Override
-    public void onClick(View view) {
-      goToProfileViewPage(view);
-    }
-  };
-
-  private void getUserDocumentAndSetToAuth() {
+  private void getUserDocumentAndSetToAuth(final String defaultTab) {
     myFirebaseHelper.getDocumentWithField(Konstants.DB_QUERY_FIELD_UNIQUE_ID, authUser.getUid(), userCollectionRef, new GalInterfaceGuru.SnapshotTakerInterface() {
       @Override
       public void callback(DocumentSnapshot document) {
         authenticatedUser = document.toObject(GroundUser.class);
+        startFromSpecificFragment(defaultTab);
       }
     });
   }
@@ -137,6 +198,7 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackCon
     Fragment default_fragment;
     if (which != null && which.equals(Konstants.CHAT_LIST_PAGE)) {
       default_fragment = new MessagesFragment(this);
+      ((MessagesFragment) default_fragment).setAuthenticatedUser(authenticatedUser);
       getSupportFragmentManager().beginTransaction().replace(R.id.app_frame_layout, default_fragment).commit();
       if (bottomNav != null) {
         bottomNav.setSelectedItemId(R.id.nav_message);
@@ -184,77 +246,10 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackCon
     });
   }
 
-
-  private View.OnClickListener viewFavorites = new View.OnClickListener() {
-    @Override
-    public void onClick(View view) {
-      favoritesBtn.setAlpha(1);
-      Intent fav = new Intent(getApplicationContext(), FavoritesActivity.class);
-      fav.putExtra(Konstants.AUTH_USER_KEY, authenticatedUser);
-      fav.putExtra(Konstants.PASS_TAGS, tagCollection);
-      startActivity(fav);
-    }
-  };
-
-  private View.OnClickListener goToSettings = new View.OnClickListener() {
-    @Override
-    public void onClick(View view) {
-      Intent settings = new Intent(getApplicationContext(), OfficialSettingsPage.class);
-      settings.putExtra(Konstants.AUTH_USER_KEY, authenticatedUser);
-      startActivity(settings);
-    }
-  };
-  private View.OnClickListener addNewErrand = new View.OnClickListener() {
-    @Override
-    public void onClick(View view) {
-      Intent createErrandPage = new Intent(getApplicationContext(), NewErrandCreationPage.class);
-      createErrandPage.putExtra(Konstants.AUTH_USER_KEY, authenticatedUser);
-      createErrandPage.putExtra(Konstants.PASS_TAGS, tagCollection);
-      createErrandPage.putExtra(Konstants.MODE, Konstants.INIT_STRING); //set it to an empty string, showing that its not edit mode
-      startActivity(createErrandPage);
-    }
-  };
-
-
   private void goToTasksPage() {
     Intent tasksPage = new Intent(this, TasksActivity.class);
     startActivity(tasksPage);
   }
-
-  private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-      if (menuItem.getItemId() == R.id.tasks) {
-        goToTasksPage();
-        return false;
-      }
-      Fragment destinationPage = null;
-      switch (menuItem.getItemId()) {
-        case R.id.nav_home:
-          destinationPage = new HomeFragment(homeFragContent, homeFragState, (GalInterfaceGuru.TrackHomeFragmentState) thisActivity);
-          ((HomeFragment) destinationPage).setAuthenticatedUser(authenticatedUser);
-          break;
-        case R.id.nav_notification:
-          destinationPage = new NotificationFragment();
-          break;
-        case R.id.nav_message:
-          destinationPage = new MessagesFragment(thisActivity);
-          ((MessagesFragment) destinationPage).setAuthenticatedUser(authenticatedUser);
-          ((MessagesFragment) destinationPage).setOldState(messageFragState,messageFragItems);
-          break;
-        case R.id.earnings:
-          destinationPage = new UserEarningsFragment(thisActivity);
-          ((UserEarningsFragment) destinationPage).setAuthenticatedUser(authenticatedUser);
-          ((UserEarningsFragment) destinationPage).setOldState(walletFragContent, walletFrag);
-          break;
-      }
-
-      getSupportFragmentManager().beginTransaction().replace(R.id.app_frame_layout, destinationPage).commit();
-      currentFrag = destinationPage;
-      return true;
-    }
-  };
-
 
   private void goToLogin() {
     Intent login = new Intent(this, Login.class);
@@ -310,11 +305,18 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackCon
 
   @Override
   public void onConversationListItemClicked(int position, ConversationListItem item) {
-   Intent page = new Intent(this,ChattingPage.class);
-   page.putExtra(Konstants.EXISTING_CONVERSATION,true);
-   page.putExtra(Konstants.EXISTING_CONVERSATION_ID,item.getConversationStreamID());
+    PersonInChat otherPerson;
+    if (item.getAuthor().getUserPlatformID().equals(authenticatedUser.getUserDocumentID())) {
+      otherPerson = item.getOtherPerson();
+    } else {
+      otherPerson = item.getAuthor();
+    }
+    Intent page = new Intent(this, ChattingPage.class);
+    page.putExtra(Konstants.EXISTING_CONVERSATION, true);
+    page.putExtra(Konstants.EXISTING_CONVERSATION_ID, item.getConversationStreamID());
     page.putExtra(Konstants.AUTH_USER_KEY, authenticatedUser);
-   startActivity(page);
+    page.putExtra(Konstants.USER_ON_THE_OTHER_END, otherPerson);
+    startActivity(page);
   }
 
   @Override

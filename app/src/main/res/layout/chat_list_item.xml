@@ -45,7 +45,7 @@
       <RelativeLayout
         android:visibility="gone"
         android:id="@+id/pricing_box"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingTop="5dp"
@@ -122,7 +122,7 @@
 
     <!-- UNREAD MSGS BADGE -->
     <TextView
-      android:visibility="gone"
+      android:visibility="visible"
       android:layout_marginTop="-35dp"
       android:id="@+id/unread_count"
       android:layout_width="wrap_content"
@@ -132,7 +132,10 @@
       android:layout_marginEnd="15dp"
       android:background="@drawable/notifcation_badge_background_green"
       android:fontFamily="@font/nunito_bold"
-      android:padding="6dp"
+      android:paddingTop="6dp"
+      android:paddingBottom="6dp"
+      android:paddingLeft="10dp"
+      android:paddingRight="10dp"
       android:text="50"
       android:textColor="@android:color/white"
       android:textSize="11sp" />

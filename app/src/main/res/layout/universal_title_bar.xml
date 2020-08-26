@@ -19,8 +19,8 @@
       android:src="@drawable/option_icon"
       android:layout_width="25dp"
       android:layout_height="25dp" />
-    <ImageView
-      android:visibility="gone"
+    <de.hdodenhof.circleimageview.CircleImageView
+      android:visibility="visible"
       android:layout_centerVertical="true"
       android:clickable="true"
       android:id="@+id/profile_icon"
@@ -29,8 +29,8 @@
       android:elevation="50dp"
       android:layout_toLeftOf="@id/options"
       android:src="@drawable/african_avatar_male"
-      android:layout_width="25dp"
-      android:layout_height="25dp" />
+      android:layout_width="40dp"
+      android:layout_height="40dp" />
 
     <ImageView
       android:id="@+id/back_btn"

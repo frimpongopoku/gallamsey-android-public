@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -65,7 +66,7 @@ public class ConversationListRecyclerAdapter extends RecyclerView.Adapter<Conver
     int unread = item.getUnReadMsgs();
     if (unread != 0) {
       holder.unReadBadge.setVisibility(View.VISIBLE);
-      holder.unReadBadge.setText(unread);
+      holder.unReadBadge.setText(String.valueOf(unread));
     }
     String otherPersonName = conversationPartner.getUserName();
     if (otherPersonName != null) {
