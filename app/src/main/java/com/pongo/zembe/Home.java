@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -309,7 +310,7 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackCon
 
   @Override
   public void onConversationListItemClicked(int position, ConversationListItem item) {
-
+    Toast.makeText(thisActivity, "Charle nana I have been clicked oo "+ position, Toast.LENGTH_SHORT).show();
   }
 
   @Override

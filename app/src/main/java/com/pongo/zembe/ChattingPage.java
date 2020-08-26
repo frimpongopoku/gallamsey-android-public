@@ -238,6 +238,8 @@ public class ChattingPage extends AppCompatActivity {
         ArrayList<OneChatMessage> allMsgs = stream.getMessages();
         allMsgs.add(message);
         stream.setMessages(allMsgs);
+        // updated timestamp
+        stream.setTimestamp(DateHelper.getDateInMyTimezone());
         //update with the new message the user wants to send
 //       transaction.update(chatRef,"messages",allMsgs);
        transaction.set(chatRef,stream);

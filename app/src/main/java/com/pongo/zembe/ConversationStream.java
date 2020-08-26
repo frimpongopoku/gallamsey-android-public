@@ -16,6 +16,7 @@ public class ConversationStream implements Parcelable {
   private Errand relatedErrand;
   private ArrayList<String> involvedParties = new ArrayList<>();
   private String createdAt = DateHelper.getDateInMyTimezone();
+  private String timestamp = DateHelper.getDateInMyTimezone();
   private String conversationContext;
   private int numberOfMessages = 0;
 
@@ -31,6 +32,14 @@ public class ConversationStream implements Parcelable {
 
   public void setNumberOfMessages(int numberOfMessages) {
     this.numberOfMessages = numberOfMessages;
+  }
+
+  public String getTimestamp() {
+    return timestamp;
+  }
+
+  public void setTimestamp(String timestamp) {
+    this.timestamp = timestamp;
   }
 
   public String getCreatedAt() {
@@ -139,6 +148,7 @@ public class ConversationStream implements Parcelable {
     dest.writeParcelable(this.relatedErrand, flags);
     dest.writeStringList(this.involvedParties);
     dest.writeString(this.createdAt);
+    dest.writeString(this.timestamp);
     dest.writeString(this.conversationContext);
     dest.writeInt(this.numberOfMessages);
   }
@@ -151,6 +161,7 @@ public class ConversationStream implements Parcelable {
     this.relatedErrand = in.readParcelable(Errand.class.getClassLoader());
     this.involvedParties = in.createStringArrayList();
     this.createdAt = in.readString();
+    this.timestamp = in.readString();
     this.conversationContext = in.readString();
     this.numberOfMessages = in.readInt();
   }
