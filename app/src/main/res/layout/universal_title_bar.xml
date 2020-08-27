@@ -20,7 +20,7 @@
       android:layout_width="25dp"
       android:layout_height="25dp" />
     <de.hdodenhof.circleimageview.CircleImageView
-      android:visibility="visible"
+      android:visibility="gone"
       android:layout_centerVertical="true"
       android:clickable="true"
       android:id="@+id/profile_icon"

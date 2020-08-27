@@ -7,14 +7,22 @@ import androidx.fragment.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -25,7 +33,12 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -58,6 +71,9 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackCon
   FirebaseFirestore db = FirebaseFirestore.getInstance();
   CollectionReference userCollectionRef = db.collection(Konstants.USER_COLLECTION);
   ArrayList<ConversationListItem> messageFragItems;
+  Handler handler = new Handler();
+  RequestQueue httpHandler;
+  TextView msgNotificationBadge;
   private View.OnClickListener goToSearchActivity = new View.OnClickListener() {
     @Override
     public void onClick(View view) {
@@ -143,9 +159,85 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackCon
     }
     setContentView(R.layout.activity_home);
     initializeActivity();
+    getConversationListContentPeriodically();
+  }
+
+  private void updateMessagesNotificationBadge() {
+    if (messageFragItems == null || messageFragItems.size() == 0) return;
+    int count = 0;
+    for (int i = 0; i < messageFragItems.size(); i++) {
+      ConversationListItem conversationListItem = messageFragItems.get(i);
+      int unread = conversationListItem.getUnReadMsgs();
+      count += unread;
+    }
+    if (count > 0) {
+      msgNotificationBadge.setVisibility(View.VISIBLE);
+      msgNotificationBadge.setText(String.valueOf(count));
+    }else{
+      msgNotificationBadge.setVisibility(View.GONE);
+    }
+  }
+
+  private void getConversationsFromAbove() {
+    JSONObject data = new JSONObject();
+    try {
+      data.put("user_id", authenticatedUser.getUserDocumentID());
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+
+    JsonObjectRequest convoRequest = new JsonObjectRequest(Request.Method.POST, GallamseyURLS.FIND_ALL_CONVERSATIONS, data, new Response.Listener<JSONObject>() {
+      @Override
+      public void onResponse(JSONObject response) {
+        ArrayList<ConversationListItem> conversations = processResponseData(response);
+        messageFragItems = conversations;
+      }
+    }, new Response.ErrorListener() {
+      @Override
+      public void onErrorResponse(VolleyError error) {
+        Log.d(TAG, "onErrorResponse: " + error.getMessage());
+      }
+    });
+    httpHandler.add(convoRequest);
+
+  }
+
+  private ArrayList<ConversationListItem> processResponseData(JSONObject response) {
+    ArrayList<ConversationListItem> conversations = new ArrayList<>();
+    try {
+      JSONObject error = (JSONObject) response.get("error");
+      JSONArray content = (JSONArray) response.get("data");
+      if (content != null) {
+        Gson gson = new Gson();
+        for (int i = 0; i < content.length(); i++) {
+          JSONObject conversation = (JSONObject) content.get(i);
+          ConversationListItem convo = gson.fromJson(conversation.toString(), ConversationListItem.class);
+          Log.d(TAG, "onResponse: " + convo);
+          conversations.add(convo);
+        }
+      }
+    } catch (JSONException e) {
+      Log.d(TAG, "onResponse: ERORR " + e.getMessage());
+    }
+
+    return conversations;
+  }
+
+  private void getConversationListContentPeriodically() {
+    handler.postDelayed(new Runnable() {
+      @Override
+      public void run() {
+        Log.d(TAG, "run: Searching for conversation list.....");
+        getConversationsFromAbove();
+        updateMessagesNotificationBadge();
+        getConversationListContentPeriodically();
+      }
+    }, 4000);
   }
 
   private void initializeActivity() {
+    msgNotificationBadge = findViewById(R.id.msg_notification_badge);
+    httpHandler = Volley.newRequestQueue(this);
     searchBox = findViewById(R.id.search_box);
     searchBox.setOnClickListener(goToSearchActivity);
     userProfileImageOnToolbar = findViewById(R.id.toolbar_img);
@@ -159,7 +251,7 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackCon
       setProfilePicture();
     }
     loadTags();
-    //----------------------  Set Fragment Listener to switch pages -----------
+    //----------------------  Set Fragment Listener to switch pages -----------------------------------------
     bottomNav = findViewById(R.id.bottom_nav);
     bottomNav.setOnNavigationItemSelectedListener(navListener);
     String defaultTab = getIntent().getStringExtra(Konstants.DEFAULT_PAGE);
@@ -173,7 +265,7 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackCon
 
     }
     Log.d(TAG, "initializeActivity: " + defaultTab);
-    //-----------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------------------
     favBtn = findViewById(R.id.favorites);
     favBtn.setOnClickListener(viewFavorites);
     optionsBtn = findViewById(R.id.options);
@@ -316,12 +408,21 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackCon
     page.putExtra(Konstants.EXISTING_CONVERSATION_ID, item.getConversationStreamID());
     page.putExtra(Konstants.AUTH_USER_KEY, authenticatedUser);
     page.putExtra(Konstants.USER_ON_THE_OTHER_END, otherPerson);
+    page.putExtra(Konstants.PASS_ERRAND_AROUND, item.getRelatedErrand());
     startActivity(page);
   }
 
   @Override
   public void saveConversationListState(ArrayList<ConversationListItem> chats, View state) {
-    messageFragItems = chats;
     messageFragState = state;
+    // a background worker is always set to update the content of chatlist, so only overwrite content of messagFragItems
+    // if it is null or has zero items and the incoming list has more items
+    if (messageFragItems == null) {
+      messageFragItems = chats;
+    } else {
+      if (chats.size() > messageFragItems.size()) {
+        messageFragItems = chats;
+      }
+    }
   }
 }

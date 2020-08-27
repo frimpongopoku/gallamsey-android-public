@@ -16,7 +16,7 @@ public class ConversationListItem implements Parcelable {
   private PersonInChat author = new PersonInChat();
   private ArrayList<String> involvedParties = new ArrayList<>();
   private String conversationContext;
-  private Errand relatedErrand;
+  private GenericErrandClass relatedErrand;
   private String createdAt = DateHelper.getDateInMyTimezone();
 
   @SerializedName("unreadMsgs")
@@ -113,11 +113,11 @@ public class ConversationListItem implements Parcelable {
     this.involvedParties = involvedParties;
   }
 
-  public Errand getRelatedErrand() {
+  public GenericErrandClass getRelatedErrand() {
     return relatedErrand;
   }
 
-  public void setRelatedErrand(Errand relatedErrand) {
+  public void setRelatedErrand(GenericErrandClass relatedErrand) {
     this.relatedErrand = relatedErrand;
   }
 
@@ -172,7 +172,7 @@ public class ConversationListItem implements Parcelable {
     this.author = in.readParcelable(PersonInChat.class.getClassLoader());
     this.involvedParties = in.createStringArrayList();
     this.conversationContext = in.readString();
-    this.relatedErrand = in.readParcelable(Errand.class.getClassLoader());
+    this.relatedErrand = in.readParcelable(GenericErrandClass.class.getClassLoader());
     this.createdAt = in.readString();
     this.unReadMsgs = in.readInt();
     this.documentID = in.readString();

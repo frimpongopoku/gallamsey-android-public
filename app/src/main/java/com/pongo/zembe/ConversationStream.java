@@ -13,7 +13,7 @@ public class ConversationStream implements Parcelable {
   private PersonInChat author = new PersonInChat();
   private PersonInChat otherPerson = new PersonInChat();
   private ArrayList<OneChatMessage> messages = new ArrayList<>();
-  private Errand relatedErrand;
+  private GenericErrandClass relatedErrand;
   private ArrayList<String> involvedParties = new ArrayList<>();
   private String createdAt = DateHelper.getDateInMyTimezone();
   private String timestamp = DateHelper.getDateInMyTimezone();
@@ -72,11 +72,11 @@ public class ConversationStream implements Parcelable {
     setNumberOfMessages(n + 1);
   }
 
-  public Errand getRelatedErrand() {
+  public GenericErrandClass getRelatedErrand() {
     return relatedErrand;
   }
 
-  public void setRelatedErrand(Errand relatedErrand) {
+  public void setRelatedErrand(GenericErrandClass relatedErrand) {
     this.relatedErrand = relatedErrand;
   }
 
@@ -158,7 +158,7 @@ public class ConversationStream implements Parcelable {
     this.author = in.readParcelable(PersonInChat.class.getClassLoader());
     this.otherPerson = in.readParcelable(PersonInChat.class.getClassLoader());
     this.messages = in.createTypedArrayList(OneChatMessage.CREATOR);
-    this.relatedErrand = in.readParcelable(Errand.class.getClassLoader());
+    this.relatedErrand = in.readParcelable(GenericErrandClass.class.getClassLoader());
     this.involvedParties = in.createStringArrayList();
     this.createdAt = in.readString();
     this.timestamp = in.readString();

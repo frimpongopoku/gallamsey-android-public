@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -53,7 +54,7 @@ public class ChattingPage extends AppCompatActivity {
   EditText textbox;
   RecyclerView recyclerView;
   GroundUser authenticatedUser, userOnTheOtherEnd;
-  Errand relatedErrand;
+  GenericErrandClass relatedErrand;
   String chatContext = Konstants.EMPTY;
   SimpleUser creator = new SimpleUser();
   FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -67,13 +68,7 @@ public class ChattingPage extends AppCompatActivity {
   ProgressBar progressSpinner;
   TextView pageName;
   Context thisActivity;
-  private View.OnClickListener sendMessage = new View.OnClickListener() {
-    @Override
-    public void onClick(View view) {
-      Log.d(TAG, conversationStream.toString());
-      prepareAndSendMsg();
-    }
-  };
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -117,6 +112,7 @@ public class ChattingPage extends AppCompatActivity {
     final String streamID = getIntent().getStringExtra(Konstants.EXISTING_CONVERSATION_ID);
     if (conversationIdExists) {
       PersonInChat otherPerson = getIntent().getParcelableExtra(Konstants.USER_ON_THE_OTHER_END);
+      relatedErrand = getIntent().getParcelableExtra(Konstants.PASS_ERRAND_AROUND);
       putEndUserInformationOnPage(otherPerson);
       findAndFillStreamOnStart(streamID);
       return;
@@ -225,8 +221,10 @@ public class ChattingPage extends AppCompatActivity {
 
   public void initializeActivity() {
     options = findViewById(R.id.options);
+    options.setOnClickListener(openDropDown);
     progressSpinner = findViewById(R.id.progress_spinner);
     receipientImg.setVisibility(View.VISIBLE);
+    receipientImg.setOnClickListener(profileIconClick);
     textbox = findViewById(R.id.textbox);
     sendBtn = findViewById(R.id.send_btn);
     sendBtn.setOnClickListener(sendMessage);
@@ -267,6 +265,69 @@ public class ChattingPage extends AppCompatActivity {
     });
   }
 
+
+  private void seeMoreAboutErrandInQuestion(){
+    Intent page = new Intent(this, ErrandViewActivity.class);
+    page.putExtra(Konstants.AUTH_USER_KEY,authenticatedUser);
+    page.putExtra(Konstants.PASS_ERRAND_AROUND,relatedErrand);
+    startActivity(page);
+  }
+  private View.OnClickListener profileIconClick = new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+      goToProfilePage();
+    }
+  };
+  public void goToProfilePage(){
+    Intent page = new Intent(this,ViewProfilePage.class);
+    page.putExtra(Konstants.AUTH_USER_KEY,authenticatedUser);
+    startActivity(page);
+  }
+  private View.OnClickListener sendMessage = new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+      Log.d(TAG, conversationStream.toString());
+      prepareAndSendMsg();
+    }
+  };
+  private View.OnClickListener openDropDown = new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+      final PopupMenu menu = new PopupMenu(thisActivity, view);
+      if (relatedErrand == null) {
+        menu.inflate(R.menu.peer_to_peer_chat_menu);
+      } else {
+        menu.inflate(R.menu.errand_related_chat_menu);
+      }
+
+      menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+        @Override
+        public boolean onMenuItemClick(MenuItem menuItem) {
+          switch (menuItem.getItemId()) {
+            case R.id.about_errand: {
+              seeMoreAboutErrandInQuestion();
+              break;
+            }
+            case R.id.report: {
+              Toast.makeText(thisActivity, "Report a person?", Toast.LENGTH_SHORT).show();
+              break;
+            }
+            case R.id.back: {
+              finish();
+              break;
+            }
+            case R.id.more_about_receiver: {
+             goToProfilePage();
+              break;
+            }
+          }
+
+          return true;
+        }
+      });
+      menu.show();
+    }
+  };
   private OneChatMessage createMsgFromText(String text) {
     OneChatMessage msg = new OneChatMessage();
     msg.setMessage(text);
@@ -274,16 +335,6 @@ public class ChattingPage extends AppCompatActivity {
     msg.setTimeStamp(DateHelper.getDateInMyTimezone());
     return msg;
   }
-
-  private View.OnClickListener openDropDoown = new View.OnClickListener() {
-    @Override
-    public void onClick(View view) {
-      PopupMenu menu = new PopupMenu(thisActivity,view);
-      if(relatedErrand == null){
-
-      }
-    }
-  };
 
   private void prepareAndSendMsg() {
     // validate text box content, but don't show any errors

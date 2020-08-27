@@ -14,16 +14,23 @@ import com.google.android.material.chip.ChipGroup;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 
 public class MyHelper {
 
 
+
+  public static Boolean compareTwoArraysOfSameInstance(ArrayList<Object> one, ArrayList<Object> two){
+    if(one.size() == two.size() ) return false;
+    return one.containsAll(two) && two.containsAll(one);
+  }
   public static void saveToSharedPreferences(Context context, Object customValToSave, String IDENTIFIER) {
     SharedPreferences sharedPreferences = context.getSharedPreferences("Gallamsey Storage", Context.MODE_PRIVATE);
     SharedPreferences.Editor editor = sharedPreferences.edit();

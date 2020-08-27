@@ -3,6 +3,7 @@ package com.pongo.zembe;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,7 +63,7 @@ public class MessagesFragment extends Fragment {
   private RequestQueue myReq;
   public static final String TAG = "MESSAGING-FRAGMENT";
   private ProgressBar spinner ;
-  RelativeLayout relativeLayout;
+  private RelativeLayout relativeLayout;
 
   public MessagesFragment() {
   }
@@ -90,12 +91,20 @@ public class MessagesFragment extends Fragment {
       inflateRecycler(chatList);
       return state;
     }
-
     View v = inflater.inflate(R.layout.messages_nav_fragment, container, false);
     this.state = v;
     View inflatedView = initialize(v);
     this.state = inflatedView;
-    getConversationsFromAbove();
+    if(chatList != null && chatList.size() > 0){
+      // this situation means, user has never visited the msg frag before so there is no view state available,
+      // but homepage's periodic search has been able to collect conversations already, so there will be no need to search again
+      // just create view, and inflate with content that homepage sent through....
+
+      inflateRecycler(chatList);
+      spinner.setVisibility(View.GONE);
+    }else{
+      getConversationsFromAbove();
+    }
     return inflatedView;
   }
 
