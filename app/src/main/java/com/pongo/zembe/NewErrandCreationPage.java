@@ -103,7 +103,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     tagCollection = getIntent().getParcelableExtra(Konstants.PASS_TAGS);
     if (authenticatedUser != null) {
       makeSimpleUserFrom(authenticatedUser);
-      locationList.add(Konstants.CHOOSE);// I just want "CHOOSE" to be the first item
+      locationList.add(Konstants.CHOOSE);//  "CHOOSE" to be the first item
       locationList.addAll(MyHelper.changeGallamseyPointToStringArray(authenticatedUser.getDeliveryLocations()));
       stringToGallamseObj = MyHelper.changeGallmseyPointToHash(authenticatedUser.getDeliveryLocations());
       setProfilePicture();

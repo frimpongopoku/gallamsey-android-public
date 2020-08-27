@@ -13,8 +13,11 @@
     <shape android:shape="rectangle">
       <solid
         android:width="2dp"
-        android:color="@color/msg_back_color_2" />
-      <corners android:radius="10dp" />
+        android:color="@color/appColorMediumLight" />
+      <!--<solid-->
+        <!--android:width="2dp"-->
+        <!--android:color="@color/msg_back_color_2" />-->
+      <corners android:radius="5dp" />
     </shape>
   </item>
 </ripple>

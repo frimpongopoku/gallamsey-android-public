@@ -18,7 +18,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class SimpleUser implements Parcelable {
-  private String userPlatformID;
+  private String userPlatformID; // the iD of the document the represents the user's profile in USER_COLLECTION
   private String userName;
   private String phoneNumber;
   private String userPlatformType;

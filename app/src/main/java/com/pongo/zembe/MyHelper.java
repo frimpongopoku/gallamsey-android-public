@@ -14,10 +14,12 @@ import com.google.android.material.chip.ChipGroup;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -25,38 +27,46 @@ public class MyHelper {
 
 
 
-  public static void saveToSharedPreferences(Context context,Object customValToSave,String IDENTIFIER){
-    SharedPreferences sharedPreferences = context.getSharedPreferences("Gallamsey Storage",Context.MODE_PRIVATE);
+  public static Boolean compareTwoArraysOfSameInstance(ArrayList<Object> one, ArrayList<Object> two){
+    if(one.size() == two.size() ) return false;
+    return one.containsAll(two) && two.containsAll(one);
+  }
+  public static void saveToSharedPreferences(Context context, Object customValToSave, String IDENTIFIER) {
+    SharedPreferences sharedPreferences = context.getSharedPreferences("Gallamsey Storage", Context.MODE_PRIVATE);
     SharedPreferences.Editor editor = sharedPreferences.edit();
     Gson gson = new Gson();
     String jsonString = gson.toJson(customValToSave);
-    editor.putString(IDENTIFIER,jsonString);
+    editor.putString(IDENTIFIER, jsonString);
     editor.apply();
 
   }
-  public static  Object getFromSharedPreferences(Context context, String IDENTIFIER, Type type){
-    SharedPreferences sharedPreferences = context.getSharedPreferences("Gallamsey Storage",Context.MODE_PRIVATE);
-    String savedJsonString = sharedPreferences.getString(IDENTIFIER,null);
+
+  public static Object getFromSharedPreferences(Context context, String IDENTIFIER, Type type) {
+    SharedPreferences sharedPreferences = context.getSharedPreferences("Gallamsey Storage", Context.MODE_PRIVATE);
+    String savedJsonString = sharedPreferences.getString(IDENTIFIER, null);
     Gson gson = new Gson();
-    return gson.fromJson(savedJsonString,type);
+    return gson.fromJson(savedJsonString, type);
   }
 
-  public static void removeFromSharedPreference(Context context, String IDENTIFIER){
-    SharedPreferences sharedPreferences = context.getSharedPreferences("Gallamsey Storage",Context.MODE_PRIVATE);
+  public static void removeFromSharedPreference(Context context, String IDENTIFIER) {
+    SharedPreferences sharedPreferences = context.getSharedPreferences("Gallamsey Storage", Context.MODE_PRIVATE);
     SharedPreferences.Editor editor = sharedPreferences.edit();
     editor.remove(IDENTIFIER);
     editor.apply();
   }
 
-  public static ArrayList<String> changeGallamseyPointToStringArray(ArrayList<GallamseyLocationComponent> array){
+  public static ArrayList<String> changeGallamseyPointToStringArray(ArrayList<GallamseyLocationComponent> array) {
     ArrayList<String> arr = new ArrayList<>();
+    if (array == null) return arr;
     for (GallamseyLocationComponent location : array) {
       arr.add(location.getLocationName());
     }
     return arr;
   }
+
   public static HashMap<String, GallamseyLocationComponent> changeGallmseyPointToHash(ArrayList<GallamseyLocationComponent> array) {
     HashMap<String, GallamseyLocationComponent> map = new HashMap<>();
+    if(array == null)return  map;
     for (GallamseyLocationComponent location : array) {
       map.put(location.getLocationName(), location);
     }

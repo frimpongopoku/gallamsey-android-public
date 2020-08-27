@@ -13,8 +13,6 @@ public class GenericErrandClass extends Errand implements Parcelable {
   public GenericErrandClass() {
   }
 
-
-
   public GenericErrandClass(String errandType, String description) {
     super(errandType, description);
   }

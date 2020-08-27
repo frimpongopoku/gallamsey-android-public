@@ -3,17 +3,14 @@
 
 
   <item
-    android:id="@+id/run"
-    android:title="Run" />
-  <item
-    android:id="@+id/share"
-    android:title="Share" />
+    android:id="@+id/more_about_receiver"
+    android:title="Profile" />
 
   <item
-    android:id="@+id/message"
-    android:title="Message" />
+    android:id="@+id/about_errand"
+    android:title="About Errand" />
   <item
-    android:id="@+id/report"
+    android:id="@+id/delete"
     android:title="Report" />
   <item
     android:id="@+id/back"

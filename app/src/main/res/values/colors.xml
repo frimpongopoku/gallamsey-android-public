@@ -31,6 +31,8 @@
   <color name="msg_back_color_2">#FDECEB</color>
   <color name="msg_back_color_1">#DCEAFF</color>
   <color name="deep_orange">#FF9800</color>
+  <color name="ninja_yellow">#f8d510</color>
+  <color name="ninja_blue">#0248bc</color>
   <color name="fav_black">#282828</color>
   <color name="green">#228B22</color>
   <color name="shimmer_color">#dddddd</color>

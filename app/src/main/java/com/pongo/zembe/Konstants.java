@@ -8,6 +8,16 @@ import java.util.HashMap;
 public class Konstants {
 
 
+
+  public static final String EXISTING_CONVERSATION = "COMING_FROM_CONVERSATION_PAGE";
+  public static final String EXISTING_CONVERSATION_ID = "EXISTING_CONVERSATION_ID";
+  public static final String DEFAULT_PROFILE = "https://firebasestorage.googleapis.com/v0/b/gallamsey.appspot.com/o/DEFAULTS%2Fgallamsey_photo_for_other%20copy.png?alt=media&token=58a74a27-7613-40a2-b3cc-408871ccd2f9";
+  public static final String MSG_NOTIFICATION_COLLECTION = "MESSAGE NOTIFICATION TRACKERS";
+  public static final String DB_QUERY_FIELD_UNIQUE_ID = "uniqueID";
+  public static final String DB_QUERY_FIELD_CONVERSATION_ID = "conversationID";
+  public static final String FIREBASE_UID = "FIREBASE_UID";
+  public static final String DEFAULT_PAGE = "DEFAULT_PAGE";
+  public static final String CHAT_LIST_PAGE = "CHAT_LIST";
   public static final String GH_CURRENCY = " GHS";
   public static final String SEARCH_ANYTHING = "ANYTHING";
   public static final String SEARCH_RIDERS = "RIDERS";
@@ -45,6 +55,13 @@ public class Konstants {
   //  USER STATUS
   public static final String CREATOR = "CREATOR";
   public static final String RIDER = "RIDER";
+//   CHAT CONSTANTS
+
+  public static final String ABOUT_AN_ERRAND = "ABOUT_AN_ERRAND";
+  public static final String PEER_TO_PEER = "PEER_TO_PEER";
+  public static final String CHAT_COLLECTION = "CHATS";
+  public static final String CHAT_LIST_COLLECTION = "CHATLIST";
+  public static final String USER_ON_THE_OTHER_END = "USER_ON_THE_OTHER_END";
 
   // ERRAND CREATION CONSTANTS
   //  --------------------------

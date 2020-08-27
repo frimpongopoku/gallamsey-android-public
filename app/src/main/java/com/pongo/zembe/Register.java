@@ -46,6 +46,7 @@ public class Register extends AppCompatActivity {
   private static String TAG = "REGISTRATION-AREA::->";
   FirebaseFirestore db = FirebaseFirestore.getInstance();
   Boolean infoProvided;
+  GroundUser newUser;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -121,6 +122,7 @@ public class Register extends AppCompatActivity {
 
   public void goToUserHomepage() {
     Intent homepage = new Intent(this, Home.class);
+    homepage.putExtra(Konstants.AUTH_USER_KEY,newUser);
     finish();
     startActivity(homepage);
   }
@@ -180,30 +182,37 @@ public class Register extends AppCompatActivity {
     //--------------------------------------------------------------------------------
     //Every user starts as a ground user -- upgrade later
     //-------------------------------------------------
-    GroundUser newUser = new GroundUser(preferredName, DOB, email, phone, whatsappPhone, user.getUid(), Konstants.GROUND_USER, gender);
-    db.collection(Konstants.USER_COLLECTION)
-      .document()
-      .set(newUser)
-      .addOnSuccessListener(new OnSuccessListener<Void>() {
-        @Override
-        public void onSuccess(Void aVoid) {
-          cleanUp();
-          if (!infoProvided) {
-            goToProfileCompletion();
-          } else {
-            goToUserHomepage();
-          }
-        }
-      }).addOnFailureListener(new OnFailureListener() {
-      @Override
-      public void onFailure(@NonNull Exception e) {
-        Log.d(TAG, "DatabaseError: " + e.getStackTrace());
-        Toast.makeText(Register.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-      }
-    });
+    newUser = new GroundUser(preferredName, DOB, email, phone, whatsappPhone, user.getUid(), Konstants.GROUND_USER, gender);
+    cleanUp();
     if (!infoProvided) {
-      Toast.makeText(this, "You are good to go. You can provide all missing data later on.", Toast.LENGTH_LONG).show();
+      goToProfileCompletion();
+    } else {
+      goToUserHomepage();
     }
+//
+//    db.collection(Konstants.USER_COLLECTION)
+//      .document()
+//      .set(newUser)
+//      .addOnSuccessListener(new OnSuccessListener<Void>() {
+//        @Override
+//        public void onSuccess(Void aVoid) {
+//          cleanUp();
+//          if (!infoProvided) {
+//            goToProfileCompletion();
+//          } else {
+//            goToUserHomepage();
+//          }
+//        }
+//      }).addOnFailureListener(new OnFailureListener() {
+//      @Override
+//      public void onFailure(@NonNull Exception e) {
+//        Log.d(TAG, "DatabaseError: " + e.getStackTrace());
+//        Toast.makeText(Register.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+//      }
+//    });
+//    if (!infoProvided) {
+//      Toast.makeText(this, "You are good to go. You can provide all missing data later on.", Toast.LENGTH_LONG).show();
+//    }
   }
 
 

@@ -1,55 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/container"
   android:layout_width="match_parent"
-  android:clickable="true"
-  android:orientation="vertical"
-
+  android:layout_height="wrap_content"
   android:background="?attr/selectableItemBackground"
-  android:layout_height="wrap_content">
+  android:clickable="true"
+  android:orientation="vertical">
 
   <RelativeLayout
-    android:padding="15dp"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-  <ImageView
-    android:layout_centerVertical="true"
-    android:id="@+id/receipient_img"
-    android:layout_width="60dp"
-    android:layout_height="60dp"
-    android:src="@drawable/african_avatar_male" />
-
-  <LinearLayout
-    android:layout_centerVertical="true"
-    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-   android:layout_marginLeft="20dp"
-    android:layout_toRightOf="@+id/receipient_img"
-    android:orientation="vertical">
+    android:padding="15dp">
 
-    <TextView
-      android:textColor="@android:color/black"
+    <de.hdodenhof.circleimageview.CircleImageView
+      android:id="@+id/other_persons_img"
+      android:layout_width="50dp"
+      android:layout_height="50dp"
+      android:layout_centerVertical="true"
+      android:src="@drawable/african_avatar_male" />
+
+    <LinearLayout
+      android:id="@+id/content_preview"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:layout_centerVertical="true"
+      android:layout_marginLeft="20dp"
+      android:layout_toRightOf="@+id/other_persons_img"
+      android:orientation="vertical">
+
+      <TextView
+        android:id="@+id/other_persons_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/nunito_regular"
+        android:text="Akwesi Poison"
+        android:textColor="@android:color/black" />
+
+      <TextView
+        android:id="@+id/chat_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Its hard to remember and after all the ups and downs bluh.." />
+
+      <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/pricing_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="5dp"
+        android:paddingEnd="15dp">
+
+        <TextView
+          android:id="@+id/money_out"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_centerVertical="true"
+          android:layout_marginEnd="3dp"
+          android:fontFamily="@font/google_sans_medium"
+          android:text="GHS"
+          android:textColor="@android:color/holo_red_dark"
+          android:textSize="15sp" />
+
+        <TextView
+          android:id="@+id/errand_cost"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_centerVertical="true"
+          android:layout_marginEnd="5dp"
+
+          android:layout_toEndOf="@id/money_out"
+          android:fontFamily="@font/google_sans_medium"
+          android:text="28"
+          android:textColor="@android:color/holo_red_dark"
+          android:textSize="15sp" />
+
+        <ImageView
+          android:id="@+id/compare_arrow"
+          android:layout_width="20dp"
+          android:layout_height="20dp"
+          android:layout_marginStart="4dp"
+          android:layout_marginEnd="4dp"
+          android:layout_toEndOf="@id/errand_cost"
+          android:src="@drawable/ic_compare_arrows_black_24dp" />
+
+        <TextView
+          android:id="@+id/money_in"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_centerVertical="true"
+          android:layout_marginTop="2dp"
+          android:layout_marginEnd="3dp"
+          android:layout_toEndOf="@id/compare_arrow"
+          android:fontFamily="@font/google_sans_medium"
+          android:text="GHS"
+          android:textColor="@color/green"
+          android:textSize="15sp" />
+
+        <TextView
+          android:id="@+id/errand_allowance"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_centerVertical="true"
+          android:layout_marginTop="2dp"
+          android:layout_toEndOf="@id/money_in"
+          android:fontFamily="@font/google_sans_medium"
+          android:text="55"
+          android:textColor="@color/green"
+          android:textSize="15sp" />
+      </RelativeLayout>
+
+      <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/nunito_regular"
+        android:text="22nd March 1998"
+        android:textSize="11sp" />
+    </LinearLayout>
+
+
+    <!-- UNREAD MSGS BADGE -->
+    <TextView
+      android:visibility="visible"
+      android:layout_marginTop="-35dp"
+      android:id="@+id/unread_count"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/content_preview"
+      android:layout_alignParentRight="true"
+      android:layout_marginEnd="15dp"
+      android:background="@drawable/notifcation_badge_background_green"
       android:fontFamily="@font/nunito_bold"
-      android:text="Akwesi Poison" />
+      android:paddingTop="6dp"
+      android:paddingBottom="6dp"
+      android:paddingLeft="10dp"
+      android:paddingRight="10dp"
+      android:text="50"
+      android:textColor="@android:color/white"
+      android:textSize="11sp" />
 
-    <TextView
-
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="Its hard to remember and after all the ups and downs bluh.." />
-    <TextView
-      android:textSize="11sp"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:fontFamily="@font/quick_sand_bold"
-      android:text="22nd March 1998" />
-  </LinearLayout>
   </RelativeLayout>
 
+
   <View
-    android:background="@color/lightest_grey"
     android:layout_width="match_parent"
-    android:layout_height="1dp"/>
+    android:layout_height="1dp"
+    android:background="@color/lightest_grey" />
 </LinearLayout>

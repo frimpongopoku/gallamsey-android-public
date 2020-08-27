@@ -19,6 +19,16 @@ public class DateHelper {
     return (String) DateUtils.getRelativeTimeSpanString(dateTo.getTime(), now.getTime(), DateUtils.MINUTE_IN_MILLIS);
   }
 
+
+  public static String getNormalSensibleDate(String date){
+    SimpleDateFormat _formatter = new SimpleDateFormat("EEE, MMM d, hh:mm a");
+    Date leDate = convertStringToDate(date);
+    return _formatter.format(leDate);
+  }public static String getOnlyHoursAndMinutesFromDate(String date){
+    SimpleDateFormat _formatter = new SimpleDateFormat("hh:mm a");
+    Date leDate = convertStringToDate(date);
+    return _formatter.format(leDate);
+  }
   public static String getTimezone() {
     Calendar cal = Calendar.getInstance();
     long milliDiff = cal.get(Calendar.ZONE_OFFSET);

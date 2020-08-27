@@ -51,6 +51,7 @@ public class HomeFragment extends Fragment {
   GroundUser authenticatedUser;
 
 
+  public HomeFragment(){}
   public HomeFragment(ArrayList<GenericErrandClass> news, View oldViewState, GalInterfaceGuru.TrackHomeFragmentState fragmentStateListener) {
     this.news = news;
     this.currentState = oldViewState;
@@ -88,7 +89,7 @@ public class HomeFragment extends Fragment {
       skeleton.setVisibility(View.VISIBLE);
 
     }
-//    For the first time : getNewsHere();
+    //  For the first time : getNewsHere();
     getNewsFromFirebase(new NewsCollectionCallback() {
       @Override
       public void getErrands(ArrayList<GenericErrandClass> errands) {
@@ -97,7 +98,7 @@ public class HomeFragment extends Fragment {
         adapter.notifyDataSetChanged();
         skeleton.setVisibility(View.GONE);
         recyclerView.setVisibility(View.VISIBLE);
-        setNews(errands);
+        recyclerView.setHasFixedSize(true);
       }
     });
     setCurrentState(view);
