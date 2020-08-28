@@ -16,7 +16,7 @@
     android:supportsRtl="true"
     android:theme="@style/AppTheme"
     tools:ignore="GoogleAppIndexingWarning">
-    <activity android:name=".CashIn">
+    <activity android:name=".CashInCashOut">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
 

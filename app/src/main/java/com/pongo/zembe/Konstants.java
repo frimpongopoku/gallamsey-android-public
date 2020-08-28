@@ -9,6 +9,9 @@ public class Konstants {
 
 
 
+  public static final String PAGE_KEY = "PAGE_KEY";
+  public static final String CASH_IN_PAGE_KEY = "CASH IN";
+  public static final String CASH_OUT_PAGE_KEY = "CASH OUT";
   public static final String EXISTING_CONVERSATION = "COMING_FROM_CONVERSATION_PAGE";
   public static final String EXISTING_CONVERSATION_ID = "EXISTING_CONVERSATION_ID";
   public static final String DEFAULT_PROFILE = "https://firebasestorage.googleapis.com/v0/b/gallamsey.appspot.com/o/DEFAULTS%2Fgallamsey_photo_for_other%20copy.png?alt=media&token=58a74a27-7613-40a2-b3cc-408871ccd2f9";
