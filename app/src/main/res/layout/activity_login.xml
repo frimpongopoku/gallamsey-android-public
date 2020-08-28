@@ -31,6 +31,7 @@
       android:layout_height="wrap_content">
 
       <TextView
+
         android:textColor="@android:color/black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -50,17 +51,21 @@
     </LinearLayout>
 
     <EditText
+      android:textColorHint="@color/appColor"
+      android:fontFamily="@font/google_sans_light"
       android:id="@+id/log_email"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginLeft="30dp"
       android:layout_marginRight="30dp"
       android:background="@drawable/stroke_textbox"
-      android:hint="Username"
+      android:hint="Enter your email "
       android:padding="15dp"
       android:textSize="14sp" />
 
     <EditText
+      android:textColorHint="@color/appColor"
+      android:fontFamily="@font/google_sans_light"
       android:id="@+id/log_password"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -77,26 +82,25 @@
   </LinearLayout>
 
   <LinearLayout
-    android:paddingBottom="30dp"
-    android:paddingRight="30dp"
-    android:paddingLeft="30dp"
+    android:layout_alignParentBottom="true"
+
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_below="@id/bottom_div">
+    >
 
     <Button
       android:id="@+id/login_btn"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginTop="20dp"
-      android:layout_marginBottom="10dp"
+      android:fontFamily="@font/google_sans"
       android:background="@drawable/login_button_shape"
-      android:padding="10dp"
+      android:padding="20dp"
       android:text="LOGIN"
       android:textAllCaps="false"
       android:textColor="@android:color/white"
-      android:textSize="15dp" />
+      android:textSize="13dp" />
 
     <!--<TextView-->
       <!--android:layout_width="wrap_content"-->
@@ -106,8 +110,10 @@
       <!--android:text="Sign in with" />-->
 
     <Button
+      android:textSize="13sp"
+      android:padding="20dp"
+      android:fontFamily="@font/google_sans"
       android:onClick="loginWithGoogle"
-      android:layout_marginBottom="10dp"
       android:textColor="@android:color/white"
      android:text="Sign In With Google"
       android:background="@drawable/google_button"
