@@ -9,7 +9,7 @@ import android.widget.Toast;
 import com.google.android.material.tabs.TabLayout;
 import com.pongo.zembe.ui.main.SectionsPagerAdapter;
 
-public class TasksActivity extends AppCompatActivity {
+public class TasksActivity extends AppCompatActivity implements GigsTabRecyclerAdapter.GigItemClick, YourErrandsTabRecyclerAdapter.YourErrandItemClick {
 
 
   @Override
@@ -24,13 +24,13 @@ public class TasksActivity extends AppCompatActivity {
 
   }
 
-//  @Override
-//  public void onGigItemClick(int position) {
-//
-//  }
-//
-//  @Override
-//  public void onYourErrandItemClick(int position) {
-//    Toast.makeText(this, "Errand item clicked: "+position, Toast.LENGTH_SHORT).show();
-//  }
+  @Override
+  public void onGigItemClick(int position) {
+    Toast.makeText(this, "Gig item clicked: " + position, Toast.LENGTH_SHORT).show();
+  }
+
+  @Override
+  public void onYourErrandItemClick(int position) {
+    Toast.makeText(this, "Errand item clicked: "+position, Toast.LENGTH_SHORT).show();
+  }
 }

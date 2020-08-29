@@ -15,10 +15,10 @@ import java.util.ArrayList;
 
 public class YourErrandsTabRecyclerAdapter extends RecyclerView.Adapter<YourErrandsTabRecyclerAdapter.YourErrandsTabRecyclerViewHolder> {
   Context context;
-  ArrayList<Object> listOfErrands = new ArrayList<>();
+  ArrayList<GenericErrandClass> listOfErrands = new ArrayList<>();
   YourErrandItemClick listener;
 
-  public YourErrandsTabRecyclerAdapter(Context context, ArrayList<Object> listOfErrands, YourErrandItemClick listener) {
+  public YourErrandsTabRecyclerAdapter(Context context, ArrayList<GenericErrandClass> listOfErrands, YourErrandItemClick listener) {
     this.context = context;
     this.listOfErrands = listOfErrands;
     this.listener = listener;
@@ -39,7 +39,7 @@ public class YourErrandsTabRecyclerAdapter extends RecyclerView.Adapter<YourErra
 
   @Override
   public int getItemCount() {
-    return 4;
+    return  listOfErrands.size();
   }
 
   public class YourErrandsTabRecyclerViewHolder extends RecyclerView.ViewHolder {

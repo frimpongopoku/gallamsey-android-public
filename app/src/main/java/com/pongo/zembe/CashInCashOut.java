@@ -46,6 +46,8 @@ public class CashInCashOut extends AppCompatActivity {
   }
 
   private void initActivity() {
+    pageName = findViewById(R.id.page_name);
+    pageName.setText("Send Cash Into Your Wallet");
     upIcon = findViewById(R.id.up_icon);
     downIcon = findViewById(R.id.down_icon);
     pageKey = getIntent().getStringExtra(Konstants.PAGE_KEY);
@@ -53,10 +55,8 @@ public class CashInCashOut extends AppCompatActivity {
     pageKeyTextView = findViewById(R.id.page_key);
     setPageKeyContent(pageKey);
     thisActivity = this;
-    pageName = findViewById(R.id.page_name);
     optionsBtn = findViewById(R.id.options);
     optionsBtn.setVisibility(View.GONE);
-    pageName.setText("Send Cash Into Your Wallet");
     mobileNumberDrop = findViewById(R.id.payment_numbers_spinner);
     contactDropDownAdapter = new ContactDropDownAdapter(this, Konstants.DUMMY_PAYMENT_CONTACT);
     mobileNumberDrop.setAdapter(contactDropDownAdapter);

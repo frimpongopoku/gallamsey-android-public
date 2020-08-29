@@ -14,10 +14,10 @@ import java.util.ArrayList;
 public class GigsTabRecyclerAdapter extends RecyclerView.Adapter<GigsTabRecyclerAdapter.GigsTabReyclerViewHolder> {
 
   Context context;
-  ArrayList<Object> listOfErrands = new ArrayList<>();
+  ArrayList<GenericErrandClass> listOfErrands = new ArrayList<>();
   GigItemClick listener;
 
-  public GigsTabRecyclerAdapter(Context context, ArrayList<Object> listOfErrands, GigItemClick listener) {
+  public GigsTabRecyclerAdapter(Context context, ArrayList<GenericErrandClass> listOfErrands, GigItemClick listener) {
     this.context = context;
     this.listOfErrands = listOfErrands;
     this.listener = listener;
@@ -37,7 +37,7 @@ public class GigsTabRecyclerAdapter extends RecyclerView.Adapter<GigsTabRecycler
 
   @Override
   public int getItemCount() {
-    return 6;
+    return listOfErrands.size();
   }
 
   public class GigsTabReyclerViewHolder extends RecyclerView.ViewHolder {

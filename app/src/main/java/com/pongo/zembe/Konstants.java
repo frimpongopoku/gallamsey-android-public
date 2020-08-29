@@ -8,7 +8,12 @@ import java.util.HashMap;
 public class Konstants {
 
 
+  public static final String HTTP_DATA_VALUE_USER_ID = "user_id";
+  public static final String HTTP_DATA_VALUE_OWNER_ID = "owner_id";
+  public static final String HTTP_DATA_VALUE_CONVERSATION_ID = "conversation_id";
+  public static final String HTTP_DATA_VALUE_REDUCTION_NUM = "reduction_number";
 
+  public static final String UNREAD_COUNT = "UNREAD_COUNT";
   public static final String PAGE_KEY = "PAGE_KEY";
   public static final String CASH_IN_PAGE_KEY = "CASH IN";
   public static final String CASH_OUT_PAGE_KEY = "CASH OUT";

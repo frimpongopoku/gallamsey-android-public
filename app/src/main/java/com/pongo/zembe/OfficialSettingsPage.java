@@ -14,32 +14,10 @@ import com.google.firebase.auth.FirebaseAuth;
 public class OfficialSettingsPage extends AppCompatActivity {
 
   ImageView back_btn;
-  TextView addPaymentBtn, addLocationBtn, newFeatureBtn;
+  TextView addPaymentBtn, addLocationBtn, newFeatureBtn, cashInBtn, cashOutBtn;
   FirebaseAuth auth = FirebaseAuth.getInstance();
   GroundUser authenticatedUser;
-  MagicBoxes dialogCreator ;
-
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    authenticatedUser = getIntent().getParcelableExtra(Konstants.AUTH_USER_KEY);
-    setContentView(R.layout.activity_official_settings_page);
-    initActivity();
-  }
-
-
-  private void initActivity() {
-     dialogCreator = new MagicBoxes(this);
-    addPaymentBtn = findViewById(R.id.add_payment_mobile_number);
-    addPaymentBtn.setOnClickListener(goToPayment);
-    addLocationBtn = findViewById(R.id.add_pickup_location);
-    addLocationBtn.setOnClickListener(goToLocations);
-    back_btn = findViewById(R.id.back_btn);
-    back_btn.setOnClickListener(quit);
-    newFeatureBtn = findViewById(R.id.new_feature_btn);
-    newFeatureBtn.setOnClickListener(startNewFeatureBox);
-  }
-
+  MagicBoxes dialogCreator;
   private View.OnClickListener startNewFeatureBox = new View.OnClickListener() {
     @Override
     public void onClick(View view) {
@@ -50,7 +28,8 @@ public class OfficialSettingsPage extends AppCompatActivity {
         }
       }).show();
     }
-  };private View.OnClickListener quit = new View.OnClickListener() {
+  };
+  private View.OnClickListener quit = new View.OnClickListener() {
     @Override
     public void onClick(View view) {
       finish();
@@ -72,4 +51,43 @@ public class OfficialSettingsPage extends AppCompatActivity {
       startActivity(page);
     }
   };
+  private View.OnClickListener goToCashInPage = new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+      Intent page  = new Intent(getApplicationContext(),CashInCashOut.class);
+      page.putExtra(Konstants.PAGE_KEY,Konstants.CASH_IN_PAGE_KEY);
+      startActivity(page);
+    }
+  };private View.OnClickListener goToCashOutPage = new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+      Intent page  = new Intent(getApplicationContext(),CashInCashOut.class);
+      page.putExtra(Konstants.PAGE_KEY,Konstants.CASH_OUT_PAGE_KEY);
+      startActivity(page);
+    }
+  };
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    authenticatedUser = getIntent().getParcelableExtra(Konstants.AUTH_USER_KEY);
+    setContentView(R.layout.activity_official_settings_page);
+    initActivity();
+  }
+
+  private void initActivity() {
+    cashInBtn = findViewById(R.id.cash_in_btn);
+    cashOutBtn = findViewById(R.id.cash_out_btn);
+    cashInBtn.setOnClickListener(goToCashInPage);
+    cashOutBtn.setOnClickListener(goToCashOutPage);
+    dialogCreator = new MagicBoxes(this);
+    addPaymentBtn = findViewById(R.id.add_payment_mobile_number);
+    addPaymentBtn.setOnClickListener(goToPayment);
+    addLocationBtn = findViewById(R.id.add_pickup_location);
+    addLocationBtn.setOnClickListener(goToLocations);
+    back_btn = findViewById(R.id.back_btn);
+    back_btn.setOnClickListener(quit);
+    newFeatureBtn = findViewById(R.id.new_feature_btn);
+    newFeatureBtn.setOnClickListener(startNewFeatureBox);
+  }
 }

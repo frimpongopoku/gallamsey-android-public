@@ -74,6 +74,7 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackCon
   Handler handler = new Handler();
   RequestQueue httpHandler;
   TextView msgNotificationBadge;
+  int unReadMsgsCount;
   private View.OnClickListener goToSearchActivity = new View.OnClickListener() {
     @Override
     public void onClick(View view) {
@@ -135,6 +136,8 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackCon
           destinationPage = new MessagesFragment(thisActivity);
           ((MessagesFragment) destinationPage).setAuthenticatedUser(authenticatedUser);
           ((MessagesFragment) destinationPage).setOldState(messageFragState, messageFragItems);
+          msgNotificationBadge.setVisibility(View.GONE);//just get rid of the  notification badge when user clicks on messages tabicon
+
           break;
         case R.id.earnings:
           destinationPage = new UserEarningsFragment(thisActivity);
@@ -170,10 +173,11 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackCon
       int unread = conversationListItem.getUnReadMsgs();
       count += unread;
     }
-    if (count > 0) {
+    if (count > 0 && count != unReadMsgsCount) {
+      unReadMsgsCount = count;
       msgNotificationBadge.setVisibility(View.VISIBLE);
       msgNotificationBadge.setText(String.valueOf(count));
-    }else{
+    } else {
       msgNotificationBadge.setVisibility(View.GONE);
     }
   }
@@ -224,6 +228,7 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackCon
   }
 
   private void getConversationListContentPeriodically() {
+    if(handler == null) return;
     handler.postDelayed(new Runnable() {
       @Override
       public void run() {
@@ -380,6 +385,18 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackCon
     startActivity(page);
   }
 
+  @Override
+  protected void onResume() {
+    handler = new Handler();
+    getConversationListContentPeriodically();
+    super.onResume();
+  }
+
+  @Override
+  protected void onPause() {
+    handler = null;
+    super.onPause();
+  }
 
   @Override
   public void saveWalletState(ArrayList<Object> transactions, View view) {
@@ -409,6 +426,7 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackCon
     page.putExtra(Konstants.AUTH_USER_KEY, authenticatedUser);
     page.putExtra(Konstants.USER_ON_THE_OTHER_END, otherPerson);
     page.putExtra(Konstants.PASS_ERRAND_AROUND, item.getRelatedErrand());
+    page.putExtra(Konstants.UNREAD_COUNT, item.getUnReadMsgs());
     startActivity(page);
   }
 

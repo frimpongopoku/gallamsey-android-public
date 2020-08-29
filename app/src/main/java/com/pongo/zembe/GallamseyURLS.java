@@ -9,4 +9,5 @@ public class GallamseyURLS {
   public static String TEST_URL = HOST + "test";
 
   public static final String FIND_ALL_CONVERSATIONS = HOST +"/conversation-finder/mine.get.all";
+  public static final String REDUCE_UNREAD_MSGS = HOST +"/chat-unread/reduce.number";
 }
