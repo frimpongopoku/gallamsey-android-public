@@ -10,4 +10,6 @@ public class GallamseyURLS {
 
   public static final String FIND_ALL_CONVERSATIONS = HOST +"/conversation-finder/mine.get.all";
   public static final String REDUCE_UNREAD_MSGS = HOST +"/chat-unread/reduce.number";
+  public static final String GET_MY_ERRANDS = HOST +"/find-my-errands/get.all";
+  public static final String FIND_USER_PROFILE = HOST +"/profile-finder/user.find";
 }

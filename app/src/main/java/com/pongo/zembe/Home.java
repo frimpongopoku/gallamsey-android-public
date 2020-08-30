@@ -237,7 +237,7 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackCon
         updateMessagesNotificationBadge();
         getConversationListContentPeriodically();
       }
-    }, 4000);
+    }, 60000);
   }
 
   private void initializeActivity() {
@@ -345,6 +345,7 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackCon
 
   private void goToTasksPage() {
     Intent tasksPage = new Intent(this, TasksActivity.class);
+    tasksPage.putExtra(Konstants.AUTH_USER_KEY,authenticatedUser);
     startActivity(tasksPage);
   }
 

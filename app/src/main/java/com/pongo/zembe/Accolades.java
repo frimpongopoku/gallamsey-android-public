@@ -4,6 +4,15 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Accolades implements Parcelable {
+  public static final String fiveStarKey = "five-stars";
+  public static final String fourStarKey = "four-stars";
+  public static final String threeStarKey = "three-stars";
+  public static final String twoStarKey = "two-stars";
+  public static final String oneStarKey = "one-star";
+  public static final String reportsKey = "reports";
+  public static final String pointsKey = "points";
+  public static final String errandCountKey = "no-of-errands";
+  public static final String gigsCountKey = "no-of-gigs";
   private int fiveStarCount;
   private int fourStarCount;
   private int threeStarCount;
@@ -11,21 +20,63 @@ public class Accolades implements Parcelable {
   private int oneStarCount;
   private int numberOfReports;
   private int numberOfPoints;
-  private int errandCount = 0;// number of errands a user HAS EVER created before, doesnt matter if they shut it down later
+  private int errandCount = 0;// number of errands a user HAS EVER created before, doesn't matter if they shut it down later
   private int gigsCount = 0;
+
   public Accolades() {
   }
 
   public Accolades(Accolades old) {
     this.setFiveStarCount(old.getFiveStarCount());
-    this.setFiveStarCount(old.getFourStarCount());
+    this.setFourStarCount(old.getFourStarCount());
     this.setThreeStarCount(old.getThreeStarCount());
     this.setTwoStarCount(old.getTwoStarCount());
     this.setOneStarCount(old.getOneStarCount());
     this.setNumberOfPoints(old.getNumberOfPoints());
     this.setNumberOfReports(old.getNumberOfReports());
     this.setErrandCount(old.getErrandCount());
+    this.setGigsCount(old.getGigsCount());
 
+  }
+
+  public void increaseFieldBy(String key, int value) {
+    switch (key) {
+      case fiveStarKey: {
+        setFiveStarCount(fiveStarCount + value);
+        break;
+      }
+      case fourStarKey: {
+        setFourStarCount(fourStarCount + value);
+        break;
+      }
+      case threeStarKey: {
+        setThreeStarCount(threeStarCount + value);
+        break;
+      }
+      case twoStarKey: {
+        setTwoStarCount(twoStarCount + value);
+        break;
+      }
+      case oneStarKey: {
+        setOneStarCount(oneStarCount + value);
+        break;
+      }
+      case reportsKey: {
+        setNumberOfReports(numberOfReports + value);
+        break;
+      }
+      case gigsCountKey: {
+        setGigsCount(gigsCount + value);
+        break;
+      }
+      case pointsKey: {
+        setNumberOfPoints(numberOfPoints + value);
+        break;
+      }case errandCountKey: {
+        setErrandCount(errandCount + value);
+        break;
+      }
+    }
   }
 
   public int getGigsCount() {
