@@ -8,6 +8,9 @@ import java.util.HashMap;
 public class Konstants {
 
 
+  public static final String UNVERIFIED = "UNVERIFIED";
+  public static final String VERFIED = "VERIFIED";
+
   public static final String USER_PLATFORM_ID = "USER_PLATFORM_ID";
   public static final String HTTP_DATA_VALUE_CREATOR_ID = "creator_id";
   public static final String HTTP_DATA_VALUE_CHECK_POINT = "check_point";

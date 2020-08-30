@@ -29,6 +29,7 @@ public class User implements Parcelable {
   private Wallet wallet = new Wallet();
   private Accolades accolades = new Accolades();
   private String appInstanceToken;
+  private  String verifiedStatus = Konstants.UNVERIFIED;
 
   public User() {
   } //no-arg constructor because of Firebase
@@ -54,6 +55,15 @@ public class User implements Parcelable {
     this.appInstanceToken = appInstanceToken;
   }
 
+
+  public String getVerifiedStatus() {
+    return verifiedStatus;
+  }
+
+  public void setVerifiedStatus(String verifiedStatus) {
+    this.verifiedStatus = verifiedStatus;
+  }
+
   public String getUserDocumentID() {
     return userDocumentID;
   }
@@ -74,6 +84,14 @@ public class User implements Parcelable {
     this.gender = gender;
   }
 
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+
+  public String getEmail() {
+    return email;
+  }
 
   public ArrayList<GallamseyLocationComponent> getDeliveryLocations() {
     return deliveryLocations;
@@ -196,7 +214,6 @@ public class User implements Parcelable {
     return createdAt;
   }
 
-
   @Override
   public String toString() {
     return "User{" +
@@ -217,8 +234,10 @@ public class User implements Parcelable {
       ", mobileNumbersForPayment=" + mobileNumbersForPayment +
       ", deliveryLocations=" + deliveryLocations +
       ", geoLocation=" + geoLocation +
-      ", wallet=" + wallet +", " +
+      ", wallet=" + wallet +
       ", accolades=" + accolades +
+      ", appInstanceToken='" + appInstanceToken + '\'' +
+      ", verifiedStatus='" + verifiedStatus + '\'' +
       '}';
   }
 
@@ -249,6 +268,7 @@ public class User implements Parcelable {
     dest.writeParcelable(this.wallet, flags);
     dest.writeParcelable(this.accolades, flags);
     dest.writeString(this.appInstanceToken);
+    dest.writeString(this.verifiedStatus);
   }
 
   protected User(Parcel in) {
@@ -273,6 +293,7 @@ public class User implements Parcelable {
     this.wallet = in.readParcelable(Wallet.class.getClassLoader());
     this.accolades = in.readParcelable(Accolades.class.getClassLoader());
     this.appInstanceToken = in.readString();
+    this.verifiedStatus = in.readString();
   }
 
   public static final Creator<User> CREATOR = new Creator<User>() {

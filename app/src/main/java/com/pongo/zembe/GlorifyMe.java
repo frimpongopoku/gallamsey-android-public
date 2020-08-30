@@ -37,11 +37,11 @@ public class GlorifyMe {
     pointsAgainst += oneStarWeight * accolades.getOneStarCount();
     pointsAgainst += JUNK_WEIGHT * accolades.getNumberOfReports();
     QuotientAndRemainder gold = new QuotientAndRemainder(GOLD_WEIGHT, points); // One report is the same as one junk cup
-    goldMedals = gold.getQuotient();
+    this.goldMedals = gold.getQuotient();
     QuotientAndRemainder silver = new QuotientAndRemainder(SILVER_WEIGHT, gold.getRemainder());
-    silverMedals = silver.getQuotient();
+    this.silverMedals = silver.getQuotient();
     QuotientAndRemainder bronze = new QuotientAndRemainder(BRONZE_WEIGHT, silver.getRemainder());
-    bronzeMedals = bronze.getQuotient();
+    this.bronzeMedals = bronze.getQuotient();
     QuotientAndRemainder trash = new QuotientAndRemainder(JUNK_WEIGHT, pointsAgainst);
     junkCups = trash.getQuotient();
     this.gold = gold;
@@ -49,25 +49,53 @@ public class GlorifyMe {
     this.silver = silver;
     this.junk = trash;
   }
+
   public int getProgressToGold() {
     // how many more points until a user will get another gold medal ?
     return GOLD_WEIGHT - gold.getRemainder();
+  }
+
+  public int getProgressToSilver() {
+    return SILVER_WEIGHT - silver.getRemainder();
+  }
+
+  public int getProgressToBronze() {
+    return BRONZE_WEIGHT - bronze.getRemainder();
   }
 
   public int getGoldMedals() {
     return goldMedals;
   }
 
+  public int getProgressToJunkCup() {
+    return JUNK_WEIGHT - junk.getRemainder();
+  }
+
   public int getSilverMedals() {
-    return SILVER_WEIGHT - silver.getRemainder();
+    return silverMedals;
   }
 
   public int getBronzeMedals() {
-    return BRONZE_WEIGHT - bronze.getRemainder();
+    return bronzeMedals;
   }
 
   public int getJunkCups() {
-    return JUNK_WEIGHT - junk.getRemainder();
+    return junkCups;
+  }
+
+  @Override
+  public String toString() {
+    return "GlorifyMe{" +
+      "gold=" + gold +
+      ", silver=" + silver +
+      ", bronze=" + bronze +
+      ", junk=" + junk +
+      ", accolades=" + accolades +
+      ", goldMedals=" + goldMedals +
+      ", silverMedals=" + silverMedals +
+      ", bronzeMedals=" + bronzeMedals +
+      ", junkCups=" + junkCups +
+      '}';
   }
 
   class QuotientAndRemainder {
@@ -85,6 +113,14 @@ public class GlorifyMe {
 
     public int getRemainder() {
       return largeNumber % divider;
+    }
+
+    @Override
+    public String toString() {
+      return "QuotientAndRemainder{" +
+        "divider=" + divider +
+        ", largeNumber=" + largeNumber +
+        '}';
     }
   }
 }

@@ -1,11 +1,14 @@
 package com.pongo.zembe;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,19 +29,20 @@ import java.lang.reflect.Method;
 public class ViewProfilePage extends AppCompatActivity {
 
   public static final String TAG = "PROFILE-PAGE";
-  TextView userFullName, emailAndPhone ,goldNumber, silverNumber, bronzeNumber, trashNumber, jobsTaken, jobsCreated, fans, pageName;
-  ImageView profilePicture, optionsBtn;
+  TextView verifiedText,userFullName, emailAndPhone ,goldNumber, silverNumber, bronzeNumber, trashNumber, jobsTaken, jobsCreated, fans, pageName;
+  ImageView profilePicture, optionsBtn,verifiedIcon;
   GroundUser authenticatedUser, foundUser;
   String userPlatformID;
   RequestQueue httpHandler;
-
+  ProgressBar spinner;
+  LinearLayout contentBox, verifiedBox;
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_view_profile_page);
     httpHandler = Volley.newRequestQueue(this);
     userPlatformID = getIntent().getStringExtra(Konstants.USER_PLATFORM_ID);
-    userPlatformID = "HSfG4yw0fuX0rRsbJ1TBmmbjEKN2";
+//    userPlatformID = "HSfG4yw0fuX0rRsbJ1TBmmbjEKN2";
     authenticatedUser = getIntent().getParcelableExtra(Konstants.AUTH_USER_KEY);
     profilePicture = findViewById(R.id.profile_picture_full);
     initializeActivity();
@@ -46,7 +50,8 @@ public class ViewProfilePage extends AppCompatActivity {
       getUserInformation();
     }
     if (authenticatedUser != null) {
-      Picasso.get().load(authenticatedUser.getProfilePictureURL()).into(profilePicture);
+      spinner.setVisibility(View.GONE);
+      inflatePageWithUser(authenticatedUser);
     }
 
 
@@ -97,6 +102,14 @@ public class ViewProfilePage extends AppCompatActivity {
 
   }
 
+  private void setVerified(String status){
+    if(status.equals(Konstants.VERFIED)){
+      verifiedIcon.setColorFilter(ContextCompat.getColor(this,R.color.green), android.graphics.PorterDuff.Mode.SRC_IN);
+      verifiedText.setText("Verified");
+      return;
+    }
+    verifiedIcon.setColorFilter(ContextCompat.getColor(this,R.color.shimmer_color), android.graphics.PorterDuff.Mode.SRC_IN);
+  }
   private void takeCareOfProfilePicture(String url){
     if(url == null){
       profilePicture.getLayoutParams().height = 70;
@@ -106,10 +119,29 @@ public class ViewProfilePage extends AppCompatActivity {
   }
   private void inflatePageWithUser(GroundUser user){
     takeCareOfProfilePicture(user.getProfilePictureURL());
-
+    GlorifyMe myRewards = new GlorifyMe(user.getAccolades());
+    goldNumber.setText(myRewards.getGoldMedals()+"");
+    silverNumber.setText(myRewards.getSilverMedals()+"");
+    bronzeNumber.setText(myRewards.getBronzeMedals()+"");
+    jobsCreated.setText(user.getAccolades().getErrandCount() +" Jobs Created");
+    jobsTaken.setText(user.getAccolades().getGigsCount() +" Jobs Taken");
+    fans.setText(0 +" Fans");
+    trashNumber.setText(myRewards.getJunkCups()+"");
+    contentBox.setVisibility(View.VISIBLE);
+    String email = user.getEmail();
+    Toast.makeText(this, user.getEmail(), Toast.LENGTH_LONG).show();
+    String phone = user.getPhoneNumber() != null && !user.getPhoneNumber().isEmpty() ? " | "+user.getPhoneNumber() : "";
+    emailAndPhone.setText(email + phone);
+    userFullName.setText(user.getPreferredName());
+    setVerified(user.getVerifiedStatus());
   }
 
   private void initializeActivity() {
+    verifiedText = findViewById(R.id.verified_text);
+    verifiedBox = findViewById(R.id.verified_box);
+    verifiedIcon = findViewById(R.id.verified_icon);
+    contentBox = findViewById(R.id.content_box);
+    spinner = findViewById(R.id.progress_spinner);
     userFullName = findViewById(R.id.user_full_name);
     emailAndPhone = findViewById(R.id.email_and_phone);
     optionsBtn = findViewById(R.id.options);
