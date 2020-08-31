@@ -58,5 +58,7 @@ dependencies {
 
     //volley
     implementation 'com.android.volley:volley:1.1.1'
+    // curtain pull refresher
+//    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
 
 }

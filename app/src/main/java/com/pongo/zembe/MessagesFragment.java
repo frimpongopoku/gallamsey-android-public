@@ -78,6 +78,7 @@ public class MessagesFragment extends Fragment {
     this.chatList = chatList;
     this.state = oldState;
   }
+
   public void setAuthenticatedUser(GroundUser authenticatedUser) {
     this.authenticatedUser = authenticatedUser;
   }
@@ -138,6 +139,7 @@ public class MessagesFragment extends Fragment {
     JsonObjectRequest convoRequest = new JsonObjectRequest(Request.Method.POST, GallamseyURLS.FIND_ALL_CONVERSATIONS, data, new Response.Listener<JSONObject>() {
       @Override
       public void onResponse(JSONObject response) {
+
         ArrayList<ConversationListItem> conversations = processResponseData(response);
         chatList = conversations;
         spinner.setVisibility(View.GONE);
@@ -177,9 +179,6 @@ public class MessagesFragment extends Fragment {
     }
 
     return conversations;
-  }
-  private void subscribeToListeners() {
-
   }
 
   private void toggleNoChatContent(Boolean state){

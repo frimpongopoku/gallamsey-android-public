@@ -4,10 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -15,7 +17,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -34,46 +38,72 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Array;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+interface NewsCollectionCallback {
+  void getErrands(ArrayList<GenericErrandClass> errands);
+}
 
 public class HomeFragment extends Fragment {
 
 
   public static final String TAG = "HOME-FRAGMENT";
-  ArrayList<GenericErrandClass> oldNews;
-  View currentState;
-  GalInterfaceGuru.TrackHomeFragmentState fragmentStateListener;
-  HomeNewsMultiAdapter adapter;
-  RecyclerView recyclerView;
-  ShimmerFrameLayout skeleton;
-  GalFirebaseHelper firebaseHelper = new GalFirebaseHelper();
-  GroundUser authenticatedUser;
-  Context context;
-  JSONObject returnables;
-  MagicBoxes dialogCreator;
+  private ArrayList<GenericErrandClass> oldNews;
+  private View currentState;
+  private GalInterfaceGuru.TrackHomeFragmentState fragmentStateListener;
+  private HomeNewsMultiAdapter adapter;
+  private RecyclerView recyclerView;
+  private ShimmerFrameLayout skeleton;
+  private GroundUser authenticatedUser;
+  private Context context;
+  private JSONObject returnables;
+  private MagicBoxes dialogCreator;
   private FirebaseFirestore store = FirebaseFirestore.getInstance();
   private CollectionReference errandsDB = store.collection(Konstants.ERRAND_COLLECTION);
   private ArrayList<GenericErrandClass> news = new ArrayList<>();
   private RequestQueue httpHandler;
+  private NewsCacheHolder newsCacher;
+  private SwipeRefreshLayout refresher;
+  private LinearLayoutManager manager;
+  private Type newsCacheType = new TypeToken<NewsCacheHolder>() {
+  }.getType();
+  private SwipeRefreshLayout.OnRefreshListener refreshListener = new SwipeRefreshLayout.OnRefreshListener() {
+    @Override
+    public void onRefresh() {
+      JSONObject data = fashionRequestData(0);
+      getNewsContent(data, new NewsCollectionCallback() {
+        @Override
+        public void getErrands(ArrayList<GenericErrandClass> errands) {
+          setNews(errands);
+          skeleton.setVisibility(View.GONE);
+          inflateRecycler(errands, currentState);
+          refresher.setRefreshing(false);
+        }
+      });
+    }
+  };
 
   public HomeFragment() {
   }
 
-  //----- because of the backend structure, there is no way, news will come up empty, so there is no need to check for that anywhere
+  //----- GENERAL NB : Because of the backend structure, there is no way, news will come up empty, so there is no need to check for that anywhere
   public HomeFragment(ArrayList<GenericErrandClass> news, View oldViewState, GalInterfaceGuru.TrackHomeFragmentState fragmentStateListener) {
-    this.news = news;
-    this.currentState = oldViewState;
+    this.news = news; // could be new content generated from splash screen, or content saved from fragment on destroy
+    this.currentState = oldViewState; // just the view state saved from fragment on destroy
     this.fragmentStateListener = fragmentStateListener;
     this.context = (Context) fragmentStateListener;
     this.httpHandler = Volley.newRequestQueue(this.context);
     this.dialogCreator = new MagicBoxes(this.context);
+    this.newsCacher = (NewsCacheHolder) MyHelper.getFromSharedPreferences(this.context, Konstants.SAVE_NEWS_TO_CACHE, newsCacheType);
   }
 
   public void setAuthenticatedUser(GroundUser authenticatedUser) {
@@ -101,34 +131,41 @@ public class HomeFragment extends Fragment {
     if (currentState != null) {
       return currentState;
     }
+
+    setCurrentState(view);
     //------ Loading for the first time, show beautiful shimmer effect and load data
     if ((this.news == null || this.news.size() == 0) && authenticatedUser != null) {
-      skeleton.setVisibility(View.VISIBLE);
+      // checking for user authentication to show shimmer effect because if they are not signed in,
+      // a different thing will be shown instead of shimmer on first load
+      // ----- Now, check and see if there is any cached content
+      if (newsCacher != null && newsCacher.getNews().size() > 0) {
+        setNews(newsCacher.getNews());
+        inflateRecycler(newsCacher.getNews(), view); // set the users view with cached content quickly, and still move on to look for new stuff
+      } else {
+        skeleton.setVisibility(View.VISIBLE);
+      }
 
     }
-    setCurrentState(view);
-    //  For the first time : getNewsHere();
-    JSONObject data = fashionRequestData();
+
+    //------ Normal content fetching when a user first launches, or clicks on the home tab ---------
+    JSONObject data = fashionRequestData(0);
     getNewsContent(data, new NewsCollectionCallback() {
       @Override
       public void getErrands(ArrayList<GenericErrandClass> errands) {
-        news = errands;
+        setNews(errands);
         skeleton.setVisibility(View.GONE);
-        inflateRecycler(errands);
-        Log.d(TAG, "getErrands: " + errands.toString());
-
+        inflateRecycler(errands, currentState);
       }
     });
     return view;
   }
 
-
-  private void inflateRecycler(ArrayList<GenericErrandClass> content) {
+  private void inflateRecycler(ArrayList<GenericErrandClass> content, View view) {
     recyclerView = null;
-    recyclerView = this.currentState.findViewById(R.id.home_news_recycler);
+    recyclerView = view.findViewById(R.id.home_news_recycler);
     this.adapter = new HomeNewsMultiAdapter(getContext(), content, (HomeNewsMultiAdapter.OnNewsItemClick) getContext());
     this.adapter.setAuthenticatedUser(authenticatedUser);
-    RecyclerView.LayoutManager manager = new LinearLayoutManager(getContext());
+    manager = getSpeedyLinearManager();
     recyclerView.setLayoutManager(manager);
     recyclerView.setAdapter(adapter);
     recyclerView.setHasFixedSize(true);
@@ -136,14 +173,37 @@ public class HomeFragment extends Fragment {
 
   }
 
+  private LinearLayoutManager getSpeedyLinearManager(){
+    LinearLayoutManager lm = new LinearLayoutManager(context) {
+      @Override
+      public void scrollToPosition(int position) {
+        LinearSmoothScroller smoothScroller = new LinearSmoothScroller(context) {
+
+          private static final float SPEED = 400f;// Change this value (default=25f)
+
+          @Override
+          protected float calculateSpeedPerPixel(DisplayMetrics displayMetrics) {
+            return SPEED / displayMetrics.densityDpi;
+          }
+
+        };
+        smoothScroller.setTargetPosition(position);
+        startSmoothScroll(smoothScroller);
+
+      }
+    };
+
+    return lm;
+  }
   //---------------------------------------------------------------------------------------------------------------
-  // If a user is authenticated, this function will ust put their country, region, and coordinates together
+  // If a user is authenticated, this function will  put their country, region, and coordinates together
   // so that they can get news feed according to their location
   // However, if they are not signed in, a popup box will show and ask them to choose country & Region quickly...
   //---------------------------------------------------------------------------------------------------------------
-  private JSONObject fashionRequestData() {
+  private JSONObject fashionRequestData(int checkPoint) {
     JSONObject data = new JSONObject();
     try {
+      data.put("check_point", checkPoint);
       if (authenticatedUser != null) {
         data.put("country", authenticatedUser.getCountry());
         //data.put("region",authenticatedUser.getRegion());
@@ -168,17 +228,19 @@ public class HomeFragment extends Fragment {
       @Override
       public void onResponse(JSONObject response) {
         ArrayList<GenericErrandClass> errands = processResponseData(response);
+        NewsCacheHolder newsCache = new NewsCacheHolder(errands);
+        MyHelper.saveToSharedPreferences(context, newsCache, Konstants.SAVE_NEWS_TO_CACHE);
         newsCollector.getErrands(errands);
       }
     }, new Response.ErrorListener() {
       @Override
       public void onErrorResponse(VolleyError error) {
+
         Log.d(TAG, "onErrorResponse: " + error.getMessage());
       }
     });
     httpHandler.add(req);
   }
-
 
   private ArrayList<GenericErrandClass> processResponseData(JSONObject response) {
     try {
@@ -199,19 +261,16 @@ public class HomeFragment extends Fragment {
       e.printStackTrace();
     }
 
-
     return null;
 
   }
 
   private void justInflate(View view) {
-    recyclerView = view.findViewById(R.id.home_news_recycler);
+//    refresher = view.findViewById(R.id.refresher);
+//    refresher.setOnRefreshListener(refreshListener);
     skeleton = view.findViewById(R.id.news_skeleton_view);
-    this.adapter = new HomeNewsMultiAdapter(getContext(), news, (HomeNewsMultiAdapter.OnNewsItemClick) getContext());
-    this.adapter.setAuthenticatedUser(authenticatedUser);
-    RecyclerView.LayoutManager manager = new LinearLayoutManager(getContext());
-    recyclerView.setLayoutManager(manager);
-    recyclerView.setAdapter(adapter);
+    recyclerView = view.findViewById(R.id.home_news_recycler);
+    inflateRecycler(new ArrayList<GenericErrandClass>(), view);
   }
 
   @Override
@@ -223,10 +282,5 @@ public class HomeFragment extends Fragment {
   public void onDestroy() {
     this.fragmentStateListener.saveFragmentState(news, currentState);
     super.onDestroy();
-  }
-
-
-  private interface NewsCollectionCallback {
-    void getErrands(ArrayList<GenericErrandClass> errands);
   }
 }

@@ -91,7 +91,6 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
 
   }
 
-
   public void setTextContent(@NonNull RecyclerView.ViewHolder _holder, int pos) {
     TextViewHolder holder = (TextViewHolder) _holder;
     GenericErrandClass newsItem = news.get(pos);
