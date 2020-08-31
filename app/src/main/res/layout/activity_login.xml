@@ -95,7 +95,7 @@
       android:layout_height="wrap_content"
       android:layout_marginTop="20dp"
       android:fontFamily="@font/google_sans"
-      android:background="@drawable/login_button_shape"
+      android:background="@drawable/login_button_shape_no_radius"
       android:padding="20dp"
       android:text="LOGIN"
       android:textAllCaps="false"
@@ -116,7 +116,7 @@
       android:onClick="loginWithGoogle"
       android:textColor="@android:color/white"
      android:text="Sign In With Google"
-      android:background="@drawable/google_button"
+      android:background="@drawable/google_button_no_radius"
       android:layout_width="match_parent"
       android:layout_height="wrap_content" />
 

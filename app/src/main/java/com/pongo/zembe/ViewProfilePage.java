@@ -3,11 +3,15 @@ package com.pongo.zembe;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +40,7 @@ public class ViewProfilePage extends AppCompatActivity {
   RequestQueue httpHandler;
   ProgressBar spinner;
   LinearLayout contentBox, verifiedBox;
+  Context thisActivity = this;
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -87,6 +92,13 @@ public class ViewProfilePage extends AppCompatActivity {
         public void onResponse(JSONObject response) {
           Log.d(TAG, "onResponse: " + response.toString());
           foundUser = processResponseData(response);
+          if(foundUser !=null){
+            spinner.setVisibility(View.GONE);
+            inflatePageWithUser(foundUser);
+          }else{
+            Toast.makeText(ViewProfilePage.this, "We could not load the user you are looking for, please try again later", Toast.LENGTH_LONG).show();
+          }
+
         }
       }, new Response.ErrorListener() {
         @Override
@@ -110,6 +122,7 @@ public class ViewProfilePage extends AppCompatActivity {
     }
     verifiedIcon.setColorFilter(ContextCompat.getColor(this,R.color.shimmer_color), android.graphics.PorterDuff.Mode.SRC_IN);
   }
+
   private void takeCareOfProfilePicture(String url){
     if(url == null){
       profilePicture.getLayoutParams().height = 70;
@@ -117,6 +130,7 @@ public class ViewProfilePage extends AppCompatActivity {
     }
     Picasso.get().load(url).into(profilePicture);
   }
+
   private void inflatePageWithUser(GroundUser user){
     takeCareOfProfilePicture(user.getProfilePictureURL());
     GlorifyMe myRewards = new GlorifyMe(user.getAccolades());
@@ -129,7 +143,6 @@ public class ViewProfilePage extends AppCompatActivity {
     trashNumber.setText(myRewards.getJunkCups()+"");
     contentBox.setVisibility(View.VISIBLE);
     String email = user.getEmail();
-    Toast.makeText(this, user.getEmail(), Toast.LENGTH_LONG).show();
     String phone = user.getPhoneNumber() != null && !user.getPhoneNumber().isEmpty() ? " | "+user.getPhoneNumber() : "";
     emailAndPhone.setText(email + phone);
     userFullName.setText(user.getPreferredName());
@@ -145,7 +158,8 @@ public class ViewProfilePage extends AppCompatActivity {
     userFullName = findViewById(R.id.user_full_name);
     emailAndPhone = findViewById(R.id.email_and_phone);
     optionsBtn = findViewById(R.id.options);
-    optionsBtn.setVisibility(View.GONE);
+    optionsBtn.setOnClickListener(optionsClick);
+//    optionsBtn.setVisibility(View.GONE);
     pageName = findViewById(R.id.page_name);
     goldNumber = findViewById(R.id.gold_number);
     silverNumber = findViewById(R.id.silver_number);
@@ -156,6 +170,52 @@ public class ViewProfilePage extends AppCompatActivity {
     fans = findViewById(R.id.fans);
   }
 
+  private View.OnClickListener optionsClick = new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+      PopupMenu menu = new PopupMenu(thisActivity, view);
+      menu.inflate(R.menu.profile_view_menu);
+      if(userPlatformID == null || userPlatformID.equals(authenticatedUser.getUserDocumentID())){
+        menu.getMenu().removeItem(R.id.send_message);
+        menu.getMenu().removeItem(R.id.report);
+        menu.getMenu().removeItem(R.id.send_money_to);
+      }
+      menu.setOnMenuItemClickListener(popupListener);
+      menu.show();
+    }
+  };
+
+
+  private void goToChattingPage(){
+    Intent page = new Intent(this,ChattingPage.class);
+    page.putExtra(Konstants.USER_ON_THE_OTHER_END,foundUser);
+    startActivity(page);
+    finish();
+  }
+  private PopupMenu.OnMenuItemClickListener popupListener = new PopupMenu.OnMenuItemClickListener() {
+    @Override
+    public boolean onMenuItemClick(MenuItem menuItem) {
+      switch (menuItem.getItemId()){
+        case R.id.send_message:{
+          goToChattingPage();
+          return true;
+        }
+        case R.id.send_money_to:{
+          Toast.makeText(thisActivity, "Sending money now...", Toast.LENGTH_SHORT).show();
+          return true;
+        }
+        case R.id.report:{
+          Toast.makeText(thisActivity, "Reporting this guy now....", Toast.LENGTH_SHORT).show();
+          return true;
+        }
+        case R.id.back:{
+          finish();
+          break;
+        }
+      }
+      return false;
+    }
+  };
   @Override
   public void finish() {
     super.finish();

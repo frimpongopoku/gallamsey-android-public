@@ -85,7 +85,7 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
     GenericErrandClass item = news.get(position);
     if (item.getErrandType().equals(Konstants.TEXT_ERRAND)) {
       setTextContent(holder, position);
-    } else {
+    } else if(item.getErrandType().equals(Konstants.IMAGE_ERRAND)) {
       setImageContent(holder, position);
     }
 
