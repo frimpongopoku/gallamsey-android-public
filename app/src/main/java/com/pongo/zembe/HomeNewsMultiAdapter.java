@@ -95,6 +95,7 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
     TextViewHolder holder = (TextViewHolder) _holder;
     GenericErrandClass newsItem = news.get(pos);
     SimpleUser user = newsItem.getCreator();
+    holder.name.setText(user.getUserName());
     holder.container.setAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_in_recycler));
     holder.description.setText(newsItem.getDescription());
     holder.cost.setText(String.valueOf(newsItem.getCost()));
@@ -119,6 +120,7 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
     ImageViewHolder holder = (ImageViewHolder) _holder;
     GenericErrandClass newsItem = news.get(pos);
     SimpleUser user = newsItem.getCreator();
+    holder.name.setText(user.getUserName());
     holder.container.setAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_in_recycler));
     holder.title.setText(newsItem.getDescription());
     holder.cost.setText(String.valueOf(newsItem.getCost()));
@@ -151,7 +153,7 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
 
   //........ TextCard
   class TextViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
-    TextView description, cost, profit, date, has_specifics;
+    TextView description, cost, profit, date,name, has_specifics;
     LinearLayout container;
     OnNewsItemClick listener;
     GalInterfaceGuru.EditContextMenuItemListener editMenuItemListener;
@@ -167,6 +169,7 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
       this.date = itemView.findViewById(R.id.text_errand_card_date);
       this.container = itemView.findViewById(R.id.container);
       this.listener = listener;
+      this.name = itemView.findViewById(R.id.name);
       this.creatorPic = itemView.findViewById(R.id.creator_pic);
       this.editMenuItemListener = (GalInterfaceGuru.EditContextMenuItemListener) listener;
       this.messengerListener = (GalInterfaceGuru.MessageCreatorContextMenuItemListener) listener;
@@ -244,7 +247,7 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
 
   //......... ImageCard
   class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
-    TextView title, cost, profit, date, has_specifics;
+    TextView title, cost, profit, date,name, has_specifics;
     ImageView image;
     LinearLayout container;
     OnNewsItemClick listener;
@@ -260,6 +263,7 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
       this.date = itemView.findViewById(R.id.img_errand_card_date);
       this.image = itemView.findViewById(R.id.img_errand_card_image);
       this.container = itemView.findViewById(R.id.container);
+      this.name = itemView.findViewById(R.id.name);
       this.listener = listener;
       this.creatorPic = itemView.findViewById(R.id.creator_pic);
       this.editMenuItemListener = (GalInterfaceGuru.EditContextMenuItemListener) listener; // THe activity listener can be cast into this interface because it is implementing it as well

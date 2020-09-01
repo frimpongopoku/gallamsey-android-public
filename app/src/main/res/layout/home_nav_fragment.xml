@@ -35,4 +35,18 @@
   <!--android:visibility="invisible"-->
   <!--android:layout_width="match_parent"-->
   <!--android:layout_height="wrap_content" />-->
+  <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <ProgressBar
+      android:id="@+id/spinner"
+      android:visibility="gone"
+      android:layout_margin="15dp"
+      android:layout_centerHorizontal="true"
+      android:layout_width="50dp"
+      android:layout_height="50dp"
+      android:indeterminateDrawable="@drawable/progress_circle"
+      />
+  </RelativeLayout>
+
 </LinearLayout>

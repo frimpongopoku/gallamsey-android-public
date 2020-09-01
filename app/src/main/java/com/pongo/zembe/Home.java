@@ -439,7 +439,7 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackCon
     if (messageFragItems == null) {
       messageFragItems = chats;
     } else {
-      if (chats.size() > messageFragItems.size()) {
+      if (chats != null && chats.size() > messageFragItems.size()) {
         messageFragItems = chats;
       }
     }

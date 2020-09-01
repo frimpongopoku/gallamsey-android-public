@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -74,8 +75,33 @@ public class HomeFragment extends Fragment {
   private NewsCacheHolder newsCacher;
   private SwipeRefreshLayout refresher;
   private LinearLayoutManager manager;
+  private ProgressBar spinner;
+  private Boolean isLoading = false;
+  private float alpha = 1;
   private Type newsCacheType = new TypeToken<NewsCacheHolder>() {
   }.getType();
+  private RecyclerView.OnScrollListener scrollListener = new RecyclerView.OnScrollListener() {
+    @Override
+    public void onScrollStateChanged(@NonNull final RecyclerView recyclerView, int newState) {
+      super.onScrollStateChanged(recyclerView, newState);
+      if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+        if (!isLoading) {
+          spinner.setVisibility(View.VISIBLE);
+          isLoading = true;
+          getNewsContent(fashionRequestData(0), new NewsCollectionCallback() {
+            @Override
+            public void getErrands(ArrayList<GenericErrandClass> errands) {
+              int newsSizeBefore = news.size();
+              news.addAll(errands);
+              adapter.notifyItemRangeChanged(newsSizeBefore -1, news.size());
+              spinner.setVisibility(View.GONE);
+              isLoading = false;
+            }
+          });
+        }
+      }
+    }
+  };
   private SwipeRefreshLayout.OnRefreshListener refreshListener = new SwipeRefreshLayout.OnRefreshListener() {
     @Override
     public void onRefresh() {
@@ -168,13 +194,14 @@ public class HomeFragment extends Fragment {
     manager = getSpeedyLinearManager();
     recyclerView.setLayoutManager(manager);
     recyclerView.setAdapter(adapter);
+    recyclerView.addOnScrollListener(scrollListener);
     recyclerView.setHasFixedSize(true);
     recyclerView.setVisibility(View.VISIBLE);
 
   }
 
-  private LinearLayoutManager getSpeedyLinearManager(){
-    LinearLayoutManager lm = new LinearLayoutManager(context) {
+  private LinearLayoutManager getSpeedyLinearManager() {
+   return  new LinearLayoutManager(context) {
       @Override
       public void scrollToPosition(int position) {
         LinearSmoothScroller smoothScroller = new LinearSmoothScroller(context) {
@@ -192,9 +219,8 @@ public class HomeFragment extends Fragment {
 
       }
     };
-
-    return lm;
   }
+
   //---------------------------------------------------------------------------------------------------------------
   // If a user is authenticated, this function will  put their country, region, and coordinates together
   // so that they can get news feed according to their location
@@ -270,6 +296,7 @@ public class HomeFragment extends Fragment {
 //    refresher.setOnRefreshListener(refreshListener);
     skeleton = view.findViewById(R.id.news_skeleton_view);
     recyclerView = view.findViewById(R.id.home_news_recycler);
+    spinner = view.findViewById(R.id.spinner);
     inflateRecycler(new ArrayList<GenericErrandClass>(), view);
   }
 

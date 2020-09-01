@@ -42,6 +42,7 @@ import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -60,7 +61,7 @@ public class ChattingPage extends AppCompatActivity {
   FirebaseFirestore db = FirebaseFirestore.getInstance();
   CollectionReference chatsDB = db.collection(Konstants.CHAT_COLLECTION);
   RequestQueue httpHandler;
-  ConversationStream conversationStream;
+  ConversationStream conversationStream; // Will always be updated with current chat content and all other information.
   LinearLayoutManager manager;
   String TAG = "LE-MESSAGING-PAGE";
   GalFirebaseHelper firebaseHelper = new GalFirebaseHelper();
@@ -71,6 +72,7 @@ public class ChattingPage extends AppCompatActivity {
   int initChatCount = 0;
   int currentChatCount = 0;
   int unreadCount;
+  ChattingAdapter adapter;
   private View.OnClickListener profileIconClick = new View.OnClickListener() {
     @Override
     public void onClick(View view) {
@@ -220,6 +222,7 @@ public class ChattingPage extends AppCompatActivity {
       @Override
       public void callback(DocumentSnapshot document) {
         ConversationStream updatedStream = document.toObject(ConversationStream.class);
+        conversationStream = updatedStream;
         inflateRecyclerWithData(updatedStream);
       }
     });
@@ -445,14 +448,25 @@ public class ChattingPage extends AppCompatActivity {
     });
   }
 
+  private int howManyDontBelongToMe(ArrayList<OneChatMessage> msgs) {
+    if (msgs == null) return 0;
+    int count = 0;
+    for (int i = 0; i < msgs.size(); i++) {
+      OneChatMessage one = msgs.get(i);
+      if (!one.getUserPlatformID().equals(authenticatedUser.getUserDocumentID())) count++;
+    }
+    return count;
+  }
+
   //--By default in Gallamsey DB, every msg a user receives is recorded as a +1 to a their unread msg
   //--Even when they are on the chat page and have read the text, the newly sent msgs will still count as +1 to unread
   //--This small fxn, is meant to count the new number of msgs that come through while the user is on the page and has read
   //--so that a request can be sent back to the server to reduce the unreadMsgsCount that has been recorded...
   //--the request is sent in "onDestroy"
+
   private void calculateUnReadMsgs(ArrayList<OneChatMessage> msgs) {
     if (msgs == null) return;
-    currentChatCount = msgs.size();
+    currentChatCount = howManyDontBelongToMe(msgs);
     if (initChatCount == 0) initChatCount = msgs.size();
     else {
       unreadCount += currentChatCount - initChatCount;
@@ -465,10 +479,11 @@ public class ChattingPage extends AppCompatActivity {
     recyclerView = null;
     manager = null;
     recyclerView = findViewById(R.id.chatting_recycler);
-    ChattingAdapter adapter = new ChattingAdapter(this, newConvo);
+    adapter= new ChattingAdapter(this, newConvo);
     adapter.setAuthenticatedUser(authenticatedUser);
     manager = new LinearLayoutManager(this);
     manager.setStackFromEnd(true);
+    manager.setReverseLayout(false);
     recyclerView.setLayoutManager(manager);
     recyclerView.setAdapter(adapter);
     recyclerView.setHasFixedSize(true);
