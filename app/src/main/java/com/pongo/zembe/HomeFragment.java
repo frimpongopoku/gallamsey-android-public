@@ -88,33 +88,18 @@ public class HomeFragment extends Fragment {
         if (!isLoading) {
           spinner.setVisibility(View.VISIBLE);
           isLoading = true;
-          getNewsContent(fashionRequestData(0), new NewsCollectionCallback() {
+          getNewsContent(fashionRequestData(), new NewsCollectionCallback() {
             @Override
             public void getErrands(ArrayList<GenericErrandClass> errands) {
               int newsSizeBefore = news.size();
               news.addAll(errands);
-              adapter.notifyItemRangeChanged(newsSizeBefore -1, news.size());
+              adapter.notifyItemRangeChanged(newsSizeBefore - 1, news.size());
               spinner.setVisibility(View.GONE);
               isLoading = false;
             }
           });
         }
       }
-    }
-  };
-  private SwipeRefreshLayout.OnRefreshListener refreshListener = new SwipeRefreshLayout.OnRefreshListener() {
-    @Override
-    public void onRefresh() {
-      JSONObject data = fashionRequestData(0);
-      getNewsContent(data, new NewsCollectionCallback() {
-        @Override
-        public void getErrands(ArrayList<GenericErrandClass> errands) {
-          setNews(errands);
-          skeleton.setVisibility(View.GONE);
-          inflateRecycler(errands, currentState);
-          refresher.setRefreshing(false);
-        }
-      });
     }
   };
 
@@ -174,7 +159,7 @@ public class HomeFragment extends Fragment {
     }
 
     //------ Normal content fetching when a user first launches, or clicks on the home tab ---------
-    JSONObject data = fashionRequestData(0);
+    JSONObject data = fashionRequestData();
     getNewsContent(data, new NewsCollectionCallback() {
       @Override
       public void getErrands(ArrayList<GenericErrandClass> errands) {
@@ -201,7 +186,7 @@ public class HomeFragment extends Fragment {
   }
 
   private LinearLayoutManager getSpeedyLinearManager() {
-   return  new LinearLayoutManager(context) {
+    return new LinearLayoutManager(context) {
       @Override
       public void scrollToPosition(int position) {
         LinearSmoothScroller smoothScroller = new LinearSmoothScroller(context) {
@@ -226,10 +211,18 @@ public class HomeFragment extends Fragment {
   // so that they can get news feed according to their location
   // However, if they are not signed in, a popup box will show and ask them to choose country & Region quickly...
   //---------------------------------------------------------------------------------------------------------------
-  private JSONObject fashionRequestData(int checkPoint) {
+  private JSONObject fashionRequestData() {
+    int checkPoint = 0, fallbackCheckPoint = 0;
+
     JSONObject data = new JSONObject();
     try {
-      data.put("check_point", checkPoint);
+      if (returnables != null) {
+//        checkPoint = returnables.getInt("check_point");
+//        fallbackCheckPoint = returnables.getInt("fallback_check_point");
+      }
+      // will enable this when there is a lot of data and can be paginated
+//      data.put("check_point", checkPoint);
+      data.put("fallback_check_point", fallbackCheckPoint);
       if (authenticatedUser != null) {
         data.put("country", authenticatedUser.getCountry());
         //data.put("region",authenticatedUser.getRegion());
@@ -248,14 +241,18 @@ public class HomeFragment extends Fragment {
   private void getNewsContent(JSONObject requestData, final NewsCollectionCallback newsCollector) {
     if (requestData == null) {
       Toast.makeText(context, "Sorry, could not get news for you, please try again later", Toast.LENGTH_SHORT).show();
+      isLoading = false;
+      spinner.setVisibility(View.GONE);
       return;
     }
     JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST, GallamseyURLS.GET_NEWS_CONTENT, requestData, new Response.Listener<JSONObject>() {
       @Override
       public void onResponse(JSONObject response) {
         ArrayList<GenericErrandClass> errands = processResponseData(response);
-        NewsCacheHolder newsCache = new NewsCacheHolder(errands);
-        MyHelper.saveToSharedPreferences(context, newsCache, Konstants.SAVE_NEWS_TO_CACHE);
+        if(errands !=null){
+          newsCacher.getNews().addAll(errands);
+          MyHelper.saveToSharedPreferences(context, newsCacher, Konstants.SAVE_NEWS_TO_CACHE);
+        }
         newsCollector.getErrands(errands);
       }
     }, new Response.ErrorListener() {

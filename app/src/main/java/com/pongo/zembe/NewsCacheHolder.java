@@ -9,6 +9,7 @@ public class NewsCacheHolder implements Parcelable {
   private ArrayList<GenericErrandClass> news;
   private int howMany;
 
+  public NewsCacheHolder(){}
   public NewsCacheHolder(ArrayList<GenericErrandClass> news) {
     this.news = news;
   }

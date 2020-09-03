@@ -96,7 +96,7 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
     GenericErrandClass newsItem = news.get(pos);
     SimpleUser user = newsItem.getCreator();
     holder.name.setText(user.getUserName());
-    holder.container.setAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_in_recycler));
+//    holder.container.setAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_in_recycler));
     holder.description.setText(newsItem.getDescription());
     holder.cost.setText(String.valueOf(newsItem.getCost()));
     holder.profit.setText(String.valueOf(newsItem.getAllowance()));
@@ -121,7 +121,7 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
     GenericErrandClass newsItem = news.get(pos);
     SimpleUser user = newsItem.getCreator();
     holder.name.setText(user.getUserName());
-    holder.container.setAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_in_recycler));
+//    holder.container.setAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_in_recycler));
     holder.title.setText(newsItem.getDescription());
     holder.cost.setText(String.valueOf(newsItem.getCost()));
     holder.profit.setText(String.valueOf(newsItem.getAllowance()));
@@ -342,6 +342,5 @@ public class HomeNewsMultiAdapter extends RecyclerView.Adapter {
   public interface OnNewsItemClick {
     void newsItemCallback(int pos, GenericErrandClass selectedErrand);
   }
-
 
 }
