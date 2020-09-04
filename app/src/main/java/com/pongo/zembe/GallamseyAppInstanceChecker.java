@@ -11,17 +11,21 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public class GallamseyAppInstanceChecker {
 
   String userID;
-  String oldToken;
+  ArrayList<DeviceToToken> oldTokens;
   FirebaseFirestore db = FirebaseFirestore.getInstance();
   CollectionReference userCollectionRef = db.collection(Konstants.USER_COLLECTION);
   private static final String TAG = "INSTANCE-ID--->";
+  public static final String ANDROID = "android";
 
-  public GallamseyAppInstanceChecker(String oldToken, String userID) {
+  public GallamseyAppInstanceChecker(ArrayList<DeviceToToken> oldTokens, String userID) {
     this.userID = userID;
-    this.oldToken = oldToken;
+    this.oldTokens = oldTokens;
   }
 
   public void checkAndUpdateInstanceTokenOnServer() {
@@ -29,8 +33,14 @@ public class GallamseyAppInstanceChecker {
       @Override
       public void onSuccess(InstanceIdResult instanceIdResult) {
         String token = instanceIdResult.getToken();
-        if (oldToken != null && oldToken.equals(token)) {
-          // ------- token hasn't changed, so just
+        if (oldTokens != null) {
+          for (int i = 0; i < oldTokens.size(); i++) {
+            DeviceToToken item = oldTokens.get(i);
+            if(item.getName().equals(ANDROID) && item.getToken().equals(token)){
+              // ------- token hasn't changed, so just
+              return;
+            }
+          }
           return;
         }
         // -------- Save token to database

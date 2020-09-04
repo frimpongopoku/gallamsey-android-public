@@ -28,7 +28,7 @@ public class User implements Parcelable {
   private GallamseyLocationComponent geoLocation;
   private Wallet wallet = new Wallet();
   private Accolades accolades = new Accolades();
-  private String appInstanceToken;
+  private ArrayList<DeviceToToken> appInstanceToken;
   private  String verifiedStatus = Konstants.UNVERIFIED;
 
   public User() {
@@ -47,14 +47,13 @@ public class User implements Parcelable {
     this.gender = gender;
   }
 
-  public String getAppInstanceToken() {
+  public ArrayList<DeviceToToken> getAppInstanceToken() {
     return appInstanceToken;
   }
 
-  public void setAppInstanceToken(String appInstanceToken) {
+  public void setAppInstanceToken(ArrayList<DeviceToToken> appInstanceToken) {
     this.appInstanceToken = appInstanceToken;
   }
-
 
   public String getVerifiedStatus() {
     return verifiedStatus;
@@ -267,7 +266,7 @@ public class User implements Parcelable {
     dest.writeParcelable(this.geoLocation, flags);
     dest.writeParcelable(this.wallet, flags);
     dest.writeParcelable(this.accolades, flags);
-    dest.writeString(this.appInstanceToken);
+    dest.writeTypedList(this.appInstanceToken);
     dest.writeString(this.verifiedStatus);
   }
 
@@ -292,7 +291,7 @@ public class User implements Parcelable {
     this.geoLocation = in.readParcelable(GallamseyLocationComponent.class.getClassLoader());
     this.wallet = in.readParcelable(Wallet.class.getClassLoader());
     this.accolades = in.readParcelable(Accolades.class.getClassLoader());
-    this.appInstanceToken = in.readString();
+    this.appInstanceToken = in.createTypedArrayList(DeviceToToken.CREATOR);
     this.verifiedStatus = in.readString();
   }
 

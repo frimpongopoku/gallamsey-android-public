@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -154,6 +155,8 @@ public class MessagesFragment extends Fragment {
     }, new Response.ErrorListener() {
       @Override
       public void onErrorResponse(VolleyError error) {
+        spinner.setVisibility(View.GONE);
+        Toast.makeText(context, "Sorry, something happened we couldn't load your messages, please try again later", Toast.LENGTH_LONG).show();
         Log.d(TAG, "onErrorResponse: "+error.getMessage());
       }
     });

@@ -464,14 +464,29 @@ public class ChattingPage extends AppCompatActivity {
   //--so that a request can be sent back to the server to reduce the unreadMsgsCount that has been recorded...
   //--the request is sent in "onDestroy"
 
+  /**
+   * KNOWN FLAW ( initial value of unread msg is not knows when a user tries to message another person by coming
+   * into this chat page from  the dropdown of the errand ... this is because getting into this page without going
+   * through the chat list fragment page does not give this page access to the conversation list item of the conversation stream.. but at the moment
+   * no one cares!!! LOL!)
+   *
+   * How Counting is done:
+   * save the number of unread msgs of the auth  user(in this chat stream) while coming into the page,
+   * Count how many msgs that do not belong to the current user in the chat stream as initChatCount
+   * Now, whenever any msg is received and the document is refreshed, recount the msgs again for
+   * new msgs from the other side
+   * subtract this new count from the initially obtained number and add the different to unreadMsgCount
+   *
+   * @param msgs
+   */
+
   private void calculateUnReadMsgs(ArrayList<OneChatMessage> msgs) {
     if (msgs == null) return;
     currentChatCount = howManyDontBelongToMe(msgs);
-    if (initChatCount == 0) initChatCount = msgs.size();
+    if (initChatCount == 0) initChatCount = currentChatCount; // only happens once
     else {
       unreadCount += currentChatCount - initChatCount;
     }
-
   }
 
   private void inflateRecyclerWithData(ConversationStream newConvo) {
