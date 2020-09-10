@@ -1,5 +1,6 @@
 package com.pongo.zembe;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,8 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -70,6 +74,7 @@ public class HomeFragment extends Fragment {
   private MagicBoxes dialogCreator;
   private FirebaseFirestore store = FirebaseFirestore.getInstance();
   private CollectionReference errandsDB = store.collection(Konstants.ERRAND_COLLECTION);
+  private CollectionReference communitiesDB = store.collection(Konstants.COMMUNITIES_COLLECTION);
   private ArrayList<GenericErrandClass> news = new ArrayList<>();
   private RequestQueue httpHandler;
   private NewsCacheHolder newsCacher;
@@ -78,8 +83,67 @@ public class HomeFragment extends Fragment {
   private ProgressBar spinner;
   private Boolean isLoading = false;
   private float alpha = 1;
+  private GalFirebaseHelper firebaseHelper = new GalFirebaseHelper();
   private Type newsCacheType = new TypeToken<NewsCacheHolder>() {
   }.getType();
+  private Spinner countryDropdown, regionsDropdown;
+  private LinearLayout regionsContainer;
+  private TextView regionsText;
+  private Communities communities;
+  private LoadedCommunities communityTracker = new LoadedCommunities();
+  private Activity parentActivity = this.getActivity();
+  private AnonymousUser anonymousUser = new AnonymousUser();
+  private String selectedCountry, selectedRegion;
+
+  private AdapterView.OnItemSelectedListener selectRegion = new AdapterView.OnItemSelectedListener() {
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+      selectedRegion = adapterView.getItemAtPosition(i).toString();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
+  };
+  private AdapterView.OnItemSelectedListener selectCountry = new AdapterView.OnItemSelectedListener() {
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+      final String country = adapterView.getItemAtPosition(i).toString();
+      selectedCountry = country;
+      if (country.equals("GHANA")) {
+        regionsContainer.setVisibility(View.VISIBLE);
+        // if the communities of the selected country has already been loaded, dont go to firestore again
+        Communities alreadyLoadedAndSaved = communityTracker.getSavedCommunitiesForCountry(country);
+        if (alreadyLoadedAndSaved != null) {
+          MyHelper.initializeDropDown(alreadyLoadedAndSaved.getCommunityNames(), regionsDropdown, context);
+          return;
+        }
+        String t = "We are loading regions...";// doing it this way just to skip android studio lint yellow lines
+        regionsText.setText(t);
+        firebaseHelper.getFirebaseDocument(country, communitiesDB, new GalInterfaceGuru.SnapshotTakerInterface() {
+          @Override
+          public void callback(DocumentSnapshot document) {
+            communities = document.toObject(Communities.class);
+            if (communities != null) {
+              communityTracker.addCommunity(country, communities);
+              String t = "What region are you in?";
+              regionsText.setText(t);
+              MyHelper.initializeDropDown(communities.getCommunityNames(), regionsDropdown, context);
+            }
+          }
+        });
+
+      } else {
+        regionsContainer.setVisibility(View.GONE);
+      }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
+  };
   private RecyclerView.OnScrollListener scrollListener = new RecyclerView.OnScrollListener() {
     @Override
     public void onScrollStateChanged(@NonNull final RecyclerView recyclerView, int newState) {
@@ -133,6 +197,7 @@ public class HomeFragment extends Fragment {
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.home_nav_fragment, container, false);
+    parentActivity = this.getActivity();
     justInflate(view);
     // Return old view state and items when the user comes back to the fragment again.
     // we don't want multiple loading for reasons as just switching between fragments
@@ -206,6 +271,7 @@ public class HomeFragment extends Fragment {
     };
   }
 
+
   //---------------------------------------------------------------------------------------------------------------
   // If a user is authenticated, this function will  put their country, region, and coordinates together
   // so that they can get news feed according to their location
@@ -214,15 +280,16 @@ public class HomeFragment extends Fragment {
   private JSONObject fashionRequestData() {
     int checkPoint = 0, fallbackCheckPoint = 0;
 
-    JSONObject data = new JSONObject();
+    final JSONObject data = new JSONObject();
     try {
       if (returnables != null) {
 //        checkPoint = returnables.getInt("check_point");
 //        fallbackCheckPoint = returnables.getInt("fallback_check_point");
+      } else {
+        data.put("check_point", checkPoint);
+        data.put("fallback_check_point", fallbackCheckPoint);
       }
-      // will enable this when there is a lot of data and can be paginated
-//      data.put("check_point", checkPoint);
-      data.put("fallback_check_point", fallbackCheckPoint);
+
       if (authenticatedUser != null) {
         data.put("country", authenticatedUser.getCountry());
         //data.put("region",authenticatedUser.getRegion());
@@ -230,11 +297,13 @@ public class HomeFragment extends Fragment {
         return data;
       } else {
         // --- create a dialog that will collect country and region on the fly if user hasnt done that already...
-        AnonymousUser anonymousUser  = (AnonymousUser) MyHelper.getFromSharedPreferences(context,Konstants.SAVE_ANONYMOUS_USER, AnonymousUser.class);
-        if(anonymousUser == null){
-
+        anonymousUser = (AnonymousUser) MyHelper.getFromSharedPreferences(context, Konstants.ANONYMOUS_USER, AnonymousUser.class);
+        if (anonymousUser == null) {
+          collectQuickDataForGuestUser();
         }
-        return null;
+        data.put("country", anonymousUser.getCountry());
+        data.put("region", anonymousUser.getRegion());
+        return data;
       }
     } catch (Exception e) {
       e.printStackTrace();
@@ -242,21 +311,34 @@ public class HomeFragment extends Fragment {
     return null;
   }
 
-  public void collectQuickDataForGuestUser (){
-    View v = View.inflate(context,R.layout.country_and_gender_dialog,null);
+  public void collectQuickDataForGuestUser() {
+    View v = View.inflate(context, R.layout.country_and_gender_dialog, null);
+    regionsContainer = v.findViewById(R.id.regions_container);
+    countryDropdown = v.findViewById(R.id.country_dropdown);
+    regionsDropdown = v.findViewById(R.id.regions_dropdown);
+    regionsDropdown.setOnItemSelectedListener(selectRegion);
+    regionsText = v.findViewById(R.id.regions_text);
+    countryDropdown.setOnItemSelectedListener(selectCountry);
+    MyHelper.initializeDropDown(Konstants.COUNTRIES, countryDropdown, context);
     MagicBoxes dialog = new MagicBoxes(context);
     dialog.constructCustomDialog("Quick Information", v, new MagicBoxCallables() {
       @Override
       public void negativeBtnCallable() {
-
+        parentActivity.finish();
       }
 
       @Override
       public void positiveBtnCallable() {
-
+        anonymousUser = new AnonymousUser();
+        anonymousUser.setCountry(selectedCountry);
+        anonymousUser.setRegion(selectedRegion);
+        MyHelper.saveToSharedPreferences(context, anonymousUser, Konstants.ANONYMOUS_USER);
       }
-    });
+    }, "Done", "Quit").show();
+
   }
+
+
   private void getNewsContent(JSONObject requestData, final NewsCollectionCallback newsCollector) {
     if (requestData == null) {
       Toast.makeText(context, "Sorry, could not get news for you, please try again later", Toast.LENGTH_SHORT).show();
@@ -268,7 +350,7 @@ public class HomeFragment extends Fragment {
       @Override
       public void onResponse(JSONObject response) {
         ArrayList<GenericErrandClass> errands = processResponseData(response);
-        if(errands !=null){
+        if (errands != null) {
           newsCacher.getNews().addAll(errands);
           MyHelper.saveToSharedPreferences(context, newsCacher, Konstants.SAVE_NEWS_TO_CACHE);
         }
@@ -325,5 +407,9 @@ public class HomeFragment extends Fragment {
   public void onDestroy() {
     this.fragmentStateListener.saveFragmentState(news, currentState);
     super.onDestroy();
+  }
+
+  interface AnonymousUserTaker {
+    void getUser(AnonymousUser user);
   }
 }

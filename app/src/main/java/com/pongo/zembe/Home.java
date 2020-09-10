@@ -74,6 +74,7 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackCon
   Handler handler = new Handler();
   RequestQueue httpHandler;
   TextView msgNotificationBadge;
+
   int unReadMsgsCount;
   private View.OnClickListener goToSearchActivity = new View.OnClickListener() {
     @Override
@@ -162,7 +163,10 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackCon
 //    }
     setContentView(R.layout.activity_home);
     initializeActivity();
-    getConversationListContentPeriodically();
+    if (authenticatedUser != null) {
+      getConversationListContentPeriodically();
+    }
+
   }
 
   private void updateMessagesNotificationBadge() {
@@ -394,7 +398,10 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackCon
   @Override
   protected void onResume() {
     handler = new Handler();
-    getConversationListContentPeriodically();
+    if (authenticatedUser != null) {
+      getConversationListContentPeriodically();
+    }
+
     super.onResume();
   }
 
