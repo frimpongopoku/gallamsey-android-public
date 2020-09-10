@@ -229,7 +229,11 @@ public class HomeFragment extends Fragment {
         //--- coords will follow here too
         return data;
       } else {
-        // --- create a dialog that will collect country and region on the fly...
+        // --- create a dialog that will collect country and region on the fly if user hasnt done that already...
+        AnonymousUser anonymousUser  = (AnonymousUser) MyHelper.getFromSharedPreferences(context,Konstants.SAVE_ANONYMOUS_USER, AnonymousUser.class);
+        if(anonymousUser == null){
+
+        }
         return null;
       }
     } catch (Exception e) {
@@ -238,6 +242,21 @@ public class HomeFragment extends Fragment {
     return null;
   }
 
+  public void collectQuickDataForGuestUser (){
+    View v = View.inflate(context,R.layout.country_and_gender_dialog,null);
+    MagicBoxes dialog = new MagicBoxes(context);
+    dialog.constructCustomDialog("Quick Information", v, new MagicBoxCallables() {
+      @Override
+      public void negativeBtnCallable() {
+
+      }
+
+      @Override
+      public void positiveBtnCallable() {
+
+      }
+    });
+  }
   private void getNewsContent(JSONObject requestData, final NewsCollectionCallback newsCollector) {
     if (requestData == null) {
       Toast.makeText(context, "Sorry, could not get news for you, please try again later", Toast.LENGTH_SHORT).show();

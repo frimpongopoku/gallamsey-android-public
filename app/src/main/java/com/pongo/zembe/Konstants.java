@@ -9,6 +9,7 @@ public class Konstants {
 
 
   public static final String SAVE_NEWS_TO_CACHE = "SAVE_NEWS_TO_CACHE";
+  public static final String SAVE_ANONYMOUS_USER = "SAVE_ANONYMOUS_USER";
   public static final String UNVERIFIED = "UNVERIFIED";
   public static final String VERFIED = "VERIFIED";
 

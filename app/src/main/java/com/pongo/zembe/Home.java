@@ -157,9 +157,9 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackCon
     super.onCreate(savedInstanceState);
     NotificationChannelSetup notifyMe = new NotificationChannelSetup(this);
     notifyMe.createChannels();
-    if (mAuth.getCurrentUser() == null) {
-      goToLogin();
-    }
+//    if (mAuth.getCurrentUser() == null) {
+//      goToLogin();
+//    }
     setContentView(R.layout.activity_home);
     initializeActivity();
     getConversationListContentPeriodically();
@@ -228,7 +228,7 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackCon
   }
 
   private void getConversationListContentPeriodically() {
-    if(handler == null) return;
+    if (handler == null) return;
     handler.postDelayed(new Runnable() {
       @Override
       public void run() {
@@ -309,6 +309,11 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackCon
   }
 
   private void setProfilePicture() {
+    if (authenticatedUser == null) {
+      // it means user isnt signed in, just put some gallamsey doummy image
+      userProfileImageOnToolbar.setImageResource(R.drawable.gallamsey_photo_for_other);
+      return;
+    }
     if (!authenticatedUser.getProfilePictureURL().equals(Konstants.INIT_STRING)) {
       //means user has a custom profile
       Picasso.get().load(authenticatedUser.getProfilePictureURL()).into(userProfileImageOnToolbar);
@@ -345,7 +350,7 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackCon
 
   private void goToTasksPage() {
     Intent tasksPage = new Intent(this, TasksActivity.class);
-    tasksPage.putExtra(Konstants.AUTH_USER_KEY,authenticatedUser);
+    tasksPage.putExtra(Konstants.AUTH_USER_KEY, authenticatedUser);
     startActivity(tasksPage);
   }
 
