@@ -5,8 +5,8 @@ import android.os.Parcelable;
 
 public class GalResponseError {
 
-  private  Boolean status;
-  private  String message;
+  private  Boolean status = false;
+  private  String message = Konstants.EMPTY;
 
   public GalResponseError(){}
 

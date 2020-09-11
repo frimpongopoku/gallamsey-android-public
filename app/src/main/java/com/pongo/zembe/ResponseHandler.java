@@ -27,11 +27,25 @@ public class ResponseHandler {
   public ResponseHandler() {
   }
 
+  public Returnables getReturnables() {
+    return returnables;
+  }
 
+  public GalResponseError getError() {
+    return error;
+  }
+
+  public ResponseData getData() {
+    return data;
+  }
+
+  public static ResponseHandler newInstance(){
+    return new ResponseHandler();
+  }
   public static ResponseHandler newInstance(JSONObject response) {
     Gson gson = new Gson();
     ResponseHandler handler = new ResponseHandler();
-    GalResponseError responseError;
+    GalResponseError responseError = new GalResponseError();
     Returnables returnables = new Returnables();
     ResponseData responseData = new ResponseData();
     try {

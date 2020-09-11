@@ -144,6 +144,7 @@ public class HomeFragment extends Fragment {
 
     }
   };
+  private ResponseHandler lastResponse = ResponseHandler.newInstance();
   private RecyclerView.OnScrollListener scrollListener = new RecyclerView.OnScrollListener() {
     @Override
     public void onScrollStateChanged(@NonNull final RecyclerView recyclerView, int newState) {
@@ -284,13 +285,13 @@ public class HomeFragment extends Fragment {
 
     final JSONObject data = new JSONObject();
     try {
-      if (returnables != null) {
-//        checkPoint = returnables.getInt("check_point");
-//        fallbackCheckPoint = returnables.getInt("fallback_check_point");
-      } else {
-        data.put("check_point", checkPoint);
-        data.put("fallback_check_point", fallbackCheckPoint);
-      }
+//      if (lastResponse.getReturnables() != null) {
+////        checkPoint = returnables.getInt("check_point");
+////        fallbackCheckPoint = returnables.getInt("fallback_check_point");
+//      } else {
+//        data.put("check_point", checkPoint);
+//        data.put("fallback_check_point", fallbackCheckPoint);
+//      }
 
       if (authenticatedUser != null) {
         data.put("country", authenticatedUser.getCountry());
@@ -323,7 +324,7 @@ public class HomeFragment extends Fragment {
     countryDropdown.setOnItemSelectedListener(selectCountry);
     MyHelper.initializeDropDown(Konstants.COUNTRIES, countryDropdown, context);
     MagicBoxes dialog = new MagicBoxes(context);
-    dialog.constructCustomDialog("Quick Information", v, new MagicBoxCallables() {
+    dialog.constructCustomDialog("Quick Setup", v, new MagicBoxCallables() {
       @Override
       public void negativeBtnCallable() {
         parentActivity.finish();
@@ -353,8 +354,9 @@ public class HomeFragment extends Fragment {
       @Override
       public void onResponse(JSONObject response) {
         ResponseHandler nResponse =  ResponseHandler.newInstance(response);
+        lastResponse = nResponse;
         Log.d(TAG, "onResponse: "+nResponse.toString());
-        ArrayList<GenericErrandClass> errands = processResponseData(response);
+        ArrayList<GenericErrandClass> errands = processResponseData(nResponse);
         if (errands != null) {
           skeleton.setVisibility(View.VISIBLE);
           newsCacher.getNews().addAll(errands);
@@ -372,17 +374,13 @@ public class HomeFragment extends Fragment {
     httpHandler.add(req);
   }
 
-  private ArrayList<GenericErrandClass> processResponseData(JSONObject response) {
+  private ArrayList<GenericErrandClass> processResponseData(ResponseHandler response) {
+    ArrayList<GenericErrandClass> news = new ArrayList<>();
     try {
-      ArrayList<GenericErrandClass> news = new ArrayList<>();
-      JSONObject error = (JSONObject) response.get("error");
-      Boolean status = (Boolean) error.get("status");
-      this.returnables = (JSONObject) response.get("returnables");
-      if (status) return null;
-      JSONArray data = (JSONArray) response.get("data");
+      if(response.getError().getStatus()) return null;
       Gson gson = new Gson();
-      for (int i = 0; i < data.length(); i++) {
-        String errandAsText = data.get(i).toString();
+      for (int i = 0; i < response.getData().getContent().length(); i++) {
+        String errandAsText = response.getData().getContent().get(i).toString();
         GenericErrandClass errand = gson.fromJson(errandAsText, GenericErrandClass.class);
         news.add(errand);
       }
@@ -390,9 +388,7 @@ public class HomeFragment extends Fragment {
     } catch (JSONException e) {
       e.printStackTrace();
     }
-
     return null;
-
   }
 
   private void justInflate(View view) {
