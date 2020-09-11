@@ -94,7 +94,7 @@ public class HomeFragment extends Fragment {
   private Activity parentActivity = this.getActivity();
   private AnonymousUser anonymousUser = new AnonymousUser();
   private String selectedCountry, selectedRegion;
-
+  private Gson gson = new Gson();
   private AdapterView.OnItemSelectedListener selectRegion = new AdapterView.OnItemSelectedListener() {
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -113,7 +113,7 @@ public class HomeFragment extends Fragment {
       selectedCountry = country;
       if (country.equals("GHANA")) {
         regionsContainer.setVisibility(View.VISIBLE);
-        // if the communities of the selected country has already been loaded, dont go to firestore again
+        // if the communities of the selected country have already been loaded, dont go to firestore again
         Communities alreadyLoadedAndSaved = communityTracker.getSavedCommunitiesForCountry(country);
         if (alreadyLoadedAndSaved != null) {
           MyHelper.initializeDropDown(alreadyLoadedAndSaved.getCommunityNames(), regionsDropdown, context);
@@ -210,7 +210,8 @@ public class HomeFragment extends Fragment {
 
     setCurrentState(view);
     //------ Loading for the first time, show beautiful shimmer effect and load data
-    if ((this.news == null || this.news.size() == 0) && authenticatedUser != null) {
+
+    if (this.news == null || this.news.size() == 0) {
       // checking for user authentication to show shimmer effect because if they are not signed in,
       // a different thing will be shown instead of shimmer on first load
       // ----- Now, check and see if there is any cached content
@@ -247,6 +248,7 @@ public class HomeFragment extends Fragment {
     recyclerView.addOnScrollListener(scrollListener);
     recyclerView.setHasFixedSize(true);
     recyclerView.setVisibility(View.VISIBLE);
+    skeleton.setVisibility(View.GONE);
 
   }
 
@@ -329,6 +331,7 @@ public class HomeFragment extends Fragment {
 
       @Override
       public void positiveBtnCallable() {
+        skeleton.setVisibility(View.VISIBLE);
         anonymousUser = new AnonymousUser();
         anonymousUser.setCountry(selectedCountry);
         anonymousUser.setRegion(selectedRegion);
@@ -349,8 +352,11 @@ public class HomeFragment extends Fragment {
     JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST, GallamseyURLS.GET_NEWS_CONTENT, requestData, new Response.Listener<JSONObject>() {
       @Override
       public void onResponse(JSONObject response) {
+        ResponseHandler nResponse =  ResponseHandler.newInstance(response);
+        Log.d(TAG, "onResponse: "+nResponse.toString());
         ArrayList<GenericErrandClass> errands = processResponseData(response);
         if (errands != null) {
+          skeleton.setVisibility(View.VISIBLE);
           newsCacher.getNews().addAll(errands);
           MyHelper.saveToSharedPreferences(context, newsCacher, Konstants.SAVE_NEWS_TO_CACHE);
         }
@@ -409,7 +415,4 @@ public class HomeFragment extends Fragment {
     super.onDestroy();
   }
 
-  interface AnonymousUserTaker {
-    void getUser(AnonymousUser user);
-  }
 }
