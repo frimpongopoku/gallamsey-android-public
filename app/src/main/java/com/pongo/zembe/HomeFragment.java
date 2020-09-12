@@ -358,7 +358,7 @@ public class HomeFragment extends Fragment {
         Log.d(TAG, "onResponse: "+nResponse.toString());
         ArrayList<GenericErrandClass> errands = processResponseData(nResponse);
         if (errands != null) {
-          skeleton.setVisibility(View.VISIBLE);
+          skeleton.setVisibility(View.GONE);
           newsCacher.getNews().addAll(errands);
           MyHelper.saveToSharedPreferences(context, newsCacher, Konstants.SAVE_NEWS_TO_CACHE);
         }
