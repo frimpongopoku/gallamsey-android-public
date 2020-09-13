@@ -12,6 +12,7 @@
     <include layout="@layout/narrator_layout" />
 
     <Button
+      android:visibility="visible"
       android:id="@+id/login_btn"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -19,10 +20,10 @@
       android:layout_marginTop="10dp"
       android:layout_marginBottom="10dp"
       android:layout_marginRight="35dp"
-      android:background="@drawable/login_button_shape"
+      android:background="@drawable/stroke_button"
       android:fontFamily="@font/google_sans"
       android:padding="15dp"
       android:text="Sign In"
-      android:textColor="@android:color/white" />
+      android:textColor="@color/appColor" />
   </LinearLayout>
 </merge>

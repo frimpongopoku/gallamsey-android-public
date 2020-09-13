@@ -10,7 +10,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"/>
 
-  <include layout = "@layout/narrator_layout" />
+  <LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <include layout = "@layout/narrator_layout"  />
+    <Button
+
+      android:id="@+id/login_btn"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="35dp"
+      android:layout_marginTop="10dp"
+      android:layout_marginRight="35dp"
+      android:layout_marginBottom="10dp"
+      android:background="@drawable/stroke_button"
+      android:fontFamily="@font/google_sans"
+      android:padding="15dp"
+      android:text="Sign In"
+      android:textColor="@color/appColor"
+      android:visibility="gone" />
+  </LinearLayout>
   <ProgressBar
     android:id="@+id/spinner"
     android:layout_width="50dp"

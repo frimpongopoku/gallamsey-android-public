@@ -17,7 +17,7 @@ public class TasksActivity extends AppCompatActivity implements GigsTabRecyclerA
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_tasks);
     authenticatedUser = getIntent().getParcelableExtra(Konstants.AUTH_USER_KEY);
-    if(authenticatedUser == null) finish();
+//    if(authenticatedUser == null) finish();
     TasksSectionsPagerAdapter sectionsPagerAdapter = new TasksSectionsPagerAdapter(this, getSupportFragmentManager());
     sectionsPagerAdapter.setAuthenticatedUser(authenticatedUser);
     ViewPager viewPager = findViewById(R.id.view_pager);

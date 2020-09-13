@@ -1,11 +1,14 @@
 package com.pongo.zembe;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -45,7 +48,8 @@ public class TasksFragmentGenerator extends Fragment {
   RequestQueue httpHandler;
   int pageCheckPoint;
   String JOBS = "JOBS", CREATED = "CREATED";
-
+  Button loginBtn;
+  Activity parentActivity;
   public static Fragment newInstance(String whichPage, Context context, GroundUser authenticatedUser) {
     TasksFragmentGenerator fragment = new TasksFragmentGenerator();
     fragment.setAuthenticatedUser(authenticatedUser);
@@ -56,6 +60,15 @@ public class TasksFragmentGenerator extends Fragment {
     return fragment;
   }
 
+  private View.OnClickListener goToLoginPage = new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+      Intent page = new Intent(context,Login.class);
+      startActivity(page);
+      parentActivity.finish();
+
+    }
+  };
 
   public void setAuthenticatedUser(GroundUser authenticatedUser) {
     this.authenticatedUser = authenticatedUser;
@@ -65,20 +78,37 @@ public class TasksFragmentGenerator extends Fragment {
     this.context = context;
   }
 
+  private View authOrNot(View v, String which){
+    loginBtn = v.findViewById(R.id.login_btn);
+    loadingSpinner = v.findViewById(R.id.spinner);
+    salutationText = v.findViewById(R.id.salutation);
+    narratorBox = v.findViewById(R.id.narrator_box);
+   if(authenticatedUser == null){
+     String t = "Hi there, please Sign In to see all jobs you have completed for others, and ones you have created.";
+     salutationText.setText(t);
+     narratorBox.setVisibility(View.VISIBLE);
+     loadingSpinner.setVisibility(View.GONE);
+     loginBtn.setOnClickListener(goToLoginPage);
+     loginBtn.setVisibility(View.VISIBLE);
+      return v;
+   }
+   if(which.equals(JOBS)) return  initializeGigs(v);
+   return initializeYourErrands(v);
+  }
   @Nullable
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    parentActivity = this.getActivity();
     String whichPage = getArguments().getString(WHICH_FRAGMENT);
     httpHandler = Volley.newRequestQueue(context);
     if (whichPage != null && whichPage.equals(Konstants.TASKS_GIGS_TAB)) {
       View v = inflater.inflate(R.layout.gigs_layout, container, false);
-      return initializeGigs(v);
+      return authOrNot(v, JOBS);
 
     } else if (whichPage != null && whichPage.equals(Konstants.TASKS_YOUR_ERRANDS_TAB)) {
       View v = inflater.inflate(R.layout.your_created_errands_layout, container, false);
-      return initializeYourErrands(v);
+      return authOrNot(v, CREATED);
     }
-
     return null;
   }
 
