@@ -14,13 +14,17 @@ import com.google.firebase.auth.FirebaseAuth;
 public class OfficialSettingsPage extends AppCompatActivity {
 
   ImageView back_btn;
-  TextView addPaymentBtn, addLocationBtn, newFeatureBtn, cashInBtn, cashOutBtn;
+  TextView addPaymentBtn, addLocationBtn, newFeatureBtn, cashInBtn, cashOutBtn, signOutBtn;
   FirebaseAuth auth = FirebaseAuth.getInstance();
   GroundUser authenticatedUser;
   MagicBoxes dialogCreator;
   private View.OnClickListener startNewFeatureBox = new View.OnClickListener() {
     @Override
     public void onClick(View view) {
+      if (authenticatedUser == null) {
+        checkIfNoAuthFirst();
+        return;
+      }
       dialogCreator.constructSimpleOneActionDialog("Suggest New Feature", "What new feature do you think would be helpfull in this app? ", "SEND", new OneAction() {
         @Override
         public void callback() {
@@ -38,6 +42,11 @@ public class OfficialSettingsPage extends AppCompatActivity {
   private View.OnClickListener goToPayment = new View.OnClickListener() {
     @Override
     public void onClick(View view) {
+      if (authenticatedUser == null) {
+        checkIfNoAuthFirst();
+        return;
+      }
+
       Intent page = new Intent(getApplicationContext(), AddMobilePaymentNumberPage.class);
       page.putExtra("authUser", authenticatedUser);
       startActivity(page);
@@ -46,6 +55,10 @@ public class OfficialSettingsPage extends AppCompatActivity {
   private View.OnClickListener goToLocations = new View.OnClickListener() {
     @Override
     public void onClick(View view) {
+      if (authenticatedUser == null) {
+        checkIfNoAuthFirst();
+        return;
+      }
       Intent page = new Intent(getApplicationContext(), AddMoreLocations.class);
       page.putExtra("authUser", authenticatedUser);
       startActivity(page);
@@ -54,16 +67,32 @@ public class OfficialSettingsPage extends AppCompatActivity {
   private View.OnClickListener goToCashInPage = new View.OnClickListener() {
     @Override
     public void onClick(View view) {
-      Intent page  = new Intent(getApplicationContext(),CashInCashOut.class);
-      page.putExtra(Konstants.PAGE_KEY,Konstants.CASH_IN_PAGE_KEY);
+      if (authenticatedUser == null) {
+        checkIfNoAuthFirst();
+        return;
+      }
+      Intent page = new Intent(getApplicationContext(), CashInCashOut.class);
+      page.putExtra(Konstants.PAGE_KEY, Konstants.CASH_IN_PAGE_KEY);
       startActivity(page);
     }
-  };private View.OnClickListener goToCashOutPage = new View.OnClickListener() {
+  };
+  private View.OnClickListener goToCashOutPage = new View.OnClickListener() {
     @Override
     public void onClick(View view) {
-      Intent page  = new Intent(getApplicationContext(),CashInCashOut.class);
-      page.putExtra(Konstants.PAGE_KEY,Konstants.CASH_OUT_PAGE_KEY);
+      if (authenticatedUser == null) {
+        checkIfNoAuthFirst();
+        return;
+      }
+      Intent page = new Intent(getApplicationContext(), CashInCashOut.class);
+      page.putExtra(Konstants.PAGE_KEY, Konstants.CASH_OUT_PAGE_KEY);
       startActivity(page);
+    }
+  };
+  private View.OnClickListener signIn = new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+      goToLogin();
+      finish();
     }
   };
 
@@ -75,7 +104,36 @@ public class OfficialSettingsPage extends AppCompatActivity {
     initActivity();
   }
 
+  private void checkIfNoAuthFirst() {
+    if (authenticatedUser == null) {
+      dialogCreator.constructASimpleDialog("Sign In", "You are not signed in yet, would you like to sign in to access this functionality?", new MagicBoxCallables() {
+        @Override
+        public void negativeBtnCallable() {
+
+        }
+
+        @Override
+        public void positiveBtnCallable() {
+          goToLogin();
+        }
+      }).show();
+    }
+  }
+
+  private void goToLogin() {
+    Intent page = new Intent(this, Login.class);
+    startActivity(page);
+    finish();
+  }
+
   private void initActivity() {
+    signOutBtn = findViewById(R.id.sign_out_btn);
+    if (authenticatedUser == null) {
+      String t = "SIGN IN";
+      signOutBtn.setText(t);
+      signOutBtn.setTextColor(getColor(R.color.appColor));
+      signOutBtn.setOnClickListener(signIn);
+    }
     cashInBtn = findViewById(R.id.cash_in_btn);
     cashOutBtn = findViewById(R.id.cash_out_btn);
     cashInBtn.setOnClickListener(goToCashInPage);

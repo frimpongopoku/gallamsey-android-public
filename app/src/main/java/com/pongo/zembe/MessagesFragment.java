@@ -103,7 +103,7 @@ public class MessagesFragment extends Fragment {
   private View showNoAuthBox(View v) {
     loginBtn = v.findViewById(R.id.login_btn);
     loginBtn.setOnClickListener(goToLoginPage);
-    spinner = v.findViewById(R.id.spinner);
+    spinner = v.findViewById(R.id.progress_spinner);
     spinner.setVisibility(View.GONE);
     noAuthBox = v.findViewById(R.id.no_auth_box);
     narratorBox = v.findViewById(R.id.narrator_box);

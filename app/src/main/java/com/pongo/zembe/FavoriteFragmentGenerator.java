@@ -47,7 +47,7 @@ public class FavoriteFragmentGenerator extends Fragment {
   private View.OnClickListener goToLoginPage = new View.OnClickListener() {
     @Override
     public void onClick(View view) {
-      Intent page = new Intent(context,Login.class);
+      Intent page = new Intent(parentActivity,Login.class);
       startActivity(page);
       parentActivity.finish();
 

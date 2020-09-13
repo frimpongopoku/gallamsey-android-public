@@ -9,10 +9,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,7 +42,12 @@ public class ViewProfilePage extends AppCompatActivity {
   String userPlatformID;
   RequestQueue httpHandler;
   ProgressBar spinner;
-  LinearLayout contentBox, verifiedBox;
+  LinearLayout contentBox, verifiedBox, noAuthBox;
+  RelativeLayout narratorBox;
+  TextView salutation;
+  Button loginBtn;
+  ScrollView scrollable;
+
   Context thisActivity = this;
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +55,12 @@ public class ViewProfilePage extends AppCompatActivity {
     setContentView(R.layout.activity_view_profile_page);
     httpHandler = Volley.newRequestQueue(this);
     userPlatformID = getIntent().getStringExtra(Konstants.USER_PLATFORM_ID);
-//    userPlatformID = "HSfG4yw0fuX0rRsbJ1TBmmbjEKN2";
     authenticatedUser = getIntent().getParcelableExtra(Konstants.AUTH_USER_KEY);
+    if(userPlatformID == null && authenticatedUser == null){
+      showNoAuthBox();
+      return;
+    }
+//    userPlatformID = "HSfG4yw0fuX0rRsbJ1TBmmbjEKN2";
     profilePicture = findViewById(R.id.profile_picture_full);
     initializeActivity();
     if (userPlatformID != null) {
@@ -58,10 +70,34 @@ public class ViewProfilePage extends AppCompatActivity {
       spinner.setVisibility(View.GONE);
       inflatePageWithUser(authenticatedUser);
     }
-
+  }
+  private View.OnClickListener goToLoginPage = new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+      Intent page = new Intent(thisActivity,Login.class);
+      startActivity(page);
+      finish();
+    }
+  };
+  private void showNoAuthBox(){
+    pageName = findViewById(R.id.page_name);
+    String x = "Profile page";
+    pageName.setText(x);
+    spinner = findViewById(R.id.progress_spinner);
+    spinner.setVisibility(View.GONE);
+    scrollable = findViewById(R.id.scrollable_content);
+    scrollable.setVisibility(View.GONE);
+    loginBtn = findViewById(R.id.login_btn);
+    loginBtn.setOnClickListener(goToLoginPage);
+    noAuthBox = findViewById(R.id.no_auth_box);
+    salutation = findViewById(R.id.salutation);
+    narratorBox = findViewById(R.id.narrator_box);
+    narratorBox.setVisibility(View.VISIBLE);
+    noAuthBox.setVisibility(View.VISIBLE);
+    String t = "Hi there, please Sign In to get access to your profile";
+    salutation.setText(t);
 
   }
-
   private GroundUser processResponseData(JSONObject response) {
     try {
       Gson gson = new Gson();

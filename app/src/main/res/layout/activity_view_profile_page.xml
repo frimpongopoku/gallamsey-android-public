@@ -12,8 +12,9 @@
     layout="@layout/universal_title_bar" />
 
   <include layout = "@layout/dist_progress_bar" />
-
+  <include layout="@layout/no_auth_layout"/>
   <ScrollView
+    android:id="@+id/scrollable_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_below="@id/title_bar"
