@@ -19,7 +19,7 @@
 
     <Button
       android:layout_marginRight="6dp"
-      android:layout_toLeftOf="@+id/post_btn"
+      android:layout_toLeftOf="@+id/post_btn_container"
       android:paddingLeft="20dp"
       android:textSize="12sp"
       android:fontFamily="@font/google_sans_medium"
@@ -31,17 +31,38 @@
       android:layout_width="wrap_content"
       android:layout_height="40dp" />
 
-    <Button
-      android:id="@+id/post_btn"
-      android:layout_width="100dp"
-      android:layout_height="40dp"
+    <LinearLayout
+      android:id="@+id/post_btn_container"
+      android:orientation="vertical"
       android:layout_alignParentEnd="true"
-      android:layout_marginBottom="10dp"
-      android:background="@drawable/login_button_shape"
-      android:fontFamily="@font/google_sans_bold"
-      android:padding="10dp"
-      android:text="Post"
-      android:textColor="@android:color/white"
-      android:textSize="12sp" />
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content">
+      <Button
+        android:id="@+id/post_btn"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/login_button_shape"
+        android:fontFamily="@font/google_sans_bold"
+        android:padding="10dp"
+        android:text="Post"
+        android:textColor="@android:color/white"
+        android:textSize="12sp" />
+      <Button
+        android:visibility="gone"
+        android:id="@+id/sign_in_btn"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/login_button_shape"
+        android:fontFamily="@font/google_sans_bold"
+        android:padding="10dp"
+        android:text="SIGN IN"
+        android:textColor="@android:color/white"
+        android:textSize="12sp" />
+    </LinearLayout>
+
   </RelativeLayout>
 </merge>
