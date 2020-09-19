@@ -31,7 +31,10 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import org.w3c.dom.Document;
 
 import java.util.ArrayList;
 
@@ -182,7 +185,6 @@ public class Register extends AppCompatActivity {
     String phone = authType == Konstants.GOOGLE_AUTH_TYPE ? String.valueOf(user.getPhoneNumber()) : phoneBox.getText().toString();
     String email = authType == Konstants.GOOGLE_AUTH_TYPE ? user.getEmail() : emailBox.getText().toString();
     String DOB = dobBox.getText().toString();
-
     infoProvided = hasUserProvidedOtherInfo() && !phone.isEmpty();
 
 //    if (!preferredName.isEmpty() && !phone.isEmpty() && !DOB.isEmpty() && !whatsappPhone.isEmpty()) {
@@ -198,9 +200,9 @@ public class Register extends AppCompatActivity {
     } else {
       goToUserHomepage();
     }
-
-    db.collection(Konstants.USER_COLLECTION)
-      .document()
+    DocumentReference newUserFirestoreRef = db.collection(Konstants.USER_COLLECTION).document();
+    newUser.setUserDocumentID(newUserFirestoreRef.getId());
+    newUserFirestoreRef
       .set(newUser)
       .addOnSuccessListener(new OnSuccessListener<Void>() {
         @Override

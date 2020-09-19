@@ -69,17 +69,14 @@ public class ProfileCompletionPage extends AppCompatActivity {
     user = mAuth.getCurrentUser();
     spinner = findViewById(R.id.prof_spinner);
     //-----------------
-//    FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
-//      .setTimestampsInSnapshotsEnabled(true)
-//      .build();
-//    db.setFirestoreSettings(settings);
-    if (user == null) {
-      goToLogin();
-    } else {
-      userDB = db.collection(Konstants.USER_COLLECTION);
-      spinner.setVisibility(View.VISIBLE);
-      retrieveUserOldInfo(user);
-    }
+
+//    if (user == null) {
+//      goToLogin();
+//    } else {
+//      userDB = db.collection(Konstants.USER_COLLECTION);
+//      spinner.setVisibility(View.VISIBLE);
+//      retrieveUserOldInfo(user);
+//    }
     //--------------------------------------------------
     roundCloseBtn = findViewById(R.id.x_button);
     storageReference = FirebaseStorage.getInstance().getReference(Konstants.PROFILE_PICTURES_COLLECTION);
@@ -88,7 +85,7 @@ public class ProfileCompletionPage extends AppCompatActivity {
     whatsappNumberBox = findViewById(R.id.prof_whatsapp_number);
     rootLayout = findViewById(R.id.coordinator_layout);
     elementsDiv = findViewById(R.id.prof_mother_div);
-    elementsDiv.setVisibility(View.INVISIBLE);
+//    elementsDiv.setVisibility(View.GONE);
     profilePicture = findViewById(R.id.profile_picture);
     imageHolder = findViewById(R.id.image_holder);
     imageUploadHelper = new ImageUploadHelper(this);
@@ -198,7 +195,7 @@ public class ProfileCompletionPage extends AppCompatActivity {
 
   public void getProfilePictureOnLoad(User gallamseyUser) {
 
-    if (gallamseyUser.getProfilePictureURL() != null) {
+    if (gallamseyUser.getProfilePictureURL() != null && !gallamseyUser.getProfilePictureURL().equals(Konstants.EMPTY)) {
       //------if the user has profile picture, show that one instead of the default profile photos
       Picasso.get().load(gallamseyUser.getProfilePictureURL()).into(imageHolder);
       profilePicture.setVisibility(View.GONE);

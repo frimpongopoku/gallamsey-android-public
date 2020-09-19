@@ -20,20 +20,31 @@ import java.util.HashMap;
  */
 public class User implements Parcelable {
 
-  private String region, country, profilePictureURL=Konstants.INIT_STRING, gender, preferredName, uniqueUserName, email, dob, phoneNumber, whatsappNumber, uniqueID, userDocumentID;
+  public static final Creator<User> CREATOR = new Creator<User>() {
+    @Override
+    public User createFromParcel(Parcel source) {
+      return new User(source);
+    }
+
+    @Override
+    public User[] newArray(int size) {
+      return new User[size];
+    }
+  };
+  private String region, country, profilePictureURL = Konstants.INIT_STRING, gender, preferredName, uniqueUserName, email, dob, phoneNumber, whatsappNumber, uniqueID, userDocumentID;
   private Date ts = new Timestamp(DateHelper.getMilliSecondsFromDate(DateHelper.getDateInMyTimezone()));
   private String createdAt = DateHelper.getDateInMyTimezone();
-  private ArrayList<PaymentContact> mobileNumbersForPayment = new ArrayList<>() ;
+  private ArrayList<PaymentContact> mobileNumbersForPayment = new ArrayList<>();
   private ArrayList<GallamseyLocationComponent> deliveryLocations = new ArrayList<>();
   private GallamseyLocationComponent geoLocation;
   private Wallet wallet = new Wallet();
   private Accolades accolades = new Accolades();
   private ArrayList<DeviceToToken> appInstanceToken;
-  private  String verifiedStatus = Konstants.UNVERIFIED;
+  private String verifiedStatus = Konstants.UNVERIFIED;
+
 
   public User() {
   } //no-arg constructor because of Firebase
-
 
   public User(String preferredName, String DOB, String email, String phoneNumber, String whatsappNumber, String uniqueID, GallamseyLocationComponent geoLocation, String gender) {
     this.preferredName = preferredName;
@@ -45,6 +56,43 @@ public class User implements Parcelable {
     this.uniqueUserName = ts.getTime() + "-" + email.split("@")[0];
     this.geoLocation = geoLocation;
     this.gender = gender;
+  }
+
+  public User(String preferredName, String dob, String email, String phoneNumber, String whatsappNumber, String uniqueID, String gender) {
+    this.preferredName = preferredName;
+    this.phoneNumber = phoneNumber;
+    this.whatsappNumber = whatsappNumber;
+    this.uniqueID = uniqueID;
+    this.dob = dob;
+    this.email = email;
+    this.uniqueUserName = ts.getTime() + "-" + email.split("@")[0];
+    this.geoLocation = geoLocation;
+    this.gender = gender;
+  }
+
+  protected User(Parcel in) {
+    this.region = in.readString();
+    this.country = in.readString();
+    this.profilePictureURL = in.readString();
+    this.gender = in.readString();
+    this.preferredName = in.readString();
+    this.uniqueUserName = in.readString();
+    this.email = in.readString();
+    this.dob = in.readString();
+    this.phoneNumber = in.readString();
+    this.whatsappNumber = in.readString();
+    this.uniqueID = in.readString();
+    this.userDocumentID = in.readString();
+    long tmpTs = in.readLong();
+    this.ts = tmpTs == -1 ? null : new Date(tmpTs);
+    this.createdAt = in.readString();
+    this.mobileNumbersForPayment = in.createTypedArrayList(PaymentContact.CREATOR);
+    this.deliveryLocations = in.createTypedArrayList(GallamseyLocationComponent.CREATOR);
+    this.geoLocation = in.readParcelable(GallamseyLocationComponent.class.getClassLoader());
+    this.wallet = in.readParcelable(Wallet.class.getClassLoader());
+    this.accolades = in.readParcelable(Accolades.class.getClassLoader());
+    this.appInstanceToken = in.createTypedArrayList(DeviceToToken.CREATOR);
+    this.verifiedStatus = in.readString();
   }
 
   public ArrayList<DeviceToToken> getAppInstanceToken() {
@@ -71,25 +119,12 @@ public class User implements Parcelable {
     this.userDocumentID = userDocumentID;
   }
 
-  public User(String preferredName, String dob, String email, String phoneNumber, String whatsappNumber, String uniqueID, String gender) {
-    this.preferredName = preferredName;
-    this.phoneNumber = phoneNumber;
-    this.whatsappNumber = whatsappNumber;
-    this.uniqueID = uniqueID;
-    this.dob = dob;
-    this.email = email;
-    this.uniqueUserName = ts.getTime() + "-" + email.split("@")[0];
-    this.geoLocation = geoLocation;
-    this.gender = gender;
+  public String getEmail() {
+    return email;
   }
 
   public void setEmail(String email) {
     this.email = email;
-  }
-
-
-  public String getEmail() {
-    return email;
   }
 
   public ArrayList<GallamseyLocationComponent> getDeliveryLocations() {
@@ -107,7 +142,6 @@ public class User implements Parcelable {
   public void setMobileNumbersForPayment(ArrayList<PaymentContact> mobileNumbersForPayment) {
     this.mobileNumbersForPayment = mobileNumbersForPayment;
   }
-
 
   public Accolades getAccolades() {
     return accolades;
@@ -189,16 +223,16 @@ public class User implements Parcelable {
     return uniqueID;
   }
 
+  public void setUniqueID(String uniqueID) {
+    this.uniqueID = uniqueID;
+  }
+
   public GallamseyLocationComponent getGeoLocation() {
     return geoLocation;
   }
 
   public void setGeoLocation(GallamseyLocationComponent geoLocation) {
     this.geoLocation = geoLocation;
-  }
-
-  public void setUniqueID(String uniqueID) {
-    this.uniqueID = uniqueID;
   }
 
   public String getGender() {
@@ -269,41 +303,4 @@ public class User implements Parcelable {
     dest.writeTypedList(this.appInstanceToken);
     dest.writeString(this.verifiedStatus);
   }
-
-  protected User(Parcel in) {
-    this.region = in.readString();
-    this.country = in.readString();
-    this.profilePictureURL = in.readString();
-    this.gender = in.readString();
-    this.preferredName = in.readString();
-    this.uniqueUserName = in.readString();
-    this.email = in.readString();
-    this.dob = in.readString();
-    this.phoneNumber = in.readString();
-    this.whatsappNumber = in.readString();
-    this.uniqueID = in.readString();
-    this.userDocumentID = in.readString();
-    long tmpTs = in.readLong();
-    this.ts = tmpTs == -1 ? null : new Date(tmpTs);
-    this.createdAt = in.readString();
-    this.mobileNumbersForPayment = in.createTypedArrayList(PaymentContact.CREATOR);
-    this.deliveryLocations = in.createTypedArrayList(GallamseyLocationComponent.CREATOR);
-    this.geoLocation = in.readParcelable(GallamseyLocationComponent.class.getClassLoader());
-    this.wallet = in.readParcelable(Wallet.class.getClassLoader());
-    this.accolades = in.readParcelable(Accolades.class.getClassLoader());
-    this.appInstanceToken = in.createTypedArrayList(DeviceToToken.CREATOR);
-    this.verifiedStatus = in.readString();
-  }
-
-  public static final Creator<User> CREATOR = new Creator<User>() {
-    @Override
-    public User createFromParcel(Parcel source) {
-      return new User(source);
-    }
-
-    @Override
-    public User[] newArray(int size) {
-      return new User[size];
-    }
-  };
 }

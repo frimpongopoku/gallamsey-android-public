@@ -102,6 +102,12 @@
       <!-- </intent-filter> -->
 
     </activity>
+    <activity android:name=".ProfileCompletionPage" >
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+    </activity>
     <activity android:name=".TeachMeHowToCreateAnErrand" />
     <activity android:name=".ImageErrandView" />
     <activity
@@ -128,7 +134,7 @@
     </activity>
     <activity android:name=".ViewProfilePage" />
     <activity android:name=".UserEarningsPage" />
-    <activity android:name=".ProfileCompletionPage" />
+
     <activity
       android:name=".Home"
       android:configChanges="keyboardHidden|orientation"

@@ -16,7 +16,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_centerInParent="true"
-      android:visibility="invisible" />
+      android:visibility="gone" />
 
     <View
       android:id="@+id/titlebar"
@@ -116,6 +116,9 @@
               android:textSize="13sp" />
 
             <EditText
+              android:fontFamily="@font/google_sans_light"
+              android:textColor="@color/appColor"
+              android:textColorHint="@color/appColor"
               android:id="@+id/prof_username"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
@@ -128,15 +131,20 @@
               android:textSize="13dp" />
 
             <TextView
+              android:layout_marginBottom="5dp"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:layout_marginLeft="25dp"
               android:padding="6dp"
-              android:text="Date format Eg. 22-03-1998\nFun fact, you must be 13 or older"
-              android:textColor="@color/star_color"
+              android:textFontWeight="10"
+              android:text="Fun fact, you must be 13yrs or older"
+              android:textColor="@color/appColor"
               android:textSize="13sp" />
 
             <EditText
+              android:textColor="@color/appColor"
+              android:textColorHint="@color/appColor"
+              android:fontFamily="@font/google_sans_light"
               android:id="@+id/prof_dob"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
@@ -151,6 +159,9 @@
 
 
             <EditText
+              android:fontFamily="@font/google_sans_light"
+              android:textColor="@color/appColor"
+              android:textColorHint="@color/appColor"
               android:id="@+id/prof_whatsapp_number"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
