@@ -41,9 +41,9 @@ import java.util.ArrayList;
 public class Register extends AppCompatActivity {
 
   private static String TAG = "REGISTRATION-AREA::->";
-  String username, email, password, passwordConfirmation, whatsappNumber, phone, dob, gender = Konstants.OTHER;
+  String country ="GHANA", username, email, password, passwordConfirmation, whatsappNumber, phone, dob, gender = Konstants.OTHER;
   EditText usernameBox, emailBox, passBox, confirmPassBox, whatsappBox, phoneBox, dobBox;
-  Spinner genderDropDown;
+  Spinner genderDropDown, countryDropdown;
   ProgressBar spinner;
   FirebaseFirestore db = FirebaseFirestore.getInstance();
   Boolean infoProvided;
@@ -55,6 +55,9 @@ public class Register extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_register);
+    countryDropdown = findViewById(R.id.country_dropdown);
+    MyHelper.initializeDropDown(Konstants.COUNTRIES,countryDropdown,this);
+    countryDropdown.setOnItemSelectedListener(chooseCountry);
     mAuth = FirebaseAuth.getInstance();
     usernameBox = findViewById(R.id.reg_username);
     emailBox = findViewById(R.id.reg_email);
@@ -100,6 +103,19 @@ public class Register extends AppCompatActivity {
       goToUserHomepage();
     }
   }
+
+  private AdapterView.OnItemSelectedListener chooseCountry = new AdapterView.OnItemSelectedListener() {
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        country = adapterView.getItemAtPosition(i).toString();
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
+  };
 
 
   private void setGoogleDialogUp() {
@@ -194,6 +210,7 @@ public class Register extends AppCompatActivity {
     //Every user starts as a ground user -- upgrade later
     //--------------------------------------------------------------------------------
     newUser = new GroundUser(preferredName, DOB, email, phone, whatsappPhone, user.getUid(), Konstants.GROUND_USER, gender);
+    newUser.setCountry(country);
     cleanUp();
     if (!infoProvided) {
       goToProfileCompletion();
@@ -287,7 +304,7 @@ public class Register extends AppCompatActivity {
   }
 
   private void doRegistration() {
-    Boolean emailGood = false, passGood = false, phoneGood = false;
+
     email = MyHelper.grabCleanText(emailBox);
     password = MyHelper.grabCleanText(passBox);
     passwordConfirmation = MyHelper.grabCleanText(confirmPassBox);

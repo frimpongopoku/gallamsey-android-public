@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -54,11 +55,15 @@ public class AddMoreLocations extends AppCompatActivity implements LocationItemC
   Context context = this;
   TextView pageName;
   ImageView backBtn;
+  String howIGotHere;
+  Context thisActivity ;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_add_more_locations);
+    thisActivity = this;
+    howIGotHere = getIntent().getStringExtra(Konstants.COMING_FROM_PROFILE_EDIT);
     authenticatedUser = getIntent().getParcelableExtra(Konstants.AUTH_USER_KEY);
     if (authenticatedUser != null) {
       arr = authenticatedUser.getDeliveryLocations();
@@ -95,8 +100,15 @@ public class AddMoreLocations extends AppCompatActivity implements LocationItemC
   private View.OnClickListener goBack = new View.OnClickListener() {
     @Override
     public void onClick(View view) {
+      if(howIGotHere == null) finish();
+      // this means user came from profile editing after registration....
+      // So homepage wont be opened  already, so open with the back button
+      Toast.makeText(context, "Loading...", Toast.LENGTH_SHORT).show();
+      Intent page = new Intent(thisActivity, Home.class);
+      page.putExtra(Konstants.AUTH_USER_KEY, authenticatedUser);
+      startActivity(page);
       finish();
-      ;
+      view.setEnabled(false);
     }
   };
 

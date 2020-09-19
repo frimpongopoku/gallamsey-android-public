@@ -9,6 +9,8 @@ public class Konstants {
 
 
 
+
+  public static final String COMING_FROM_PROFILE_EDIT = "EDITING";
   public static final String SAVE_NEWS_TO_CACHE = "SAVE_NEWS_TO_CACHE";
   public static final String ANONYMOUS_USER = "ANONYMOUS_USER";
   public static final String UNVERIFIED = "UNVERIFIED";

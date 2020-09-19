@@ -94,6 +94,17 @@
           android:fontFamily="@font/google_sans_light"
           android:textSize="14sp"/>
 
+        <Spinner
+          android:id="@+id/country_dropdown"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="30dp"
+          android:layout_marginTop="5dp"
+          android:layout_marginRight="30dp"
+          android:layout_marginBottom="10dp"
+          android:background="@drawable/stroke_textbox"
+          android:padding="15dp"/>
+
         <TextView
           android:textColor="@android:color/black"
           android:layout_width="wrap_content"
@@ -102,7 +113,8 @@
           android:text="Gender ( If you prefer not to say, please choose 'other' ) "
           android:textSize="12sp" />
 
-        <Spinner
+
+<Spinner
           android:id="@+id/gender_dropdown"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"

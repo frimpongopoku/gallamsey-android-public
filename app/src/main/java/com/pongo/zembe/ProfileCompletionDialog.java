@@ -28,21 +28,21 @@ public class ProfileCompletionDialog extends AppCompatDialogFragment {
       .setNegativeButton("NO, Skip This", new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialogInterface, int i) {
+          Toast.makeText(getContext(), "Redirecting...", Toast.LENGTH_LONG).show();
           Intent home = new Intent(getContext(), Home.class);
           home.putExtra(Konstants.AUTH_USER_KEY, authenticatedUser);
           startActivity(home);
-          Toast.makeText(getContext(), "Redirecting...", Toast.LENGTH_LONG).show();
-          if(getActivity() != null) getActivity().finish();
-
+          if (getActivity() != null) getActivity().finish();
         }
       }).setPositiveButton("YES, I Want To", new DialogInterface.OnClickListener() {
       @Override
       public void onClick(DialogInterface dialogInterface, int i) {
-        Intent locationPage = new Intent(getContext(), SetLocationsPage.class);
-        locationPage.putExtra(Konstants.AUTH_USER_KEY, authenticatedUser);
-        startActivity(locationPage);
         Toast.makeText(getContext(), "Redirecting...", Toast.LENGTH_LONG).show();
-        if(getActivity() != null) getActivity().finish();
+        Intent locationPage = new Intent(getContext(), AddMoreLocations.class);
+        locationPage.putExtra(Konstants.AUTH_USER_KEY, authenticatedUser);
+        locationPage.putExtra(Konstants.COMING_FROM_PROFILE_EDIT,Konstants.COMING_FROM_PROFILE_EDIT);
+        startActivity(locationPage);
+        if (getActivity() != null) getActivity().finish();
       }
     });
     return builder.create();
