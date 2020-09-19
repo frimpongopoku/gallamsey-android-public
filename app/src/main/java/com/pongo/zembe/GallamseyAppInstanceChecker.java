@@ -16,16 +16,23 @@ import java.util.ArrayList;
 
 public class GallamseyAppInstanceChecker {
 
+
   String userID;
   ArrayList<DeviceToToken> oldTokens;
   FirebaseFirestore db = FirebaseFirestore.getInstance();
   CollectionReference userCollectionRef = db.collection(Konstants.USER_COLLECTION);
+  GroundUser authenticatedUser =  new GroundUser();
   private static final String TAG = "INSTANCE-ID--->";
   public static final String ANDROID = "android";
 
   public GallamseyAppInstanceChecker(ArrayList<DeviceToToken> oldTokens, String userID) {
     this.userID = userID;
     this.oldTokens = oldTokens;
+  }
+
+
+  public void setAuthenticatedUser(GroundUser authenticatedUser) {
+    this.authenticatedUser = authenticatedUser;
   }
 
   public void checkAndUpdateInstanceTokenOnServer() {
@@ -44,7 +51,11 @@ public class GallamseyAppInstanceChecker {
           return;
         }
         // -------- Save token to database
-        userCollectionRef.document(userID).update("appInstanceToken", token).addOnSuccessListener(new OnSuccessListener<Void>() {
+        ArrayList<DeviceToToken> deviceToTokens = new ArrayList<>();
+        DeviceToToken android = new DeviceToToken(ANDROID, token);
+        deviceToTokens.add(android);
+        authenticatedUser.setAppInstanceToken(deviceToTokens);
+        userCollectionRef.document(userID).set(authenticatedUser).addOnSuccessListener(new OnSuccessListener<Void>() {
           @Override
           public void onSuccess(Void aVoid) {
             Log.d(TAG, "onSuccess: saved token in user sheet");

@@ -8,6 +8,7 @@ import java.util.HashMap;
 public class Konstants {
 
 
+
   public static final String SAVE_NEWS_TO_CACHE = "SAVE_NEWS_TO_CACHE";
   public static final String ANONYMOUS_USER = "ANONYMOUS_USER";
   public static final String UNVERIFIED = "UNVERIFIED";
@@ -40,7 +41,7 @@ public class Konstants {
   public static final String SEARCH_ERRANDS = "ERRANDS";
   public static final String SEARCH_PROFIT = "PROFIT";
   public static final String SEARCH_COST = "COSTS";
-  public static final int DEFAULT_WALLET_BALANCE_GH = 1;
+  public static final int DEFAULT_WALLET_BALANCE_GH = 2;
   public static final int DEFAULT_WALLET_PIN = 1111;
   public static final String MODE = "MODE";
   public static final String FROM_TEMPLATE_MODE = "FROM_TEMPLATE";

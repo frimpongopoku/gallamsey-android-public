@@ -141,7 +141,9 @@
               android:textColor="@color/appColor"
               android:textSize="13sp" />
 
-            <EditText
+            <TextView
+              android:clickable="true"
+              android:text="Date Of Birth..."
               android:textColor="@color/appColor"
               android:textColorHint="@color/appColor"
               android:fontFamily="@font/google_sans_light"
@@ -152,8 +154,6 @@
               android:layout_marginRight="30dp"
               android:layout_marginBottom="10dp"
               android:background="@drawable/stroke_textbox"
-              android:hint="Date of birth Eg. 22-03-1998"
-              android:inputType="date"
               android:padding="15dp"
               android:textSize="13dp" />
 
@@ -198,7 +198,7 @@
               android:textColor="@android:color/white" />
 
             <Button
-              android:id="@+id/reg_google"
+              android:id="@+id/skip"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:layout_marginBottom="27dp"

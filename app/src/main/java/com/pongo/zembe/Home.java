@@ -256,6 +256,7 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackCon
     if (authenticatedUser != null) {
       userDocumentReference = userDB.document(authenticatedUser.getUserDocumentID());
       GallamseyAppInstanceChecker appInstanceChecker = new GallamseyAppInstanceChecker(authenticatedUser.getAppInstanceToken(), authenticatedUser.getUserDocumentID());
+      appInstanceChecker.setAuthenticatedUser(authenticatedUser);
       appInstanceChecker.checkAndUpdateInstanceTokenOnServer();
       setProfilePicture();
     }
