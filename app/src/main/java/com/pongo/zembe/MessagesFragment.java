@@ -95,7 +95,7 @@ public class MessagesFragment extends Fragment {
     @Override
     public void onClick(View view) {
       Intent page = new Intent(parentActivity,Login.class);
-      startActivity(page);
+      parentActivity.startActivity(page);
       parentActivity.finish();
     }
   };
