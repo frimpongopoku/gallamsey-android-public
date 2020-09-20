@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <LinearLayout
+    android:id="@+id/no_auth_box"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:visibility="gone"
+    android:orientation="vertical">
+
+    <include layout="@layout/narrator_layout" />
+
+    <Button
+      android:visibility="visible"
+      android:id="@+id/login_btn"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="35dp"
+      android:layout_marginTop="10dp"
+      android:layout_marginBottom="10dp"
+      android:layout_marginRight="35dp"
+      android:background="@drawable/stroke_button"
+      android:fontFamily="@font/google_sans"
+      android:padding="15dp"
+      android:text="Sign In"
+      android:textColor="@color/appColor" />
+  </LinearLayout>
+</merge>

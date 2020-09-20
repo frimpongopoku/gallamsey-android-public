@@ -122,6 +122,7 @@ public class ConversationListRecyclerAdapter extends RecyclerView.Adapter<Conver
       container.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+          unReadBadge.setVisibility(View.GONE);
           int position = getAdapterPosition();
           ConversationListItem item = chats.get(position);
           listener.onConversationListItemClicked(position, item);

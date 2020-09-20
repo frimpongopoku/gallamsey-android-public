@@ -6,7 +6,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.material.chip.Chip;
@@ -27,6 +29,12 @@ public class MyHelper {
 
 
 
+
+  public static void initializeDropDown(ArrayList<String> array, Spinner spinner, Context context){
+    ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, R.layout.support_simple_spinner_dropdown_item, array);
+    adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+    spinner.setAdapter(adapter);
+  }
   public static Boolean compareTwoArraysOfSameInstance(ArrayList<Object> one, ArrayList<Object> two){
     if(one.size() == two.size() ) return false;
     return one.containsAll(two) && two.containsAll(one);

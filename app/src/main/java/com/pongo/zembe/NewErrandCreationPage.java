@@ -61,7 +61,7 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
   RecyclerView recyclerView, ridersRecyclerView;
   ImageView taggingTabBtn, quit, helpBtn, userSelectedImageHolder, addDetailsBtn, descriptionTabBtn, estimateTabBtn, allowanceTabBtn, locationTabBtn, detailsTabBtn;
   LinearLayout selectRidersTab, taggingTab, detailsTab, descriptionTab, estimationTab, allowanceTab, locationTab, pictureTab;
-  Button saveAsTemplateBtn, postBtn, addPictureTabBtn, removePictureBtn, selectRidersBtn, addTag;
+  Button saveAsTemplateBtn, postBtn, addPictureTabBtn, removePictureBtn, selectRidersBtn, addTag, signInBtn;
   EditText detailsBox, allowanceBox, estimatedCostBox, descriptionBox;
   AutoCompleteTextView autoCompleteBox;
   DetailsListAdapter recyclerAdapter;
@@ -101,14 +101,18 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     dialogCreator = new MagicBoxes(this);
     authenticatedUser = getIntent().getParcelableExtra(Konstants.AUTH_USER_KEY);
     tagCollection = getIntent().getParcelableExtra(Konstants.PASS_TAGS);
+    initializeActivity();
     if (authenticatedUser != null) {
       makeSimpleUserFrom(authenticatedUser);
       locationList.add(Konstants.CHOOSE);//  "CHOOSE" to be the first item
       locationList.addAll(MyHelper.changeGallamseyPointToStringArray(authenticatedUser.getDeliveryLocations()));
       stringToGallamseObj = MyHelper.changeGallmseyPointToHash(authenticatedUser.getDeliveryLocations());
       setProfilePicture();
+    }else{
+      postBtn.setVisibility(View.GONE);
+      signInBtn.setVisibility(View.VISIBLE);
     }
-    initializeActivity();
+
     if (MODE.equals(Konstants.EDIT_MODE)) {
       //means user wants to edit an existing errand, inflate the all fields with incoming errand
       toBeEdited = getIntent().getParcelableExtra(Konstants.PASS_ERRAND_AROUND);
@@ -550,10 +554,21 @@ public class NewErrandCreationPage extends AppCompatActivity implements OnDetail
     }
   }
 
+  private View.OnClickListener goToLogin = new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+      Intent page = new Intent(activity, Login.class);
+      startActivity(page);
+      activity.finish();
+    }
+  };
+
   private void initializeActivity() {
 
     //  -----------------------------------------------------------
 
+    signInBtn = findViewById(R.id.sign_in_btn);
+    signInBtn.setOnClickListener(goToLogin);
     addTag = findViewById(R.id.add_unavailable_tag);
     saveAsTemplateBtn = findViewById(R.id.template_btn);
     storageReference = FirebaseStorage.getInstance().getReference(Konstants.ERRAND_PICTURES_COLLECTION);

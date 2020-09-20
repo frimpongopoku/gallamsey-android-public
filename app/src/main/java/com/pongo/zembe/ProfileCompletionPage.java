@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -14,10 +15,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -37,12 +41,14 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ProfileCompletionPage extends AppCompatActivity {
+public class ProfileCompletionPage extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
   CoordinatorLayout rootLayout;
-  EditText dobBox, usernameBox, whatsappNumberBox;
+  EditText usernameBox, whatsappNumberBox;
+  TextView dobBox;
   FirebaseFirestore db = FirebaseFirestore.getInstance();
   CollectionReference userDB;
   FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -56,9 +62,12 @@ public class ProfileCompletionPage extends AppCompatActivity {
   CircleImageView imageHolder;
   StorageReference storageReference;
   String selectedImageExt;
-  User recoveredUser; //Gallamsey User class
+  GroundUser recoveredUser; //Gallamsey User class
   ImageView roundCloseBtn;
   Activity activity;
+  String dobText = Konstants.EMPTY;
+  Button skip;
+
 
 
   @Override
@@ -69,10 +78,7 @@ public class ProfileCompletionPage extends AppCompatActivity {
     user = mAuth.getCurrentUser();
     spinner = findViewById(R.id.prof_spinner);
     //-----------------
-//    FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
-//      .setTimestampsInSnapshotsEnabled(true)
-//      .build();
-//    db.setFirestoreSettings(settings);
+
     if (user == null) {
       goToLogin();
     } else {
@@ -82,13 +88,15 @@ public class ProfileCompletionPage extends AppCompatActivity {
     }
     //--------------------------------------------------
     roundCloseBtn = findViewById(R.id.x_button);
+    skip = findViewById(R.id.reg_finish);
     storageReference = FirebaseStorage.getInstance().getReference(Konstants.PROFILE_PICTURES_COLLECTION);
     dobBox = findViewById(R.id.prof_dob);
+    dobBox.setOnClickListener(showDatePicker);
     usernameBox = findViewById(R.id.prof_username);
     whatsappNumberBox = findViewById(R.id.prof_whatsapp_number);
     rootLayout = findViewById(R.id.coordinator_layout);
     elementsDiv = findViewById(R.id.prof_mother_div);
-    elementsDiv.setVisibility(View.INVISIBLE);
+    elementsDiv.setVisibility(View.GONE);
     profilePicture = findViewById(R.id.profile_picture);
     imageHolder = findViewById(R.id.image_holder);
     imageUploadHelper = new ImageUploadHelper(this);
@@ -127,6 +135,15 @@ public class ProfileCompletionPage extends AppCompatActivity {
   }
 
 
+
+  private View.OnClickListener showDatePicker = new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+     DatePickerFragment picker = new DatePickerFragment(activity);
+     picker.show(getSupportFragmentManager(),"Date Of Birth");
+
+    }
+  };
   public void deleteCurrentProfilePicture() {
     final String URL = recoveredUser.getProfilePictureURL();
     recoveredUser.setProfilePictureURL(null);
@@ -179,7 +196,10 @@ public class ProfileCompletionPage extends AppCompatActivity {
               gUser.setUserDocumentID(document.getReference().getId());
               //set global user variable
               recoveredUser = gUser;
+              dobText = gUser.getDob();
               dobBox.setText(gUser.getDob());
+              String x = "Date Of Birth...";
+              if(gUser.getDob() == null || gUser.getDob().isEmpty()) dobBox.setText(x);
               usernameBox.setText(gUser.getPreferredName());
               whatsappNumberBox.setText(gUser.getWhatsappNumber());
               spinner.setVisibility(View.INVISIBLE);
@@ -198,7 +218,7 @@ public class ProfileCompletionPage extends AppCompatActivity {
 
   public void getProfilePictureOnLoad(User gallamseyUser) {
 
-    if (gallamseyUser.getProfilePictureURL() != null) {
+    if (gallamseyUser.getProfilePictureURL() != null && !gallamseyUser.getProfilePictureURL().equals(Konstants.EMPTY)) {
       //------if the user has profile picture, show that one instead of the default profile photos
       Picasso.get().load(gallamseyUser.getProfilePictureURL()).into(imageHolder);
       profilePicture.setVisibility(View.GONE);
@@ -274,9 +294,9 @@ public class ProfileCompletionPage extends AppCompatActivity {
 
   public void saveUserInformation(View v) {
     final String dob, name, number;
-    dob = dobBox.getText().toString().trim();
     name = usernameBox.getText().toString().trim();
     number = whatsappNumberBox.getText().toString().trim();
+    dob = dobText;
     HashMap<String, Object> dobValidation = MyHelper.validateDOB(dob);
     if (name.isEmpty()) {
       usernameBox.setError("Sorry, you cant leave this empty");
@@ -284,13 +304,14 @@ public class ProfileCompletionPage extends AppCompatActivity {
       return;
     }
     if (dob.isEmpty()) {
-      dobBox.setError("Please provide a valid date of birth");
+      Toast.makeText(activity, "Please provide a valid DOB", Toast.LENGTH_SHORT).show();
       dobBox.requestFocus();
       return;
     }
-    if (dobValidation.get("status").equals(false)) {
+    if (Objects.requireNonNull(dobValidation.get("status")).equals(false)) {
       String intoOne = MyHelper.mergeTextsFromArray((ArrayList<String>) dobValidation.get("errors"));
       dobBox.setError(intoOne);
+      Snackbar.make(rootLayout,intoOne,Snackbar.LENGTH_SHORT);
       dobBox.requestFocus();
       return;
     }
@@ -340,7 +361,7 @@ public class ProfileCompletionPage extends AppCompatActivity {
 
   }
 
-  public void actuallyUpdateUserInfo(User gallamseyUser, String documentID) {
+  public void actuallyUpdateUserInfo(final User gallamseyUser, String documentID) {
     userDB
       .document(documentID).set(gallamseyUser)
       .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -348,7 +369,8 @@ public class ProfileCompletionPage extends AppCompatActivity {
         public void onSuccess(Void aVoid) {
           spinner.setVisibility(View.INVISIBLE);
           ProfileCompletionDialog dialog = new ProfileCompletionDialog();
-          dialog.show(getSupportFragmentManager(), "Profile Update Congratulatory Message");
+          dialog.setAuthenticatedUser(recoveredUser);
+          dialog.show(getSupportFragmentManager(), "Almost There");
         }
       }).addOnFailureListener(new OnFailureListener() {
       @Override
@@ -368,9 +390,22 @@ public class ProfileCompletionPage extends AppCompatActivity {
   }
 
   public void goToHomepage(View v) {
+    Toast.makeText(activity, "Redirecting...", Toast.LENGTH_LONG).show();
     Intent home = new Intent(this, Home.class);
+    home.putExtra(Konstants.AUTH_USER_KEY, recoveredUser);
     startActivity(home);
 
+    finish();
+  }
+
+  @Override
+  public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+    int year = i;
+    int month = i1;
+    int day = i2;
+    String t = day +"-"+month+"-"+year;
+    dobText = t;
+    dobBox.setText(t);
   }
 
   public interface ImageUploadCallback {

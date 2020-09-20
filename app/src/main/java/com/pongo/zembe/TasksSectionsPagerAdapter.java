@@ -13,16 +13,21 @@ public class TasksSectionsPagerAdapter extends FragmentPagerAdapter {
   String[] TAB_TITLES = {"Your Gigs", "Errands You Created"};
   private String[] TAB_KEYS = {Konstants.TASKS_GIGS_TAB, Konstants.TASKS_YOUR_ERRANDS_TAB};
   Context context;
+  GroundUser authenticatedUser;
 
   public TasksSectionsPagerAdapter(Context context, @NonNull FragmentManager fm) {
     super(fm);
     this.context = context;
   }
 
+  public void setAuthenticatedUser(GroundUser authenticatedUser) {
+    this.authenticatedUser = authenticatedUser;
+  }
+
   @NonNull
   @Override
   public Fragment getItem(int position) {
-    return TasksFragmentGenerator.newInstance(TAB_KEYS[position]);
+    return TasksFragmentGenerator.newInstance(TAB_KEYS[position],context,authenticatedUser);
   }
 
 

@@ -1,5 +1,6 @@
 package com.pongo.zembe;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,9 +9,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -48,6 +52,7 @@ import java.util.HashMap;
 
 public class MessagesFragment extends Fragment {
 
+  public static final String TAG = "MESSAGING-FRAGMENT";
   RecyclerView recyclerView;
   ConversationListRecyclerAdapter adapter;
   GalFirebaseHelper firebaseHelper = new GalFirebaseHelper();
@@ -61,9 +66,12 @@ public class MessagesFragment extends Fragment {
   private GalInterfaceGuru.TrackConversationListPage stateTracker;
   private ArrayList<ConversationListItem> chatList = new ArrayList<>();
   private RequestQueue myReq;
-  public static final String TAG = "MESSAGING-FRAGMENT";
-  private ProgressBar spinner ;
-  private RelativeLayout relativeLayout;
+  private ProgressBar spinner;
+  private RelativeLayout relativeLayout, narratorBox;
+  private LinearLayout noAuthBox;
+  private TextView salutation;
+  private Button loginBtn;
+  private Activity parentActivity ;
 
   public MessagesFragment() {
   }
@@ -74,35 +82,73 @@ public class MessagesFragment extends Fragment {
     this.myReq = Volley.newRequestQueue(context);
   }
 
-  public void setOldState(View oldState, ArrayList<ConversationListItem> chatList){
+  public void setOldState(View oldState, ArrayList<ConversationListItem> chatList) {
     this.chatList = chatList;
     this.state = oldState;
   }
+
   public void setAuthenticatedUser(GroundUser authenticatedUser) {
     this.authenticatedUser = authenticatedUser;
   }
 
+  private View.OnClickListener goToLoginPage = new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+      Intent page = new Intent(parentActivity,Login.class);
+      parentActivity.startActivity(page);
+      parentActivity.finish();
+    }
+  };
+
+  private View showNoAuthBox(View v) {
+    loginBtn = v.findViewById(R.id.login_btn);
+    loginBtn.setOnClickListener(goToLoginPage);
+    spinner = v.findViewById(R.id.spinner);
+    spinner.setVisibility(View.GONE);
+    noAuthBox = v.findViewById(R.id.no_auth_box);
+    narratorBox = v.findViewById(R.id.narrator_box);
+    salutation = v.findViewById(R.id.salutation);
+    noAuthBox.setVisibility(View.VISIBLE);
+    narratorBox.setVisibility(View.VISIBLE);
+    String t = "Hi there, please Sign In to see your messages";
+    salutation.setText(t);
+    return v;
+  }
+
+
   @Nullable
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    parentActivity = this.getActivity();
     // means the old content of the last conversation list load was saved before user left the fragment
     // collect and show the same thing again, before looking for new conversations behind the scenes
     if (state != null) {
-      inflateRecycler(chatList);
+      if (chatList == null) {
+        inflateRecycler(new ArrayList<ConversationListItem>());
+      } else {
+        inflateRecycler(chatList);
+      }
       return state;
     }
+
     View v = inflater.inflate(R.layout.messages_nav_fragment, container, false);
     this.state = v;
+    // Check user authenticated, or dont move forward just show the noAUthBox
+    if (authenticatedUser == null) {
+      View noAuthView = showNoAuthBox(v);
+      this.state = noAuthView;
+      return noAuthView;
+    }
+
     View inflatedView = initialize(v);
     this.state = inflatedView;
-    if(chatList != null && chatList.size() > 0){
+    if (chatList != null && chatList.size() > 0) {
       // this situation means, user has never visited the msg frag before so there is no view state available,
       // but homepage's periodic search has been able to collect conversations already, so there will be no need to search again
       // just create view, and inflate with content that homepage sent through....
-
       inflateRecycler(chatList);
       spinner.setVisibility(View.GONE);
-    }else{
+    } else {
       getConversationsFromAbove();
     }
     return inflatedView;
@@ -127,10 +173,10 @@ public class MessagesFragment extends Fragment {
     recyclerView.setVisibility(View.VISIBLE);
   }
 
-  private void getConversationsFromAbove(){
+  private void getConversationsFromAbove() {
     JSONObject data = new JSONObject();
     try {
-      data.put("user_id",authenticatedUser.getUserDocumentID());
+      data.put("user_id", authenticatedUser.getUserDocumentID());
     } catch (JSONException e) {
       e.printStackTrace();
     }
@@ -138,13 +184,14 @@ public class MessagesFragment extends Fragment {
     JsonObjectRequest convoRequest = new JsonObjectRequest(Request.Method.POST, GallamseyURLS.FIND_ALL_CONVERSATIONS, data, new Response.Listener<JSONObject>() {
       @Override
       public void onResponse(JSONObject response) {
+
         ArrayList<ConversationListItem> conversations = processResponseData(response);
         chatList = conversations;
         spinner.setVisibility(View.GONE);
-        Log.d(TAG, "onResponse: "+conversations.size());
-        if(conversations.size() == 0){
+        Log.d(TAG, "onResponse: " + conversations.size());
+        if (conversations.size() == 0) {
           toggleNoChatContent(true);
-        }else{
+        } else {
           toggleNoChatContent(false);
           inflateRecycler(conversations);
         }
@@ -152,40 +199,39 @@ public class MessagesFragment extends Fragment {
     }, new Response.ErrorListener() {
       @Override
       public void onErrorResponse(VolleyError error) {
-        Log.d(TAG, "onErrorResponse: "+error.getMessage());
+        spinner.setVisibility(View.GONE);
+        Toast.makeText(context, "Sorry, something happened we couldn't load your messages, please try again later", Toast.LENGTH_LONG).show();
+        Log.d(TAG, "onErrorResponse: " + error.getMessage());
       }
     });
     myReq.add(convoRequest);
   }
 
-  private ArrayList<ConversationListItem> processResponseData(JSONObject response){
+  private ArrayList<ConversationListItem> processResponseData(JSONObject response) {
     ArrayList<ConversationListItem> conversations = new ArrayList<>();
     try {
       JSONObject error = (JSONObject) response.get("error");
       JSONArray content = (JSONArray) response.get("data");
-      if(content != null){
+      if (content != null) {
         Gson gson = new Gson();
-        for (int i = 0 ; i < content.length() ; i++){
+        for (int i = 0; i < content.length(); i++) {
           JSONObject conversation = (JSONObject) content.get(i);
-          ConversationListItem convo =  gson.fromJson(conversation.toString(),ConversationListItem.class);
-          Log.d(TAG, "onResponse: "+convo);
+          ConversationListItem convo = gson.fromJson(conversation.toString(), ConversationListItem.class);
+          Log.d(TAG, "onResponse: " + convo);
           conversations.add(convo);
         }
       }
     } catch (JSONException e) {
-      Log.d(TAG, "onResponse: ERORR "+ e.getMessage());
+      Log.d(TAG, "onResponse: ERORR " + e.getMessage());
     }
 
     return conversations;
   }
-  private void subscribeToListeners() {
 
-  }
-
-  private void toggleNoChatContent(Boolean state){
-    if(state){
+  private void toggleNoChatContent(Boolean state) {
+    if (state) {
       relativeLayout.setVisibility(View.VISIBLE);
-    }else{
+    } else {
       relativeLayout.setVisibility(View.GONE);
     }
 
@@ -194,7 +240,7 @@ public class MessagesFragment extends Fragment {
 
   @Override
   public void onDestroy() {
-    stateTracker.saveConversationListState(this.chatList,this.state);
+    stateTracker.saveConversationListState(this.chatList, this.state);
     super.onDestroy();
   }
 }

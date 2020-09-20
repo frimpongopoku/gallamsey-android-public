@@ -21,6 +21,17 @@ public class GalFirebaseHelper {
   public static final String TAG = "GALLAM-FIREBASE-HELPER";
   FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+  public void getFirebaseDocument(String documentID, CollectionReference reference, final GalInterfaceGuru.SnapshotTakerInterface takeSnapshot){
+    reference.document(documentID).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+      @Override
+      public void onSuccess(DocumentSnapshot documentSnapshot) {
+        if(documentSnapshot.exists()){
+          takeSnapshot.callback(documentSnapshot);
+        }
+      }
+    });
+
+  }
   public void setSnapshotListenerOnDocument(DocumentReference reference, final GalInterfaceGuru.SnapshotTakerInterface takeShapshot) {
     reference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
       @Override

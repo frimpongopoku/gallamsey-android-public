@@ -29,6 +29,7 @@ public class FavoritesActivity extends AppCompatActivity implements TemplatesRec
     tagCollection = getIntent().getParcelableExtra(Konstants.PASS_TAGS);
     setContentView(R.layout.activity_favorites);
     SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
+    sectionsPagerAdapter.setAuthenticatedUser(authenticatedUser);
     ViewPager viewPager = findViewById(R.id.view_pager);
     viewPager.setAdapter(sectionsPagerAdapter);
     TabLayout tabs = findViewById(R.id.tabs);

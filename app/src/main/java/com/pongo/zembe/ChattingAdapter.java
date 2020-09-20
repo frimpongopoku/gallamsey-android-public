@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -75,6 +77,7 @@ public class ChattingAdapter extends RecyclerView.Adapter {
   public void setSenderContent(@NonNull RecyclerView.ViewHolder _holder, int position) {
     OneChatMessage msg = conversation.getMessages().get(position);
     SenderViewHolder holder = (SenderViewHolder) _holder;
+//    holder.container.setAnimation(AnimationUtils.loadAnimation(context,R.anim.fade_in_while_moving_right));
     holder.msg.setText(msg.getMessage());
     holder.date.setText(DateHelper.getOnlyHoursAndMinutesFromDate(msg.getTimeStamp()));
 
@@ -83,6 +86,7 @@ public class ChattingAdapter extends RecyclerView.Adapter {
   public void setRecipientContent(@NonNull RecyclerView.ViewHolder _holder, int position) {
     OneChatMessage msg = conversation.getMessages().get(position);
     RecipientViewHolder holder = (RecipientViewHolder) _holder;
+//    holder.container.setAnimation(AnimationUtils.loadAnimation(context,R.anim.fade_in_while_moving_right));
     holder.msg.setText(msg.getMessage());
     holder.date.setText(DateHelper.getOnlyHoursAndMinutesFromDate(msg.getTimeStamp()));
 
@@ -96,21 +100,24 @@ public class ChattingAdapter extends RecyclerView.Adapter {
 
   public class SenderViewHolder extends RecyclerView.ViewHolder {
     TextView date, msg;
+    LinearLayout container;
 
     public SenderViewHolder(@NonNull View itemView) {
       super(itemView);
       date = itemView.findViewById(R.id.date);
       msg = itemView.findViewById(R.id.msg_content);
+      container = itemView.findViewById(R.id.container);
     }
   }
 
   public class RecipientViewHolder extends RecyclerView.ViewHolder {
     TextView date, msg;
-
+    LinearLayout container;
     public RecipientViewHolder(@NonNull View itemView) {
       super(itemView);
       date = itemView.findViewById(R.id.date);
       msg = itemView.findViewById(R.id.msg_content);
+      container = itemView.findViewById(R.id.container);
     }
   }
 }

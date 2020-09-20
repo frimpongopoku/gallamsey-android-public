@@ -74,6 +74,8 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackCon
   Handler handler = new Handler();
   RequestQueue httpHandler;
   TextView msgNotificationBadge;
+
+  int unReadMsgsCount;
   private View.OnClickListener goToSearchActivity = new View.OnClickListener() {
     @Override
     public void onClick(View view) {
@@ -135,6 +137,8 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackCon
           destinationPage = new MessagesFragment(thisActivity);
           ((MessagesFragment) destinationPage).setAuthenticatedUser(authenticatedUser);
           ((MessagesFragment) destinationPage).setOldState(messageFragState, messageFragItems);
+          msgNotificationBadge.setVisibility(View.GONE);//just get rid of the  notification badge when user clicks on messages tabicon
+
           break;
         case R.id.earnings:
           destinationPage = new UserEarningsFragment(thisActivity);
@@ -154,12 +158,15 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackCon
     super.onCreate(savedInstanceState);
     NotificationChannelSetup notifyMe = new NotificationChannelSetup(this);
     notifyMe.createChannels();
-    if (mAuth.getCurrentUser() == null) {
-      goToLogin();
-    }
+//    if (mAuth.getCurrentUser() == null) {
+//      goToLogin();
+//    }
     setContentView(R.layout.activity_home);
     initializeActivity();
-    getConversationListContentPeriodically();
+    if (authenticatedUser != null) {
+      getConversationListContentPeriodically();
+    }
+
   }
 
   private void updateMessagesNotificationBadge() {
@@ -170,10 +177,11 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackCon
       int unread = conversationListItem.getUnReadMsgs();
       count += unread;
     }
-    if (count > 0) {
+    if (count > 0 && count != unReadMsgsCount) {
+      unReadMsgsCount = count;
       msgNotificationBadge.setVisibility(View.VISIBLE);
       msgNotificationBadge.setText(String.valueOf(count));
-    }else{
+    } else {
       msgNotificationBadge.setVisibility(View.GONE);
     }
   }
@@ -224,6 +232,7 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackCon
   }
 
   private void getConversationListContentPeriodically() {
+    if (handler == null) return;
     handler.postDelayed(new Runnable() {
       @Override
       public void run() {
@@ -232,7 +241,7 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackCon
         updateMessagesNotificationBadge();
         getConversationListContentPeriodically();
       }
-    }, 4000);
+    }, 60000);
   }
 
   private void initializeActivity() {
@@ -247,6 +256,7 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackCon
     if (authenticatedUser != null) {
       userDocumentReference = userDB.document(authenticatedUser.getUserDocumentID());
       GallamseyAppInstanceChecker appInstanceChecker = new GallamseyAppInstanceChecker(authenticatedUser.getAppInstanceToken(), authenticatedUser.getUserDocumentID());
+      appInstanceChecker.setAuthenticatedUser(authenticatedUser);
       appInstanceChecker.checkAndUpdateInstanceTokenOnServer();
       setProfilePicture();
     }
@@ -304,6 +314,11 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackCon
   }
 
   private void setProfilePicture() {
+    if (authenticatedUser == null) {
+      // it means user isnt signed in, just put some gallamsey doummy image
+      userProfileImageOnToolbar.setImageResource(R.drawable.gallamsey_photo_for_other);
+      return;
+    }
     if (!authenticatedUser.getProfilePictureURL().equals(Konstants.INIT_STRING)) {
       //means user has a custom profile
       Picasso.get().load(authenticatedUser.getProfilePictureURL()).into(userProfileImageOnToolbar);
@@ -340,6 +355,7 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackCon
 
   private void goToTasksPage() {
     Intent tasksPage = new Intent(this, TasksActivity.class);
+    tasksPage.putExtra(Konstants.AUTH_USER_KEY, authenticatedUser);
     startActivity(tasksPage);
   }
 
@@ -380,6 +396,21 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackCon
     startActivity(page);
   }
 
+  @Override
+  protected void onResume() {
+    handler = new Handler();
+    if (authenticatedUser != null) {
+      getConversationListContentPeriodically();
+    }
+
+    super.onResume();
+  }
+
+  @Override
+  protected void onPause() {
+    handler = null;
+    super.onPause();
+  }
 
   @Override
   public void saveWalletState(ArrayList<Object> transactions, View view) {
@@ -409,6 +440,7 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackCon
     page.putExtra(Konstants.AUTH_USER_KEY, authenticatedUser);
     page.putExtra(Konstants.USER_ON_THE_OTHER_END, otherPerson);
     page.putExtra(Konstants.PASS_ERRAND_AROUND, item.getRelatedErrand());
+    page.putExtra(Konstants.UNREAD_COUNT, item.getUnReadMsgs());
     startActivity(page);
   }
 
@@ -420,7 +452,7 @@ public class Home extends AppCompatActivity implements GalInterfaceGuru.TrackCon
     if (messageFragItems == null) {
       messageFragItems = chats;
     } else {
-      if (chats.size() > messageFragItems.size()) {
+      if (chats != null && chats.size() > messageFragItems.size()) {
         messageFragItems = chats;
       }
     }

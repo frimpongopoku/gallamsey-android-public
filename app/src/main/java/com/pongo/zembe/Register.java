@@ -31,27 +31,33 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import org.w3c.dom.Document;
 
 import java.util.ArrayList;
 
 public class Register extends AppCompatActivity {
 
-  String username, email, password, passwordConfirmation, whatsappNumber, phone, dob, gender = Konstants.OTHER;
-  EditText usernameBox, emailBox, passBox, confirmPassBox, whatsappBox, phoneBox, dobBox;
-  Spinner genderDropDown;
-  private GoogleSignInClient mGoogleSignInClient;
-  private FirebaseAuth mAuth;
-  ProgressBar spinner;
   private static String TAG = "REGISTRATION-AREA::->";
+  String country ="GHANA", username, email, password, passwordConfirmation, whatsappNumber, phone, dob, gender = Konstants.OTHER;
+  EditText usernameBox, emailBox, passBox, confirmPassBox, whatsappBox, phoneBox, dobBox;
+  Spinner genderDropDown, countryDropdown;
+  ProgressBar spinner;
   FirebaseFirestore db = FirebaseFirestore.getInstance();
   Boolean infoProvided;
   GroundUser newUser;
+  private GoogleSignInClient mGoogleSignInClient;
+  private FirebaseAuth mAuth;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_register);
+    countryDropdown = findViewById(R.id.country_dropdown);
+    MyHelper.initializeDropDown(Konstants.COUNTRIES,countryDropdown,this);
+    countryDropdown.setOnItemSelectedListener(chooseCountry);
     mAuth = FirebaseAuth.getInstance();
     usernameBox = findViewById(R.id.reg_username);
     emailBox = findViewById(R.id.reg_email);
@@ -98,6 +104,19 @@ public class Register extends AppCompatActivity {
     }
   }
 
+  private AdapterView.OnItemSelectedListener chooseCountry = new AdapterView.OnItemSelectedListener() {
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        country = adapterView.getItemAtPosition(i).toString();
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
+  };
+
 
   private void setGoogleDialogUp() {
     GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -122,7 +141,7 @@ public class Register extends AppCompatActivity {
 
   public void goToUserHomepage() {
     Intent homepage = new Intent(this, Home.class);
-    homepage.putExtra(Konstants.AUTH_USER_KEY,newUser);
+    homepage.putExtra(Konstants.AUTH_USER_KEY, newUser);
     finish();
     startActivity(homepage);
   }
@@ -166,53 +185,62 @@ public class Register extends AppCompatActivity {
       });
   }
 
+  private boolean hasUserProvidedOtherInfo() {
+    String preferredName = usernameBox.getText().toString();
+    String whatsappPhone = whatsappBox.getText().toString();
+    String DOB = dobBox.getText().toString();
+    return !preferredName.isEmpty() && !whatsappPhone.isEmpty() && !whatsappPhone.isEmpty() && !DOB.isEmpty();
+
+  }
+
   private void saveOtherProfileInfo(FirebaseUser user, int authType) {
+    infoProvided = false;
     String preferredName = usernameBox.getText().toString();
     String whatsappPhone = whatsappBox.getText().toString();
     //if the authentication type is by google, dont get email phone from textbox, get it from googleUserReturned
     String phone = authType == Konstants.GOOGLE_AUTH_TYPE ? String.valueOf(user.getPhoneNumber()) : phoneBox.getText().toString();
     String email = authType == Konstants.GOOGLE_AUTH_TYPE ? user.getEmail() : emailBox.getText().toString();
     String DOB = dobBox.getText().toString();
-    infoProvided = false;
-    if (!preferredName.isEmpty() && !phone.isEmpty() && !DOB.isEmpty() && !whatsappPhone.isEmpty() && !email.isEmpty()) {
-      infoProvided = true;
-    }
-    //whether all these info have been provided or not, still create the user class and
-    //register them, don't force anyone, they will continue later
+    infoProvided = hasUserProvidedOtherInfo() && !phone.isEmpty();
+
+//    if (!preferredName.isEmpty() && !phone.isEmpty() && !DOB.isEmpty() && !whatsappPhone.isEmpty()) {
+//      infoProvided = true;
+//    }
     //--------------------------------------------------------------------------------
     //Every user starts as a ground user -- upgrade later
-    //-------------------------------------------------
+    //--------------------------------------------------------------------------------
     newUser = new GroundUser(preferredName, DOB, email, phone, whatsappPhone, user.getUid(), Konstants.GROUND_USER, gender);
+    newUser.setCountry(country);
     cleanUp();
     if (!infoProvided) {
       goToProfileCompletion();
     } else {
       goToUserHomepage();
     }
-//
-//    db.collection(Konstants.USER_COLLECTION)
-//      .document()
-//      .set(newUser)
-//      .addOnSuccessListener(new OnSuccessListener<Void>() {
-//        @Override
-//        public void onSuccess(Void aVoid) {
-//          cleanUp();
-//          if (!infoProvided) {
-//            goToProfileCompletion();
-//          } else {
-//            goToUserHomepage();
-//          }
-//        }
-//      }).addOnFailureListener(new OnFailureListener() {
-//      @Override
-//      public void onFailure(@NonNull Exception e) {
-//        Log.d(TAG, "DatabaseError: " + e.getStackTrace());
-//        Toast.makeText(Register.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-//      }
-//    });
-//    if (!infoProvided) {
-//      Toast.makeText(this, "You are good to go. You can provide all missing data later on.", Toast.LENGTH_LONG).show();
-//    }
+    DocumentReference newUserFirestoreRef = db.collection(Konstants.USER_COLLECTION).document();
+    newUser.setUserDocumentID(newUserFirestoreRef.getId());
+    newUserFirestoreRef
+      .set(newUser)
+      .addOnSuccessListener(new OnSuccessListener<Void>() {
+        @Override
+        public void onSuccess(Void aVoid) {
+          cleanUp();
+          if (!infoProvided) {
+            goToProfileCompletion();
+          } else {
+            goToUserHomepage();
+          }
+        }
+      }).addOnFailureListener(new OnFailureListener() {
+      @Override
+      public void onFailure(@NonNull Exception e) {
+        Log.d(TAG, "DatabaseError: " + e.getMessage());
+        Toast.makeText(Register.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+      }
+    });
+    if (!infoProvided) {
+      Toast.makeText(this, "You are good to go. You can provide all missing data later on.", Toast.LENGTH_LONG).show();
+    }
   }
 
 
@@ -226,12 +254,61 @@ public class Register extends AppCompatActivity {
     dobBox.setText("");
   }
 
+  private boolean validatePassword() {
+    password = MyHelper.grabCleanText(passBox);
+    if (password.isEmpty()) {
+      passBox.setError("You will need a password to protect your account!");
+      passBox.requestFocus();
+      return false;
+    } else if (password.length() < 6) {
+      passBox.setError("Your password must be at least 6 characters");
+      passBox.requestFocus();
+      return false;
+    } else if (passwordConfirmation.isEmpty()) {
+      confirmPassBox.setError("Please retype your password here again!");
+      confirmPassBox.requestFocus();
+      return false;
+    } else if (!password.equals(passwordConfirmation)) {
+      confirmPassBox.setError("Your passwords do not match!");
+      confirmPassBox.requestFocus();
+      return false;
+    }
+
+    return true;
+  }
+
+  private boolean validateEmail() {
+    email = MyHelper.grabCleanText(emailBox);
+    if (email.isEmpty()) {
+      emailBox.setError("A valid email is required!");
+      emailBox.requestFocus();
+    } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+      //If the email does not match the structure of a proper email
+      emailBox.setError("Please provide a valid email address!");
+      emailBox.requestFocus();
+    }
+
+    return true;
+
+  }
+
+
+  private boolean validatePhone() {
+    if (phone.isEmpty()) {
+      phoneBox.setError("Please provide a valid phone number that will be verified later");
+      phoneBox.requestFocus();
+      return false;
+    }
+
+    return true;
+  }
+
   private void doRegistration() {
-    Boolean emailGood = false, passGood = false, phoneGood = false;
-    email = emailBox.getText().toString().trim();
-    password = passBox.getText().toString().trim();
-    passwordConfirmation = confirmPassBox.getText().toString().trim();
-    phone = phoneBox.getText().toString().trim();
+
+    email = MyHelper.grabCleanText(emailBox);
+    password = MyHelper.grabCleanText(passBox);
+    passwordConfirmation = MyHelper.grabCleanText(confirmPassBox);
+    phone = MyHelper.grabCleanText(phoneBox);
     dob = dobBox.getText().toString().trim();
 
     //validate date of birth (DOB) only if the user typed something
@@ -246,73 +323,32 @@ public class Register extends AppCompatActivity {
       dobBox.requestFocus();
       return;
     }
-    //validate email 
-    //--------------
-    if (email.isEmpty()) {
-      emailBox.setError("A valid email is required!");
-      emailBox.requestFocus();
-    } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-      //If the email does not match the structure of a proper email 
-      emailBox.setError("Please provide a valid email address!");
-      emailBox.requestFocus();
-    } else {
-      emailGood = true;
-    }
+    if (!validateEmail()) return;
+    if (!validatePassword()) return;
+    if (!validatePhone()) return;
 
-    // validate password
-    //------------------
-    if (password.isEmpty()) {
-      passBox.setError("You will need a password to protect your account!");
-      passBox.requestFocus();
-    } else if (password.length() < 6) {
-      passBox.setError("Your password must be at least 6 characters");
-      passBox.requestFocus();
-    } else if (passwordConfirmation.isEmpty()) {
-      confirmPassBox.setError("Please retype your password here again!");
-      confirmPassBox.requestFocus();
-    } else if (!password.equals(passwordConfirmation)) {
-      confirmPassBox.setError("Your passwords do not match!");
-      confirmPassBox.requestFocus();
-    } else {
-      passGood = true;
-    }
-    //validate phone number 
-    //---------------------
-
-    if (phone.isEmpty()) {
-      phoneBox.setError("Please provide a valid phone number that will be verified later");
-      phoneBox.requestFocus();
-    } else {
-      phoneGood = true;
-    }
-
-    if (emailGood && passGood && phoneGood) {
-      spinner.setVisibility(View.VISIBLE);
-      mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-        @Override
-        public void onComplete(@NonNull Task<AuthResult> task) {
-          if (task.isSuccessful()) {
-            Toast.makeText(Register.this, "Successfully Created Your Account", Toast.LENGTH_SHORT).show();
-            FirebaseUser user = mAuth.getCurrentUser();
-            saveOtherProfileInfo(user, Konstants.EMAIL_AND_PASSWORD_AUTH_TYPE);
-          } else {
-            spinner.setVisibility(View.INVISIBLE);
-            Log.w(TAG, task.getException().getStackTrace().toString());
-            Toast.makeText(Register.this, "Oops, something happened! " + task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-          }
-        }
-      }).addOnFailureListener(new OnFailureListener() {
-        @Override
-        public void onFailure(@NonNull Exception e) {
+    spinner.setVisibility(View.VISIBLE);
+    mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+      @Override
+      public void onComplete(@NonNull Task<AuthResult> task) {
+        if (task.isSuccessful()) {
+          Toast.makeText(Register.this, "Successfully Created Your Account", Toast.LENGTH_SHORT).show();
+          FirebaseUser user = mAuth.getCurrentUser();
+          saveOtherProfileInfo(user, Konstants.EMAIL_AND_PASSWORD_AUTH_TYPE);
+        } else {
           spinner.setVisibility(View.INVISIBLE);
-          Log.w(TAG, "withEmailAndPasswordException:" + e.getStackTrace().toString());
-          Toast.makeText(Register.this, "Oops! " + e.getMessage(), Toast.LENGTH_SHORT).show();
+          Log.w(TAG, task.getException().getMessage());
+          Toast.makeText(Register.this, "Oops, something happened! " + task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
         }
-      });
-
-
-    }
-
+      }
+    }).addOnFailureListener(new OnFailureListener() {
+      @Override
+      public void onFailure(@NonNull Exception e) {
+        spinner.setVisibility(View.INVISIBLE);
+        Log.w(TAG, "withEmailAndPasswordException:" + e.getMessage());
+        Toast.makeText(Register.this, "Oops! " + e.getMessage(), Toast.LENGTH_SHORT).show();
+      }
+    });
 
   }
 

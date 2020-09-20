@@ -28,9 +28,6 @@ public class SimpleUser implements Parcelable {
   private String gender;
   private String country;
   private String region;
-
-
-
   private int rating;
 
   SimpleUser() {

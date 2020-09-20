@@ -42,6 +42,7 @@ import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -59,8 +60,8 @@ public class ChattingPage extends AppCompatActivity {
   SimpleUser creator = new SimpleUser();
   FirebaseFirestore db = FirebaseFirestore.getInstance();
   CollectionReference chatsDB = db.collection(Konstants.CHAT_COLLECTION);
-  RequestQueue volley;
-  ConversationStream conversationStream;
+  RequestQueue httpHandler;
+  ConversationStream conversationStream; // Will always be updated with current chat content and all other information.
   LinearLayoutManager manager;
   String TAG = "LE-MESSAGING-PAGE";
   GalFirebaseHelper firebaseHelper = new GalFirebaseHelper();
@@ -68,14 +69,68 @@ public class ChattingPage extends AppCompatActivity {
   ProgressBar progressSpinner;
   TextView pageName;
   Context thisActivity;
+  int initChatCount = 0;
+  int currentChatCount = 0;
+  int unreadCount;
+  ChattingAdapter adapter;
+  private View.OnClickListener profileIconClick = new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+      goToProfilePage();
+    }
+  };
+  private View.OnClickListener sendMessage = new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+      Log.d(TAG, conversationStream.toString());
+      prepareAndSendMsg();
+    }
+  };
+  private View.OnClickListener openDropDown = new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+      final PopupMenu menu = new PopupMenu(thisActivity, view);
+      if (relatedErrand == null) {
+        menu.inflate(R.menu.peer_to_peer_chat_menu);
+      } else {
+        menu.inflate(R.menu.errand_related_chat_menu);
+      }
 
+      menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+        @Override
+        public boolean onMenuItemClick(MenuItem menuItem) {
+          switch (menuItem.getItemId()) {
+            case R.id.about_errand: {
+              seeMoreAboutErrandInQuestion();
+              break;
+            }
+            case R.id.report: {
+              Toast.makeText(thisActivity, "Report a person?", Toast.LENGTH_SHORT).show();
+              break;
+            }
+            case R.id.back: {
+              finish();
+              break;
+            }
+            case R.id.more_about_receiver: {
+              goToProfilePage();
+              break;
+            }
+          }
+
+          return true;
+        }
+      });
+      menu.show();
+    }
+  };
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     thisActivity = this;
     setContentView(R.layout.activity_chatting_page);
-    volley = Volley.newRequestQueue(this);
+    httpHandler = Volley.newRequestQueue(this);
     pageName = findViewById(R.id.page_name);
     receipientImg = findViewById(R.id.profile_icon);
     getContentFromIntent();
@@ -113,6 +168,7 @@ public class ChattingPage extends AppCompatActivity {
     if (conversationIdExists) {
       PersonInChat otherPerson = getIntent().getParcelableExtra(Konstants.USER_ON_THE_OTHER_END);
       relatedErrand = getIntent().getParcelableExtra(Konstants.PASS_ERRAND_AROUND);
+      unreadCount = getIntent().getIntExtra(Konstants.UNREAD_COUNT, 0);
       putEndUserInformationOnPage(otherPerson);
       findAndFillStreamOnStart(streamID);
       return;
@@ -166,6 +222,7 @@ public class ChattingPage extends AppCompatActivity {
       @Override
       public void callback(DocumentSnapshot document) {
         ConversationStream updatedStream = document.toObject(ConversationStream.class);
+        conversationStream = updatedStream;
         inflateRecyclerWithData(updatedStream);
       }
     });
@@ -265,69 +322,19 @@ public class ChattingPage extends AppCompatActivity {
     });
   }
 
-
-  private void seeMoreAboutErrandInQuestion(){
+  private void seeMoreAboutErrandInQuestion() {
     Intent page = new Intent(this, ErrandViewActivity.class);
-    page.putExtra(Konstants.AUTH_USER_KEY,authenticatedUser);
-    page.putExtra(Konstants.PASS_ERRAND_AROUND,relatedErrand);
+    page.putExtra(Konstants.AUTH_USER_KEY, authenticatedUser);
+    page.putExtra(Konstants.PASS_ERRAND_AROUND, relatedErrand);
     startActivity(page);
   }
-  private View.OnClickListener profileIconClick = new View.OnClickListener() {
-    @Override
-    public void onClick(View view) {
-      goToProfilePage();
-    }
-  };
-  public void goToProfilePage(){
-    Intent page = new Intent(this,ViewProfilePage.class);
-    page.putExtra(Konstants.AUTH_USER_KEY,authenticatedUser);
+
+  public void goToProfilePage() {
+    Intent page = new Intent(this, ViewProfilePage.class);
+    page.putExtra(Konstants.AUTH_USER_KEY, authenticatedUser);
     startActivity(page);
   }
-  private View.OnClickListener sendMessage = new View.OnClickListener() {
-    @Override
-    public void onClick(View view) {
-      Log.d(TAG, conversationStream.toString());
-      prepareAndSendMsg();
-    }
-  };
-  private View.OnClickListener openDropDown = new View.OnClickListener() {
-    @Override
-    public void onClick(View view) {
-      final PopupMenu menu = new PopupMenu(thisActivity, view);
-      if (relatedErrand == null) {
-        menu.inflate(R.menu.peer_to_peer_chat_menu);
-      } else {
-        menu.inflate(R.menu.errand_related_chat_menu);
-      }
 
-      menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-        @Override
-        public boolean onMenuItemClick(MenuItem menuItem) {
-          switch (menuItem.getItemId()) {
-            case R.id.about_errand: {
-              seeMoreAboutErrandInQuestion();
-              break;
-            }
-            case R.id.report: {
-              Toast.makeText(thisActivity, "Report a person?", Toast.LENGTH_SHORT).show();
-              break;
-            }
-            case R.id.back: {
-              finish();
-              break;
-            }
-            case R.id.more_about_receiver: {
-             goToProfilePage();
-              break;
-            }
-          }
-
-          return true;
-        }
-      });
-      menu.show();
-    }
-  };
   private OneChatMessage createMsgFromText(String text) {
     OneChatMessage msg = new OneChatMessage();
     msg.setMessage(text);
@@ -373,9 +380,29 @@ public class ChattingPage extends AppCompatActivity {
     }
   }
 
+  private void sendRequestToReduceUnread() {
+    Log.d(TAG, "sendRequestToReduceUnread: Started sending reduction http....");
+    if (unreadCount == 0) {
+      Log.d(TAG, "sendRequestToReduceUnread: Unread is 0 so didnt send request");
+      return;
+    }
+    JSONObject data = new JSONObject();
+    try {
+      data.put(Konstants.HTTP_DATA_VALUE_OWNER_ID, authenticatedUser.getUserDocumentID());
+      data.put(Konstants.HTTP_DATA_VALUE_CONVERSATION_ID, conversationStream.getConversationID());
+      data.put(Konstants.HTTP_DATA_VALUE_REDUCTION_NUM, unreadCount);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST, GallamseyURLS.REDUCE_UNREAD_MSGS, data, null, null);
+    httpHandler.add(req);
+
+  }
+
   @Override
   protected void onDestroy() {
-    Toast.makeText(this, "Are you tryna destroy me bro?", Toast.LENGTH_SHORT).show();
+    sendRequestToReduceUnread();
     super.onDestroy();
   }
 
@@ -421,14 +448,57 @@ public class ChattingPage extends AppCompatActivity {
     });
   }
 
+  private int howManyDontBelongToMe(ArrayList<OneChatMessage> msgs) {
+    if (msgs == null) return 0;
+    int count = 0;
+    for (int i = 0; i < msgs.size(); i++) {
+      OneChatMessage one = msgs.get(i);
+      if (!one.getUserPlatformID().equals(authenticatedUser.getUserDocumentID())) count++;
+    }
+    return count;
+  }
+
+  //--By default in Gallamsey DB, every msg a user receives is recorded as a +1 to a their unread msg
+  //--Even when they are on the chat page and have read the text, the newly sent msgs will still count as +1 to unread
+  //--This small fxn, is meant to count the new number of msgs that come through while the user is on the page and has read
+  //--so that a request can be sent back to the server to reduce the unreadMsgsCount that has been recorded...
+  //--the request is sent in "onDestroy"
+
+  /**
+   * KNOWN FLAW ( initial value of unread msg is not knows when a user tries to message another person by coming
+   * into this chat page from  the dropdown of the errand ... this is because getting into this page without going
+   * through the chat list fragment page does not give this page access to the conversation list item of the conversation stream.. but at the moment
+   * no one cares!!! LOL!)
+   *
+   * How Counting is done:
+   * save the number of unread msgs of the auth  user(in this chat stream) while coming into the page,
+   * Count how many msgs that do not belong to the current user in the chat stream as initChatCount
+   * Now, whenever any msg is received and the document is refreshed, recount the msgs again for
+   * new msgs from the other side
+   * subtract this new count from the initially obtained number and add the different to unreadMsgCount
+   *
+   * @param msgs
+   */
+
+  private void calculateUnReadMsgs(ArrayList<OneChatMessage> msgs) {
+    if (msgs == null) return;
+    currentChatCount = howManyDontBelongToMe(msgs);
+    if (initChatCount == 0) initChatCount = currentChatCount; // only happens once
+    else {
+      unreadCount += currentChatCount - initChatCount;
+    }
+  }
+
   private void inflateRecyclerWithData(ConversationStream newConvo) {
+    calculateUnReadMsgs(newConvo.getMessages());
     recyclerView = null;
     manager = null;
     recyclerView = findViewById(R.id.chatting_recycler);
-    ChattingAdapter adapter = new ChattingAdapter(this, newConvo);
+    adapter= new ChattingAdapter(this, newConvo);
     adapter.setAuthenticatedUser(authenticatedUser);
     manager = new LinearLayoutManager(this);
     manager.setStackFromEnd(true);
+    manager.setReverseLayout(false);
     recyclerView.setLayoutManager(manager);
     recyclerView.setAdapter(adapter);
     recyclerView.setHasFixedSize(true);
@@ -457,22 +527,6 @@ public class ChattingPage extends AppCompatActivity {
     Intent page = new Intent(this, Login.class);
     startActivity(page);
     finish();
-  }
-
-  public void urlTestDrive() {
-    JsonObjectRequest peerRequest = new JsonObjectRequest(Request.Method.POST, GallamseyURLS.TEST_URL, null, new Response.Listener<JSONObject>() {
-      @Override
-      public void onResponse(JSONObject response) {
-        Log.d("FROMSERVER:", response.toString());
-      }
-    }, new Response.ErrorListener() {
-      @Override
-      public void onErrorResponse(VolleyError error) {
-        Log.d("FROMSERVERERROR:", error.getMessage());
-      }
-    });
-    volley.add(peerRequest);
-
   }
 
   interface CollectConversationStream {

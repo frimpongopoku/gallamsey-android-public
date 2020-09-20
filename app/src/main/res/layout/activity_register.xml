@@ -8,18 +8,18 @@
 
 
   <View
-    android:elevation="4dp"
     android:id="@+id/titlebar"
     android:layout_width="match_parent"
     android:layout_height="50dp"
     android:alpha="1"
-    android:background="@drawable/register_title_bar"></View>
+    android:background="@drawable/register_title_bar"
+    android:elevation="4dp"></View>
 
   <TextView
-    android:elevation="5dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="5dp"
+    android:elevation="5dp"
     android:padding="10dp"
     android:text="Create An Identity With Us"
     android:textAlignment="center"
@@ -58,7 +58,9 @@
           android:padding="10dp"
           android:text="Only fields marked with * are compulsory"
           android:textColor="@android:color/black"
-          android:textSize="15sp" />
+          android:textColorHint="@color/appColor"
+          android:fontFamily="@font/google_sans_light"
+          android:textSize="14sp" />
 
 
         <EditText
@@ -72,7 +74,9 @@
           android:hint="email *"
           android:inputType="textEmailAddress"
           android:padding="15dp"
-          android:textSize="13dp" />
+          android:textColorHint="@color/appColor"
+          android:fontFamily="@font/google_sans_light"
+          android:textSize="14sp" />
 
 
         <EditText
@@ -86,16 +90,31 @@
           android:hint="Telephone *"
           android:inputType="phone"
           android:padding="15dp"
-          android:textSize="13dp" />
+          android:textColorHint="@color/appColor"
+          android:fontFamily="@font/google_sans_light"
+          android:textSize="14sp"/>
+
+        <Spinner
+          android:id="@+id/country_dropdown"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="30dp"
+          android:layout_marginTop="5dp"
+          android:layout_marginRight="30dp"
+          android:layout_marginBottom="10dp"
+          android:background="@drawable/stroke_textbox"
+          android:padding="15dp"/>
 
         <TextView
+          android:textColor="@android:color/black"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginLeft="30dp"
           android:text="Gender ( If you prefer not to say, please choose 'other' ) "
           android:textSize="12sp" />
 
-        <Spinner
+
+<Spinner
           android:id="@+id/gender_dropdown"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
@@ -104,7 +123,7 @@
           android:layout_marginRight="30dp"
           android:layout_marginBottom="10dp"
           android:background="@drawable/stroke_textbox"
-          android:padding="15dp"></Spinner>
+          android:padding="15dp"/>
 
         <EditText
 
@@ -118,7 +137,9 @@
           android:hint="Password *"
           android:inputType="textPassword"
           android:padding="15dp"
-          android:textSize="13dp" />
+          android:textColorHint="@color/appColor"
+          android:fontFamily="@font/google_sans_light"
+          android:textSize="14sp" />
 
         <EditText
           android:id="@+id/reg_confirm_password"
@@ -131,7 +152,9 @@
           android:hint="Confirm Password *"
           android:inputType="textPassword"
           android:padding="15dp"
-          android:textSize="13dp" />
+          android:textColorHint="@color/appColor"
+          android:fontFamily="@font/google_sans_light"
+          android:textSize="14sp" />
 
         <!--<View-->
         <!--android:layout_width="match_parent"-->
@@ -148,7 +171,8 @@
           android:padding="10dp"
           android:text="You can always fill these in now, or later"
           android:textColor="@android:color/black"
-          android:textSize="13sp" />
+          android:textSize="13sp"
+          android:visibility="gone" />
 
         <EditText
           android:id="@+id/reg_username"
@@ -160,7 +184,8 @@
           android:background="@drawable/stroke_textbox"
           android:hint="What is your name?"
           android:padding="15dp"
-          android:textSize="13dp" />
+          android:textSize="13dp"
+          android:visibility="gone" />
 
         <TextView
           android:layout_width="match_parent"
@@ -169,7 +194,8 @@
           android:padding="6dp"
           android:text="Date format Eg. 22-03-1998\nFun fact, you must be 13 or older"
           android:textColor="@color/star_color"
-          android:textSize="12sp" />
+          android:textSize="12sp"
+          android:visibility="gone" />
 
         <EditText
           android:id="@+id/reg_dob"
@@ -182,7 +208,8 @@
           android:hint="Date of birth Eg. 22-03-1998"
           android:inputType="date"
           android:padding="15dp"
-          android:textSize="13dp" />
+          android:textSize="13dp"
+          android:visibility="gone" />
 
 
         <EditText
@@ -196,55 +223,47 @@
           android:hint="Whatsapp Number"
           android:inputType="phone"
           android:padding="15dp"
-          android:textSize="13dp" />
+          android:textSize="13dp"
+          android:visibility="gone" />
 
 
       </LinearLayout>
 
-      <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textboxes_div"
-        android:orientation="vertical"
-        android:padding="20dp">
 
-        <Button
-          android:id="@+id/reg_finish"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_below="@id/textboxes_div"
-          android:layout_marginBottom="10dp"
-          android:background="@drawable/login_button_shape"
-          android:padding="15dp"
-          android:text="FINISH"
-          android:textAllCaps="false"
-          android:textColor="@android:color/white" />
-        <!--<TextView-->
-        <!--android:textAlignment="center"-->
-        <!--android:textColor="@android:color/black"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:padding="6dp"-->
-        <!--android:text="Or Easily Use Your Gmail Instead"-->
-        <!--android:textSize="15sp" />-->
-
-
-        <Button
-          android:id="@+id/reg_google"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginBottom="27dp"
-          android:background="@drawable/google_button"
-          android:onClick="registerWithGoogle"
-          android:padding="15dp"
-          android:text="Use Google"
-          android:textAllCaps="false"
-          android:textColor="@android:color/white"
-          android:textSize="15sp" />
-
-      </LinearLayout>
     </RelativeLayout>
 
   </ScrollView>
 
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:orientation="vertical">
+
+    <Button
+      android:id="@+id/reg_finish"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="@drawable/login_button_shape_no_radius"
+      android:textSize="13sp"
+      android:padding="20dp"
+      android:fontFamily="@font/google_sans"
+      android:text="FINISH"
+      android:textAllCaps="false"
+      android:textColor="@android:color/white" />
+
+    <Button
+      android:id="@+id/reg_google"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="@drawable/google_button_no_radius"
+      android:onClick="registerWithGoogle"
+      android:padding="20dp"
+      android:fontFamily="@font/google_sans"
+      android:text="USE GOOGLE"
+      android:textAllCaps="false"
+      android:textColor="@android:color/white"
+      android:textSize="13sp" />
+
+  </LinearLayout>
 </RelativeLayout>

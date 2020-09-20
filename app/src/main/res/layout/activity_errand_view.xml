@@ -323,6 +323,17 @@
       android:fontFamily="@font/nunito_bold"
       android:text="Run"
       android:textColor="@android:color/white" />
+    <Button
+      android:id="@+id/sign_in_btn"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="40dp"
+      android:layout_marginTop="6dp"
+      android:layout_marginEnd="40dp"
+      android:background="@drawable/login_button_shape"
+      android:fontFamily="@font/nunito_bold"
+      android:text="SIGN IN"
+      android:textColor="@android:color/white" />
 
   </LinearLayout>
 

@@ -7,51 +7,23 @@
   android:background="@android:color/white"
   tools:context=".ViewProfilePage">
 
-  <RelativeLayout
+  <include
     android:id="@+id/title_bar"
-    android:layout_width="match_parent"
-    android:layout_height="55dp"
-    android:layout_alignParentTop="true"
-    android:background="@android:color/white">
+    layout="@layout/universal_title_bar" />
 
-    <ImageView
-      android:id="@+id/back_btn"
-      android:layout_width="30dp"
-      android:layout_height="30dp"
-      android:layout_alignParentStart="true"
-      android:layout_centerVertical="true"
-      android:layout_marginStart="30dp"
-      android:background="?attr/selectableItemBackgroundBorderless"
-      android:clickable="true"
-      android:elevation="10dp"
-      android:src="@drawable/go_left" />
-
-    <TextView
-      android:textColor="@color/appColorDark"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_centerVertical="true"
-      android:layout_marginLeft="10dp"
-      android:layout_toEndOf="@id/back_btn"
-      android:text="Profile"
-      android:textSize="18sp" />
-
-    <View
-      android:layout_width="match_parent"
-      android:layout_height="1dp"
-      android:layout_alignParentBottom="true"
-      android:background="@color/lightest_grey" />
-  </RelativeLayout>
-
+  <include layout = "@layout/dist_progress_bar" />
+  <include layout="@layout/no_auth_layout"/>
   <ScrollView
+    android:id="@+id/scrollable_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_below="@id/title_bar"
     android:scrollbars="none">
-
     <LinearLayout
+      android:visibility="visible"
+      android:id="@+id/content_box"
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
+      android:layout_height="wrap_content"
       android:orientation="vertical">
 
       <RelativeLayout
@@ -95,6 +67,7 @@
                 android:src="@drawable/gallam_gold_medal_2" />
 
               <TextView
+                android:id="@+id/gold_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/gold"
@@ -115,6 +88,7 @@
                 android:src="@drawable/gallam_silver_medal" />
 
               <TextView
+                android:id="@+id/silver_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/silver"
@@ -135,6 +109,7 @@
                 android:src="@drawable/gallam_bronze_medal" />
 
               <TextView
+                android:id="@+id/bronze_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/bronze"
@@ -155,6 +130,7 @@
                 android:src="@drawable/gallam_junk_cup" />
 
               <TextView
+                android:id="@+id/trash_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/junk_cup"
@@ -196,22 +172,27 @@
             android:layout_marginTop="3dp">
 
             <LinearLayout
+              android:id="@+id/verified_box"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_centerInParent="true">
 
               <ImageView
+                android:layout_marginRight="4dp"
+                android:tintMode="screen"
+                android:backgroundTint="@color/green"
                 android:id="@+id/verified_icon"
                 android:layout_width="20dp"
-                android:layout_height="25dp"
+                android:layout_height="20dp"
                 android:layout_centerHorizontal="true"
                 android:src="@drawable/verified_icon" />
 
               <TextView
+                android:id="@+id/verified_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:text="Verified" />
+                android:text="Not Verified" />
 
             </LinearLayout>
 
@@ -249,6 +230,7 @@
                 android:src="@drawable/galam_new_rider_colored" />
 
               <TextView
+                android:id="@+id/jobs_taken"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -283,6 +265,7 @@
                 android:src="@drawable/love_icon" />
 
               <TextView
+                android:id="@+id/fans"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -317,6 +300,7 @@
                 android:src="@drawable/jobs_created_icon" />
 
               <TextView
+                android:id="@+id/jobs_created"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"

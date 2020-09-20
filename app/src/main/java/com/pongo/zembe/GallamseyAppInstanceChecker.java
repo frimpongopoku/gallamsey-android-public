@@ -11,17 +11,28 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public class GallamseyAppInstanceChecker {
 
+
   String userID;
-  String oldToken;
+  ArrayList<DeviceToToken> oldTokens;
   FirebaseFirestore db = FirebaseFirestore.getInstance();
   CollectionReference userCollectionRef = db.collection(Konstants.USER_COLLECTION);
+  GroundUser authenticatedUser =  new GroundUser();
   private static final String TAG = "INSTANCE-ID--->";
+  public static final String ANDROID = "android";
 
-  public GallamseyAppInstanceChecker(String oldToken, String userID) {
+  public GallamseyAppInstanceChecker(ArrayList<DeviceToToken> oldTokens, String userID) {
     this.userID = userID;
-    this.oldToken = oldToken;
+    this.oldTokens = oldTokens;
+  }
+
+
+  public void setAuthenticatedUser(GroundUser authenticatedUser) {
+    this.authenticatedUser = authenticatedUser;
   }
 
   public void checkAndUpdateInstanceTokenOnServer() {
@@ -29,12 +40,22 @@ public class GallamseyAppInstanceChecker {
       @Override
       public void onSuccess(InstanceIdResult instanceIdResult) {
         String token = instanceIdResult.getToken();
-        if (oldToken != null && oldToken.equals(token)) {
-          // ------- token hasn't changed, so just
+        if (oldTokens != null) {
+          for (int i = 0; i < oldTokens.size(); i++) {
+            DeviceToToken item = oldTokens.get(i);
+            if(item.getName().equals(ANDROID) && item.getToken().equals(token)){
+              // ------- token hasn't changed, so just
+              return;
+            }
+          }
           return;
         }
         // -------- Save token to database
-        userCollectionRef.document(userID).update("appInstanceToken", token).addOnSuccessListener(new OnSuccessListener<Void>() {
+        ArrayList<DeviceToToken> deviceToTokens = new ArrayList<>();
+        DeviceToToken android = new DeviceToToken(ANDROID, token);
+        deviceToTokens.add(android);
+        authenticatedUser.setAppInstanceToken(deviceToTokens);
+        userCollectionRef.document(userID).set(authenticatedUser).addOnSuccessListener(new OnSuccessListener<Void>() {
           @Override
           public void onSuccess(Void aVoid) {
             Log.d(TAG, "onSuccess: saved token in user sheet");

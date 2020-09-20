@@ -49,13 +49,15 @@ public class SplashScreen extends AppCompatActivity {
         @Override
         public void callable(GroundUser user) {
           Intent home = new Intent(getApplicationContext(), Home.class);
-          home.putExtra("authUser", user);
+          home.putExtra(Konstants.AUTH_USER_KEY, user);
           startActivity(home);
           finish();
         }
       });
     } else {
-      redirectToLogin();
+      Intent home = new Intent(getApplicationContext(), Home.class);
+      startActivity(home);
+      finish();
     }
   }
 
@@ -93,6 +95,7 @@ public class SplashScreen extends AppCompatActivity {
     Intent home = new Intent(this, Home.class);
     startActivity(home);
   }
+
 
   interface CollectUserInterface {
     void callable(GroundUser user);

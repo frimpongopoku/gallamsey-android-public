@@ -1,9 +1,17 @@
 package com.pongo.zembe;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -12,59 +20,205 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class TasksFragmentGenerator extends Fragment implements GigsTabRecyclerAdapter.GigItemClick, YourErrandsTabRecyclerAdapter.YourErrandItemClick {
-  private static String WHICH_FRAGMENT = "FRAGMENT_NAME";
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 
-  public static Fragment newInstance(String whichPage) {
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
+public class TasksFragmentGenerator extends Fragment {
+  public static final String TAG = "TASKS-FRAGMENT";
+  private static String WHICH_FRAGMENT = "FRAGMENT_NAME";
+  RelativeLayout narratorBox;
+  RecyclerView recyclerView;
+  ArrayList<GenericErrandClass> listOfErrands = new ArrayList<>(), listOfGigs = new ArrayList<>();
+  View state;
+  TextView salutationText;
+  ProgressBar loadingSpinner;
+  GroundUser authenticatedUser;
+  Context context;
+  RequestQueue httpHandler;
+  int pageCheckPoint;
+  String JOBS = "JOBS", CREATED = "CREATED";
+  Button loginBtn;
+  Activity parentActivity;
+  public static Fragment newInstance(String whichPage, Context context, GroundUser authenticatedUser) {
     TasksFragmentGenerator fragment = new TasksFragmentGenerator();
+    fragment.setAuthenticatedUser(authenticatedUser);
+    fragment.setContext(context);
     Bundle args = new Bundle();
     args.putString(WHICH_FRAGMENT, whichPage);
     fragment.setArguments(args);
     return fragment;
   }
 
+  private View.OnClickListener goToLoginPage = new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+      Intent page = new Intent(context,Login.class);
+      startActivity(page);
+      parentActivity.finish();
+
+    }
+  };
+
+  public void setAuthenticatedUser(GroundUser authenticatedUser) {
+    this.authenticatedUser = authenticatedUser;
+  }
+
+  public void setContext(Context context) {
+    this.context = context;
+  }
+
+  private View authOrNot(View v, String which){
+    loginBtn = v.findViewById(R.id.login_btn);
+    loadingSpinner = v.findViewById(R.id.spinner);
+    salutationText = v.findViewById(R.id.salutation);
+    narratorBox = v.findViewById(R.id.narrator_box);
+   if(authenticatedUser == null){
+     String t = "Hi there, please Sign In to see all jobs you have completed for others, and ones you have created.";
+     salutationText.setText(t);
+     narratorBox.setVisibility(View.VISIBLE);
+     loadingSpinner.setVisibility(View.GONE);
+     loginBtn.setOnClickListener(goToLoginPage);
+     loginBtn.setVisibility(View.VISIBLE);
+      return v;
+   }
+   if(which.equals(JOBS)) return  initializeGigs(v);
+   return initializeYourErrands(v);
+  }
   @Nullable
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    parentActivity = this.getActivity();
     String whichPage = getArguments().getString(WHICH_FRAGMENT);
-
-    if (whichPage.equals(Konstants.TASKS_GIGS_TAB)) {
+    httpHandler = Volley.newRequestQueue(context);
+    if (whichPage != null && whichPage.equals(Konstants.TASKS_GIGS_TAB)) {
       View v = inflater.inflate(R.layout.gigs_layout, container, false);
-      return initilizeGigs(v);
+      return authOrNot(v, JOBS);
 
-    } else if (whichPage.equals(Konstants.TASKS_YOUR_ERRANDS_TAB)) {
+    } else if (whichPage != null && whichPage.equals(Konstants.TASKS_YOUR_ERRANDS_TAB)) {
       View v = inflater.inflate(R.layout.your_created_errands_layout, container, false);
-      return initilizeYourErrands(v);
+      return authOrNot(v, CREATED);
     }
-
     return null;
   }
 
-  private View initilizeGigs(View v) {
-    LinearLayoutManager manager = new LinearLayoutManager(getContext());
-    RecyclerView recyclerView = v.findViewById(R.id.gigs_layout_recycler);
-    GigsTabRecyclerAdapter adapter = new GigsTabRecyclerAdapter(getContext(), null, this);
-    recyclerView.setLayoutManager(manager);
-    recyclerView.setAdapter(adapter);
+  private View initializeGigs(View v) {
+    loadingSpinner = v.findViewById(R.id.spinner);
+    salutationText = v.findViewById(R.id.salutation);
+    salutationText.setText(R.string.my_gigs_tab_no_content);
+    narratorBox = v.findViewById(R.id.narrator_box);
+    recyclerView = v.findViewById(R.id.gigs_layout_recycler);
+    state = v;
+    lookForMyErrands(JOBS);
     return v;
   }
 
-  private View initilizeYourErrands(View v) {
-    LinearLayoutManager manager = new LinearLayoutManager(getContext());
-    RecyclerView recyclerView = v.findViewById(R.id.your_errands_recycler);
-    YourErrandsTabRecyclerAdapter adapter = new YourErrandsTabRecyclerAdapter(getContext(), null, this);
-    recyclerView.setLayoutManager(manager);
-    recyclerView.setAdapter(adapter);
+  private View initializeYourErrands(View v) {
+    loadingSpinner = v.findViewById(R.id.spinner);
+    salutationText = v.findViewById(R.id.salutation);
+    salutationText.setText(R.string.my_errands_tab_no_content);
+    narratorBox = v.findViewById(R.id.narrator_box);
+    recyclerView = v.findViewById(R.id.your_errands_recycler);
+    state = v;
+    lookForMyErrands(CREATED);
     return v;
   }
 
-  @Override
-  public void onGigItemClick(int position) {
-    Toast.makeText(getContext(), "Gig item clicked: " + position, Toast.LENGTH_SHORT).show();
+  private void inflateErrandsRecycler(ArrayList<GenericErrandClass> errands) {
+    loadingSpinner.setVisibility(View.GONE);
+    if (errands.size() == 0) {
+      narratorBox.setVisibility(View.VISIBLE);
+      return;
+    }
+    recyclerView = null;
+    LinearLayoutManager manager = new LinearLayoutManager(getContext());
+    recyclerView = state.findViewById(R.id.your_errands_recycler);
+    YourErrandsTabRecyclerAdapter adapter = new YourErrandsTabRecyclerAdapter(getContext(), errands, (YourErrandsTabRecyclerAdapter.YourErrandItemClick) getContext());
+    recyclerView.setLayoutManager(manager);
+    recyclerView.setAdapter(adapter);
+    recyclerView.setVisibility(View.VISIBLE);
   }
 
-  @Override
-  public void onYourErrandItemClick(int position) {
-    Toast.makeText(getContext(), "Errand item clicked: " + position, Toast.LENGTH_SHORT).show();
+  private void inflateGigsRecycler(ArrayList<GenericErrandClass> gigs) {
+    recyclerView = null;
+    LinearLayoutManager manager = new LinearLayoutManager(getContext());
+    recyclerView = state.findViewById(R.id.your_errands_recycler);
+    GigsTabRecyclerAdapter adapter = new GigsTabRecyclerAdapter(getContext(), gigs, (GigsTabRecyclerAdapter.GigItemClick) getContext());
+    recyclerView.setLayoutManager(manager);
+    recyclerView.setAdapter(adapter);
+  }
+
+  private void lookForMyErrands(final String context) {
+    JSONObject data = new JSONObject();
+    try {
+      if (context.equals(CREATED)) {
+        data.put("type", "created");
+      } else {
+        data.put("type", "jobs");
+      }
+      data.put(Konstants.HTTP_DATA_VALUE_USER_ID, authenticatedUser.getUserDocumentID());
+      data.put(Konstants.HTTP_DATA_VALUE_CHECK_POINT, pageCheckPoint);
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST, GallamseyURLS.GET_MY_ERRANDS, data, new Response.Listener<JSONObject>() {
+      @Override
+      public void onResponse(JSONObject response) {
+        ArrayList<GenericErrandClass> newContent = processResponseData(response);
+        if (newContent == null) return;
+        if (context.equals(CREATED)) {
+          listOfErrands.addAll(newContent);
+          inflateErrandsRecycler(listOfErrands);
+          return;
+        }
+        listOfGigs.addAll(newContent);
+        inflateErrandsRecycler(listOfGigs);
+
+      }
+    }, new Response.ErrorListener() {
+      @Override
+      public void onErrorResponse(VolleyError error) {
+        Log.d(TAG, "onErrorResponse: " + error.toString());
+      }
+    });
+    httpHandler.add(req);
+  }
+
+  private ArrayList<GenericErrandClass> processResponseData(JSONObject response) {
+    ArrayList<GenericErrandClass> errandList = new ArrayList<>();
+    try {
+      JSONObject returnables = (JSONObject) response.get("returnables");
+      pageCheckPoint = returnables != null ? (int) returnables.get("check_point") : 0;
+      JSONObject error = (JSONObject) response.get("error");
+      Boolean errStatus = (Boolean) error.get("status");
+      if (errStatus) {
+        Toast.makeText(context, "Sorry an error occurred: " + error.get("message"), Toast.LENGTH_SHORT).show();
+        return null;
+      }
+      JSONArray data = (JSONArray) response.get("data");
+      if (data != null) {
+        Gson gson = new Gson();
+        for (int i = 0; i < data.length(); i++) {
+          JSONObject errandJson = (JSONObject) data.get(i);
+          GenericErrandClass errand = gson.fromJson(errandJson.toString(), GenericErrandClass.class);
+          errandList.add(errand);
+        }
+      }
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
+    return errandList;
   }
 }

@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@android:color/white"
+  tools:context=".CashInCashOut">
+
+  <include
+    android:id="@+id/title_bar"
+    layout="@layout/universal_title_bar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true" />
+
+  <ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_above="@id/send_btn"
+    android:layout_below="@id/title_bar">
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:paddingTop="20dp">
+
+      <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+          android:id="@+id/picture_Box"
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:layout_centerHorizontal="true">
+
+          <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/user_profile"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+
+            android:src="@drawable/african_avatar_male" />
+
+          <ImageView
+            android:id="@+id/down_icon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_toRightOf="@id/user_profile"
+            android:src="@drawable/arrow_down_icon" />
+          <ImageView
+            android:visibility="gone"
+            android:id="@+id/up_icon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_toRightOf="@id/user_profile"
+            android:src="@drawable/ic_arrow_upward_black_24dp" />
+
+        </RelativeLayout>
+
+        <TextView
+          android:id="@+id/page_key"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/picture_Box"
+          android:layout_centerHorizontal="true"
+          android:layout_margin="5dp"
+          android:fontFamily="@font/google_sans"
+          android:text="CASH IN"
+          android:textColor="@color/green" />
+
+        <TextView
+          android:id="@+id/balance"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/page_key"
+          android:layout_centerHorizontal="true"
+          android:fontFamily="@font/nunito_regular"
+          android:text="Current Balance: GHS 4450"
+          android:textColor="@color/green" />
+
+        <EditText
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/balance"
+          android:layout_centerHorizontal="true"
+          android:layout_marginLeft="30dp"
+          android:layout_marginRight="30dp"
+          android:background="@android:color/white"
+          android:fontFamily="@font/google_sans_thin"
+          android:hint="GHS 0.000"
+          android:inputType="number"
+          android:padding="15dp"
+          android:textAlignment="center"
+          android:textColor="@color/green"
+          android:textSize="36sp" />
+
+
+      </RelativeLayout>
+
+
+      <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+          android:id="@+id/enter_amount"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_centerHorizontal="true"
+          android:fontFamily="@font/google_sans_medium"
+          android:text="ENTER AMOUNT"
+          android:textColor="@android:color/black" />
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/enter_amount"
+          android:layout_centerHorizontal="true"
+          android:layout_marginBottom="10dp"
+          android:fontFamily="@font/google_sans_thin"
+          android:text="2000 MAX" />
+
+      </RelativeLayout>
+
+      <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="vertical">
+
+        <TextView
+          android:id="@+id/mobile_number_desc_text"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_centerHorizontal="true"
+          android:layout_marginBottom="10dp"
+          android:text="Choose a payment mobile number from the list below" />
+
+        <Spinner
+          android:id="@+id/payment_numbers_spinner"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/mobile_number_desc_text"
+          android:layout_marginLeft="20dp"
+          android:layout_marginRight="20dp"
+          android:layout_marginBottom="10dp"
+          android:background="@drawable/stroke_textbox_b" />
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/payment_numbers_spinner"
+          android:layout_centerHorizontal="true"
+          android:fontFamily="@font/google_sans_medium"
+          android:text="OR"
+          android:textColor="@android:color/black"
+          android:textSize="26sp" />
+
+      </RelativeLayout>
+
+      <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="10dp">
+
+        <TextView
+          android:id="@+id/new_number_desc_text"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_centerHorizontal="true"
+          android:text="Type in a new number" />
+
+        <EditText
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/new_number_desc_text"
+          android:layout_centerHorizontal="true"
+          android:layout_marginLeft="30dp"
+          android:layout_marginRight="30dp"
+          android:background="@android:color/white"
+          android:fontFamily="@font/google_sans_thin"
+          android:hint="Eg. 0240 123456789"
+          android:inputType="number"
+          android:padding="5dp"
+          android:textAlignment="center"
+          android:textSize="30sp" />
+
+
+      </RelativeLayout>
+
+      <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="vertical">
+
+        <TextView
+          android:id="@+id/country_text"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_centerHorizontal="true"
+          android:layout_marginBottom="15dp"
+          android:text="What country is your payment number in?" />
+
+        <Spinner
+          android:id="@+id/country_dropdown"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/country_text"
+          android:layout_marginLeft="20dp"
+          android:layout_marginRight="20dp"
+          android:layout_marginBottom="10dp"
+          android:background="@drawable/stroke_textbox_b"
+          android:paddingStart="25dp" />
+
+      </RelativeLayout>
+
+      <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="vertical">
+
+        <TextView
+          android:id="@+id/networ_desc"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_centerHorizontal="true"
+          android:layout_marginBottom="15dp"
+          android:text="Choose a payment mobile number from the list below" />
+
+        <Spinner
+          android:id="@+id/mobile_networks"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/networ_desc"
+          android:layout_marginLeft="20dp"
+          android:layout_marginRight="20dp"
+          android:layout_marginBottom="10dp"
+          android:background="@drawable/stroke_textbox_b"
+          android:paddingStart="25dp" />
+
+      </RelativeLayout>
+
+
+    </LinearLayout>
+  </ScrollView>
+
+  <Button
+    android:id="@+id/send_btn"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:background="@drawable/login_button_shape"
+    android:backgroundTint="@color/green"
+    android:fontFamily="@font/google_sans"
+    android:padding="20dp"
+    android:text="SEND"
+    android:textAlignment="center"
+    android:textColor="@android:color/white"
+    android:textSize="18sp" />
+
+</RelativeLayout>

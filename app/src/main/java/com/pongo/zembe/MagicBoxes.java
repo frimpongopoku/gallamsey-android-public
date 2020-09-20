@@ -77,6 +77,26 @@ public class MagicBoxes extends AppCompatDialogFragment {
 
     return builder.create();
 
+  }public Dialog constructCustomDialog(String title, View v, final MagicBoxCallables magicInterface, String positiveActionText, String negativeActionText) {
+
+    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+    builder.setView(v)
+      .setTitle(title)
+      .setPositiveButton(positiveActionText, new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialogInterface, int i) {
+          magicInterface.positiveBtnCallable();
+        }
+      })
+      .setNegativeButton(negativeActionText, new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialogInterface, int i) {
+          magicInterface.negativeBtnCallable();
+        }
+      });
+
+    return builder.create();
+
   }
 
   public Dialog constructErrandErrorDialog(String title, String fatal, String semiError, String negative, String positive, final MagicBoxCallables magicInterface) {

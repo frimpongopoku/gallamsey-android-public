@@ -9,6 +9,25 @@ public class Konstants {
 
 
 
+
+  public static final String COMING_FROM_PROFILE_EDIT = "EDITING";
+  public static final String SAVE_NEWS_TO_CACHE = "SAVE_NEWS_TO_CACHE";
+  public static final String ANONYMOUS_USER = "ANONYMOUS_USER";
+  public static final String UNVERIFIED = "UNVERIFIED";
+  public static final String VERFIED = "VERIFIED";
+
+  public static final String USER_PLATFORM_ID = "USER_PLATFORM_ID";
+  public static final String HTTP_DATA_VALUE_CREATOR_ID = "creator_id";
+  public static final String HTTP_DATA_VALUE_CHECK_POINT = "check_point";
+  public static final String HTTP_DATA_VALUE_USER_ID = "user_id";
+  public static final String HTTP_DATA_VALUE_OWNER_ID = "owner_id";
+  public static final String HTTP_DATA_VALUE_CONVERSATION_ID = "conversation_id";
+  public static final String HTTP_DATA_VALUE_REDUCTION_NUM = "reduction_number";
+
+  public static final String UNREAD_COUNT = "UNREAD_COUNT";
+  public static final String PAGE_KEY = "PAGE_KEY";
+  public static final String CASH_IN_PAGE_KEY = "CASH IN";
+  public static final String CASH_OUT_PAGE_KEY = "CASH OUT";
   public static final String EXISTING_CONVERSATION = "COMING_FROM_CONVERSATION_PAGE";
   public static final String EXISTING_CONVERSATION_ID = "EXISTING_CONVERSATION_ID";
   public static final String DEFAULT_PROFILE = "https://firebasestorage.googleapis.com/v0/b/gallamsey.appspot.com/o/DEFAULTS%2Fgallamsey_photo_for_other%20copy.png?alt=media&token=58a74a27-7613-40a2-b3cc-408871ccd2f9";
@@ -24,7 +43,7 @@ public class Konstants {
   public static final String SEARCH_ERRANDS = "ERRANDS";
   public static final String SEARCH_PROFIT = "PROFIT";
   public static final String SEARCH_COST = "COSTS";
-  public static final int DEFAULT_WALLET_BALANCE_GH = 1;
+  public static final int DEFAULT_WALLET_BALANCE_GH = 2;
   public static final int DEFAULT_WALLET_PIN = 1111;
   public static final String MODE = "MODE";
   public static final String FROM_TEMPLATE_MODE = "FROM_TEMPLATE";
@@ -93,16 +112,66 @@ public class Konstants {
 
   //ARRAYS
   //-----------------------------
-
+  // JUST VALUES
+  //---------------
+  public static final String THIRTY_MINUTES = "30 Minutes";
+  public static final String ONE_HOUR = "1 Hour";
+  public static final String TWO_HOURS = "2 Hours";
+  public static final String THREE_HOURS = "3 Hours";
+  public static final String FOUR_HOURS = "4 Hours";
+  public static final String FIVE_HOURS = "5 Hours";
+  public static final String SIX_HOURS = "6 Hours";
+  public static final String ONE_DAY = "1 day";
+  public static final String TWO_DAYS = "2 days";
+  public static final String MALE = "MALE";
+  public static final String FEMALE = "FEMALE";
+  public static final String OTHER = "OTHER";
+  public static final int CHOOSE_IMAGE_REQUEST_CODE = 034;
+  public static final int PERMISSION_REQUEST_CODE = 003;
+  public static final int LOCATIONS_REQUEST_CODE = 003;
+  public static final int GOOGLE_AUTH_TYPE = 555;
+  public static final int EMAIL_AND_PASSWORD_AUTH_TYPE = 554;
+  public static final int GOOGLE_SIGN_IN_CODE = 8822;
+  public static final int GOOGLE_SIGN_UP_CODE = 8820;
   public static ArrayList<String> DEFAULT_SPINNER_ARRAY = new ArrayList<>();
   public static ArrayList<HashMap<String, Object>> COUNTRIES_MAP = new ArrayList<>();
   public static ArrayList<String> COUNTRIES = new ArrayList<>();
   public static ArrayList<String> GH_NETWORKS = new ArrayList<>();
   public static ArrayList<String> KE_NETWORKS = new ArrayList<>();
   public static ArrayList<PaymentContact> DUMMY_PAYMENT_CONTACT = new ArrayList<>();
+
+
+  // NORMAL REQUEST CODES ALL OVER THE IN ALL CORNERS OF THE APPLICATION
+  //--------------------------------------------------------------------
   public static ArrayList<String> SEARCH_SPINNER_ELEMENTS = new ArrayList<>();
+  public static HashMap<String, String> ERRAND_STATUS_MAP = new HashMap<>();
+  //   ERRAND STAGE VALUES
+  public static String ERRAND_IS_IN_MOTION = "MOTION";
+  public static String ERRAND_HAS_NOT_STARTED = "HAS_NOT_STARTED";
+  public static String ERRAND_IS_COMPLETE = "IS_COMPLETE";
+  public static String ERRAND_READY_FOR_PAYMENT_TRANSACTION = "PAYMENT_TRANSACTION";
+  //USER MEMBERSHIP TYPE CONSTANTS
+  //------------------------------
+  public static String GROUND_USER = "xx-pong-:ground:-num--xx";
+  public static String PREMIUM_USER = "xx-pong-:premium:-num--x";
+  //ERRAND ERROR VALUES
+  //-----------------------------------------------
+  public static String ERROR_FAILED = "ERROR FAILED";
+  public static String ERROR_PASSED = "ERROR PASSED";
+  public static String ERROR_SEMI_PASSED = "ERROR SEMI PASSED";
+  //FIREBASE COLLECTION SET CONSTANTS
+  //--------------------------------
+  public static String TAG_COLLECTION = "TAGS";
+  public static String USER_COLLECTION = "USERS";
+  public static String ERRAND_COLLECTION = "ERRANDS";
+  public static String COMMUNITIES_COLLECTION = "COMMUNITIES";
+  public static String PROFILE_PICTURES_COLLECTION = "PROFILE PICTURES";
 
   static {
+
+    ERRAND_STATUS_MAP.put(ERRAND_HAS_NOT_STARTED, "Has Not Started");
+    ERRAND_STATUS_MAP.put(ERRAND_IS_COMPLETE, "Is Complete");
+    ERRAND_STATUS_MAP.put(ERRAND_IS_IN_MOTION, "In Progress...");
     SEARCH_SPINNER_ELEMENTS.add(NOT_SET);
     SEARCH_SPINNER_ELEMENTS.add(GREATER);
     SEARCH_SPINNER_ELEMENTS.add(LESS_THAN);
@@ -132,58 +201,4 @@ public class Konstants {
     COUNTRIES_MAP.add(GHANA);
     COUNTRIES_MAP.add(KENYA);
   }
-
-  // JUST VALUES
-  //---------------
-  public static final String THIRTY_MINUTES = "30 Minutes";
-  public static final String ONE_HOUR = "1 Hour";
-  public static final String TWO_HOURS = "2 Hours";
-  public static final String THREE_HOURS = "3 Hours";
-  public static final String FOUR_HOURS = "4 Hours";
-  public static final String FIVE_HOURS = "5 Hours";
-  public static final String SIX_HOURS = "6 Hours";
-  public static final String ONE_DAY = "1 day";
-  public static final String TWO_DAYS = "2 days";
-
-  public static final String MALE = "MALE";
-  public static final String FEMALE = "FEMALE";
-  public static final String OTHER = "OTHER";
-
-
-  // NORMAL REQUEST CODES ALL OVER THE IN ALL CORNERS OF THE APPLICATION
-  //--------------------------------------------------------------------
-
-  public static final int CHOOSE_IMAGE_REQUEST_CODE = 034;
-  public static final int PERMISSION_REQUEST_CODE = 003;
-  public static final int LOCATIONS_REQUEST_CODE = 003;
-  public static final int GOOGLE_AUTH_TYPE = 555;
-  public static final int EMAIL_AND_PASSWORD_AUTH_TYPE = 554;
-  public static final int GOOGLE_SIGN_IN_CODE = 8822;
-  public static final int GOOGLE_SIGN_UP_CODE = 8820;
-
-  //USER MEMBERSHIP TYPE CONSTANTS
-  //------------------------------
-  public static String GROUND_USER = "xx-pong-:ground:-num--xx";
-  public static String PREMIUM_USER = "xx-pong-:premium:-num--x";
-
-
-  //   ERRAND STAGE VALUES
-  public static String ERRAND_IS_IN_MOTION = "MOTION";
-  public static String ERRAND_HAS_NOT_STARTED = "HAS_NOT_STARTED";
-  public static String ERRAND_IS_COMPLETE = "IS_COMPLETE";
-  public static String ERRAND_READY_FOR_PAYMENT_TRANSACTION = "PAYMENT_TRANSACTION";
-
-  //ERRAND ERROR VALUES
-  //-----------------------------------------------
-  public static String ERROR_FAILED = "ERROR FAILED";
-  public static String ERROR_PASSED = "ERROR PASSED";
-  public static String ERROR_SEMI_PASSED = "ERROR SEMI PASSED";
-
-  //FIREBASE COLLECTION SET CONSTANTS
-  //--------------------------------
-  public static String TAG_COLLECTION = "TAGS";
-  public static String USER_COLLECTION = "USERS";
-  public static String ERRAND_COLLECTION = "ERRANDS";
-  public static String COMMUNITIES_COLLECTION = "COMMUNITIES";
-  public static String PROFILE_PICTURES_COLLECTION = "PROFILE PICTURES";
 }

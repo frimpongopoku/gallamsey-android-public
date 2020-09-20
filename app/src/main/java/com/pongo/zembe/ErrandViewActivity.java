@@ -30,7 +30,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ErrandViewActivity extends AppCompatActivity {
   Toolbar toolbar;
   MagicBoxes dialogCreator;
-  Button runErrandButton, readAbout;
+  Button runErrandButton, readAbout, signInBtn;
   GenericErrandClass errand;
   TextView pageTitle, moneySummary, cost, allowance, dateText, userName, errandDescription, detailsText, detailsTitleBox;
   ImageView backBtn, errandImage, options;
@@ -50,6 +50,10 @@ public class ErrandViewActivity extends AppCompatActivity {
     errand = getIntent().getParcelableExtra(Konstants.PASS_ERRAND_AROUND);
     tagCollection = getIntent().getParcelableExtra(Konstants.PASS_TAGS);
     authenticatedUser = getIntent().getParcelableExtra(Konstants.AUTH_USER_KEY);
+    if(authenticatedUser == null ){
+      runErrandButton.setVisibility(View.GONE);
+      signInBtn.setVisibility(View.VISIBLE);
+    }
     if (errand != null) {
       populateWithInfo(errand);
     }
@@ -61,7 +65,19 @@ public class ErrandViewActivity extends AppCompatActivity {
     listenForChangesInDocument();
   }
 
+  private View.OnClickListener goToLogin = new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+      Intent page = new Intent(thisActivity, Login.class);
+      startActivity(page);
+      finish();
+    }
+  };
+
+
   public void initializeActivity() {
+    signInBtn = findViewById(R.id.sign_in_btn);
+    signInBtn.setOnClickListener(goToLogin);
     errandOwnerProfile = findViewById(R.id.profile_img);
     options = findViewById(R.id.options);
     tagGroup = findViewById(R.id.errand_view_chipGroup);
@@ -99,11 +115,19 @@ public class ErrandViewActivity extends AppCompatActivity {
     public void onClick(View view) {
       SimpleUser creator = errand != null ? errand.getCreator() : null;
       PopupMenu menu = new PopupMenu(thisActivity, view);
+
       if (authenticatedUser != null && authenticatedUser.getUserDocumentID().equals(errand.getCreator().getUserPlatformID())) {
         //just check if the current signed in user is the one that created the errand show them the edit & delete menu
         menu.inflate(R.menu.menu_for_errand_view);
       } else {
         menu.inflate(R.menu.no_auth_menu_for_errand_view);
+      }
+
+      if(authenticatedUser == null){
+        // get rid of some menu items if the user is not signed in and they are just looking around...
+        menu.getMenu().removeItem(R.id.run);
+        menu.getMenu().removeItem(R.id.message);
+        menu.getMenu().removeItem(R.id.report);
       }
 
       menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {

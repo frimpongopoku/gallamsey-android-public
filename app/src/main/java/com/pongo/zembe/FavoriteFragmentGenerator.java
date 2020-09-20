@@ -1,9 +1,14 @@
 package com.pongo.zembe;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,29 +29,68 @@ public class FavoriteFragmentGenerator extends Fragment {
   TemplateTrainForErrands allSavedTemplates;
   FavoriteRidersRecyclerAdapter adapter;
   TemplatesRecyclerAdapter templatesAdapter;
-
-  public static FavoriteFragmentGenerator newInstance(String whichFragment) {
+  Button loginBtn;
+  Activity parentActivity;
+  TextView salutationText;
+  GroundUser authenticatedUser;
+  RelativeLayout narratorBox;
+  Context context;
+  public static FavoriteFragmentGenerator newInstance(String whichFragment,GroundUser user) {
     FavoriteFragmentGenerator fragment = new FavoriteFragmentGenerator();
     Bundle args = new Bundle();
     args.putString(WHICH_FRAGMENT, whichFragment);
     fragment.setArguments(args);
+    fragment.setAuthenticatedUser(user);
     return fragment;
+  }
+
+  private View.OnClickListener goToLoginPage = new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+      Intent page = new Intent(parentActivity,Login.class);
+      startActivity(page);
+      parentActivity.finish();
+
+    }
+  };
+
+
+  public void setAuthenticatedUser(GroundUser authenticatedUser) {
+    this.authenticatedUser = authenticatedUser;
+  }
+
+
+  private View authOrNot(View v, String which){
+    loginBtn = v.findViewById(R.id.login_btn);
+    salutationText = v.findViewById(R.id.salutation);
+    narratorBox = v.findViewById(R.id.narrator_box);
+    if(authenticatedUser == null){
+      String t = "Hi there, please Sign In to see your favorite riders and templates.";
+      salutationText.setText(t);
+      narratorBox.setVisibility(View.VISIBLE);
+      loginBtn.setOnClickListener(goToLoginPage);
+      loginBtn.setVisibility(View.VISIBLE);
+      return v;
+    }
+    if(which.equals(Konstants.USER_TEMPLATES_TAB)) return  initializeTemplatesTab(v);
+    return initializeFavoritesTab(v);
   }
 
   @Nullable
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    parentActivity = this.getActivity();
     String whichFragment = null;
     whichFragment = getArguments().getString(WHICH_FRAGMENT);
     if (whichFragment.equals(Konstants.USER_TEMPLATES_TAB)) {
       View v = LayoutInflater.from(getContext()).inflate(R.layout.errand_templates_fragment, container, false);
 
-      return initializeTemplatesTab(v);
+      return authOrNot(v, Konstants.USER_TEMPLATES_TAB);
     } else if (whichFragment.equals(Konstants.FAVORITE_RIDERS_TAB)) {
 
       View v = LayoutInflater.from(getContext()).inflate(R.layout.favorite_riders_fragment, container, false);
 
-      return initializeFavoritesTab(v);
+      return authOrNot(v,Konstants.FAVORITE_RIDERS_TAB);
     }
     return null;
   }
