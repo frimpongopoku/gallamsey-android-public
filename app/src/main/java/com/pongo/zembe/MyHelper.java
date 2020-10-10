@@ -27,12 +27,9 @@ import java.util.HashMap;
 
 public class MyHelper {
 
-
-
-
   public static void initializeDropDown(ArrayList<String> array, Spinner spinner, Context context){
-    ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, R.layout.support_simple_spinner_dropdown_item, array);
-    adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+    ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item,array);
+    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     spinner.setAdapter(adapter);
   }
   public static Boolean compareTwoArraysOfSameInstance(ArrayList<Object> one, ArrayList<Object> two){
