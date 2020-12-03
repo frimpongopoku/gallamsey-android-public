@@ -29,7 +29,6 @@ public class CashInCashOut extends AppCompatActivity {
       } else if (country.equals("KENYA")) {
         MyHelper.initializeDropDown(Konstants.KE_NETWORKS, networkDrop, thisActivity);
       }
-
     }
 
     @Override

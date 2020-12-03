@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1004968644741",
+    "firebase_url": "https://gallamsey.firebaseio.com",
+    "project_id": "gallamsey",
+    "storage_bucket": "gallamsey.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1004968644741:android:df9cf0fdbc41fa8dc959ec",
+        "android_client_info": {
+          "package_name": "com.pongo.zembe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1004968644741-s4amtknftfk3k3ah6gsthb3ab6fqru06.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pongo.zembe",
+            "certificate_hash": "eeb9a96c5e3e9e26d0507bc513df718aabbd11fe"
+          }
+        },
+        {
+          "client_id": "1004968644741-ivgugslqphgs6nnlmia0c8fq5aeo2a5q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAE0kew6tcOuyLRM5Uqev0xPe-1m-EB1VY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1004968644741-ivgugslqphgs6nnlmia0c8fq5aeo2a5q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

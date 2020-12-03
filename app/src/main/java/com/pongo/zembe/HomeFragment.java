@@ -180,6 +180,7 @@ public class HomeFragment extends Fragment {
     this.httpHandler = Volley.newRequestQueue(this.context);
     this.dialogCreator = new MagicBoxes(this.context);
     this.newsCacher = (NewsCacheHolder) MyHelper.getFromSharedPreferences(this.context, Konstants.SAVE_NEWS_TO_CACHE, newsCacheType);
+    this.newsCacher = this.newsCacher == null ? new NewsCacheHolder() :this.newsCacher; // just in case there is no cached content, instantiate a new cachedHolderObj
   }
 
   public void setAuthenticatedUser(GroundUser authenticatedUser) {
@@ -213,8 +214,6 @@ public class HomeFragment extends Fragment {
     //------ Loading for the first time, show beautiful shimmer effect and load data
 
     if (this.news == null || this.news.size() == 0) {
-      // checking for user authentication to show shimmer effect because if they are not signed in,
-      // a different thing will be shown instead of shimmer on first load
       // ----- Now, check and see if there is any cached content
       if (newsCacher != null && newsCacher.getNews().size() > 0) {
         setNews(newsCacher.getNews());

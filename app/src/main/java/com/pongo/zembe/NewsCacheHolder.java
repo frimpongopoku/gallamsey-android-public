@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import java.util.ArrayList;
 
 public class NewsCacheHolder implements Parcelable {
-  private ArrayList<GenericErrandClass> news;
+  private ArrayList<GenericErrandClass> news = new ArrayList<>();
   private int howMany;
 
   public NewsCacheHolder(){}
